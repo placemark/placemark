@@ -1,0 +1,11 @@
+name = "static"
+main = "src/index.ts"
+compatibility_date = "2022-09-21"
+routes = [
+  { pattern = "static.placemark.io", custom_domain = true, zone_name = "placemark.io" }
+]
+
+[[r2_buckets]]
+binding = 'APP_BUILD' # <~ valid JavaScript variable name
+bucket_name = 'placemark-app-build'
+preview_bucket_name = "app-build-dev"

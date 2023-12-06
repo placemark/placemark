@@ -1,0 +1,30 @@
+previewsEnabled: true
+previewsExpireAfterDays: 2
+services:
+  - type: web
+    name: placemark
+    env: node
+    plan: pro
+    previewPlan: starter
+    healthCheckPath: /api/healthcheck
+    buildCommand: yarn --frozen-lockfile --prod=false &&
+      blitz prisma migrate deploy --preview-feature &&
+      blitz prisma generate &&
+      blitz build
+    startCommand: blitz start
+    envVars:
+      - fromGroup: app-production
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: placemark-db-3
+          property: connectionString
+    buildFilter:
+      ignoredPaths:
+        - app/**/*.test.js
+
+databases:
+  - name: placemark-db-3
+    plan: "pro plus"
+    previewPlan: starter

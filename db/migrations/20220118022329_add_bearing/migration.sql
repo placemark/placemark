@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Presence" ADD COLUMN     "bearing" DOUBLE PRECISION NOT NULL DEFAULT 0;
