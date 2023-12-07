@@ -17,6 +17,9 @@ _removing_ features, given that I think it's useful to have this
 as an example of a fully-integrated real-world application, and things
 like error tracking are essential for that.
 
+[Opening an issue](https://github.com/placemark/placemark-oss/issues) is
+the best way to get me – I'll get notifications for new issues.
+
 ---
 
 See [docs/architecture.md](./docs/architecture.md) for notes on
