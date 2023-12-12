@@ -35,6 +35,8 @@ it on Render and using that is probably the fastest route to getting
 it on running, but it will work on similar hosting setups, like
 Railway, Heroku, or Flightcontrol. It might also work on Fly.io.
 
+A docker setup, or more likely docker-compose, would be a great addition.
+
 ### Environment variables
 
 This application reads `.env` files when in development, and requires
