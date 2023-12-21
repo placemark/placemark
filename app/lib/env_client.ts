@@ -7,6 +7,7 @@ export const env = envsafe({
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: str({
     input: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     devDefault: "_",
+    default: "",
   }),
   /**
    * Key for authenticating Mapbox maps.
@@ -73,6 +74,7 @@ export const env = envsafe({
    */
   NEXT_PUBLIC_STRIPE_PRICE_ID_ENTERPRISE: str({
     input: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_ENTERPRISE,
+    default: "",
   }),
   /**
    * Using Posthog for product analytics

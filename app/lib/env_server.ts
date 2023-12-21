@@ -20,18 +20,19 @@ export const env = envsafe({
    */
   STRIPE_WEBHOOK_SECRET: str({
     devDefault: "_",
+    default: "",
   }),
   /** Same here: in your dashboard */
-  STRIPE_SECRET_KEY: str(),
+  STRIPE_SECRET_KEY: str({ default: "" }),
   /**
    * This is the ID of the price of a subscription. Create
    * a subscription with a price and copy this from your dashboard.
    */
-  STRIPE_PRICE_ID: str(),
+  STRIPE_PRICE_ID: str({ default: "" }),
   /**
    * This might not really be necessary but we have it nonetheless.
    */
-  STRIPE_TRIAL_DAYS: num(),
+  STRIPE_TRIAL_DAYS: num({ default: 0 }),
   /**
    * This is for sending logs to Logtail. Use logtail and copy
    * the API token.
