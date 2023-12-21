@@ -1,13 +1,12 @@
 import { SecurePassword } from "@blitzjs/auth/secure-password";
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import stripe from "integrations/stripe";
+import stripe, { stripeEnabled } from "integrations/stripe";
 import { Signup } from "app/auth/validations";
 import { createSession } from "app/core/utils";
 import { campaignMonitorSubscribe } from "integrations/campaignmonitor";
 import { capture, identifyOrganization } from "integrations/posthog";
 import { env } from "app/lib/env_server";
-import { AuthorizationError } from "blitz";
 
 export const INSERTED_USER_SELECT = {
   id: true,
@@ -45,61 +44,68 @@ export default resolver.pipe(
     { email: rawEmail, name, organizationName, password, subscribe },
     ctx
   ) => {
-    throw new AuthorizationError("Signing up is disabled");
-    const hashedPassword = await SecurePassword.hash(password.trim());
-    const email = rawEmail.toLowerCase().trim();
+    try {
+      const hashedPassword = await SecurePassword.hash(password.trim());
+      const email = rawEmail.toLowerCase().trim();
 
-    const customer = await stripe.customers.create({
-      name,
-      email,
-      description: organizationName,
-    });
+      let customerId = "";
 
-    await stripe.subscriptions.create({
-      customer: customer.id,
-      items: [
-        {
-          price: env.STRIPE_PRICE_ID,
-          quantity: 1,
-        },
-      ],
-      trial_period_days: env.STRIPE_TRIAL_DAYS,
-    });
+      if (stripeEnabled) {
+        const customer = await stripe.customers.create({
+          name,
+          email,
+          description: organizationName,
+        });
+        customerId = customer.id;
+        await stripe.subscriptions.create({
+          customer: customer.id,
+          items: [
+            {
+              price: env.STRIPE_PRICE_ID,
+              quantity: 1,
+            },
+          ],
+          trial_period_days: env.STRIPE_TRIAL_DAYS,
+        });
+      }
 
-    const user = await db.user.create({
-      data: {
-        email,
-        name,
-        hashedPassword,
-        role: "CUSTOMER",
-        memberships: {
-          create: {
-            role: "OWNER",
-            organization: {
-              create: {
-                name: organizationName.trim() || "My team",
-                stripeCustomerId: customer.id,
-                price: env.STRIPE_PRICE_ID,
+      const user = await db.user.create({
+        data: {
+          email,
+          name,
+          hashedPassword,
+          role: "CUSTOMER",
+          memberships: {
+            create: {
+              role: "OWNER",
+              organization: {
+                create: {
+                  name: organizationName.trim() || "My team",
+                  stripeCustomerId: customerId,
+                  price: stripeEnabled ? env.STRIPE_PRICE_ID : "off",
+                },
               },
             },
           },
         },
-      },
-      select: INSERTED_USER_SELECT,
-    });
+        select: INSERTED_USER_SELECT,
+      });
 
-    if (subscribe && process.env.NODE_ENV === "production") {
-      await campaignMonitorSubscribe(email, name);
+      if (subscribe && process.env.NODE_ENV === "production") {
+        await campaignMonitorSubscribe(email, name);
+      }
+
+      await createSession(user, ctx);
+
+      capture(ctx, {
+        event: "signup",
+      });
+
+      identifyOrganization(user.memberships[0].organization);
+
+      return;
+    } catch (e) {
+      console.error(e);
     }
-
-    await createSession(user, ctx);
-
-    capture(ctx, {
-      event: "signup",
-    });
-
-    identifyOrganization(user.memberships[0].organization);
-
-    return;
   }
 );

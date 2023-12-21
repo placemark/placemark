@@ -1,5 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
-import stripe from "integrations/stripe";
+import stripe, { stripeEnabled } from "integrations/stripe";
 
 import { z } from "zod";
 
@@ -10,6 +10,8 @@ const GetPromotionCode = z.object({
 export default resolver.pipe(
   resolver.zod(GetPromotionCode),
   async ({ code }) => {
+    if (!stripeEnabled) return null;
+
     const result = await stripe.promotionCodes.list({
       code,
     });

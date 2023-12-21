@@ -3,16 +3,20 @@ import { env } from "app/lib/env_client";
 import { Ctx } from "blitz";
 import { Organization } from "db";
 
-export const posthog = new PostHog(env.NEXT_PUBLIC_POSTHOG_API_TOKEN, {
-  host: "https://app.posthog.com",
-});
+export const posthog =
+  env.NEXT_PUBLIC_POSTHOG_API_TOKEN === "off"
+    ? null
+    : new PostHog(env.NEXT_PUBLIC_POSTHOG_API_TOKEN, {
+        host: "https://app.posthog.com",
+      });
 
 type CaptureArgs = Omit<
-  Parameters<typeof posthog.capture>[0],
+  Parameters<PostHog["capture"]>[0],
   "distinctId" | "groups"
 >;
 
 export function capture(ctx: Ctx, args: CaptureArgs) {
+  if (!posthog) return;
   return posthog.capture({
     distinctId: String(ctx.session.userId),
     groups:
@@ -26,6 +30,7 @@ export function capture(ctx: Ctx, args: CaptureArgs) {
 }
 
 export function identifyOrganization(organization: Organization) {
+  if (!posthog) return;
   posthog.groupIdentify({
     groupType: "organization",
     groupKey: String(organization.id),

@@ -5,6 +5,7 @@ import { GeneratePortalLinkIntent } from "@workos-inc/node";
 import { NotFoundError } from "blitz";
 
 export async function getWorkOSPortalURLInner(userId: number, orgId: number) {
+  if (!workos) return null;
   const organization = await db.organization.findFirst({
     where: {
       id: orgId,

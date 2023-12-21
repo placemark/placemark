@@ -17,9 +17,9 @@ export function trackMoment(partialMoment: Partial<MomentInput>) {
   const { track } = partialMoment;
   if (track) {
     if (Array.isArray(track)) {
-      posthog.capture(`transact/${track[0]}`, track[1]);
+      posthog?.capture(`transact/${track[0]}`, track[1]);
     } else {
-      posthog.capture(`transact/${track}`);
+      posthog?.capture(`transact/${track}`);
     }
     delete partialMoment.track;
   }

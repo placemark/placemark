@@ -36,7 +36,7 @@ export function FileWarning({
     size > FILE_LIMIT_BYTES ? "block" : size > FILE_WARN_BYTES ? "warn" : "ok";
 
   useEffect(() => {
-    posthog.capture("import-measurement", {
+    posthog?.capture("import-measurement", {
       type: file.type,
       size_bytes: size,
       result,

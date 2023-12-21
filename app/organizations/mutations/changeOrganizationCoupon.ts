@@ -3,13 +3,14 @@ import { NotFoundError } from "blitz";
 import db from "db";
 import { capture } from "integrations/posthog";
 import * as Sentry from "@sentry/nextjs";
-import stripe from "integrations/stripe";
+import stripe, { stripeEnabled } from "integrations/stripe";
 import { ChangeCoupon } from "../validations";
 
 export default resolver.pipe(
   resolver.zod(ChangeCoupon),
   resolver.authorize("OWNER"),
   async ({ code }, ctx) => {
+    if (stripeEnabled) return null;
     const membership = await db.membership.findFirstOrThrow({
       where: { organizationId: ctx.session.orgId, userId: ctx.session.userId },
       include: {

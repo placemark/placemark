@@ -17,7 +17,7 @@ export function useHotkeys(
       message,
       level: "info",
     });
-    posthog.capture("keyboard-shortcut", { keys: message });
+    posthog?.capture("keyboard-shortcut", { keys: message });
     return fn(...args);
   };
   return rawUseHotkeys(keys, wrap, a, b);

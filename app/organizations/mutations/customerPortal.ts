@@ -1,5 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
-import stripe from "integrations/stripe";
+import stripe, { stripeEnabled } from "integrations/stripe";
 import { env } from "app/lib/env_server";
 import db from "db";
 
@@ -7,6 +7,10 @@ import db from "db";
 export default resolver.pipe(
   resolver.authorize(["OWNER", "SUPERADMIN"]),
   async (_input, ctx) => {
+    if (!stripeEnabled) {
+      throw new Error("Stripe disabled");
+    }
+
     const org = await db.organization.findFirstOrThrow({
       where: { id: ctx.session.orgId },
       select: { stripeCustomerId: true, id: true },

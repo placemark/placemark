@@ -31,7 +31,7 @@ const logger = new Logger<ILogObj>({
   // suppressStdOutput: process.env.NODE_ENV === "production",
 });
 
-if (prod) {
+if (prod && env.LOGTAIL_TOKEN !== "off") {
   const logtail = new Logtail(env.LOGTAIL_TOKEN);
 
   const logToTail = (logObject: ILogObj & ILogObjMeta) => {

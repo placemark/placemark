@@ -101,7 +101,7 @@ async function posthogCapture(
 
   if (!user) return;
 
-  posthog.capture({
+  posthog?.capture({
     distinctId: String(user.id),
     event: `webhook/${event.type}`,
     groups: {

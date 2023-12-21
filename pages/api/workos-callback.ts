@@ -19,6 +19,7 @@ const Code = z
  * string argument
  */
 export async function workOsCallbackInner(code: string) {
+  if (!workos) return null;
   /**
    * We get the profile from WorkOS. This should give us
    * the information to find a user (profile.id)
@@ -166,11 +167,18 @@ export async function workOsCallbackInner(code: string) {
  * returned by WorkOS with the authenticated user's Profile.
  */
 export default api(async function workOSCallback(req, res, ctx) {
+  if (!workos) return null;
+
   const session = ctx.session;
   const { code } = Code.parse(req.query);
 
   try {
-    const { user, organization } = await workOsCallbackInner(code);
+    const r = await workOsCallbackInner(code);
+    // Just work with TypeScript here… we know that if
+    // WorkOS is disabled, we won't get here, but
+    // TypeScript doesn't.
+    if (!r) return null;
+    const { user, organization } = r;
 
     await session.$create({
       userId: user.id,

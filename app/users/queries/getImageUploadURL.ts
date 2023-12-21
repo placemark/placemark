@@ -16,6 +16,9 @@ const ImagesResponse = z
 export default resolver.pipe(
   resolver.authorize(),
   async function getImageUploadURL(_ = null) {
+    if (env.CLOUDFLARE_API_TOKEN === "off") {
+      return null;
+    }
     // https://developers.cloudflare.com/images/cloudflare-images/upload-images/direct-creator-upload/
     const res = await fetch(
       `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_IMAGES_ACCOUNT_ID}/images/v2/direct_upload`,

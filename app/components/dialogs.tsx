@@ -229,7 +229,7 @@ export const Dialogs = memo(function Dialogs() {
 
   useEffect(() => {
     if (dialog) {
-      posthog.capture("dialog-open", {
+      posthog?.capture("dialog-open", {
         dialog: dialog.type,
       });
     }

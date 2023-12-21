@@ -24,7 +24,7 @@ export const Visual = memo(function Visual() {
                 variant="quiet"
                 aria-label="Search"
                 onClick={() => {
-                  posthog.capture("open-quickswitcher", {
+                  posthog?.capture("open-quickswitcher", {
                     method: "click",
                   });
                   setDialogState({ type: "quickswitcher" });

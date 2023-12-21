@@ -312,6 +312,11 @@ async function uploadFile(file: File) {
   // Get URL for the new file
   const uploadInformation = await invoke(getImageUploadURL, {});
 
+  if (!uploadInformation) {
+    toast.error("Cloudflare integration disabled: can’t upload images.");
+    return;
+  }
+
   // Upload image
   const formData = new FormData();
   formData.set("file", file);
@@ -372,6 +377,12 @@ function RichTextEditorInner(props: PropertyInputProps) {
             }
             setUploading(true);
             const uploadedFileInfo = await uploadFile(file);
+            if (!uploadedFileInfo) {
+              toast.error(
+                "Cloudflare integration disabled: can’t upload images."
+              );
+              return;
+            }
             // Insert image
             const { schema } = view.state;
             const coordinates = view.posAtCoords({
@@ -525,6 +536,12 @@ function RichTextEditorInner(props: PropertyInputProps) {
                 }
                 setUploading(true);
                 const uploadedFileInfo = await uploadFile(file);
+                if (!uploadedFileInfo) {
+                  toast.error(
+                    "Cloudflare integration disabled: can’t upload images."
+                  );
+                  return;
+                }
                 // Insert image
                 editor
                   .chain()
@@ -996,7 +1013,7 @@ function TextEditor({
                     bg-gray-100 dark:bg-gray-700
                     opacity-75 hover:opacity-100"
                   onMouseDown={(e) => {
-                    posthog.capture("properties-use-suggested-existing-value");
+                    posthog?.capture("properties-use-suggested-existing-value");
                     e.preventDefault();
                     onChangeValue(pair[0], value);
                   }}

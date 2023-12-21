@@ -92,7 +92,7 @@ export function CreateMap({ mini = false }: { mini?: boolean }) {
   });
 
   const { data: buttonText } = useQuery("new-map-experiment", () => {
-    if (posthog.getFeatureFlag("newmap-button") === "newmap") {
+    if (posthog?.getFeatureFlag("newmap-button") === "newmap") {
       return "New map";
     } else {
       return "Create map";

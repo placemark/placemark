@@ -23,8 +23,12 @@ export const API_BASE_WITH_SLASH = "https://api.createsend.com/api/v3.3/";
 /**
  * Subscribe a user to the updates list. This happens
  * automatically on signup.
+ *
+ * - [x] Optional
  */
 export async function campaignMonitorSubscribe(email: string, name: string) {
+  if (!env.CAMPAIGNMONITOR_KEY) return null;
+
   try {
     await fetch(`${API_BASE_WITH_SLASH}subscribers/${LIST_ID}.json`, {
       method: "POST",
