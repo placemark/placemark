@@ -24,7 +24,7 @@ export const FeatureEditorExport = memo(function FeatureEditorExport({
 
   const onCopy = useCallback(
     async function onCopy(values: CopyForm) {
-      posthog.capture("export-copy", {
+      posthog?.capture("export-copy", {
         format: values.format,
       });
 

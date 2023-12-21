@@ -53,7 +53,7 @@ export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
                 className="text-left text-sm group rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-1"
                 key={example}
                 onClick={async () => {
-                  posthog.capture("import-example", {
+                  posthog?.capture("import-example", {
                     example,
                   });
                   await toast.promise(

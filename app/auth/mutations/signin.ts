@@ -64,12 +64,12 @@ export const authenticateUser = async (
 
   const { hashedPassword, ...rest } = user;
 
-  posthog.capture({
+  posthog?.capture({
     distinctId: String(rest.id),
     event: "signin",
   });
 
-  posthog.identify({
+  posthog?.identify({
     distinctId: String(rest.id),
     properties: {
       name: user.name,

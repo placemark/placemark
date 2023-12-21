@@ -37,6 +37,15 @@ Railway, Heroku, or Flightcontrol. It might also work on Fly.io.
 
 A docker setup, or more likely docker-compose, would be a great addition.
 
+### Installation
+
+This project is built with [yarn](https://github.com/yarnpkg/yarn)
+and last tested with version `1.22.19` of yarn. There's a lockfile
+for yarn. Installing with npm or another package manager will yield
+different, and potentially broken, dependencies.
+
+I'm open to switching to npm if there is a PR submitted.
+
 ### Environment variables
 
 This application reads `.env` files when in development, and requires
@@ -51,15 +60,20 @@ You can see a list of the required environment variables at
 
 Note that there's a lot of these. Placemark relies on:
 
-- Stripe
+### Required
+
+- GitHub
+- Replicache
+
+### Optional
+
 - Posthog
-- Logtail
+- Cloudflare
 - Postmark
 - WorkOS
-- GitHub
-- Cloudflare
+- Stripe
 - CampaignMonitor
-- Replicache
+- Logtail
 
 Some of these could be made optional because self-hosted installations
 probably don't need Stripe. Doing this is very possible, and I'd gladly
@@ -104,4 +118,13 @@ to this directory
 
 ```
 caddy start
+```
+
+### Using Stripe
+
+Stripe is becoming an optional dependency of this project. There's a webhook
+proxy in `./_scripts/webhook-proxy.js` which you can run optionally by running:
+
+```sh
+$ yarn dev-with-stripe
 ```

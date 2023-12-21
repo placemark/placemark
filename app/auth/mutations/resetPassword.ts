@@ -48,7 +48,7 @@ export default resolver.pipe(
     // 7. Now log the user in with the new credentials
     await signin({ email: user.email, password }, ctx);
 
-    posthog.capture({
+    posthog?.capture({
       distinctId: String(user.id),
       event: "reset-password",
     });

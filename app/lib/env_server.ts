@@ -13,22 +13,22 @@ export const env = envsafe({
    * https://postmarkapp.com/
    * To send emails. This is the required token.
    */
-  POSTMARK_SERVER_API_TOKEN: str({ devDefault: "test" }),
+  POSTMARK_SERVER_API_TOKEN: str({ devDefault: "test", default: "off" }),
   /**
    * This is the stripe webhook secret, required to verify
    * webhooks. You'll find it in your Stripe dashboard.
    */
   STRIPE_WEBHOOK_SECRET: str({
     devDefault: "_",
-    default: "",
+    default: "off",
   }),
   /** Same here: in your dashboard */
-  STRIPE_SECRET_KEY: str({ default: "" }),
+  STRIPE_SECRET_KEY: str({ default: "off" }),
   /**
    * This is the ID of the price of a subscription. Create
    * a subscription with a price and copy this from your dashboard.
    */
-  STRIPE_PRICE_ID: str({ default: "" }),
+  STRIPE_PRICE_ID: str({ default: "off" }),
   /**
    * This might not really be necessary but we have it nonetheless.
    */
@@ -37,15 +37,17 @@ export const env = envsafe({
    * This is for sending logs to Logtail. Use logtail and copy
    * the API token.
    */
-  LOGTAIL_TOKEN: str(),
+  LOGTAIL_TOKEN: str({
+    default: "off",
+  }),
   /**
    * For image uploads, this is the account id.
    */
-  CLOUDFLARE_IMAGES_ACCOUNT_ID: str(),
+  CLOUDFLARE_IMAGES_ACCOUNT_ID: str({ default: "off" }),
   /**
    * Same, for uploading images.
    */
-  CLOUDFLARE_API_TOKEN: str(),
+  CLOUDFLARE_API_TOKEN: str({ default: "off" }),
   /**
    * This is for showing blog posts from the val town blog.
    * Probably can be removed in the OSS version:
@@ -63,14 +65,14 @@ export const env = envsafe({
    * dashboard. This could potentially be removed from
    * this OSS version: PRs gladly accepted!
    */
-  WORKOS_API_KEY: str(),
-  WORKOS_CLIENT_ID: str(),
-  WORKOS_REDIRECT_URL: str(),
+  WORKOS_API_KEY: str({ default: "off" }),
+  WORKOS_CLIENT_ID: str({ default: "off" }),
+  WORKOS_REDIRECT_URL: str({ default: "off" }),
   /**
    * For signing people up to newsletters when they sign
    * up.
    */
-  CAMPAIGNMONITOR_KEY: str(),
+  CAMPAIGNMONITOR_KEY: str({ default: "off" }),
   /**
    * This is the email address where feedback emails go to.
    */
@@ -84,3 +86,27 @@ export const env = envsafe({
     devDefault: "_",
   }),
 });
+
+if (env.WORKOS_API_KEY === "off") {
+  console.log("Disabling WorkOS integration");
+}
+
+if (env.LOGTAIL_TOKEN === "off") {
+  console.log("Disabling Logtail integration");
+}
+
+if (env.STRIPE_SECRET_KEY === "off") {
+  console.log("Disabling Stripe integration");
+}
+
+if (env.CAMPAIGNMONITOR_KEY === "off") {
+  console.log("Disabling Campaignmonitor integration");
+}
+
+if (env.CLOUDFLARE_API_TOKEN === "off") {
+  console.log("Disabling Cloudflare integration");
+}
+
+if (env.POSTMARK_SERVER_API_TOKEN === "off") {
+  console.log("Disabling Postmark integration");
+}

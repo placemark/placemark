@@ -272,7 +272,7 @@ export function ExportSVGDialog() {
   }, [featureMap, featureMap.version, config, mapExtent]);
 
   async function onExport() {
-    posthog.capture("export-svg");
+    posthog?.capture("export-svg");
     const { fileSave } = await import("browser-fs-access");
     const rendered = renderToStaticMarkup(
       <SvgMap

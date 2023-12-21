@@ -1,6 +1,6 @@
 import { resolver } from "@blitzjs/rpc";
 import { updateSession } from "app/core/updateSession";
-import stripe from "integrations/stripe";
+import stripe, { stripeEnabled } from "integrations/stripe";
 import { z } from "zod";
 import db from "db";
 import { logger } from "integrations/log";
@@ -17,6 +17,8 @@ const DeleteOrganization = z.object({
 async function getOrgIdFromSessionId(
   session_id: string
 ): Promise<number | null> {
+  if (!stripeEnabled) return null;
+
   const session = await stripe.checkout.sessions.retrieve(session_id);
   const customerId = session.customer as string | null;
   if (!customerId) return null;
@@ -68,7 +70,9 @@ export default resolver.pipe(
 
     logger.info(`Deleting ${org.stripeCustomerId} stripe customer`);
     // Delete the organization's Stripe customer
-    await stripe.customers.del(org.stripeCustomerId);
+    if (stripeEnabled) {
+      await stripe.customers.del(org.stripeCustomerId);
+    }
 
     // If the organization we just deleted is also
     // the organization you’re logged into, update

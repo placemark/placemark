@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node ./_scripts/webhook-proxy.js",
-    "dev-offline": "blitz dev",
+    "dev-with-stripe": "node ./_scripts/webhook-proxy.js",
+    "dev": "blitz dev",
     "build": "blitz build",
     "start": "blitz start",
     "studio": "blitz prisma studio",

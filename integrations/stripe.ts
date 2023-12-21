@@ -8,6 +8,12 @@ import { notifyTeam } from "./notify_team";
 
 export * from "stripe";
 
+if (env.STRIPE_SECRET_KEY === "off") {
+  console.log(`STRIPE_SECRET_KEY not found: disabling Stripe integration`);
+}
+
+export const stripeEnabled = env.STRIPE_SECRET_KEY !== "off";
+
 // Centrally configure an instance of the Stripe client
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-11-15",
@@ -15,6 +21,11 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 
 export default stripe;
 
+/**
+ * This is called on the signup action.
+ *
+ * - [x] Optional
+ */
 export async function createStripeCheckoutSession(
   customerId: string,
   promotionCode?: string | null
@@ -62,7 +73,14 @@ export async function createStripeCheckoutSession(
   });
 }
 
-export async function updateQuantityForOrganization(organizationId: number) {
+/**
+ * - [x] Optional
+ */
+export async function updateQuantityForOrganization(
+  organizationId: number
+): Promise<void> {
+  if (!stripeEnabled) return;
+
   const { name: organizationName, stripeCustomerId } =
     await db.organization.findFirstOrThrow({
       where: {
