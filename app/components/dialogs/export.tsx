@@ -200,7 +200,7 @@ export function ExportDialog({ onClose }: { onClose: () => void }) {
     exportOptions: ExportOptions,
     helpers: FormikHelpers<ExportOptions>
   ) {
-    posthog.capture("export", {
+    posthog?.capture("export", {
       format: exportOptions.type,
     });
 

@@ -11,7 +11,7 @@ export function KeybindingsIndex() {
     (e) => {
       e.preventDefault();
       setDialogState({ type: "quickswitcher_index" });
-      posthog.capture("open-quickswitcher-index", {
+      posthog?.capture("open-quickswitcher-index", {
         method: "keybinding",
       });
     },
@@ -23,7 +23,7 @@ export function KeybindingsIndex() {
     (e) => {
       e.preventDefault();
       setDialogState({ type: "quickswitcher_index" });
-      posthog.capture("open-quickswitcher-index", {
+      posthog?.capture("open-quickswitcher-index", {
         method: "keybinding",
       });
     },

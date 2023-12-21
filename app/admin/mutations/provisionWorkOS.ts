@@ -10,6 +10,8 @@ export default resolver.pipe(
   resolver.authorize(["SUPERADMIN"]),
   resolver.zod(Provision),
   async ({ id, domain }, _ctx) => {
+    if (!workos) return;
+
     const organization = await db.organization.findFirstOrThrow({
       where: {
         id,

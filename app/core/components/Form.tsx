@@ -67,7 +67,7 @@ export function Form<S extends z.ZodType<any, any>>({
         }
 
         if (track) {
-          posthog.capture(`form/${track}`);
+          posthog?.capture(`form/${track}`);
         }
 
         if (Object.keys(otherErrors).length > 0) {

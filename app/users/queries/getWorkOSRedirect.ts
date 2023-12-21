@@ -15,6 +15,7 @@ const GetWorkOSRedirect = z.object({
  * get SSO based on `google.com`.
  */
 export async function getWorkOSRedirectInner(email: string) {
+  if (!workos) return null;
   /**
    * Parse the email address and get its domain.
    */

@@ -6,7 +6,7 @@ export const env = envsafe({
    */
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: str({
     input: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-    devDefault: "_",
+    default: "off",
   }),
   /**
    * Key for authenticating Mapbox maps.
@@ -73,6 +73,7 @@ export const env = envsafe({
    */
   NEXT_PUBLIC_STRIPE_PRICE_ID_ENTERPRISE: str({
     input: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_ENTERPRISE,
+    default: "off",
   }),
   /**
    * Using Posthog for product analytics
@@ -82,9 +83,11 @@ export const env = envsafe({
    */
   NEXT_PUBLIC_POSTHOG_API_TOKEN: str({
     input: process.env.NEXT_PUBLIC_POSTHOG_API_TOKEN,
+    default: "off",
   }),
   NEXT_PUBLIC_POSTHOG_API_HOST: str({
     input: process.env.NEXT_PUBLIC_POSTHOG_API_HOST,
+    default: "off",
   }),
   /**
    * I think this is unused: feel free to confirm

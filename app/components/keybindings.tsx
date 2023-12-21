@@ -20,7 +20,7 @@ export function Keybindings() {
     (e) => {
       e.preventDefault();
       setDialogState({ type: "quickswitcher" });
-      posthog.capture("open-quickswitcher", {
+      posthog?.capture("open-quickswitcher", {
         method: "keybinding",
       });
     },
@@ -32,7 +32,7 @@ export function Keybindings() {
     (e) => {
       e.preventDefault();
       setDialogState({ type: "quickswitcher" });
-      posthog.capture("open-quickswitcher", {
+      posthog?.capture("open-quickswitcher", {
         method: "keybinding",
       });
     },
@@ -47,7 +47,7 @@ export function Keybindings() {
       setDialogState({
         type: "export",
       });
-      posthog.capture("open-export", {
+      posthog?.capture("open-export", {
         method: "keybinding",
       });
     },
@@ -65,7 +65,7 @@ export function Keybindings() {
           type: "cheatsheet",
         };
       });
-      posthog.capture("open-cheatsheet", {
+      posthog?.capture("open-cheatsheet", {
         method: "keybinding",
       });
     },
@@ -76,7 +76,7 @@ export function Keybindings() {
     "meta+s, Ctrl+s",
     (e) => {
       e.preventDefault();
-      posthog.capture("open-export-dialog", {
+      posthog?.capture("open-export-dialog", {
         method: "keybinding",
       });
       (async () => {
@@ -98,7 +98,7 @@ export function Keybindings() {
     "meta+o, Ctrl+o",
     (e) => {
       e.preventDefault();
-      posthog.capture("open-import-dialog", {
+      posthog?.capture("open-import-dialog", {
         method: "keybinding",
       });
       openFiles().catch((e) => Sentry.captureException(e));

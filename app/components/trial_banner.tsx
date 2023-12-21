@@ -9,6 +9,7 @@ import fromUnixTime from "date-fns/fromUnixTime";
 import differenceInDays from "date-fns/differenceInDays";
 import customerPortal from "app/organizations/mutations/customerPortal";
 import { posthog } from "integrations/posthog_client";
+import { env } from "app/lib/env_client";
 
 function TrialBannerFallback() {
   return null;
@@ -30,7 +31,7 @@ function TrialBannerInner() {
   const customer = organization.customer;
   const subscription = !customer?.deleted && customer?.subscriptions?.data[0];
 
-  if (!subscription) {
+  if (!subscription && env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY !== "off") {
     return (
       <div className="pb-4">
         <TextWell variant="destructive">
@@ -38,10 +39,14 @@ function TrialBannerInner() {
           <Link href={Routes.SettingsOrganization()} className={styledInlineA}>
             Set up billing to keep your maps online.
           </Link>
+          {env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
         </TextWell>
       </div>
     );
   }
+
+  // Stripe is disabled
+  if (!subscription) return null;
 
   // https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses
   return (
@@ -65,7 +70,7 @@ function TrialBannerInner() {
                 keep using Placemark{" "}
                 <Button
                   onClick={async () => {
-                    posthog.capture("add-payment-method-click");
+                    posthog?.capture("add-payment-method-click");
 
                     const { url } = await customerPortalMutation({});
                     // Sketchy, I don't think Stripe guarantees

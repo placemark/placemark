@@ -13,7 +13,7 @@ const LogoutPage: BlitzPage = () => {
   const [logoutMutation] = useMutation(logout);
 
   useEffect(() => {
-    posthog.reset();
+    posthog?.reset();
     logoutMutation()
       .then(() => {
         void router.push("/");

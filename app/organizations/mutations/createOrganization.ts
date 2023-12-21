@@ -1,7 +1,10 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { capture, identifyOrganization } from "integrations/posthog";
-import stripe, { createStripeCheckoutSession } from "integrations/stripe";
+import stripe, {
+  stripeEnabled,
+  createStripeCheckoutSession,
+} from "integrations/stripe";
 import { CreateOrganization } from "../validations";
 
 export default resolver.pipe(
@@ -12,9 +15,11 @@ export default resolver.pipe(
       where: { id: ctx.session.userId },
     });
 
-    const customer = await stripe.customers.create({
-      email: user.email,
-    });
+    const customer = stripeEnabled
+      ? await stripe.customers.create({
+          email: user.email,
+        })
+      : { id: "" };
 
     const organization = await db.organization.create({
       data: {
@@ -32,7 +37,9 @@ export default resolver.pipe(
       },
     });
 
-    const stripeSession = await createStripeCheckoutSession(customer.id);
+    const stripeSession = stripeEnabled
+      ? await createStripeCheckoutSession(customer.id)
+      : { id: "" };
 
     await ctx.session.$setPublicData({
       orgId: organization.id,

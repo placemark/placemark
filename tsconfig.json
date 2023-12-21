@@ -32,5 +32,12 @@
     "types/vitest.d.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "**/*.e2e.ts", "cypress", "ignore", "workers"]
+  "exclude": [
+    "docs",
+    "node_modules",
+    "**/*.e2e.ts",
+    "cypress",
+    "ignore",
+    "workers"
+  ]
 }

@@ -167,7 +167,7 @@ export default memo(function Modes({
               hotkey={hotkey}
               label={MODE_INFO[mode].label}
               onClick={(e) => {
-                posthog.capture("change-drawing-mode", {
+                posthog?.capture("change-drawing-mode", {
                   mode,
                 });
                 if (mode === Mode.DRAW_LINE) {

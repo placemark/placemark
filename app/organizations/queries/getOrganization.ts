@@ -1,5 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
-import stripe from "integrations/stripe";
+import stripe, { stripeEnabled } from "integrations/stripe";
 import db from "db";
 
 const getOrganization = resolver.pipe(
@@ -34,15 +34,16 @@ const getOrganization = resolver.pipe(
       },
     });
 
-    const customer = organization.stripeCustomerId
-      ? await stripe.customers.retrieve(organization.stripeCustomerId, {
-          expand: [
-            "subscriptions",
-            "subscriptions.data.default_payment_method",
-            "invoice_settings.default_payment_method",
-          ],
-        })
-      : null;
+    const customer =
+      stripeEnabled && organization.stripeCustomerId
+        ? await stripe.customers.retrieve(organization.stripeCustomerId, {
+            expand: [
+              "subscriptions",
+              "subscriptions.data.default_payment_method",
+              "invoice_settings.default_payment_method",
+            ],
+          })
+        : null;
 
     return {
       organization,
