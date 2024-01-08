@@ -82,23 +82,17 @@ be able to do with my limited time.
 
 ### Infrastructure
 
-Placemark relies on three servers:
+Placemark relies on two servers:
 
 1. The application (this repository)
 2. A Postgres 14 (or higher) database
-3. An installation of [Soketi](https://github.com/soketi/soketi)
-
-The Soketi server is to handle Websockets, which is something that I
-preferred to keep out of the main app because it's a very different
-workload. It's just Soketi with no modifications.
 
 ### Domains
 
 On the web, Placemark is served under three domains:
 
 1. `app.placemark.io`, the main application.
-2. `ws.placemark.io`, the Soketi installation.
-3. `api.placemark.io`, the API
+2. `api.placemark.io`, the API
 
 The API is served from the same web server as the app. This is done
 by using a [Cloudflare Worker](https://workers.cloudflare.com/)
