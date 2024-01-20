@@ -25,17 +25,17 @@ the best way to get me – I'll get notifications for new issues.
 See [docs/architecture.md](./docs/architecture.md) for notes on
 the technologies under the hood.
 
-### Setup hints
+### Running with Docker
 
-There _isn't, yet_ a Docker configuration for this application: I
-personally don't use Docker when it isn't absolutely necessary.
+✨ There's now an example Docker file! See [docs/docker](https://github.com/placemark/placemark/blob/main/docs/docker.md) for details.
+
+### Running in Render
+
 The application is configured by the `render.yaml` file which is
 a [Render blueprint](https://render.com/docs/blueprint-spec). Hosting
 it on Render and using that is probably the fastest route to getting
 it on running, but it will work on similar hosting setups, like
 Railway, Heroku, or Flightcontrol. It might also work on Fly.io.
-
-A docker setup, or more likely docker-compose, would be a great addition.
 
 **Note**: it seems like [Prisma](https://github.com/prisma/prisma), which
 Placemark uses as its ORM, has [a bug when used within a Docker container on a Mac with an M chip](https://github.com/prisma/prisma/issues/19743).
