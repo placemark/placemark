@@ -1,5 +1,11 @@
 ### Development with Docker
 
+#### Prepare
+
+```bash
+cp .env.example .env.local
+```
+
 #### Build
 
 ```bash
