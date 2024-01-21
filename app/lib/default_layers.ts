@@ -14,22 +14,22 @@ export type LayerConfigTemplate = Pick<
 const LAYERS: Record<DefaultLayer, LayerConfigTemplate> = {
   MONOCHROME: {
     name: "Monochrome",
-    url: "mapbox://styles/tmcw/ckkpwot3j10mt17p1y4ecfvgx",
+    url: "mapbox://styles/mapbox/light-v10",
     ...defaults,
   },
   DARK: {
     name: "Dark",
-    url: "mapbox://styles/tmcw/ckmqwyw951j4f17o060z2lib2",
+    url: "mapbox://styles/mapbox/dark-v10",
     ...defaults,
   },
   SATELLITE: {
     name: "Satellite",
-    url: "mapbox://styles/tmcw/cklbji3wp19p817mzw4u0lexg",
+    url: "mapbox://styles/mapbox/satellite-streets-v11",
     ...defaults,
   },
   STREETS: {
     name: "Streets",
-    url: "mapbox://styles/tmcw/cklbkf8a317t217rzwz97r2n6",
+    url: "mapbox://styles/mapbox/navigation-guidance-day-v4",
     ...defaults,
   },
 };
