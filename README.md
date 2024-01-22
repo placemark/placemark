@@ -1,6 +1,14 @@
 ### Placemark
 
-The Placemark application.
+![Placemark screenshot](./.github/screenshot.png)
+
+The Placemark application. This is a web application that lets you
+import, create, export, visualize, and publish geospatial data. It supports
+many geospatial data formats, and many editing operations, both
+algorithmic, like buffering, and drawing-based. You can see
+[many YouTube videos](https://www.youtube.com/@_tmcw/videos) of using
+the tool, and [the archived website](https://www.placemark.io/)
+has marketing for what it previously was.
 
 **Note**: this is an early open source release of the codebase. I'm happy
 to help to some extent with setup, but I can't provide end-to-end
