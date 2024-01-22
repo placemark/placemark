@@ -1,9 +1,9 @@
-import { Ctx, AuthenticatedMiddlewareCtx } from "blitz";
+import { Ctx, AuthenticatedCtx } from "blitz";
 import { getCurrentUserInternal } from "app/users/queries/getCurrentUser";
 
 export default async function getMaybeCurrentUser(_ = null, ctx: Ctx) {
   try {
-    return await getCurrentUserInternal(ctx as AuthenticatedMiddlewareCtx);
+    return await getCurrentUserInternal(ctx as AuthenticatedCtx);
   } catch (e) {
     return null;
   }

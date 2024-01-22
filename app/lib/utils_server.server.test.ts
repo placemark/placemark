@@ -1,6 +1,6 @@
 import { expect, describe, it, test } from "vitest";
 
-import { AuthenticatedMiddlewareCtx } from "blitz";
+import { AuthenticatedCtx } from "blitz";
 import { getRandomMockCtxAndUser } from "test/shared";
 import { enforceWfcQuota, parseSymbolization } from "./utils_server";
 import { env } from "app/lib/env_client";
@@ -15,9 +15,7 @@ test("parseSymbolization", () => {
 describe("enforceWfcQuota", () => {
   it("base case - exceeding limit", async () => {
     const { ctx } = await getRandomMockCtxAndUser();
-    await expect(
-      enforceWfcQuota(ctx as AuthenticatedMiddlewareCtx)
-    ).resolves.toBeFalsy();
+    await expect(enforceWfcQuota(ctx as AuthenticatedCtx)).resolves.toBeFalsy();
 
     for (let i = 0; i < 50; i++) {
       await expect(
@@ -29,9 +27,9 @@ describe("enforceWfcQuota", () => {
       createWrappedFeatureCollection({ name: "Foo" }, ctx)
     ).rejects.toThrowError(/limit/);
 
-    await expect(
-      enforceWfcQuota(ctx as AuthenticatedMiddlewareCtx)
-    ).rejects.toThrowError(/limit/);
+    await expect(enforceWfcQuota(ctx as AuthenticatedCtx)).rejects.toThrowError(
+      /limit/
+    );
 
     await db.organization.update({
       where: {
@@ -42,8 +40,6 @@ describe("enforceWfcQuota", () => {
       },
     });
 
-    await expect(
-      enforceWfcQuota(ctx as AuthenticatedMiddlewareCtx)
-    ).resolves.toBeFalsy();
+    await expect(enforceWfcQuota(ctx as AuthenticatedCtx)).resolves.toBeFalsy();
   });
 });

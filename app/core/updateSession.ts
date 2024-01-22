@@ -1,12 +1,12 @@
 import { setPublicDataForUser } from "@blitzjs/auth";
-import { AuthenticatedMiddlewareCtx } from "blitz";
+import { AuthenticatedCtx } from "blitz";
 import type { User, Membership } from "db";
 
 export async function updateSession(
   membership: Membership & {
     user: User | null;
   },
-  ctx: AuthenticatedMiddlewareCtx
+  ctx: AuthenticatedCtx
 ) {
   const { user } = membership;
 
