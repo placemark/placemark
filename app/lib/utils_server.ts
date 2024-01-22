@@ -1,4 +1,4 @@
-import { AuthenticatedMiddlewareCtx } from "blitz";
+import { AuthenticatedCtx } from "blitz";
 import LAYERS from "app/lib/default_layers";
 import db, { MembershipStatus, Prisma } from "db";
 import { generateKeyBetween } from "fractional-indexing";
@@ -15,10 +15,7 @@ import { QuotaError } from "./errors";
 import { UOrganization } from "./uorganization";
 import { formatCount, safeParseMaybe } from "./utils";
 
-export function getWrappedFeatureCollection(
-  id: string,
-  ctx: AuthenticatedMiddlewareCtx
-) {
+export function getWrappedFeatureCollection(id: string, ctx: AuthenticatedCtx) {
   return db.wrappedFeatureCollection.findFirstOrThrow({
     where: {
       id,
@@ -29,7 +26,7 @@ export function getWrappedFeatureCollection(
   });
 }
 
-export async function enforceWfcQuota(ctx: AuthenticatedMiddlewareCtx) {
+export async function enforceWfcQuota(ctx: AuthenticatedCtx) {
   const organization = await db.organization.findFirstOrThrow({
     where: {
       id: ctx.session.orgId!,

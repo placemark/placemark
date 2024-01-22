@@ -1,8 +1,8 @@
 import { resolver } from "@blitzjs/rpc";
-import { AuthenticatedMiddlewareCtx } from "blitz";
+import { AuthenticatedCtx } from "blitz";
 import db from "db";
 
-export async function getCurrentUserInternal(ctx: AuthenticatedMiddlewareCtx) {
+export async function getCurrentUserInternal(ctx: AuthenticatedCtx) {
   const user = await db.user.findFirstOrThrow({
     where: { id: ctx.session.userId },
     select: {

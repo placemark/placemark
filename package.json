@@ -181,7 +181,6 @@
     "topojson-client": "^3.1.0",
     "topojson-server": "^3.0.1",
     "ts-pattern": "^4.0.5",
-    "tslog": "^4.8.2",
     "type-fest": "^4.0.0",
     "uuid": "^9.0.0",
     "xlsx": "^0.18.5",
