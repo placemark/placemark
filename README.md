@@ -1,5 +1,7 @@
 ### Placemark
 
+![Placemark screenshot](./.github/screenshot.png)
+
 The Placemark application. This is a web application that lets you
 import, create, export, visualize, and publish geospatial data. It supports
 many geospatial data formats, and many editing operations, both
