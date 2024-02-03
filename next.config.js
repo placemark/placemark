@@ -22,10 +22,6 @@ let config = {
   // workers are not a thing yet.
   // assetPrefix: isProduction ? "https://static.placemark.io" : "", // "http://0.0.0.0:8787",
 
-  experimental: {
-    legacyBrowsers: false,
-  },
-
   webpack(config, options) {
     if (process.env.ANALYZE === "true") {
       const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");

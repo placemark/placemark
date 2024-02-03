@@ -9,12 +9,12 @@ services:
     ports:
       - 5432:5432
   web: &web
-    build: .
+    build:
+      dockerfile: dev.Dockerfile
     env_file:
       - .env.local
     volumes:
       - .:/app
-      - ./node_modules:/app/node_modules
     user: node
     command: yarn dev
     ports:

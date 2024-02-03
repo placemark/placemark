@@ -1,5 +1,10 @@
 ### Development with Docker
 
+Placemark was originally developed without using Docker, so the Docker
+configuration is a little new. Note that this docker configuration
+is optimized for _development_ - we don't yet have a configuration
+for production.
+
 #### Prepare
 
 ```bash
@@ -18,5 +23,5 @@ docker compose build
 docker compose up
 ```
 
-Open http://localhost:3000/
-Open http://localhost:5555/
+- Open [localhost:3000](http://localhost:3000/) for the server.
+- Open [localhost:5555](http://localhost:5555/) for the Prisma database browser.
