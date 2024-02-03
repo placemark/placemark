@@ -1,7 +1,7 @@
 import { rpcHandler } from "@blitzjs/rpc";
 import { api } from "app/blitz-server";
 import { captureException } from "@sentry/nextjs";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { Prisma } from "@prisma/client";
 import { NotFoundError } from "blitz";
 
 export default api(
@@ -12,7 +12,10 @@ export default api(
       // If this is a Prisma not found error,
       // make it 404-like and exit without
       // logging to Sentry.
-      if (e instanceof PrismaClientKnownRequestError && e.code === "P2025") {
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === "P2025"
+      ) {
         Object.assign(e, { statusCode: 404 });
         captureException(e);
         return;

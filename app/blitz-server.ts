@@ -13,7 +13,7 @@ import { authConfig } from "./blitz-client";
 import { logger } from "integrations/log";
 import * as Sentry from "@sentry/nextjs";
 import { ZodError } from "zod";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { Prisma } from "@prisma/client";
 
 export const { gSSP, gSP, api } = setupBlitzServer({
   plugins: [
@@ -39,7 +39,7 @@ export const { gSSP, gSP, api } = setupBlitzServer({
           res.send({ error: "Bad request", issues: e.issues });
           res.end();
           return;
-        } else if (e instanceof PrismaClientKnownRequestError) {
+        } else if (e instanceof Prisma.PrismaClientKnownRequestError) {
           res.statusCode = 404;
           res.send({ error: "Not found" });
           res.end();
