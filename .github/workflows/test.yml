@@ -16,6 +16,10 @@ jobs:
       NEXT_PUBLIC_POSTHOG_API_HOST: xxx
       NEXT_PUBLIC_POSTHOG_API_TOKEN: xxx
       BLOG_RSS_URL: xxx
+      WFC_QUOTA: 100
+      WFC_QUOTA_ENTERPRISE: 100
+      TEAM_EMAIL: foo@bar.com
+      DOMAIN: test.local
       CAMPAIGNMONITOR_KEY: xxx
       CYPRESS_INSTALL_BINARY: 0
       GITHUB_CLIENT_ID: xx
