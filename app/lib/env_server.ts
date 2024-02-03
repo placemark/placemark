@@ -88,25 +88,31 @@ export const env = envsafe({
 });
 
 if (env.WORKOS_API_KEY === "off") {
+  // eslint-disable-next-line
   console.log("Disabling WorkOS integration");
 }
 
 if (env.LOGTAIL_TOKEN === "off") {
+  // eslint-disable-next-line
   console.log("Disabling Logtail integration");
 }
 
 if (env.STRIPE_SECRET_KEY === "off") {
+  // eslint-disable-next-line
   console.log("Disabling Stripe integration");
 }
 
 if (env.CAMPAIGNMONITOR_KEY === "off") {
+  // eslint-disable-next-line
   console.log("Disabling Campaignmonitor integration");
 }
 
 if (env.CLOUDFLARE_API_TOKEN === "off") {
+  // eslint-disable-next-line
   console.log("Disabling Cloudflare integration");
 }
 
 if (env.POSTMARK_SERVER_API_TOKEN === "off") {
+  // eslint-disable-next-line
   console.log("Disabling Postmark integration");
 }

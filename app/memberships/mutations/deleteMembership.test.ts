@@ -42,6 +42,7 @@ vi.mock("integrations/stripe", () => {
         STRIPE_PRICE_ID: "0000",
       },
     },
+    stripeEnabled: false,
     updateQuantityForOrganization() {
       return Promise.resolve(true);
     },

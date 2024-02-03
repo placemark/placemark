@@ -11,6 +11,7 @@ vi.mock("integrations/stripe", () => {
         update: vi.fn().mockReturnValue(Promise.resolve(true)),
       },
     },
+    stripeEnabled: false,
   };
 });
 

@@ -9,6 +9,7 @@ import { notifyTeam } from "./notify_team";
 export * from "stripe";
 
 if (env.STRIPE_SECRET_KEY === "off") {
+  // eslint-disable-next-line
   console.log(`STRIPE_SECRET_KEY not found: disabling Stripe integration`);
 }
 

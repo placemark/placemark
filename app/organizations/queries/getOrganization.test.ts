@@ -28,6 +28,7 @@ vi.mock("integrations/stripe", () => {
     updateQuantityForOrganization(_id: any) {
       return Promise.resolve(true);
     },
+    stripeEnabled: false,
   };
 });
 

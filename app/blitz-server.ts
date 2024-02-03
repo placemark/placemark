@@ -37,19 +37,19 @@ export const { gSSP, gSP, api } = setupBlitzServer({
         if (e instanceof ZodError) {
           res.statusCode = 400;
           // https://github.com/blitz-js/blitz/issues/4295
-          // @ts-ignore-next
+          // @ts-expect-error This is a bug in Blitz defs
           res.send({ error: "Bad request", issues: e.issues });
           res.end();
           return;
         } else if (e instanceof Prisma.PrismaClientKnownRequestError) {
           res.statusCode = 404;
-          // @ts-ignore-next
+          // @ts-expect-error This is a bug in Blitz defs
           res.send({ error: "Not found" });
           res.end();
           return;
         }
         res.statusCode = 500;
-        // @ts-ignore-next
+        // @ts-expect-error This is a bug in Blitz defs
         res.send({ error: "Internal error" });
         res.end();
         return;

@@ -14,6 +14,7 @@ beforeAll(() => {
 
 vi.mock("integrations/stripe", () => {
   return {
+    stripeEnabled: false,
     default: {
       customers: {
         create: vi.fn(() => ({

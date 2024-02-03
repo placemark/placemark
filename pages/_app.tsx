@@ -6,6 +6,7 @@ import {
   ErrorBoundary,
   ErrorComponent,
 } from "@blitzjs/next";
+import { env } from "app/lib/env_client";
 import P404 from "pages/404";
 import "@stripe/stripe-js";
 import "../styles/globals.css";
@@ -31,8 +32,12 @@ const RouterProgressBar = dynamic(
 
 const queryClient = new QueryClient();
 
-export default withBlitz(function App({ Component, pageProps }: AppProps) {
+function PostHogUser() {
   usePostHog();
+  return null;
+}
+
+export default withBlitz(function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
@@ -49,6 +54,7 @@ export default withBlitz(function App({ Component, pageProps }: AppProps) {
             Sentry.captureException(error);
           }}
         >
+          {env.NEXT_PUBLIC_POSTHOG_API_TOKEN === "off" ? null : <PostHogUser />}
           <RouterProgressBar />
           {getLayout(<Component {...pageProps} />)}
         </ErrorBoundary>

@@ -36,6 +36,7 @@ vi.mock("integrations/stripe", () => {
       env: {
         STRIPE_PRICE_ID: "0000",
       },
+      stripeEnabled: false,
       createStripeCheckoutSession: vi.fn().mockReturnValue({
         id: "xyz",
       }),
