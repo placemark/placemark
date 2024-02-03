@@ -137,7 +137,7 @@
     "memoize-one": "^6.0.0",
     "mproj": "^0.0.35",
     "nanoid": "^3.3.4",
-    "next": "13.5.6",
+    "next": "14",
     "nodemailer": "6.x",
     "nodemailer-postmark-transport": "^5.2.1",
     "optics-ts": "^2.4.0",
@@ -214,7 +214,7 @@
     "chance": "^1.1.8",
     "deep-freeze": "^0.0.1",
     "eslint": "^8.37.0",
-    "eslint-config-next": "^13.2.4",
+    "eslint-config-next": "14",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -245,7 +245,7 @@
     "showDetails": true
   },
   "volta": {
-    "node": "18.12.0",
+    "node": "20.11.0",
     "yarn": "1.22.19"
   }
 }
