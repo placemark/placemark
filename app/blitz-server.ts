@@ -36,16 +36,20 @@ export const { gSSP, gSP, api } = setupBlitzServer({
         Sentry.captureException(e);
         if (e instanceof ZodError) {
           res.statusCode = 400;
+          // https://github.com/blitz-js/blitz/issues/4295
+          // @ts-ignore-next
           res.send({ error: "Bad request", issues: e.issues });
           res.end();
           return;
         } else if (e instanceof Prisma.PrismaClientKnownRequestError) {
           res.statusCode = 404;
+          // @ts-ignore-next
           res.send({ error: "Not found" });
           res.end();
           return;
         }
         res.statusCode = 500;
+        // @ts-ignore-next
         res.send({ error: "Internal error" });
         res.end();
         return;

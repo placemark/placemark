@@ -14,7 +14,7 @@ export default function Notifications() {
         duration: 5000,
         success: {
           duration: 3000,
-          theme: {
+          iconTheme: {
             primary: "green",
             secondary: "black",
           },
