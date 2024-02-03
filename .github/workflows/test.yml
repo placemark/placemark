@@ -1,0 +1,74 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/placemark_test
+      NEXT_PUBLIC_FILE_WARN_MB: 5
+      NEXT_PUBLIC_FILE_LIMIT_MB: 5
+      PUSHER_SERVER_INTERNAL_ADDRESS: xxx
+      NEXT_PUBLIC_STRIPE_PRICE_ID_ENTERPRISE: xx
+      PUSHER_SERVER_INTERNAL_PORT: xxx
+      NEXT_PUBLIC_POSTHOG_API_HOST: xxx
+      NEXT_PUBLIC_POSTHOG_API_TOKEN: xxx
+      BLOG_RSS_URL: xxx
+      CAMPAIGNMONITOR_KEY: xxx
+      CYPRESS_INSTALL_BINARY: 0
+      GITHUB_CLIENT_ID: xx
+      GITHUB_CLIENT_SECRET: xx
+    strategy:
+      matrix:
+        node-version: [20.x]
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - uses: actions/cache@v4
+        id: cache-next
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]sx?') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
+      - name: Install packages
+        run: |
+          yarn install --frozen-lockfile
+      - name: Migrate DB & generate prisma client
+        run: yarn blitz prisma migrate dev
+      - name: Lint
+        run: |
+          yarn lint
+      - name: Run tests with coverage
+        run: |
+          yarn test
