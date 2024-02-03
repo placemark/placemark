@@ -45,12 +45,6 @@ it on Render and using that is probably the fastest route to getting
 it on running, but it will work on similar hosting setups, like
 Railway, Heroku, or Flightcontrol. It might also work on Fly.io.
 
-**Note**: it seems like [Prisma](https://github.com/prisma/prisma), which
-Placemark uses as its ORM, has [a bug when used within a Docker container on a Mac with an M chip](https://github.com/prisma/prisma/issues/19743).
-This bug is fixed in Prisma 5, so an upgrade to Prisma 5 would be great - in the
-meantime, this was originally developed without Docker and doesn't
-have the bug in macOS.
-
 ### Installation
 
 This project is built with [yarn](https://github.com/yarnpkg/yarn)
