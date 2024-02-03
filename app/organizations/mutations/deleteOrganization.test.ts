@@ -29,8 +29,9 @@ vi.mock("integrations/stripe", () => {
         STRIPE_PRICE_ID: "0000",
       },
     },
+    stripeEnabled: true,
     createStripeCheckoutSession() {
-      return Promise.resolve({ id: "0001" });
+      return Promise.resolve({ id: "0201" });
     },
   };
 });
@@ -64,7 +65,7 @@ describe("deleteOrganization", () => {
         },
         ctx
       )
-    ).toEqual("0001");
+    ).toEqual("0201");
     expect(await db.membership.count({ where: { userId: user.id } })).toEqual(
       2
     );

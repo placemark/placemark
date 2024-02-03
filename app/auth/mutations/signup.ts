@@ -105,6 +105,7 @@ export default resolver.pipe(
 
       return;
     } catch (e) {
+      // eslint-disable-next-line
       console.error(e);
     }
   }

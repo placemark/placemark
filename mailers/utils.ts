@@ -8,6 +8,7 @@ export function send(msg: Mail) {
   return {
     async send() {
       if (env.POSTMARK_SERVER_API_TOKEN === "off") {
+        // eslint-disable-next-line
         console.error("Skipping mail send because Postmark is not configured");
       } else if (process.env.NODE_ENV === "test") {
         // Pass

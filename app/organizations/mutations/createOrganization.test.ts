@@ -23,8 +23,9 @@ vi.mock("integrations/stripe", () => {
     env: {
       STRIPE_PRICE_ID: "0000",
     },
+    stripeEnabled: false,
     createStripeCheckoutSession() {
-      return Promise.resolve({ id: "0001" });
+      return Promise.resolve({ id: "0021" });
     },
   };
 });
@@ -39,6 +40,6 @@ describe("createOrganization", () => {
         },
         ctx
       )
-    ).toEqual("0001");
+    ).toEqual("");
   });
 });

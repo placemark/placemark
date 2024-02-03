@@ -4,6 +4,7 @@ import { AuthenticatedCtx } from "blitz";
 import { getRandomMockCtxAndUser } from "test/shared";
 import { enforceWfcQuota, parseSymbolization } from "./utils_server";
 import { env } from "app/lib/env_client";
+import { env as env_server } from "app/lib/env_server";
 import db from "db";
 import createWrappedFeatureCollection from "app/wrappedFeatureCollections/mutations/createWrappedFeatureCollection";
 import { SYMBOLIZATION_NONE } from "types";
@@ -17,7 +18,7 @@ describe("enforceWfcQuota", () => {
     const { ctx } = await getRandomMockCtxAndUser();
     await expect(enforceWfcQuota(ctx as AuthenticatedCtx)).resolves.toBeFalsy();
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < env_server.WFC_QUOTA; i++) {
       await expect(
         createWrappedFeatureCollection({ name: "Foo" }, ctx)
       ).resolves.toBeTruthy();

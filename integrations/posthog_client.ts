@@ -7,9 +7,6 @@ import { env } from "app/lib/env_client";
 export const posthog = env.NEXT_PUBLIC_POSTHOG_API_TOKEN === "off" ? null : ph;
 
 export const usePostHog = () => {
-  if (env.NEXT_PUBLIC_POSTHOG_API_TOKEN === "off") {
-    return null;
-  }
   const router = useRouter();
 
   useEffect(() => {
