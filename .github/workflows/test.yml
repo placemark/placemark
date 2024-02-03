@@ -15,8 +15,9 @@ jobs:
       PUSHER_SERVER_INTERNAL_PORT: xxx
       NEXT_PUBLIC_POSTHOG_API_HOST: xxx
       NEXT_PUBLIC_POSTHOG_API_TOKEN: xxx
+      NEXT_PUBLIC_MAPBOX_TOKEN: pk.eyJ1IjoidG1jdyIsImEiOiJja2twd25qdWowMXBuMnVxdDZodXJzaDZoIn0.UL4e2OtC7xrGr9hohU1odg
       BLOG_RSS_URL: xxx
-      WFC_QUOTA: 100
+      WFC_QUOTA: 10
       WFC_QUOTA_ENTERPRISE: 100
       TEAM_EMAIL: foo@bar.com
       DOMAIN: test.local
