@@ -18,7 +18,7 @@ describe("enforceWfcQuota", () => {
     const { ctx } = await getRandomMockCtxAndUser();
     await expect(enforceWfcQuota(ctx as AuthenticatedCtx)).resolves.toBeFalsy();
 
-    for (let i = 0; i < env_server.WFC_QUOTA - 1; i++) {
+    for (let i = 0; i < env_server.WFC_QUOTA; i++) {
       await expect(
         createWrappedFeatureCollection({ name: "Foo" }, ctx)
       ).resolves.toBeTruthy();
