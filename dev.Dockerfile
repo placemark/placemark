@@ -5,14 +5,11 @@ WORKDIR /home/node/app
 
 ENV PATH /home/node/app/node_modules/.bin:$PATH
 
-RUN apt-get update && apt-get install -y openssl --no-install-recommends \
+RUN apt-get update \
+  && apt-get install -y openssl --no-install-recommends \
+  && apt-get install -y tini --no-install-recommends \
   &&  rm -rf /var/lib/apt/lists/* \
   && chown -R node:node /home/node/app
-
-# Blitz.js recommends using tini, see why: https://github.com/krallin/tini/issues/8
-ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
 
 USER node
 
@@ -36,7 +33,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 # Note: Don't expose ports here, Compose will handle that for us
 
-ENTRYPOINT ["/tini", "--"]
+ENTRYPOINT ["tini", "--"]
 
 # Start Next.js in development mode based on the preferred package manager
 CMD \
