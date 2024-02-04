@@ -10,13 +10,14 @@ services:
       - 5432:5432
   web: &web
     build:
+      context: .
       dockerfile: dev.Dockerfile
     env_file:
       - .env.local
     volumes:
       - .:/app
     user: node
-    command: yarn dev
+    command: /bin/sh -c 'blitz prisma migrate deploy  && blitz prisma generate && yarn dev'
     ports:
       - 3000:3000
     depends_on:
