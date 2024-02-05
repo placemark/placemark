@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM --platform=arm64  node:20-slim
 ENV NODE_ENV=development
 
 WORKDIR /home/node/app

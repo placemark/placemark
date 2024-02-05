@@ -1,17 +1,23 @@
+version: '3'
 services:
   db:
     image: postgres:16.1
+    container_name: placemark-db
     restart: always
     env_file:
       - .env.local
     volumes:
       - db:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
+    # ports:
+    #   - 5432:5432
+    networks:
+      - placemark
   web: &web
     build:
       context: .
       dockerfile: dev.Dockerfile
+    container_name: placemark-web
+    restart: unless-stopped
     env_file:
       - .env.local
     volumes:
@@ -22,8 +28,12 @@ services:
       - 3000:3000
     depends_on:
       - db
+    networks:
+      - placemark
   prisma:
     <<: *web
+    container_name: placemark-studio
+    restart: unless-stopped
     command: >
       /bin/sh -c '
         yarn prisma migrate dev &&
@@ -31,7 +41,15 @@ services:
       '
     ports:
       - 5555:5555
+    depends_on:
+      - db
+    networks:
+      - placemark
 
 volumes:
   db:
     driver: local
+
+networks:
+  placemark:
+    driver: bridge
