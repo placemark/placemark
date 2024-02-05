@@ -131,7 +131,7 @@ docker-compose exec web bash
 docker-compose exec db bash
 ```
 
-#### Rebuilding and recreage the web service
+#### Rebuilding and recreate the web service
 
 ```bash
 docker-compose up -d --build --force-recreate web
