@@ -1,6 +1,6 @@
 import { gSSP } from "app/blitz-server";
 import Head from "next/head";
-import { useQuery, useMutation, invalidateQuery } from "@blitzjs/rpc";
+import { useQuery } from "@blitzjs/rpc";
 import { getSession } from "@blitzjs/auth";
 import { BlitzPage, Routes } from "@blitzjs/next";
 import AuthenticatedPageLayout from "app/core/layouts/authenticated_page_layout";
@@ -15,17 +15,10 @@ import {
   TableHead,
   Tbody,
   Td,
-  TextWell,
   Th,
 } from "app/components/elements";
 import { formatCount } from "app/lib/utils";
-import { CodeIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import type { Organization } from "@prisma/client";
-import provisionWorkOSMutation from "app/admin/mutations/provisionWorkOS";
-import toast from "react-hot-toast";
-import { Form } from "app/core/components/Form";
-import LabeledTextField from "app/core/components/LabeledTextField";
-import { Provision } from "app/admin/validations";
+import { CodeIcon } from "@radix-ui/react-icons";
 import {
   Column,
   // Table as TTable,
@@ -37,52 +30,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useState } from "react";
-
-function WorkOSManage({ organization }: { organization: Organization }) {
-  const [provisionWorkOS] = useMutation(provisionWorkOSMutation);
-  return (
-    <div className="space-y-4">
-      <H2>Provision WorkOS</H2>
-      <TextWell>
-        Current WorkOS ID:
-        {organization.workOsId || "None"}
-      </TextWell>
-      {organization.workOsId ? null : (
-        <div>
-          <Form
-            schema={Provision}
-            initialValues={{
-              domain: "",
-              id: organization.id,
-            }}
-            submitText="Provision"
-            onSubmit={async (values) => {
-              try {
-                await toast.promise(
-                  provisionWorkOS({
-                    id: values.id,
-                    domain: values.domain,
-                  }),
-                  {
-                    loading: "Provisioning",
-                    error: "Failed to provision",
-                    success: "Provisioned",
-                  }
-                );
-              } catch (e) {
-                toast.error(e instanceof Error ? e.message : "Failed");
-              } finally {
-                await invalidateQuery(getOrganizations, null);
-              }
-            }}
-          >
-            <LabeledTextField label="Domain" name="domain" />
-          </Form>
-        </div>
-      )}
-    </div>
-  );
-}
 
 type Org = Awaited<ReturnType<typeof getOrganizations>>[number];
 
@@ -137,29 +84,6 @@ const AdminPage: BlitzPage = () => {
       enableColumnFilter: false,
       header: "Maps",
       cell: (info) => formatCount(info.getValue()),
-    }),
-    columnHelper.accessor("workOsId", {
-      filterFn: (val, x, y) => {
-        if (y) {
-          return !!val.original.workOsId;
-        }
-        return true;
-      },
-      cell: (info) => {
-        const workOsId = info.getValue();
-
-        return (
-          <D.Root>
-            <D.Trigger asChild>
-              <Button>{workOsId || "None"}</Button>
-            </D.Trigger>
-            <StyledDialogOverlay />
-            <StyledDialogContent>
-              <WorkOSManage organization={info.row.original} />
-            </StyledDialogContent>
-          </D.Root>
-        );
-      },
     }),
   ];
 
