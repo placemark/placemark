@@ -293,14 +293,13 @@ const Settings: BlitzPage = () => {
       {session.roles?.includes("OWNER") ? (
         <div className="flex py-6">
           <div>
-            <CapsLabel>Billing & organizations</CapsLabel>
+            <CapsLabel>Organizations</CapsLabel>
             <div>
-              You can update your billing & organization settings on the{" "}
               <Link
                 href={Routes.SettingsOrganization()}
                 className="text-purple-700 underline hover:text-black dark:text-purple-500 dark:hover:text-purple-300"
               >
-                organization settings page.
+                Update on the organization settings page.
               </Link>
             </div>
           </div>

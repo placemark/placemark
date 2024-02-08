@@ -3,7 +3,6 @@ import { updateSession } from "app/core/updateSession";
 import { z } from "zod";
 import db from "db";
 import { logger } from "integrations/log";
-import { campaignMonitorUnubscribe } from "integrations/campaignmonitor";
 import { AuthorizationError } from "blitz";
 import { capture } from "integrations/posthog";
 import { deletedAccountMailer } from "mailers/deletedAccountMailer";
@@ -75,7 +74,6 @@ export default resolver.pipe(
           },
         });
         await ctx.session.$revoke();
-        await campaignMonitorUnubscribe(user.email);
         await deletedAccountMailer({ to: user.email }).send();
         capture(ctx, {
           event: "cancel",

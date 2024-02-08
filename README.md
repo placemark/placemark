@@ -79,7 +79,6 @@ Note that there's a lot of these. Placemark relies on:
 - Cloudflare
 - Postmark
 - WorkOS
-- CampaignMonitor
 - Logtail
 
 ### Infrastructure
@@ -114,13 +113,4 @@ to this directory
 
 ```
 caddy start
-```
-
-### Using Stripe
-
-Stripe is becoming an optional dependency of this project. There's a webhook
-proxy in `./_scripts/webhook-proxy.js` which you can run optionally by running:
-
-```sh
-$ yarn dev-with-stripe
 ```

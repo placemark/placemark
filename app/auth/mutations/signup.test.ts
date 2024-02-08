@@ -4,12 +4,6 @@ import signup from "app/auth/mutations/signup";
 import { randomEmail, getAnonCtx } from "test/shared";
 import db from "db";
 
-vi.mock("integrations/campaignmonitor", () => {
-  return {
-    campaignMonitorSubscribe: vi.fn(),
-  };
-});
-
 describe.skip("signup", () => {
   it("signing up once", async () => {
     const USER_EMAIL = randomEmail();
@@ -21,7 +15,6 @@ describe.skip("signup", () => {
           password: "xxxxxxxxxx",
           organizationName: "Foo",
           email: USER_EMAIL,
-          subscribe: false,
         },
         anonCtx
       )
@@ -42,7 +35,6 @@ describe.skip("signup", () => {
           password: "xxxxxxxxxx",
           organizationName: "Foo",
           email: USER_EMAIL,
-          subscribe: false,
         },
         anonCtx
       )

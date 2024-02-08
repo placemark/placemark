@@ -54,11 +54,6 @@ export const env = envsafe({
   WORKOS_CLIENT_ID: str({ default: "off" }),
   WORKOS_REDIRECT_URL: str({ default: "off" }),
   /**
-   * For signing people up to newsletters when they sign
-   * up.
-   */
-  CAMPAIGNMONITOR_KEY: str({ default: "off" }),
-  /**
    * This is the email address where feedback emails go to.
    */
   TEAM_EMAIL: str(),
@@ -80,11 +75,6 @@ if (env.WORKOS_API_KEY === "off") {
 if (env.LOGTAIL_TOKEN === "off") {
   // eslint-disable-next-line
   console.log("Disabling Logtail integration");
-}
-
-if (env.CAMPAIGNMONITOR_KEY === "off") {
-  // eslint-disable-next-line
-  console.log("Disabling Campaignmonitor integration");
 }
 
 if (env.CLOUDFLARE_API_TOKEN === "off") {

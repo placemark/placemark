@@ -7,7 +7,6 @@ export const Signup = z.object({
   name,
   organizationName: z.string().max(256),
   password,
-  subscribe: z.boolean(),
 });
 
 export const SignupWithInviteLoggedIn = z.object({

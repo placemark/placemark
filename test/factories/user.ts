@@ -28,7 +28,6 @@ export const user = async ({
       email,
       organizationName,
       password,
-      subscribe: false,
     },
     ctx
   );

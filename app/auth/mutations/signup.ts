@@ -3,7 +3,6 @@ import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { Signup } from "app/auth/validations";
 import { createSession } from "app/core/utils";
-import { campaignMonitorSubscribe } from "integrations/campaignmonitor";
 import { capture, identifyOrganization } from "integrations/posthog";
 
 export const INSERTED_USER_SELECT = {
@@ -38,10 +37,7 @@ export const INSERTED_USER_SELECT = {
  */
 export default resolver.pipe(
   resolver.zod(Signup),
-  async (
-    { email: rawEmail, name, organizationName, password, subscribe },
-    ctx
-  ) => {
+  async ({ email: rawEmail, name, organizationName, password }, ctx) => {
     try {
       const hashedPassword = await SecurePassword.hash(password.trim());
       const email = rawEmail.toLowerCase().trim();
@@ -65,10 +61,6 @@ export default resolver.pipe(
         },
         select: INSERTED_USER_SELECT,
       });
-
-      if (subscribe && process.env.NODE_ENV === "production") {
-        await campaignMonitorSubscribe(email, name);
-      }
 
       await createSession(user, ctx);
 

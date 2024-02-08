@@ -2,14 +2,10 @@ import { useRouter } from "next/router";
 import { useMutation } from "@blitzjs/rpc";
 import { LabeledTextField } from "app/core/components/LabeledTextField";
 import { Form, FORM_ERROR } from "app/core/components/Form";
-import {
-  styledCheckbox,
-  styledInlineA,
-} from "app/components/elements";
+import { styledInlineA } from "app/components/elements";
 import signup from "app/auth/mutations/signup";
 import { Signup } from "app/auth/validations";
 import { AlreadyHaveAccount } from "app/components/already_have_account";
-import { Field } from "formik";
 import { Routes } from "@blitzjs/next";
 
 export const SignupForm = () => {
@@ -29,7 +25,6 @@ export const SignupForm = () => {
             name: "",
             password: "",
             organizationName: "",
-            subscribe: true,
           }}
           onSubmit={async (values) => {
             try {
@@ -73,14 +68,6 @@ export const SignupForm = () => {
             label="Password"
             type="password"
           />
-          <label className="flex gap-x-2 items-center text-sm">
-            <Field
-              type="checkbox"
-              name="subscribe"
-              className={styledCheckbox({ variant: "default" })}
-            />
-            Subscribe to monthly product updates
-          </label>
         </Form>
       </div>
       <div className="text-sm pt-10">
