@@ -20,6 +20,6 @@ describe("createOrganization", () => {
         },
         ctx
       )
-    ).toEqual("");
+    ).toEqual(undefined);
   });
 });

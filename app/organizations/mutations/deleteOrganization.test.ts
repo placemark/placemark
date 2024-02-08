@@ -42,7 +42,7 @@ describe("deleteOrganization", () => {
         },
         ctx
       )
-    ).toEqual("");
+    ).toEqual(undefined);
     expect(await db.membership.count({ where: { userId: user.id } })).toEqual(
       2
     );
