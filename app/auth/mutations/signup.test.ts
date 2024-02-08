@@ -1,4 +1,4 @@
-import { expect, describe, it, vi } from "vitest";
+import { expect, describe, it } from "vitest";
 
 import signup from "app/auth/mutations/signup";
 import { randomEmail, getAnonCtx } from "test/shared";
