@@ -255,7 +255,7 @@ async function getFeatures({
         id: row.id,
         // This is not enforced, but all features
         // with NULL at also have deleted = true
-        at: row.at!,
+        at: row.at,
         folderId: row.folderId,
         feature: row.feature as unknown as Feature,
       };

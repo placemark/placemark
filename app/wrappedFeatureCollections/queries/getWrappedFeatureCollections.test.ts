@@ -5,7 +5,7 @@ import createWrappedFeatureCollection from "app/wrappedFeatureCollections/mutati
 import { getRandomMockCtxAndUser } from "test/shared";
 
 vi.mock("blitz", async () => ({
-  ...(await vi.importActual<object>("blitz"))!,
+  ...(await vi.importActual<object>("blitz")),
   generateToken: () => "plain-token",
 }));
 

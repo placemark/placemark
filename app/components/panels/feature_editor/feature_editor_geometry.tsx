@@ -17,7 +17,7 @@ import { pluralize } from "app/lib/utils";
 import { GeometryTypesGrid } from "../feature_table/feature_table_stats";
 
 function Bbox({ geometry }: { geometry: Geometry }) {
-  const bbox = getExtent(geometry, false)!;
+  const bbox = getExtent(geometry, false);
 
   return bbox.mapOrDefault(
     (bbox) => (

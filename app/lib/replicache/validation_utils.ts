@@ -92,7 +92,7 @@ export const toSerializedMutations = <Schema extends ZodMutationSchemaMap>(
           z.object({
             name: z.literal(name),
             id: z.number(),
-            args: schema[name]!,
+            args: schema[name],
           }),
         ] as const
     )

@@ -7,7 +7,7 @@ export default resolver.pipe(
   resolver.zod(Name),
   resolver.authorize(["OWNER"]),
   async ({ id, name }, ctx) => {
-    const membership = await db.membership.findFirstOrThrow({
+    await db.membership.findFirstOrThrow({
       where: { organizationId: id, userId: ctx.session.userId },
       include: {
         organization: true,

@@ -1,7 +1,7 @@
 import { expect, describe, it, vi } from "vitest";
 
 import signup from "app/auth/mutations/signup";
-import { randomEmail, getAnonCtx, nanoid } from "test/shared";
+import { randomEmail, getAnonCtx } from "test/shared";
 import db from "db";
 
 vi.mock("integrations/campaignmonitor", () => {

@@ -1,4 +1,4 @@
-import { envsafe, str, num, bool } from "envsafe";
+import { envsafe, str, num } from "envsafe";
 
 export const env = envsafe({
   /**

@@ -6,7 +6,7 @@ import { getRandomMockCtxAndUser } from "test/shared";
 import { NotFoundError } from "blitz";
 
 vi.mock("blitz", async () => ({
-  ...(await vi.importActual<object>("blitz"))!,
+  ...(await vi.importActual<object>("blitz")),
   generateToken: () => "plain-token",
 }));
 

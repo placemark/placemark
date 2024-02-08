@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { ErrorBoundary } from "@blitzjs/next";
 import {
   Button,

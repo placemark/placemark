@@ -12,7 +12,7 @@ export function mapboxStaticURL(
   switch (mapboxLayer.type) {
     case "MAPBOX": {
       const params = new URLSearchParams({
-        access_token: mapboxLayer.token!,
+        access_token: mapboxLayer.token,
         attribution: "false",
         logo: "false",
       }).toString();

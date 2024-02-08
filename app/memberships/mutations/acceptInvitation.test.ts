@@ -5,7 +5,6 @@ import createInvitation from "app/memberships/mutations/createInvitation";
 import {
   getMockCtxAndUser,
   getRandomMockCtxAndUser,
-  nanoid,
   randomEmail,
 } from "test/shared";
 import db from "db";

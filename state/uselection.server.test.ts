@@ -274,7 +274,7 @@ describe("USelection", () => {
 
     it("feature with folder", () => {
       const { featureMap } = wrapMapAndId(fcLineString);
-      const id = [...featureMap.keys()][0]!;
+      const id = [...featureMap.keys()][0];
       featureMap.set(id, {
         ...featureMap.get(id)!,
         folderId: "xxx",

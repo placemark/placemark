@@ -5,7 +5,6 @@ import { Signup } from "app/auth/validations";
 import { createSession } from "app/core/utils";
 import { campaignMonitorSubscribe } from "integrations/campaignmonitor";
 import { capture, identifyOrganization } from "integrations/posthog";
-import { env } from "app/lib/env_server";
 
 export const INSERTED_USER_SELECT = {
   id: true,

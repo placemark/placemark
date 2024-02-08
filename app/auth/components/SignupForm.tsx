@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "@blitzjs/rpc";
+import { useMutation } from "@blitzjs/rpc";
 import { LabeledTextField } from "app/core/components/LabeledTextField";
 import { Form, FORM_ERROR } from "app/core/components/Form";
 import {
   styledCheckbox,
   styledInlineA,
-  TextWell,
 } from "app/components/elements";
 import signup from "app/auth/mutations/signup";
 import { Signup } from "app/auth/validations";

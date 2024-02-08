@@ -11,7 +11,6 @@ import {
   H2,
   StyledDialogContent,
   StyledDialogOverlay,
-  styledInlineA,
   Table,
   TableHead,
   Tbody,
@@ -38,15 +37,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useState } from "react";
-
-function Notice({ children }: React.PropsWithChildren<unknown>) {
-  return (
-    <div className="rounded text-xs font-bold px-1 py-1 inline-flex items-center gap-x-1 bg-red-100 text-red-700">
-      <ExclamationTriangleIcon />
-      {children}
-    </div>
-  );
-}
 
 function WorkOSManage({ organization }: { organization: Organization }) {
   const [provisionWorkOS] = useMutation(provisionWorkOSMutation);

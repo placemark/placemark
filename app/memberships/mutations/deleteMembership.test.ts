@@ -1,4 +1,4 @@
-import { beforeAll, expect, describe, it, vi } from "vitest";
+import { beforeAll, expect, describe, it } from "vitest";
 
 import deleteMembership from "app/memberships/mutations/deleteMembership";
 import createInvitation from "app/memberships/mutations/createInvitation";
@@ -6,7 +6,6 @@ import {
   getAnonCtx,
   randomEmail,
   getRandomMockCtxAndUser,
-  nanoid,
 } from "test/shared";
 import db from "db";
 import signupWithInvite from "app/auth/mutations/signupWithInvite";

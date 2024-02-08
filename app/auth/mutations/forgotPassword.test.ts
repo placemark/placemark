@@ -7,7 +7,7 @@ import { send } from "mailers/utils";
 import { nanoid, randomEmail } from "test/shared";
 
 vi.mock("@blitzjs/auth", async () => {
-  const auth = await vi.importActual<Record<string, unknown>>("@blitzjs/auth")!;
+  const auth = await vi.importActual<Record<string, unknown>>("@blitzjs/auth");
   return {
     ...auth,
     generateToken: () => {
