@@ -138,11 +138,6 @@ const AdminPage: BlitzPage = () => {
       header: "Created",
       cell: (info) => info.getValue().toLocaleDateString(),
     }),
-    columnHelper.accessor("subscriptionStatus", {
-      enableColumnFilter: false,
-      header: "Status",
-      cell: (info) => info.getValue(),
-    }),
     columnHelper.accessor("_count.membership", {
       enableColumnFilter: false,
       header: "Members",
@@ -152,37 +147,6 @@ const AdminPage: BlitzPage = () => {
       enableColumnFilter: false,
       header: "Maps",
       cell: (info) => formatCount(info.getValue()),
-    }),
-    columnHelper.accessor("price", {
-      enableColumnFilter: false,
-      cell: (info) => {
-        const price = info.getValue();
-        return price ? (
-          <a
-            className={styledInlineA}
-            href={`https://dashboard.stripe.com/prices/${price}`}
-          >
-            {price}
-          </a>
-        ) : (
-          <Notice>No price set</Notice>
-        );
-      },
-    }),
-    columnHelper.accessor("stripeCustomerId", {
-      header: "Price",
-      enableColumnFilter: false,
-      cell: (info) => {
-        const stripeCustomerId = info.getValue();
-        return (
-          <a
-            className={styledInlineA}
-            href={`https://dashboard.stripe.com/search?query=${stripeCustomerId}`}
-          >
-            {stripeCustomerId}
-          </a>
-        );
-      },
     }),
     columnHelper.accessor("workOsId", {
       filterFn: (val, x, y) => {

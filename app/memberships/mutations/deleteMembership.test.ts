@@ -20,35 +20,6 @@ beforeAll(() => {
   };
 });
 
-vi.mock("integrations/stripe", () => {
-  return {
-    default: {
-      customers: {
-        create: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-        retrieve: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-      },
-      checkout: {
-        sessions: {
-          create: vi.fn().mockReturnValue({
-            id: "0000",
-          }),
-        },
-      },
-      env: {
-        STRIPE_PRICE_ID: "0000",
-      },
-    },
-    stripeEnabled: false,
-    updateQuantityForOrganization() {
-      return Promise.resolve(true);
-    },
-  };
-});
-
 describe("deleteMembership", () => {
   it("does not let the last admin delete themselves", async () => {
     const { ctx, user } = await getRandomMockCtxAndUser();

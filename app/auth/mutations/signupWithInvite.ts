@@ -3,7 +3,6 @@ import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { Prisma } from "@prisma/client";
 import { SignupWithInvite } from "app/auth/validations";
-import { updateQuantityForOrganization } from "integrations/stripe";
 import { createSession } from "app/core/utils";
 import { INSERTED_USER_SELECT } from "./signup";
 import { AuthorizationError, NotFoundError } from "blitz";
@@ -47,8 +46,6 @@ export default resolver.pipe(
       if (!membership) throw new NotFoundError();
 
       await createSession(membership.user!, ctx);
-
-      await updateQuantityForOrganization(membership.organizationId);
 
       return true;
     } catch (e) {

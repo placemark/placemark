@@ -3,7 +3,6 @@ import db from "db";
 import { DuplicateWrappedFeatureCollection } from "app/wrappedFeatureCollections/validations";
 import { nanoid, newFeatureId } from "app/lib/id";
 import {
-  enforceWfcQuota,
   getNextVersion,
   getWrappedFeatureCollection,
 } from "app/lib/utils_server";
@@ -17,8 +16,6 @@ export default resolver.pipe(
   resolver.zod(DuplicateWrappedFeatureCollection),
   resolver.authorize(),
   async ({ id: sourceId }, ctx) => {
-    await enforceWfcQuota(ctx);
-
     return db.$transaction(async (db) => {
       const version = await getNextVersion(db);
 

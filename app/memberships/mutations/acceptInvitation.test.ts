@@ -1,4 +1,4 @@
-import { beforeAll, expect, describe, it, vi } from "vitest";
+import { beforeAll, expect, describe, it } from "vitest";
 
 import acceptInvitation from "app/memberships/mutations/acceptInvitation";
 import createInvitation from "app/memberships/mutations/createInvitation";
@@ -15,33 +15,6 @@ beforeAll(() => {
     getSessions() {
       return [];
     },
-  };
-});
-
-vi.mock("integrations/stripe", () => {
-  return {
-    stripeEnabled: false,
-    default: {
-      customers: {
-        create: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-        retrieve: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-      },
-      checkout: {
-        sessions: {
-          create: vi.fn().mockReturnValue({
-            id: "0000",
-          }),
-        },
-      },
-      env: {
-        STRIPE_PRICE_ID: "0000",
-      },
-    },
-    async updateQuantityForOrganization() {},
   };
 });
 
@@ -62,8 +35,7 @@ describe("acceptInvite", () => {
   it("works if you invite the person first", async () => {
     const { ctx, user } = await getRandomMockCtxAndUser();
     const email2 = randomEmail();
-    const stripeId = nanoid();
-    const { ctx: ctx2 } = await getMockCtxAndUser(email2, stripeId);
+    const { ctx: ctx2 } = await getMockCtxAndUser(email2);
     const id = user.memberships[0].organization.id;
     const emails = randomEmail();
     await expect(

@@ -36,7 +36,6 @@ describe("resetPassword mutation", () => {
             organization: {
               create: {
                 name: "My Team",
-                stripeCustomerId: nanoid(),
               },
             },
           },

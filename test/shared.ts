@@ -10,32 +10,22 @@ export const nanoid = customAlphabet(
 );
 
 export const USER_EMAIL = "user@example.com";
-export const STRIPE_ID = "0000";
 
 export function randomEmail() {
   return `user-${nanoid()}@foo.com`.toLowerCase();
 }
 
-export function randomStripe() {
-  return `sk_${nanoid()}`;
-}
-
 export async function getRandomMockCtxAndUser() {
   const email = randomEmail();
-  const stripeCustomerId = randomStripe();
-  const res = await getMockCtxAndUser(email, stripeCustomerId);
+  const res = await getMockCtxAndUser(email);
 
   return {
     ...res,
     email,
-    stripeCustomerId,
   };
 }
 
-export async function getMockCtxAndUser(
-  email = USER_EMAIL,
-  stripeCustomerId = STRIPE_ID
-) {
+export async function getMockCtxAndUser(email = USER_EMAIL) {
   const user = await db.user.create({
     data: {
       email: email,
@@ -45,7 +35,6 @@ export async function getMockCtxAndUser(
           organization: {
             create: {
               name: "My Team",
-              stripeCustomerId,
             },
           },
         },

@@ -8,7 +8,7 @@ import type { AuthenticatedSessionContext } from "@blitzjs/auth";
 import type { PoolClient } from "pg";
 import { Pool } from "pg";
 import { env } from "app/lib/env_server";
-import { randomEmail, randomStripe } from "test/shared";
+import { randomEmail } from "test/shared";
 
 const { DATABASE_URL } = env;
 
@@ -36,7 +36,6 @@ async function makeMocks() {
           organization: {
             create: {
               name: "My Team",
-              stripeCustomerId: randomStripe(),
             },
           },
         },

@@ -8,7 +8,6 @@ import {
   TextWell,
 } from "app/components/elements";
 import signup from "app/auth/mutations/signup";
-import getSubscriptionDetails from "app/users/queries/getSubscriptionDetails";
 import { Signup } from "app/auth/validations";
 import { AlreadyHaveAccount } from "app/components/already_have_account";
 import { Field } from "formik";
@@ -17,19 +16,10 @@ import { Routes } from "@blitzjs/next";
 export const SignupForm = () => {
   const Router = useRouter();
   const [signupMutation] = useMutation(signup);
-  const [subscriptionDetails] = useQuery(getSubscriptionDetails, {});
 
   return (
     <div>
-      <div className="pb-3">
-        {subscriptionDetails?.price ? (
-          <TextWell>
-            {subscriptionDetails.trial}-day free trial, then $
-            {(subscriptionDetails.price.unit_amount ?? 0) / 100}
-            /month.
-          </TextWell>
-        ) : null}
-      </div>
+      <div className="pb-3">Free</div>
       <div>
         <Form
           submitText="Sign up"

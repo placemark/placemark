@@ -1,41 +1,10 @@
-import { expect, describe, it, vi } from "vitest";
+import { expect, describe, it } from "vitest";
 
 import createInvitation from "app/memberships/mutations/createInvitation";
 import signupWithInvite from "app/auth/mutations/signupWithInvite";
-import {
-  getRandomMockCtxAndUser,
-  getAnonCtx,
-  nanoid,
-  randomEmail,
-} from "test/shared";
+import { getRandomMockCtxAndUser, getAnonCtx, randomEmail } from "test/shared";
 import db from "db";
 import { AuthorizationError } from "blitz";
-
-vi.mock("integrations/stripe", () => {
-  return {
-    default: {
-      customers: {
-        create: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-        retrieve: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-      },
-      checkout: {
-        sessions: {
-          create: vi.fn().mockReturnValue({
-            id: "0000",
-          }),
-        },
-      },
-      env: {
-        STRIPE_PRICE_ID: "0000",
-      },
-    },
-    async updateQuantityForOrganization() {},
-  };
-});
 
 describe("signupWithInvite", () => {
   it("works if you invite the person first", async () => {

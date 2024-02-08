@@ -1,43 +1,13 @@
-import { beforeAll, expect, describe, it, vi } from "vitest";
+import { beforeAll, expect, describe, it } from "vitest";
 
 import pauseMemberships from "app/memberships/mutations/pauseMemberships";
-import { getRandomMockCtxAndUser, nanoid } from "test/shared";
+import { getRandomMockCtxAndUser } from "test/shared";
 import db from "db";
 
 beforeAll(() => {
   (global as any).sessionConfig = {
     getSessions() {
       return [];
-    },
-  };
-});
-
-vi.mock("integrations/stripe", () => {
-  return {
-    stripeEnabled: false,
-    default: {
-      customers: {
-        create: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-        retrieve: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-      },
-
-      checkout: {
-        sessions: {
-          create: vi.fn().mockReturnValue({
-            id: "0000",
-          }),
-        },
-      },
-      env: {
-        STRIPE_PRICE_ID: "0000",
-      },
-    },
-    updateQuantityForOrganization() {
-      return Promise.resolve(true);
     },
   };
 });

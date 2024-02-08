@@ -3,13 +3,9 @@ import Link from "next/link";
 import { useQuery } from "@blitzjs/rpc";
 import { BlitzPage, Routes, ErrorBoundary } from "@blitzjs/next";
 import AuthenticatedPageLayout from "app/core/layouts/authenticated_page_layout";
-import SubscriptionForm, {
-  AddPaymentMethod,
-} from "app/components/forms/subscription_form";
 import OrganizationNameForm from "app/components/forms/organization_name";
 import OrganizationMembers from "app/components/forms/organization_members";
 import OrganizationDelete from "app/components/forms/organization_delete";
-import { SubscriptionCoupon } from "app/components/forms/subscription_coupon";
 import { SettingsRow } from "../settings";
 import React, { Suspense } from "react";
 import getOrganization from "app/organizations/queries/getOrganization";
@@ -63,17 +59,14 @@ function OrganizationSettingsForms() {
 
   return (
     <div>
-      <AddPaymentMethod />
       <div className="space-y-20">
         <div className="space-y-5 pt-5">
           <NameSettings />
-          <SubscriptionForm />
         </div>
         <OrganizationMembers />
         <OrganizationInviteForm />
         <OrganizationSSO />
         <OrganizationDelete />
-        <SubscriptionCoupon />
       </div>
     </div>
   );

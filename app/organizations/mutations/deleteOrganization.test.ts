@@ -1,37 +1,14 @@
-import { beforeAll, expect, describe, it, vi } from "vitest";
+import { beforeAll, expect, describe, it } from "vitest";
 
 import deleteOrganization from "./deleteOrganization";
 import createOrganization from "./createOrganization";
-import { getRandomMockCtxAndUser, nanoid } from "test/shared";
+import { getRandomMockCtxAndUser } from "test/shared";
 import db from "db";
 
 beforeAll(() => {
   (global as any).sessionConfig = {
     getSessions() {
       return [];
-    },
-  };
-});
-
-vi.mock("integrations/stripe", () => {
-  return {
-    default: {
-      customers: {
-        create: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-        retrieve: vi.fn(() => ({
-          id: `customer-${nanoid()}`,
-        })),
-        del: vi.fn(),
-      },
-      env: {
-        STRIPE_PRICE_ID: "0000",
-      },
-    },
-    stripeEnabled: true,
-    createStripeCheckoutSession() {
-      return Promise.resolve({ id: "0201" });
     },
   };
 });
@@ -65,7 +42,7 @@ describe("deleteOrganization", () => {
         },
         ctx
       )
-    ).toEqual("0201");
+    ).toEqual("");
     expect(await db.membership.count({ where: { userId: user.id } })).toEqual(
       2
     );

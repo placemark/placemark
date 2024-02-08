@@ -4,7 +4,7 @@ import { Ctx } from "blitz";
 import forgotPassword from "./forgotPassword";
 import db from "db";
 import { send } from "mailers/utils";
-import { nanoid, randomEmail, randomStripe } from "test/shared";
+import { nanoid, randomEmail } from "test/shared";
 
 vi.mock("@blitzjs/auth", async () => {
   const auth = await vi.importActual<Record<string, unknown>>("@blitzjs/auth")!;
@@ -47,7 +47,6 @@ describe("forgotPassword mutation", () => {
             organization: {
               create: {
                 name: "My Team",
-                stripeCustomerId: randomStripe(),
               },
             },
           },
@@ -85,7 +84,6 @@ describe("forgotPassword mutation", () => {
             organization: {
               create: {
                 name: "My Team",
-                stripeCustomerId: randomStripe(),
               },
             },
           },

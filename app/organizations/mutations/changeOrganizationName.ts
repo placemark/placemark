@@ -1,8 +1,6 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { capture, identifyOrganization } from "integrations/posthog";
-import * as Sentry from "@sentry/nextjs";
-import stripe, { stripeEnabled } from "integrations/stripe";
 import { Name } from "../validations";
 
 export default resolver.pipe(
@@ -20,18 +18,6 @@ export default resolver.pipe(
       where: { id },
       data: { name },
     });
-
-    if (stripeEnabled) {
-      await stripe.customers
-        .update(membership.organization.stripeCustomerId, {
-          name,
-        })
-        .catch((e) => {
-          // Allow this operation to fail, this is not
-          // essential
-          Sentry.captureException(e);
-        });
-    }
 
     capture(ctx, {
       event: "organization-rename",

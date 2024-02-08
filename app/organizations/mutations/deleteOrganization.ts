@@ -1,6 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
 import { updateSession } from "app/core/updateSession";
-import stripe, { stripeEnabled } from "integrations/stripe";
 import { z } from "zod";
 import db from "db";
 import { logger } from "integrations/log";
@@ -14,28 +13,10 @@ const DeleteOrganization = z.object({
   force: z.optional(z.boolean()),
 });
 
-async function getOrgIdFromSessionId(
-  session_id: string
-): Promise<number | null> {
-  if (!stripeEnabled) return null;
-
-  const session = await stripe.checkout.sessions.retrieve(session_id);
-  const customerId = session.customer as string | null;
-  if (!customerId) return null;
-
-  const organization = await db.organization.findFirst({
-    where: {
-      stripeCustomerId: customerId,
-    },
-  });
-
-  return organization?.id ?? null;
-}
-
 export default resolver.pipe(
   resolver.zod(DeleteOrganization),
   resolver.authorize(["OWNER", "SUPERADMIN"]),
-  async ({ session_id, force }, ctx) => {
+  async ({ force }, ctx) => {
     const myOrgCount = await db.membership.count({
       where: {
         userId: ctx.session.userId,
@@ -48,9 +29,7 @@ export default resolver.pipe(
       );
     }
 
-    const orgId = await (session_id
-      ? getOrgIdFromSessionId(session_id)
-      : ctx.session.orgId);
+    const orgId = ctx.session.orgId;
 
     if (!orgId) return;
 
@@ -62,17 +41,11 @@ export default resolver.pipe(
     });
 
     // Delete the organization itself.
-    const org = await db.organization.delete({
+    await db.organization.delete({
       where: {
         id: orgId,
       },
     });
-
-    logger.info(`Deleting ${org.stripeCustomerId} stripe customer`);
-    // Delete the organization's Stripe customer
-    if (stripeEnabled) {
-      await stripe.customers.del(org.stripeCustomerId);
-    }
 
     // If the organization we just deleted is also
     // the organization you’re logged into, update
