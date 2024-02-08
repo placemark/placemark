@@ -79,14 +79,8 @@ Note that there's a lot of these. Placemark relies on:
 - Cloudflare
 - Postmark
 - WorkOS
-- Stripe
 - CampaignMonitor
 - Logtail
-
-Some of these could be made optional because self-hosted installations
-probably don't need Stripe. Doing this is very possible, and I'd gladly
-accept PRs doing so - but it's probably not something that I'll (tmcw)
-be able to do with my limited time.
 
 ### Infrastructure
 
