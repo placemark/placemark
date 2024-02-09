@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { ErrorBoundary } from "@blitzjs/next";
 import {
   Button,
@@ -21,16 +20,10 @@ import { OrganizationSwitchList } from "app/components/organization_switch_list"
 import { Provider } from "jotai";
 import { HelpDot, UserDot } from "app/components/menu_bar";
 import { News } from "app/components/news";
-import { OrganizationEnterpriseBadge } from "app/components/organization_enterprise_badge";
 import { useBreakpoint } from "app/hooks/use_responsive";
 import { Feedback } from "app/components/feedback";
 import clsx from "clsx";
 import { KeybindingsIndex } from "app/components/keybindings_index";
-
-const TrialBanner = dynamic(
-  () => import("app/components/trial_banner").then((m) => m.TrialBanner),
-  { ssr: false }
-);
 
 export function UserBlock() {
   const currentUser = useCurrentUser();
@@ -47,9 +40,6 @@ export function UserBlock() {
             </div>
           </div>
           <div className="w-1" />
-          <OrganizationEnterpriseBadge
-            organization={currentUser.organization}
-          />
           <div className="flex-auto" />
           <div className="flex-shrink-0">
             <CaretSortIcon />
@@ -109,9 +99,6 @@ const AuthenticatedPageLayout = ({
                   "mx-auto pt-10 w-full"
                 )}
               >
-                <Suspense fallback={null}>
-                  <TrialBanner />
-                </Suspense>
                 {title ? (
                   <div className="flex justify-between items-center pt-0 pb-8">
                     <h1 className="text-2xl font-bold leading-7 text-gray-900 dark:text-gray-100 sm:text-3xl sm:tracking-tight sm:truncate">

@@ -1,19 +1,8 @@
-import { expect, describe, it, vi } from "vitest";
+import { expect, describe, it } from "vitest";
 
 import changeName from "./changeOrganizationName";
 import { getRandomMockCtxAndUser } from "test/shared";
 import db from "db";
-
-vi.mock("integrations/stripe", () => {
-  return {
-    default: {
-      customers: {
-        update: vi.fn().mockReturnValue(Promise.resolve(true)),
-      },
-    },
-    stripeEnabled: false,
-  };
-});
 
 describe("changeName mutation", () => {
   it("works correctly", async () => {

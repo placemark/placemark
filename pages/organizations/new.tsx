@@ -3,8 +3,6 @@ import { BlitzPage } from "@blitzjs/next";
 import AuthenticatedPageLayout from "app/core/layouts/authenticated_page_layout";
 import createOrganization from "app/organizations/mutations/createOrganization";
 import { CreateOrganization } from "app/organizations/validations";
-import { loadStripe } from "@stripe/stripe-js";
-import { env } from "app/lib/env_client";
 import {
   OrganizationForm,
   FORM_ERROR,
@@ -16,21 +14,14 @@ const NewOrganization: BlitzPage = () => {
   return (
     <div>
       <OrganizationForm
-        submitText="Set up billing"
+        submitText="Create organization"
         schema={CreateOrganization}
         initialValues={{
           name: "",
         }}
         onSubmit={async (values) => {
           try {
-            const sessionId = await createOrganizationMutation(values);
-            const stripe = await loadStripe(
-              env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-            );
-            if (!stripe) throw new Error("Could not load Stripe");
-            await stripe.redirectToCheckout({
-              sessionId,
-            });
+            await createOrganizationMutation(values);
           } catch (error: any) {
             // console.error(error);
             return {

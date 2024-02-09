@@ -9,7 +9,7 @@ import type { PoolClient } from "pg";
 import { Pool } from "pg";
 import { env } from "app/lib/env_server";
 import { ILayerConfig } from "types";
-import { randomEmail, randomStripe } from "test/shared";
+import { randomEmail } from "test/shared";
 
 async function makeFeatureCollection() {
   const id = newFeatureId();
@@ -25,7 +25,6 @@ async function makeFeatureCollection() {
           organization: {
             create: {
               name: "Otherteam",
-              stripeCustomerId: randomStripe(),
             },
           },
         },
@@ -49,7 +48,6 @@ async function makeFeatureCollection() {
           organization: {
             create: {
               name: "My Team",
-              stripeCustomerId: randomStripe(),
             },
           },
         },

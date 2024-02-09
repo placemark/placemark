@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import { PlusIcon, CheckIcon, GearIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { StyledMenuLink, StyledRadioItem, DDSeparator } from "./elements";
-import { OrganizationEnterpriseBadge } from "./organization_enterprise_badge";
 
 export function OrganizationSwitchList({
   currentUser,
@@ -44,9 +43,6 @@ export function OrganizationSwitchList({
                   </ItemIndicator>
                 </div>
                 {membership.organization.name}
-                <OrganizationEnterpriseBadge
-                  organization={membership.organization}
-                />
               </div>
             </StyledRadioItem>
           );

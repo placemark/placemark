@@ -1,13 +1,6 @@
-import { envsafe, str, num, bool } from "envsafe";
+import { envsafe, str, num } from "envsafe";
 
 export const env = envsafe({
-  /**
-   * Accessible from your Stripe dashboard.
-   */
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: str({
-    input: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-    default: "off",
-  }),
   /**
    * Key for authenticating Mapbox maps.
    */
@@ -68,14 +61,6 @@ export const env = envsafe({
     devDefault: "_",
   }),
   /**
-   * Price ID for enterprise accounts. Found in your
-   * Stripe dashboard.
-   */
-  NEXT_PUBLIC_STRIPE_PRICE_ID_ENTERPRISE: str({
-    input: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_ENTERPRISE,
-    default: "off",
-  }),
-  /**
    * Using Posthog for product analytics
    * https://posthog.com/
    *
@@ -88,14 +73,5 @@ export const env = envsafe({
   NEXT_PUBLIC_POSTHOG_API_HOST: str({
     input: process.env.NEXT_PUBLIC_POSTHOG_API_HOST,
     default: "off",
-  }),
-  /**
-   * I think this is unused: feel free to confirm
-   * and submit a PR.
-   */
-  NEXT_PUBLIC_SKIP_PAYMENT: bool({
-    input: process.env.NEXT_PUBLIC_SKIP_PAYMENT,
-    devDefault: false,
-    default: false,
   }),
 });

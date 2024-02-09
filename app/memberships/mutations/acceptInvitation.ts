@@ -1,6 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
 import { Prisma } from "@prisma/client";
-import { updateQuantityForOrganization } from "integrations/stripe";
 import db from "db";
 import { updateSession } from "app/core/updateSession";
 import { AcceptInvite } from "app/memberships/validations";
@@ -34,7 +33,6 @@ export default resolver.pipe(
       // Change the user's default organization to this
       // one.
       await updateSession(membership, ctx);
-      await updateQuantityForOrganization(membership.organizationId);
 
       capture(ctx, {
         event: "invitation-accept",

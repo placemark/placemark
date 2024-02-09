@@ -5,7 +5,7 @@ import { SecurePassword } from "@blitzjs/auth/secure-password";
 import resetPassword from "./resetPassword";
 import db from "db";
 import { Ctx } from "blitz";
-import { nanoid, randomEmail } from "test/shared";
+import { randomEmail } from "test/shared";
 
 const mockCtx = {
   session: {
@@ -36,7 +36,6 @@ describe("resetPassword mutation", () => {
             organization: {
               create: {
                 name: "My Team",
-                stripeCustomerId: nanoid(),
               },
             },
           },

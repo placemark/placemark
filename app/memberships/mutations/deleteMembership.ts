@@ -3,7 +3,6 @@ import { resolver } from "@blitzjs/rpc";
 import { AuthorizationError, Ctx } from "blitz";
 import type { User } from "db";
 import db from "db";
-import { updateQuantityForOrganization } from "integrations/stripe";
 import { DeleteMembership } from "app/memberships/validations";
 import { capture } from "integrations/posthog";
 
@@ -84,9 +83,6 @@ export default resolver.pipe(
     await db.membership.deleteMany({
       where: { id: id, organizationId: ctx.session.orgId },
     });
-
-    // Adjust billing for the organization.
-    await updateQuantityForOrganization(membership.organizationId);
 
     // Log out the user from any current sessions in this
     // team.

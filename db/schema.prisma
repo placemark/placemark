@@ -7,19 +7,6 @@ generator client {
   provider        = "prisma-client-js"
 }
 
-// States pulled from
-// https://stripe.com/docs/api/subscriptions/object#subscription_object-status
-// https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses
-enum SubscriptionStatus {
-  incomplete
-  incomplete_expired
-  trialing
-  active
-  past_due
-  canceled
-  unpaid
-}
-
 enum LengthUnit {
   centimeters
   degrees
@@ -96,9 +83,6 @@ enum MembershipStatus {
 model Organization {
   id                 Int                 @id @default(autoincrement())
   name               String
-  stripeCustomerId   String              @unique
-  price              String?
-  subscriptionStatus SubscriptionStatus? @default(incomplete)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

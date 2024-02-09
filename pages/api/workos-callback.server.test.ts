@@ -48,7 +48,6 @@ describe("workOsCallback", () => {
     await db.organization.create({
       data: {
         name: "xxx",
-        stripeCustomerId: nanoid(),
         workOsId,
       },
     });
@@ -79,7 +78,6 @@ describe("workOsCallback", () => {
     await db.organization.create({
       data: {
         name: "xxx",
-        stripeCustomerId: nanoid(),
         workOsId,
         membership: {
           create: {

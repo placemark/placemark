@@ -1,4 +1,4 @@
-import { invalidateQuery, useMutation, useQuery } from "@blitzjs/rpc";
+import { invalidateQuery, useMutation } from "@blitzjs/rpc";
 import createInvitation from "app/memberships/mutations/createInvitation";
 import { Form, FORM_ERROR } from "app/core/components/Form";
 import { Invite } from "app/organizations/validations";
@@ -8,15 +8,9 @@ import { InlineError } from "app/components/inline_error";
 import { ErrorMessage } from "formik";
 import { Button, H2, StyledFieldTextareaProse } from "app/components/elements";
 import { pluralize } from "app/lib/utils";
-import { UOrganization } from "app/lib/uorganization";
 
 export default function OrganizationInviteForm() {
-  const [{ organization }] = useQuery(getOrganization, null);
   const [createInvitationMutation] = useMutation(createInvitation);
-
-  if (UOrganization.isEnterprise(organization)) {
-    return null;
-  }
 
   return (
     <Form

@@ -18,21 +18,6 @@ export const env = envsafe({
    * This is the stripe webhook secret, required to verify
    * webhooks. You'll find it in your Stripe dashboard.
    */
-  STRIPE_WEBHOOK_SECRET: str({
-    devDefault: "_",
-    default: "off",
-  }),
-  /** Same here: in your dashboard */
-  STRIPE_SECRET_KEY: str({ default: "off" }),
-  /**
-   * This is the ID of the price of a subscription. Create
-   * a subscription with a price and copy this from your dashboard.
-   */
-  STRIPE_PRICE_ID: str({ default: "off" }),
-  /**
-   * This might not really be necessary but we have it nonetheless.
-   */
-  STRIPE_TRIAL_DAYS: num({ default: 0 }),
   /**
    * This is for sending logs to Logtail. Use logtail and copy
    * the API token.
@@ -69,11 +54,6 @@ export const env = envsafe({
   WORKOS_CLIENT_ID: str({ default: "off" }),
   WORKOS_REDIRECT_URL: str({ default: "off" }),
   /**
-   * For signing people up to newsletters when they sign
-   * up.
-   */
-  CAMPAIGNMONITOR_KEY: str({ default: "off" }),
-  /**
    * This is the email address where feedback emails go to.
    */
   TEAM_EMAIL: str(),
@@ -95,16 +75,6 @@ if (env.WORKOS_API_KEY === "off") {
 if (env.LOGTAIL_TOKEN === "off") {
   // eslint-disable-next-line
   console.log("Disabling Logtail integration");
-}
-
-if (env.STRIPE_SECRET_KEY === "off") {
-  // eslint-disable-next-line
-  console.log("Disabling Stripe integration");
-}
-
-if (env.CAMPAIGNMONITOR_KEY === "off") {
-  // eslint-disable-next-line
-  console.log("Disabling Campaignmonitor integration");
 }
 
 if (env.CLOUDFLARE_API_TOKEN === "off") {

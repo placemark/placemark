@@ -2,7 +2,6 @@ import { AuthenticatedCtx } from "blitz";
 import LAYERS from "app/lib/default_layers";
 import db, { MembershipStatus, Prisma } from "db";
 import { generateKeyBetween } from "fractional-indexing";
-import { updateQuantityForOrganization } from "integrations/stripe";
 import { JsonValue } from "type-fest";
 import {
   ISymbolization,
@@ -10,10 +9,7 @@ import {
   tryUpgrading,
   SYMBOLIZATION_NONE,
 } from "types";
-import { env } from "./env_server";
-import { QuotaError } from "./errors";
-import { UOrganization } from "./uorganization";
-import { formatCount, safeParseMaybe } from "./utils";
+import { safeParseMaybe } from "./utils";
 
 export function getWrappedFeatureCollection(id: string, ctx: AuthenticatedCtx) {
   return db.wrappedFeatureCollection.findFirstOrThrow({
@@ -24,40 +20,6 @@ export function getWrappedFeatureCollection(id: string, ctx: AuthenticatedCtx) {
       },
     },
   });
-}
-
-export async function enforceWfcQuota(ctx: AuthenticatedCtx) {
-  const organization = await db.organization.findFirstOrThrow({
-    where: {
-      id: ctx.session.orgId!,
-    },
-  });
-
-  /**
-   * Allow Enterprise organizations unlimited maps.
-   */
-  const quota = UOrganization.isEnterprise(organization)
-    ? env.WFC_QUOTA_ENTERPRISE
-    : env.WFC_QUOTA;
-
-  /**
-   * Confirm quota
-   */
-  const wfcCount = await db.wrappedFeatureCollection.count({
-    where: {
-      organization: {
-        id: ctx.session.orgId!,
-      },
-    },
-  });
-
-  if (wfcCount >= quota) {
-    throw new QuotaError(
-      `You’ve exceeded the limit of ${formatCount(
-        env.WFC_QUOTA
-      )} maps. Please contact support if you need additional storage.`
-    );
-  }
 }
 
 export function parseSymbolization(symbolization: JsonValue): ISymbolization {
@@ -131,10 +93,4 @@ export async function toggleMemberships(
     where: { id: { in: pausedMemberships.map((membership) => membership.id) } },
     data: { membershipStatus: direction },
   });
-
-  await Promise.all(
-    pausedMemberships.map((membership) => {
-      return updateQuantityForOrganization(membership.organizationId);
-    })
-  );
 }
