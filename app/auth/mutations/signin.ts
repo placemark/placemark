@@ -4,7 +4,6 @@ import db from "db";
 import { Signin } from "../validations";
 import { createSession } from "app/core/utils";
 import { AuthenticationError } from "blitz";
-import { posthog } from "integrations/posthog";
 import { toggleMemberships } from "app/lib/utils_server";
 
 const CREDENTIALS_INVALID = "Sorry, those credentials are invalid.";
@@ -63,20 +62,6 @@ export const authenticateUser = async (
   await toggleMemberships(user.id, "ACTIVE");
 
   const { hashedPassword, ...rest } = user;
-
-  posthog?.capture({
-    distinctId: String(rest.id),
-    event: "signin",
-  });
-
-  posthog?.identify({
-    distinctId: String(rest.id),
-    properties: {
-      name: user.name,
-      email: user.email,
-      createdAt: user.createdAt,
-    },
-  });
 
   return rest;
 };

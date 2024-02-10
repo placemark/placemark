@@ -4,7 +4,6 @@ import db from "db";
 import { z } from "zod";
 import { Ctx } from "blitz";
 import { errorUrl } from "app/lib/constants";
-import { capture } from "integrations/posthog";
 
 /**
  * Query params can be string or string[] - make
@@ -39,10 +38,6 @@ export default api(async function (req, res, _ctx) {
     data: {
       githubToken: token,
     },
-  });
-
-  capture(ctx, {
-    event: "user-connect-with-github",
   });
 
   res.redirect("/close-window");

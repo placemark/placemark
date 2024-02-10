@@ -2,7 +2,6 @@ import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { nanoid, newFeatureId } from "app/lib/id";
 import { z } from "zod";
-import { capture } from "integrations/posthog";
 import { NotFoundError } from "blitz";
 
 const CombineWrappedFeatureCollection = z.object({
@@ -145,10 +144,6 @@ export default resolver.pipe(
         data: newFeatures,
       }),
     ]);
-
-    capture(ctx, {
-      event: "map-combine",
-    });
 
     return res?.[0]?.id;
   }

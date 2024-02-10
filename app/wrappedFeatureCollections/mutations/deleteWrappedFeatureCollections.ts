@@ -1,6 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import { capture } from "integrations/posthog";
 import { z } from "zod";
 
 const DeleteWrappedFeatureCollections = z.object({
@@ -21,13 +20,6 @@ export default resolver.pipe(
           in: ids,
         },
         organizationId: ctx.session.orgId,
-      },
-    });
-
-    capture(ctx, {
-      event: "map-delete",
-      properties: {
-        count: ids.length,
       },
     });
   }

@@ -8,18 +8,7 @@ import type { Either } from "purify-ts/Either";
 import { matcherHint } from "jest-matcher-utils";
 import { diff } from "jest-diff";
 import { Maybe } from "purify-ts/Maybe";
-import { expect, vi } from "vitest";
-
-vi.mock("integrations/posthog", () => {
-  return {
-    capture: vi.fn(),
-    identifyOrganization: vi.fn(),
-    posthog: {
-      capture: vi.fn(),
-      identify: vi.fn(),
-    },
-  };
-});
+import { expect } from "vitest";
 
 const passMessage = (expect: "Left" | "Right") => () =>
   matcherHint(`.not.to${expect}`, "received", "") +

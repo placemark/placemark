@@ -4,7 +4,6 @@ import { AuthorizationError, Ctx } from "blitz";
 import type { User } from "db";
 import db from "db";
 import { DeleteMembership } from "app/memberships/validations";
-import { capture } from "integrations/posthog";
 
 /*
  * - Immediately logs out the removed member from the organization.
@@ -87,10 +86,6 @@ export default resolver.pipe(
     // Log out the user from any current sessions in this
     // team.
     await logUserOutFromOrganization(user);
-
-    capture(ctx, {
-      event: "membership-delete",
-    });
 
     return true;
   }

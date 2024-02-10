@@ -58,7 +58,6 @@ import { Field, Form, Formik } from "formik";
 import { parseOrError } from "app/lib/errors";
 import { dataAtom } from "state/jotai";
 import { truncate } from "app/lib/utils";
-import { posthog } from "integrations/posthog_client";
 
 type Preview =
   | {
@@ -1013,7 +1012,6 @@ function TextEditor({
                     bg-gray-100 dark:bg-gray-700
                     opacity-75 hover:opacity-100"
                   onMouseDown={(e) => {
-                    posthog?.capture("properties-use-suggested-existing-value");
                     e.preventDefault();
                     onChangeValue(pair[0], value);
                   }}

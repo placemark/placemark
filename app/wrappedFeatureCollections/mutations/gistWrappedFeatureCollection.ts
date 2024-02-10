@@ -5,7 +5,6 @@ import { NotFoundError } from "blitz";
 import { Octokit } from "@octokit/core";
 import { wrappedFeaturesToFeatureCollection } from "app/lib/convert/local/geojson";
 import { IWrappedFeature } from "types";
-import { capture } from "integrations/posthog";
 import { getWrappedFeatureCollection } from "app/lib/utils_server";
 
 /**
@@ -92,10 +91,6 @@ export default resolver.pipe(
       where: {
         id,
       },
-    });
-
-    capture(ctx, {
-      event: "map-share-as-gist",
     });
 
     return url;

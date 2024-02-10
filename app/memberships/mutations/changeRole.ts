@@ -1,7 +1,6 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { ChangeRole } from "app/memberships/validations";
-import { capture } from "integrations/posthog";
 
 /**
  * Change the role of an organization member.
@@ -33,10 +32,6 @@ export default resolver.pipe(
     await db.membership.updateMany({
       data: { role },
       where: { id: id, organizationId: ctx.session.orgId },
-    });
-
-    capture(ctx, {
-      event: "role-change",
     });
 
     return true;

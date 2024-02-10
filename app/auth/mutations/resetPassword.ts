@@ -2,7 +2,6 @@ import { hash256 } from "@blitzjs/auth";
 import { SecurePassword } from "@blitzjs/auth/secure-password";
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import { posthog } from "integrations/posthog";
 import { ResetPassword } from "../validations";
 import signin from "./signin";
 
@@ -47,11 +46,6 @@ export default resolver.pipe(
 
     // 7. Now log the user in with the new credentials
     await signin({ email: user.email, password }, ctx);
-
-    posthog?.capture({
-      distinctId: String(user.id),
-      event: "reset-password",
-    });
 
     return true;
   }

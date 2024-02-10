@@ -75,7 +75,6 @@ Note that there's a lot of these. Placemark relies on:
 
 ### Optional
 
-- Posthog
 - Cloudflare
 - Postmark
 - WorkOS

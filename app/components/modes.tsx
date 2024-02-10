@@ -25,7 +25,6 @@ import { useSetAtom, useAtom, useAtomValue } from "jotai";
 import { useLineMode } from "app/hooks/use_line_mode";
 import { USelection } from "state";
 import { IWrappedFeature } from "types";
-import { posthog } from "integrations/posthog_client";
 import { Step } from "./walkthrough";
 import {
   Button,
@@ -167,9 +166,6 @@ export default memo(function Modes({
               hotkey={hotkey}
               label={MODE_INFO[mode].label}
               onClick={(e) => {
-                posthog?.capture("change-drawing-mode", {
-                  mode,
-                });
                 if (mode === Mode.DRAW_LINE) {
                   void lineMode({
                     event: e,

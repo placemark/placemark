@@ -4,7 +4,6 @@ import { z } from "zod";
 import db from "db";
 import { logger } from "integrations/log";
 import { AuthorizationError } from "blitz";
-import { capture } from "integrations/posthog";
 import { deletedAccountMailer } from "mailers/deletedAccountMailer";
 
 const DeleteOrganization = z.object({
@@ -75,15 +74,8 @@ export default resolver.pipe(
         });
         await ctx.session.$revoke();
         await deletedAccountMailer({ to: user.email }).send();
-        capture(ctx, {
-          event: "cancel",
-        });
       }
     }
-
-    capture(ctx, {
-      event: "organization-delete",
-    });
 
     return true;
   }

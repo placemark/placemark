@@ -1,6 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import { capture } from "integrations/posthog";
 import { CreateWrappedFeatureCollectionFolder } from "app/wrappedFeatureCollectionFolders/validations";
 
 export default resolver.pipe(
@@ -32,10 +31,6 @@ export default resolver.pipe(
           },
         },
       },
-    });
-
-    capture(ctx, {
-      event: "folder-create",
     });
 
     return id;

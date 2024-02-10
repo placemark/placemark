@@ -7,8 +7,6 @@ import {
 } from "app/lib/constants";
 import { FileGroup, ShapefileGroup } from "app/lib/group_files";
 import { usePersistence } from "app/lib/persistence/context";
-import { posthog } from "integrations/posthog_client";
-import { useEffect } from "react";
 
 function getFileSize(file: FileGroup | ShapefileGroup) {
   switch (file.type) {
@@ -34,14 +32,6 @@ export function FileWarning({
 
   const result =
     size > FILE_LIMIT_BYTES ? "block" : size > FILE_WARN_BYTES ? "warn" : "ok";
-
-  useEffect(() => {
-    posthog?.capture("import-measurement", {
-      type: file.type,
-      size_bytes: size,
-      result,
-    });
-  }, [size, result, file]);
 
   if (meta.type === "memory") {
     return <div>{children}</div>;

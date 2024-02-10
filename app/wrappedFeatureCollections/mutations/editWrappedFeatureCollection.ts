@@ -1,7 +1,6 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { EditWrappedFeatureCollection } from "app/wrappedFeatureCollections/validations";
-import { capture } from "integrations/posthog";
 
 export default resolver.pipe(
   resolver.zod(EditWrappedFeatureCollection),
@@ -27,36 +26,5 @@ export default resolver.pipe(
         organizationId: ctx.session.orgId!,
       },
     });
-
-    capture(ctx, {
-      event: "map-edit",
-    });
-
-    if (data.label) {
-      capture(ctx, {
-        event: "map-edit-label",
-      });
-    }
-
-    if (data.defaultLayer) {
-      capture(ctx, {
-        event: "map-edit-default-layer",
-      });
-    }
-
-    if (data.access !== undefined) {
-      capture(ctx, {
-        event: "map-edit-access-level",
-        properties: {
-          access: data.access,
-        },
-      });
-    }
-
-    if (data.layerId) {
-      capture(ctx, {
-        event: "map-edit-custom-layer",
-      });
-    }
   }
 );

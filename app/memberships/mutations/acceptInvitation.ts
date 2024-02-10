@@ -4,7 +4,6 @@ import db from "db";
 import { updateSession } from "app/core/updateSession";
 import { AcceptInvite } from "app/memberships/validations";
 import { AuthorizationError } from "blitz";
-import { capture } from "integrations/posthog";
 
 export default resolver.pipe(
   resolver.zod(AcceptInvite),
@@ -33,10 +32,6 @@ export default resolver.pipe(
       // Change the user's default organization to this
       // one.
       await updateSession(membership, ctx);
-
-      capture(ctx, {
-        event: "invitation-accept",
-      });
 
       return true;
     } catch (e) {

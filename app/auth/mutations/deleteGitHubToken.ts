@@ -1,7 +1,6 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { app } from "integrations/octokit";
-import { capture } from "integrations/posthog";
 import * as Sentry from "@sentry/nextjs";
 
 export default resolver.pipe(
@@ -29,10 +28,6 @@ export default resolver.pipe(
     } catch (e) {
       Sentry.captureException(e);
     }
-
-    capture(ctx, {
-      event: "user-delete-github-token",
-    });
 
     return null;
   }

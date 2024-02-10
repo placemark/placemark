@@ -7,7 +7,6 @@ import React from "react";
 import toast from "react-hot-toast";
 import { useQuery as useReactQuery } from "react-query";
 import { z } from "zod";
-import { posthog } from "integrations/posthog_client";
 
 const ExampleList = z.array(z.string());
 
@@ -53,9 +52,6 @@ export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
                 className="text-left text-sm group rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-1"
                 key={example}
                 onClick={async () => {
-                  posthog?.capture("import-example", {
-                    example,
-                  });
                   await toast.promise(
                     fetch(`https://data-library.placemark.io/${example}`)
                       .then((r) => r.text())

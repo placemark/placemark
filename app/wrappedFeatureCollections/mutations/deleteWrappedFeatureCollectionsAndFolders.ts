@@ -1,6 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import { capture } from "integrations/posthog";
 import { z } from "zod";
 import { validate } from "uuid";
 
@@ -45,13 +44,6 @@ export default resolver.pipe(
         },
       }),
     ]);
-
-    capture(ctx, {
-      event: "map-delete",
-      properties: {
-        count: ids.length,
-      },
-    });
 
     return true;
   }

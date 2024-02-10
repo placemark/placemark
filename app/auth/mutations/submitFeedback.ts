@@ -1,5 +1,4 @@
 import { resolver } from "@blitzjs/rpc";
-import { capture } from "integrations/posthog";
 import { z } from "zod";
 import { client } from "integrations/octokit_issues";
 import db from "db";
@@ -75,13 +74,6 @@ ${body}`,
         }
       );
 
-      capture(ctx, {
-        event: "submit-feedback",
-        properties: {
-          uuid,
-        },
-      });
-
       return true;
     } catch (e) {
       const body = `${bodyInput}
@@ -112,13 +104,6 @@ ${body}`,
           replyTo: "tom@macwright.com",
         }
       );
-
-      capture(ctx, {
-        event: "submit-feedback",
-        properties: {
-          uuid,
-        },
-      });
 
       return true;
     }

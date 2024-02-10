@@ -1,5 +1,4 @@
 import { resolver } from "@blitzjs/rpc";
-import { capture } from "integrations/posthog";
 import { z } from "zod";
 import { client } from "integrations/octokit_issues";
 import { notifyTeam } from "integrations/notify_team";
@@ -13,7 +12,7 @@ const SubmitFeedback = z.object({
 
 export default resolver.pipe(
   resolver.zod(SubmitFeedback),
-  async ({ body: bodyInput, email, userAgent }, ctx) => {
+  async ({ body: bodyInput, email, userAgent }) => {
     const body = `${bodyInput}
 
 ---
@@ -38,10 +37,6 @@ export default resolver.pipe(
       `Issue: ${issue?.data?.html_url || "?"}
 ${body}`
     );
-
-    capture(ctx, {
-      event: "submit-feedback",
-    });
 
     return true;
   }

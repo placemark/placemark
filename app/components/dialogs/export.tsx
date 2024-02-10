@@ -24,7 +24,6 @@ import {
   useFolderSummary,
   useRootItems,
 } from "app/components/panels/feature_editor/feature_editor_folder/math";
-import { posthog } from "integrations/posthog_client";
 import type { Root } from "@tmcw/togeojson";
 import { FeatureMap } from "types";
 import { pluralize } from "app/lib/utils";
@@ -200,10 +199,6 @@ export function ExportDialog({ onClose }: { onClose: () => void }) {
     exportOptions: ExportOptions,
     helpers: FormikHelpers<ExportOptions>
   ) {
-    posthog?.capture("export", {
-      format: exportOptions.type,
-    });
-
     const { fileSave, supported } = await import("browser-fs-access");
 
     try {

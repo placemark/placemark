@@ -2,7 +2,6 @@ import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { CreateWrappedFeatureCollectionWithFeatures } from "app/wrappedFeatureCollections/validations";
 import { nanoid } from "app/lib/id";
-import { capture } from "integrations/posthog";
 import { createDefaultLayerConfig, getNextVersion } from "app/lib/utils_server";
 
 export default resolver.pipe(
@@ -59,10 +58,6 @@ export default resolver.pipe(
             version,
           };
         }),
-      });
-
-      capture(ctx, {
-        event: "map-create-with-features",
       });
 
       return wrappedFeatureCollectionId;

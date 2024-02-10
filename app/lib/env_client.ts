@@ -60,18 +60,4 @@ export const env = envsafe({
     input: process.env.NEXT_PUBLIC_REPLICACHE_KEY,
     devDefault: "_",
   }),
-  /**
-   * Using Posthog for product analytics
-   * https://posthog.com/
-   *
-   * This is from their dashboard.
-   */
-  NEXT_PUBLIC_POSTHOG_API_TOKEN: str({
-    input: process.env.NEXT_PUBLIC_POSTHOG_API_TOKEN,
-    default: "off",
-  }),
-  NEXT_PUBLIC_POSTHOG_API_HOST: str({
-    input: process.env.NEXT_PUBLIC_POSTHOG_API_HOST,
-    default: "off",
-  }),
 });

@@ -22,7 +22,6 @@ import { CaretDownIcon } from "@radix-ui/react-icons";
 import { hackInitialDialog } from "./drop_index";
 import { useQuery } from "react-query";
 import { Step } from "app/components/walkthrough";
-import { posthog } from "integrations/posthog_client";
 import { FolderAdd16 } from "app/components/icons";
 import * as P from "@radix-ui/react-popover";
 import Form from "app/core/components/Form";
@@ -92,11 +91,7 @@ export function CreateMap({ mini = false }: { mini?: boolean }) {
   });
 
   const { data: buttonText } = useQuery("new-map-experiment", () => {
-    if (posthog?.getFeatureFlag("newmap-button") === "newmap") {
-      return "New map";
-    } else {
-      return "Create map";
-    }
+    return "New map";
   });
 
   const { createMap, isSubmitting } = useCreateMap();

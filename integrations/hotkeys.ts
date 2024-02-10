@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/nextjs";
-import { posthog } from "integrations/posthog_client";
 import { useHotkeys as rawUseHotkeys } from "react-hotkeys-hook";
 
 type Params = Parameters<typeof rawUseHotkeys>;
@@ -17,7 +16,6 @@ export function useHotkeys(
       message,
       level: "info",
     });
-    posthog?.capture("keyboard-shortcut", { keys: message });
     return fn(...args);
   };
   return rawUseHotkeys(keys, wrap, a, b);

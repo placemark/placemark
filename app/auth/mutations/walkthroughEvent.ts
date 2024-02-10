@@ -1,7 +1,6 @@
 import { resolver } from "@blitzjs/rpc";
 import db, { WalkthroughState } from "db";
 import { WalkthroughEvent } from "../validations";
-import { capture } from "integrations/posthog";
 import { createMachine } from "xstate";
 import { z } from "zod";
 
@@ -78,13 +77,6 @@ const walkthroughEvent = resolver.pipe(
         walkthroughState: nextState,
       },
       where: { id: ctx.session.userId },
-    });
-
-    capture(ctx, {
-      event: `walkthrough/${event.type}`,
-      properties: {
-        state: previousState.walkthroughState,
-      },
     });
 
     return nextState;
