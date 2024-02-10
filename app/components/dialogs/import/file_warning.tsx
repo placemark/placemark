@@ -7,7 +7,6 @@ import {
 } from "app/lib/constants";
 import { FileGroup, ShapefileGroup } from "app/lib/group_files";
 import { usePersistence } from "app/lib/persistence/context";
-import { useEffect } from "react";
 
 function getFileSize(file: FileGroup | ShapefileGroup) {
   switch (file.type) {

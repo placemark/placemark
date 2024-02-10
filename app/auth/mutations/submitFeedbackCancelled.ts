@@ -12,7 +12,7 @@ const SubmitFeedback = z.object({
 
 export default resolver.pipe(
   resolver.zod(SubmitFeedback),
-  async ({ body: bodyInput, email, userAgent }, ctx) => {
+  async ({ body: bodyInput, email, userAgent }) => {
     const body = `${bodyInput}
 
 ---

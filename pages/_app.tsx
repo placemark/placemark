@@ -6,7 +6,6 @@ import {
   ErrorBoundary,
   ErrorComponent,
 } from "@blitzjs/next";
-import { env } from "app/lib/env_client";
 import P404 from "pages/404";
 import "../styles/globals.css";
 import * as T from "@radix-ui/react-tooltip";

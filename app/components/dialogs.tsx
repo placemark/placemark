@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { memo, Suspense, useCallback, useEffect } from "react";
+import { memo, Suspense, useCallback } from "react";
 import { useAtom } from "jotai";
 import { dialogAtom } from "state/jotai";
 import { match } from "ts-pattern";
