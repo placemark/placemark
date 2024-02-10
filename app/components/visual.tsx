@@ -7,7 +7,6 @@ import * as E from "app/components/elements";
 import { Root, Trigger } from "@radix-ui/react-popover";
 import { getIsMac, localizeKeybinding } from "app/lib/utils";
 import { SEARCH_KEYBINDING } from "./dialogs/cheatsheet";
-import { posthog } from "integrations/posthog_client";
 import { Step } from "./walkthrough";
 import { LayersPopover } from "./layers/popover";
 
@@ -24,9 +23,6 @@ export const Visual = memo(function Visual() {
                 variant="quiet"
                 aria-label="Search"
                 onClick={() => {
-                  posthog?.capture("open-quickswitcher", {
-                    method: "click",
-                  });
                   setDialogState({ type: "quickswitcher" });
                 }}
               >

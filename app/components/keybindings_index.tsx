@@ -1,7 +1,6 @@
 import { useHotkeys } from "integrations/hotkeys";
 import { useSetAtom } from "jotai";
 import { dialogAtom } from "state/jotai";
-import { posthog } from "integrations/posthog_client";
 
 export function KeybindingsIndex() {
   const setDialogState = useSetAtom(dialogAtom);
@@ -11,9 +10,6 @@ export function KeybindingsIndex() {
     (e) => {
       e.preventDefault();
       setDialogState({ type: "quickswitcher_index" });
-      posthog?.capture("open-quickswitcher-index", {
-        method: "keybinding",
-      });
     },
     [setDialogState]
   );
@@ -23,9 +19,6 @@ export function KeybindingsIndex() {
     (e) => {
       e.preventDefault();
       setDialogState({ type: "quickswitcher_index" });
-      posthog?.capture("open-quickswitcher-index", {
-        method: "keybinding",
-      });
     },
     [setDialogState]
   );

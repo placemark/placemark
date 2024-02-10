@@ -1,5 +1,4 @@
 import { resolver } from "@blitzjs/rpc";
-import { capture } from "integrations/posthog";
 import { z } from "zod";
 import { client } from "integrations/octokit_issues";
 import { notifyTeam } from "integrations/notify_team";
@@ -38,10 +37,6 @@ export default resolver.pipe(
       `Issue: ${issue?.data?.html_url || "?"}
 ${body}`
     );
-
-    capture(ctx, {
-      event: "submit-feedback",
-    });
 
     return true;
   }

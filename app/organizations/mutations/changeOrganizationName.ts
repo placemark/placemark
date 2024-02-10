@@ -1,6 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import { capture, identifyOrganization } from "integrations/posthog";
 import { Name } from "../validations";
 
 export default resolver.pipe(
@@ -14,16 +13,10 @@ export default resolver.pipe(
       },
     });
 
-    const organization = await db.organization.update({
+    await db.organization.update({
       where: { id },
       data: { name },
     });
-
-    capture(ctx, {
-      event: "organization-rename",
-    });
-
-    identifyOrganization(organization);
 
     return true;
   }

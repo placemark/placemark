@@ -5,7 +5,6 @@ import { Formik } from "formik";
 import { InlineError } from "app/components/inline_error";
 import type { z } from "zod";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
-import { posthog } from "integrations/posthog_client";
 
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
@@ -64,10 +63,6 @@ export function Form<S extends z.ZodType<any, any>>({
           setFormError(FORM_ERROR);
         } else {
           setFormError(null);
-        }
-
-        if (track) {
-          posthog?.capture(`form/${track}`);
         }
 
         if (Object.keys(otherErrors).length > 0) {

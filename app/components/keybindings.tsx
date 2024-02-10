@@ -6,7 +6,6 @@ import { useSetAtom } from "jotai";
 import * as Sentry from "@sentry/nextjs";
 import { dialogAtom } from "state/jotai";
 import toast from "react-hot-toast";
-import { posthog } from "integrations/posthog_client";
 
 export function Keybindings() {
   const setDialogState = useSetAtom(dialogAtom);
@@ -20,9 +19,6 @@ export function Keybindings() {
     (e) => {
       e.preventDefault();
       setDialogState({ type: "quickswitcher" });
-      posthog?.capture("open-quickswitcher", {
-        method: "keybinding",
-      });
     },
     [setDialogState]
   );
@@ -32,9 +28,6 @@ export function Keybindings() {
     (e) => {
       e.preventDefault();
       setDialogState({ type: "quickswitcher" });
-      posthog?.capture("open-quickswitcher", {
-        method: "keybinding",
-      });
     },
     [setDialogState]
   );
@@ -46,9 +39,6 @@ export function Keybindings() {
       e.preventDefault();
       setDialogState({
         type: "export",
-      });
-      posthog?.capture("open-export", {
-        method: "keybinding",
       });
     },
     [setDialogState]
@@ -65,9 +55,6 @@ export function Keybindings() {
           type: "cheatsheet",
         };
       });
-      posthog?.capture("open-cheatsheet", {
-        method: "keybinding",
-      });
     },
     [setDialogState]
   );
@@ -76,9 +63,6 @@ export function Keybindings() {
     "meta+s, Ctrl+s",
     (e) => {
       e.preventDefault();
-      posthog?.capture("open-export-dialog", {
-        method: "keybinding",
-      });
       (async () => {
         const either = await saveNative();
         return either
@@ -98,9 +82,6 @@ export function Keybindings() {
     "meta+o, Ctrl+o",
     (e) => {
       e.preventDefault();
-      posthog?.capture("open-import-dialog", {
-        method: "keybinding",
-      });
       openFiles().catch((e) => Sentry.captureException(e));
     },
     [openFiles]

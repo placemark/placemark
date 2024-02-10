@@ -8,7 +8,6 @@ import type { Geometry, IFeature, IWrappedFeature } from "types";
 import { Button, styledSelect } from "app/components/elements";
 import { writeToClipboard } from "app/lib/utils";
 import { panelExportOpen } from "state/jotai";
-import { posthog } from "integrations/posthog_client";
 
 type CopyForm = {
   format: keyof typeof COPIERS;
@@ -24,10 +23,6 @@ export const FeatureEditorExport = memo(function FeatureEditorExport({
 
   const onCopy = useCallback(
     async function onCopy(values: CopyForm) {
-      posthog?.capture("export-copy", {
-        format: values.format,
-      });
-
       if (lastFeature.current.feature.geometry === null) {
         return toast.error(
           "Could not copy, because this feature has no geometry"

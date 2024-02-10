@@ -12,7 +12,6 @@ import {
   DefaultErrorBoundary,
 } from "./elements";
 import * as dialogState from "state/dialog_state";
-import { posthog } from "integrations/posthog_client";
 
 const ReauthDialog = dynamic<{
   onClose: () => void;
@@ -226,14 +225,6 @@ export const Dialogs = memo(function Dialogs() {
   const onClose = useCallback(() => {
     setDialogState(null);
   }, [setDialogState]);
-
-  useEffect(() => {
-    if (dialog) {
-      posthog?.capture("dialog-open", {
-        dialog: dialog.type,
-      });
-    }
-  }, [dialog]);
 
   let dialogSize: B3Size = "sm";
 

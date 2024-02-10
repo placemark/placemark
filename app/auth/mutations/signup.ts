@@ -3,7 +3,6 @@ import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { Signup } from "app/auth/validations";
 import { createSession } from "app/core/utils";
-import { capture, identifyOrganization } from "integrations/posthog";
 
 export const INSERTED_USER_SELECT = {
   id: true,
@@ -63,12 +62,6 @@ export default resolver.pipe(
       });
 
       await createSession(user, ctx);
-
-      capture(ctx, {
-        event: "signup",
-      });
-
-      identifyOrganization(user.memberships[0].organization);
 
       return;
     } catch (e) {

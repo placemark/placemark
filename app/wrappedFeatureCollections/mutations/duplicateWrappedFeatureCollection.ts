@@ -6,7 +6,6 @@ import {
   getNextVersion,
   getWrappedFeatureCollection,
 } from "app/lib/utils_server";
-import { capture } from "integrations/posthog";
 
 /**
  * Security: makes sure that the source wfc is owned
@@ -130,10 +129,6 @@ export default resolver.pipe(
             wrappedFeatureCollectionId: newWfcId,
           };
         }),
-      });
-
-      capture(ctx, {
-        event: "map-duplicate",
       });
 
       return newWfcId;

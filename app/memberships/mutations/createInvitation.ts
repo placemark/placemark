@@ -5,7 +5,6 @@ import { invitationMailer } from "mailers/invitationMailer";
 import { nanoid } from "app/lib/id";
 import addrs from "email-addresses";
 import { AuthorizationError } from "blitz";
-import { capture } from "integrations/posthog";
 
 export function parseAddresses(rawEmails: string) {
   const emails = addrs.parseAddressList(rawEmails);
@@ -82,10 +81,6 @@ export default resolver.pipe(
 
     const failed = failedInvitations.filter(Boolean) as string[];
     const invited = failedInvitations.filter((v) => v === null).length;
-
-    capture(ctx, {
-      event: "invitation-create",
-    });
 
     return {
       failed,

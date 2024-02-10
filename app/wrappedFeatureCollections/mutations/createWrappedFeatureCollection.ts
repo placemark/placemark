@@ -3,7 +3,6 @@ import db from "db";
 import { CreateWrappedFeatureCollection } from "app/wrappedFeatureCollections/validations";
 import { nanoid } from "app/lib/id";
 import { createDefaultLayerConfig, getNextVersion } from "app/lib/utils_server";
-import { capture } from "integrations/posthog";
 
 export default resolver.pipe(
   resolver.zod(CreateWrappedFeatureCollection),
@@ -45,10 +44,6 @@ export default resolver.pipe(
         db,
         version,
         id,
-      });
-
-      capture(ctx, {
-        event: "map-create",
       });
 
       return id;

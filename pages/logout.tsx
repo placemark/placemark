@@ -6,14 +6,12 @@ import StandaloneFormLayout from "app/core/layouts/standalone_form_layout";
 import { useEffect } from "react";
 import { Loading } from "app/components/elements";
 import logout from "app/auth/mutations/logout";
-import { posthog } from "integrations/posthog_client";
 
 const LogoutPage: BlitzPage = () => {
   const router = useRouter();
   const [logoutMutation] = useMutation(logout);
 
   useEffect(() => {
-    posthog?.reset();
     logoutMutation()
       .then(() => {
         void router.push("/");

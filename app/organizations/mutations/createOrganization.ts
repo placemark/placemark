@@ -1,6 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import { capture, identifyOrganization } from "integrations/posthog";
 import { CreateOrganization } from "../validations";
 
 export default resolver.pipe(
@@ -30,12 +29,6 @@ export default resolver.pipe(
       orgId: organization.id,
       roles: [user.role, "OWNER"],
     });
-
-    capture(ctx, {
-      event: "organization-create",
-    });
-
-    identifyOrganization(organization);
 
     return;
   }

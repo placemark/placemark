@@ -1,6 +1,5 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import { capture } from "integrations/posthog";
 import { ChangeEmail } from "../validations";
 
 export class WrongEmailError extends Error {
@@ -20,10 +19,6 @@ export default resolver.pipe(
     if (count !== 1) {
       throw new WrongEmailError();
     }
-
-    capture(ctx, {
-      event: "change-email",
-    });
 
     return true;
   }

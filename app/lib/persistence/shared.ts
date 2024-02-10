@@ -11,16 +11,12 @@ import { useAtomCallback } from "jotai/utils";
 import { useAtomValue } from "jotai";
 import { Data, dataAtom, momentLogAtom, presencesAtom } from "state/jotai";
 import { EMPTY_ARRAY } from "app/lib/constants";
-import { posthog } from "integrations/posthog_client";
 
+// This  used to send to posthog, but now could be removed
+// or wired into your own product analytics.
 export function trackMoment(partialMoment: Partial<MomentInput>) {
   const { track } = partialMoment;
   if (track) {
-    if (Array.isArray(track)) {
-      posthog?.capture(`transact/${track[0]}`, track[1]);
-    } else {
-      posthog?.capture(`transact/${track}`);
-    }
     delete partialMoment.track;
   }
 }

@@ -2,7 +2,6 @@ import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { CancelInvite } from "app/organizations/validations";
 import { NotFoundError } from "blitz";
-import { capture } from "integrations/posthog";
 
 export default resolver.pipe(
   resolver.zod(CancelInvite),
@@ -18,10 +17,6 @@ export default resolver.pipe(
         userId: null,
         organizationId: ctx.session.orgId,
       },
-    });
-
-    capture(ctx, {
-      event: "invitation-cancel",
     });
 
     if (count !== 1) throw new NotFoundError();

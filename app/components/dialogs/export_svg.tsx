@@ -17,7 +17,6 @@ import { useAtomValue } from "jotai";
 import { dataAtom } from "state/jotai";
 import { FeatureCollection, IFeature, ISymbolization, LineString } from "types";
 import { Field, Form, Formik } from "formik";
-import { posthog } from "integrations/posthog_client";
 import { useRootItems } from "app/components/panels/feature_editor/feature_editor_folder/math";
 import { Root } from "@tmcw/togeojson";
 import { usePersistence } from "app/lib/persistence/context";
@@ -272,7 +271,6 @@ export function ExportSVGDialog() {
   }, [featureMap, featureMap.version, config, mapExtent]);
 
   async function onExport() {
-    posthog?.capture("export-svg");
     const { fileSave } = await import("browser-fs-access");
     const rendered = renderToStaticMarkup(
       <SvgMap

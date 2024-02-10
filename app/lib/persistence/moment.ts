@@ -1,4 +1,3 @@
-import type { Properties } from "posthog-js";
 import type {
   IFolder,
   IFolderInput,
@@ -22,6 +21,10 @@ export interface Moment {
   putLayerConfigs: ILayerConfig[];
   deleteLayerConfigs: ILayerConfig["id"][];
 }
+
+// This was previously posthog properties,
+// is now just an unknown.
+type Properties = any;
 
 export interface MomentInput {
   note?: string;

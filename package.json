@@ -143,8 +143,6 @@
     "polygon-clipping": "^0.15.3",
     "polylabel": "^1.1.0",
     "postcss": "^8.4.16",
-    "posthog-js": "^1.29.3",
-    "posthog-node": "^2.0.2",
     "prisma": "^5",
     "proj4": "^2.8.0",
     "prosemirror-commands": "^1.5.0",
