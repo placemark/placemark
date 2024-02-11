@@ -54,6 +54,42 @@ different, and potentially broken, dependencies.
 
 I'm open to switching to npm if there is a PR submitted.
 
+#### Database setup for local development
+
+Placemark requires Postgres to run.
+
+```
+# macOS:
+
+brew install postgresql
+brew services start postgresql
+
+# Ubuntu:
+
+sudo apt install postgresql
+sudo systemctl start postgresql.service
+```
+
+Update these settings in .env: 
+
+```
+# DATABASE_URL=postgres://postgres:postgres@localhost:5432/placemark
+# POSTGRES_HOST=localhost
+```
+
+Then: 
+
+
+```
+createdb placemark
+psql -c "CREATE ROLE postgres WITH LOGIN PASSWORD 'postgres';"
+psql -c "GRANT ALL PRIVILEGES ON DATABASE placemark TO postgres;" placemark
+
+# Create the database schema
+npx prisma migrate reset
+```
+
+
 ### Environment variables
 
 This application reads `.env` files when in development, and requires
