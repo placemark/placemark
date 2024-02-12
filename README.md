@@ -58,6 +58,8 @@ I'm open to switching to npm if there is a PR submitted.
 
 Placemark requires Postgres to run.
 
+Note that if you're running Placemark with the [docker-compose configuration](./docs/docker.md), Postgres is set up for you as part of the docker configuration. These instructions are relevant if you're running Placemark without Docker.
+
 ```
 # macOS:
 
