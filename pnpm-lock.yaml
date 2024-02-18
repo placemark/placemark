@@ -4,624 +4,625 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@aws-sdk/client-s3':
-    specifier: ^3.171.0
-    version: 3.515.0
-  '@blitzjs/auth':
-    specifier: 2.0.2
-    version: 2.0.2(blitz@2.0.2)(next@14.1.0)(secure-password@4.0.0)
-  '@blitzjs/next':
-    specifier: 2.0.2
-    version: 2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)(tslog@4.9.0)
-  '@blitzjs/rpc':
-    specifier: 2.0.2
-    version: 2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)
-  '@codemirror/commands':
-    specifier: ^6.1.0
-    version: 6.3.3
-  '@codemirror/lang-json':
-    specifier: ^6.0.0
-    version: 6.0.1
-  '@codemirror/language':
-    specifier: ^6.2.1
-    version: 6.10.1
-  '@codemirror/lint':
-    specifier: ^6.0.0
-    version: 6.5.0
-  '@codemirror/state':
-    specifier: ^6.1.1
-    version: 6.4.0
-  '@codemirror/view':
-    specifier: ^6.2.1
-    version: 6.24.0
-  '@deck.gl/core':
-    specifier: ~8.8.14
-    version: 8.8.27
-  '@deck.gl/layers':
-    specifier: ~8.8.14
-    version: 8.8.27(@deck.gl/core@8.8.27)(@loaders.gl/core@3.4.14)(@luma.gl/core@8.5.21)
-  '@deck.gl/mapbox':
-    specifier: ~8.8.14
-    version: 8.8.27(@deck.gl/core@8.8.27)
-  '@dnd-kit/core':
-    specifier: ^6.0.5
-    version: 6.1.0(react-dom@18.2.0)(react@18.2.0)
-  '@dnd-kit/modifiers':
-    specifier: ^6.0.0
-    version: 6.0.1(@dnd-kit/core@6.1.0)(react@18.2.0)
-  '@dnd-kit/sortable':
-    specifier: ^7.0.1
-    version: 7.0.2(@dnd-kit/core@6.1.0)(react@18.2.0)
-  '@dnd-kit/utilities':
-    specifier: ^3.2.2
-    version: 3.2.2(react@18.2.0)
-  '@headlessui/react':
-    specifier: ^1.6.4
-    version: 1.7.18(react-dom@18.2.0)(react@18.2.0)
-  '@lezer/highlight':
-    specifier: ^1.0.0
-    version: 1.2.0
-  '@logtail/node':
-    specifier: ^0.4.5
-    version: 0.4.19
-  '@logtail/types':
-    specifier: ^0.4.5
-    version: 0.4.19
-  '@next/env':
-    specifier: ^14.1.0
-    version: 14.1.0
-  '@octokit/core':
-    specifier: ^4.0.5
-    version: 4.2.4
-  '@octokit/oauth-app':
-    specifier: ^4.0.8
-    version: 4.2.4
-  '@placemarkio/check-geojson':
-    specifier: 0.1.12
-    version: 0.1.12
-  '@placemarkio/flat-drop-files':
-    specifier: ^1.0.2
-    version: 1.0.2
-  '@placemarkio/geojson-rewind':
-    specifier: ^1.0.2
-    version: 1.0.2
-  '@placemarkio/osmtogeojson':
-    specifier: ^3.0.0-beta.6
-    version: 3.0.0-beta.6
-  '@placemarkio/polyline':
-    specifier: ^1.1.0
-    version: 1.2.0(@types/geojson@7946.0.14)
-  '@placemarkio/tokml':
-    specifier: 0.3.3
-    version: 0.3.3
-  '@placemarkio/turf-jsts':
-    specifier: ^2.8.2
-    version: 2.8.2
-  '@prisma/client':
-    specifier: ^5
-    version: 5.9.1(prisma@5.9.1)
-  '@radix-ui/react-accordion':
-    specifier: ^1.0.0
-    version: 1.1.2(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-alert-dialog':
-    specifier: ^1.0.2
-    version: 1.0.5(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-collapsible':
-    specifier: ^1.0.0
-    version: 1.0.3(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-context-menu':
-    specifier: ^2.0.1
-    version: 2.1.5(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-dialog':
-    specifier: ^1.0.0
-    version: 1.0.5(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-dropdown-menu':
-    specifier: ^2.0.1
-    version: 2.0.6(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-icons':
-    specifier: ^1.1.1
-    version: 1.3.0(react@18.2.0)
-  '@radix-ui/react-popover':
-    specifier: ^1.0.0
-    version: 1.0.7(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-portal':
-    specifier: ^1.0.0
-    version: 1.0.4(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-progress':
-    specifier: ^1.0.0
-    version: 1.0.3(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-select':
-    specifier: ^1.0.0
-    version: 1.2.2(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-slot':
-    specifier: ^1.0.0
-    version: 1.0.2(@types/react@18.0.0)(react@18.2.0)
-  '@radix-ui/react-switch':
-    specifier: ^1.0.0
-    version: 1.0.3(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-tabs':
-    specifier: ^1.0.0
-    version: 1.0.4(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-toggle-group':
-    specifier: ^1.0.0
-    version: 1.0.4(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-tooltip':
-    specifier: ^1.0.0
-    version: 1.0.7(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@radix-ui/react-use-rect':
-    specifier: ^1.0.0
-    version: 1.0.1(@types/react@18.0.0)(react@18.2.0)
-  '@radix-ui/rect':
-    specifier: ^1.0.0
-    version: 1.0.1
-  '@react-aria/interactions':
-    specifier: ^3.11.0
-    version: 3.21.1(react@18.2.0)
-  '@sentry/nextjs':
-    specifier: ^7.81.1
-    version: 7.101.1(next@14.1.0)(react@18.2.0)
-  '@tailwindcss/forms':
-    specifier: ^0.5.2
-    version: 0.5.7(tailwindcss@3.4.1)
-  '@tailwindcss/typography':
-    specifier: ^0.5.4
-    version: 0.5.10(tailwindcss@3.4.1)
-  '@tanstack/react-table':
-    specifier: ^8.5.22
-    version: 8.12.0(react-dom@18.2.0)(react@18.2.0)
-  '@tiptap/extension-image':
-    specifier: ^2.0.0-beta.30
-    version: 2.2.3(@tiptap/core@2.2.3)
-  '@tiptap/extension-link':
-    specifier: ^2.0.0-beta.42
-    version: 2.2.3(@tiptap/core@2.2.3)(@tiptap/pm@2.2.3)
-  '@tiptap/react':
-    specifier: ^2.0.0-beta.113
-    version: 2.2.3(@tiptap/core@2.2.3)(@tiptap/pm@2.2.3)(react-dom@18.2.0)(react@18.2.0)
-  '@tiptap/starter-kit':
-    specifier: ^2.0.0-beta.189
-    version: 2.2.3(@tiptap/pm@2.2.3)
-  '@tmcw/togeojson':
-    specifier: 5.6.0
-    version: 5.6.0(@types/geojson@7946.0.14)
-  '@turf/area':
-    specifier: ^6.5.0
-    version: 6.5.0
-  '@turf/bbox':
-    specifier: ^6.5.0
-    version: 6.5.0
-  '@turf/boolean-point-in-polygon':
-    specifier: ^6.5.0
-    version: 6.5.0
-  '@turf/center':
-    specifier: ^6.5.0
-    version: 6.5.0
-  '@turf/helpers':
-    specifier: ^6.5.0
-    version: 6.5.0
-  '@turf/length':
-    specifier: ^6.5.0
-    version: 6.5.0
-  '@turf/meta':
-    specifier: ^6.5.0
-    version: 6.5.0
-  '@types/d3-array':
-    specifier: ^2.0.0
-    version: 2.12.7
-  '@types/d3-color':
-    specifier: ^2.0.0
-    version: 2.0.6
-  '@types/d3-geo':
-    specifier: ^3.0.2
-    version: 3.1.0
-  '@types/geojson':
-    specifier: ^7946.0.10
-    version: 7946.0.14
-  '@types/polylabel':
-    specifier: ^1.0.5
-    version: 1.1.3
-  '@types/react':
-    specifier: 18.0.0
-    version: 18.0.0
-  '@types/react-dom':
-    specifier: ^18.0.4
-    version: 18.2.19
-  '@workos-inc/node':
-    specifier: ^2.12.0
-    version: 2.20.0
-  '@xmldom/xmldom':
-    specifier: ^0.8.2
-    version: 0.8.10
-  autoprefixer:
-    specifier: ^10.4.8
-    version: 10.4.17(postcss@8.4.35)
-  betterknown:
-    specifier: ^1.0.3
-    version: 1.0.3
-  blitz:
-    specifier: 2.0.2
-    version: 2.0.2(@babel/preset-env@7.23.9)(@types/node@20.11.19)(@types/react@18.0.0)(react@18.2.0)(typescript@5.3.3)
-  browser-fs-access:
-    specifier: ^0.33.0
-    version: 0.33.1
-  classed-components:
-    specifier: ^2.0.0
-    version: 2.0.1(react@18.2.0)
-  clsx:
-    specifier: ^1.2.1
-    version: 1.2.1
-  comlink:
-    specifier: ^4.3.1
-    version: 4.4.1
-  core-js:
-    specifier: ^3.31.0
-    version: 3.36.0
-  d3-array:
-    specifier: ^2.0.0
-    version: 2.12.1
-  d3-color:
-    specifier: ^2.0.0
-    version: 2.0.0
-  d3-dsv:
-    specifier: ^2.0.0
-    version: 2.0.0
-  d3-geo:
-    specifier: ^3.0.1
-    version: 3.1.0
-  date-fns:
-    specifier: ^2.29.3
-    version: 2.30.0
-  email-addresses:
-    specifier: ^5.0.0
-    version: 5.0.0
-  envsafe:
-    specifier: ^2.0.3
-    version: 2.0.3
-  fast-json-patch:
-    specifier: ^3.1.1
-    version: 3.1.1
-  fflate:
-    specifier: ^0.8.0
-    version: 0.8.2
-  flatbush:
-    specifier: ^3.3.0
-    version: 3.3.1
-  flatgeobuf:
-    specifier: ^3.22.2
-    version: 3.27.2(ol@8.2.0)
-  formik:
-    specifier: ^2.2.9
-    version: 2.4.5(react@18.2.0)
-  fractional-indexing:
-    specifier: ^2.0.0
-    version: 2.1.0
-  fuse.js:
-    specifier: ^6.6.2
-    version: 6.6.2
-  geometric:
-    specifier: ^2.5.0
-    version: 2.5.4
-  hasha:
-    specifier: ^5.2.2
-    version: 5.2.2
-  htmlparser2:
-    specifier: ^9.0.0
-    version: 9.1.0
-  jotai:
-    specifier: ^2.0.4
-    version: 2.6.4(@types/react@18.0.0)(react@18.2.0)
-  jotai-optics:
-    specifier: ^0.3.0
-    version: 0.3.2(jotai@2.6.4)(optics-ts@2.4.1)
-  jotai-xstate:
-    specifier: ^0.3.0
-    version: 0.3.0(jotai@2.6.4)(xstate@4.38.3)
-  lodash:
-    specifier: ^4.17.21
-    version: 4.17.21
-  mapbox-gl:
-    specifier: ^2.13.0
-    version: 2.15.0
-  memoize-one:
-    specifier: ^6.0.0
-    version: 6.0.0
-  mproj:
-    specifier: ^0.0.35
-    version: 0.0.35
-  nanoid:
-    specifier: ^3.3.4
-    version: 3.3.7
-  next:
-    specifier: '14'
-    version: 14.1.0(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
-  nodemailer:
-    specifier: 6.x
-    version: 6.9.9
-  nodemailer-postmark-transport:
-    specifier: ^5.2.1
-    version: 5.3.0(nodemailer@6.9.9)
-  optics-ts:
-    specifier: ^2.4.0
-    version: 2.4.1
-  pg:
-    specifier: ^8.8.0
-    version: 8.11.3
-  polygon-clipping:
-    specifier: ^0.15.3
-    version: 0.15.7
-  polylabel:
-    specifier: ^1.1.0
-    version: 1.1.0
-  postcss:
-    specifier: ^8.4.16
-    version: 8.4.35
-  prisma:
-    specifier: ^5
-    version: 5.9.1
-  proj4:
-    specifier: ^2.8.0
-    version: 2.10.0
-  prosemirror-commands:
-    specifier: ^1.5.0
-    version: 1.5.2
-  prosemirror-dropcursor:
-    specifier: ^1.6.1
-    version: 1.8.1
-  prosemirror-gapcursor:
-    specifier: ^1.3.1
-    version: 1.3.2
-  prosemirror-history:
-    specifier: ^1.3.0
-    version: 1.3.2
-  prosemirror-keymap:
-    specifier: ^1.2.0
-    version: 1.2.2
-  prosemirror-model:
-    specifier: ^1.18.3
-    version: 1.19.4
-  prosemirror-schema-list:
-    specifier: ^1.2.2
-    version: 1.3.0
-  prosemirror-state:
-    specifier: ^1.4.2
-    version: 1.4.3
-  prosemirror-transform:
-    specifier: ^1.7.0
-    version: 1.8.0
-  prosemirror-view:
-    specifier: ^1.29.1
-    version: 1.33.1
-  purify-ts:
-    specifier: ^2.0.1
-    version: 2.0.3
-  randomcolor:
-    specifier: ^0.6.2
-    version: 0.6.2
-  raw-body:
-    specifier: ^2.5.1
-    version: 2.5.2
-  rbush:
-    specifier: ^3.0.1
-    version: 3.0.1
-  react:
-    specifier: ^18.2.0
-    version: 18.2.0
-  react-colorful:
-    specifier: ^5.5.1
-    version: 5.6.1(react-dom@18.2.0)(react@18.2.0)
-  react-dom:
-    specifier: ^18.2.0
-    version: 18.2.0(react@18.2.0)
-  react-hot-toast:
-    specifier: ^2.4.1
-    version: 2.4.1(csstype@3.1.3)(react-dom@18.2.0)(react@18.2.0)
-  react-hotkeys-hook:
-    specifier: 4.3.2
-    version: 4.3.2(react-dom@18.2.0)(react@18.2.0)
-  react-query:
-    specifier: ^3.39.2
-    version: 3.39.3(react-dom@18.2.0)(react@18.2.0)
-  react-responsive:
-    specifier: ^9.0.0
-    version: 9.0.2(react@18.2.0)
-  react-virtual:
-    specifier: ^2.10.4
-    version: 2.10.4(react@18.2.0)
-  reconnecting-eventsource:
-    specifier: ^1.5.1
-    version: 1.6.2
-  replicache:
-    specifier: ^12.2.1
-    version: 12.2.2
-  secure-password:
-    specifier: ^4.0.0
-    version: 4.0.0
-  strip-ansi:
-    specifier: ^6.0.0
-    version: 6.0.1
-  tailwindcss:
-    specifier: ^3.2.0
-    version: 3.4.1(ts-node@10.9.2)
-  topojson-client:
-    specifier: ^3.1.0
-    version: 3.1.0
-  topojson-server:
-    specifier: ^3.0.1
-    version: 3.0.1
-  ts-pattern:
-    specifier: ^4.0.5
-    version: 4.3.0
-  tslog:
-    specifier: 4.9.0
-    version: 4.9.0
-  type-fest:
-    specifier: ^4.0.0
-    version: 4.10.2
-  uuid:
-    specifier: ^9.0.0
-    version: 9.0.1
-  xlsx:
-    specifier: ^0.18.5
-    version: 0.18.5
-  xstate:
-    specifier: ^4.33.4
-    version: 4.38.3
-  zod:
-    specifier: ^3.20.2
-    version: 3.22.4
+importers:
 
-devDependencies:
-  '@mapbox/mapbox-gl-style-spec':
-    specifier: ^13.25.0
-    version: 13.28.0
-  '@testing-library/react':
-    specifier: ^14.0.0
-    version: 14.2.1(react-dom@18.2.0)(react@18.2.0)
-  '@testing-library/react-hooks':
-    specifier: ^8.0.1
-    version: 8.0.1(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
-  '@types/chance':
-    specifier: ^1.1.3
-    version: 1.1.6
-  '@types/d3-dsv':
-    specifier: ^2.0.1
-    version: 2.0.9
-  '@types/deep-freeze':
-    specifier: ^0.1.2
-    version: 0.1.5
-  '@types/flatbush':
-    specifier: ^3.3.0
-    version: 3.3.0
-  '@types/lodash':
-    specifier: ^4.14.184
-    version: 4.14.202
-  '@types/mapbox-gl':
-    specifier: ^2.7.5
-    version: 2.7.21
-  '@types/node':
-    specifier: ^20.11.16
-    version: 20.11.19
-  '@types/nodemailer':
-    specifier: ^6.4.5
-    version: 6.4.14
-  '@types/pg':
-    specifier: ^8.6.5
-    version: 8.11.0
-  '@types/preview-email':
-    specifier: 3.0.1
-    version: 3.0.1
-  '@types/proj4':
-    specifier: ^2.5.2
-    version: 2.5.5
-  '@types/randomcolor':
-    specifier: ^0.5.6
-    version: 0.5.9
-  '@types/rbush':
-    specifier: ^3.0.0
-    version: 3.0.3
-  '@types/topojson-client':
-    specifier: ^3.1.1
-    version: 3.1.4
-  '@types/topojson-server':
-    specifier: ^3.0.1
-    version: 3.0.4
-  '@types/uuid':
-    specifier: ^9.0.0
-    version: 9.0.8
-  '@types/wicg-file-system-access':
-    specifier: ^2020.9.5
-    version: 2020.9.8
-  '@typescript-eslint/eslint-plugin':
-    specifier: ^6.20.0
-    version: 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.56.0)(typescript@5.3.3)
-  '@typescript-eslint/parser':
-    specifier: ^6.20.0
-    version: 6.21.0(eslint@8.56.0)(typescript@5.3.3)
-  '@vitejs/plugin-react':
-    specifier: ^4.0.3
-    version: 4.2.1(vite@5.1.3)
-  chance:
-    specifier: ^1.1.8
-    version: 1.1.11
-  deep-freeze:
-    specifier: ^0.0.1
-    version: 0.0.1
-  eslint:
-    specifier: ^8.56.0
-    version: 8.56.0
-  eslint-config-next:
-    specifier: '14'
-    version: 14.1.0(eslint@8.56.0)(typescript@5.3.3)
-  eslint-config-prettier:
-    specifier: ^9.1.0
-    version: 9.1.0(eslint@8.56.0)
-  eslint-plugin-react:
-    specifier: ^7.33.2
-    version: 7.33.2(eslint@8.56.0)
-  eslint-plugin-react-hooks:
-    specifier: ^4.6.0
-    version: 4.6.0(eslint@8.56.0)
-  eslint-plugin-unused-imports:
-    specifier: ^3.0.0
-    version: 3.1.0(@typescript-eslint/eslint-plugin@6.21.0)(eslint@8.56.0)
-  fast-glob:
-    specifier: ^3.2.12
-    version: 3.3.2
-  fastestsmallesttextencoderdecoder:
-    specifier: ^1.0.22
-    version: 1.0.22
-  husky:
-    specifier: ^8.0.1
-    version: 8.0.3
-  jest-diff:
-    specifier: ^28.1.1
-    version: 28.1.3
-  jest-matcher-utils:
-    specifier: ^27.5.1
-    version: 27.5.1
-  jsdom:
-    specifier: ^20.0.3
-    version: 20.0.3
-  lint-staged:
-    specifier: 13.1.0
-    version: 13.1.0
-  mime:
-    specifier: ^3.0.0
-    version: 3.0.0
-  prettier:
-    specifier: ^2.7.1
-    version: 2.8.8
-  prettier-plugin-prisma:
-    specifier: '5'
-    version: 5.0.0(prettier@2.8.8)
-  pretty-quick:
-    specifier: 3.1.3
-    version: 3.1.3(prettier@2.8.8)
-  preview-email:
-    specifier: 3.0.7
-    version: 3.0.7
-  random-js:
-    specifier: ^2.1.0
-    version: 2.1.0
-  start-server-and-test:
-    specifier: ^2.0.0
-    version: 2.0.3
-  ts-node:
-    specifier: ^10.9.1
-    version: 10.9.2(@types/node@20.11.19)(typescript@5.3.3)
-  typescript:
-    specifier: '5'
-    version: 5.3.3
-  vite-tsconfig-paths:
-    specifier: ^4.0.3
-    version: 4.3.1(typescript@5.3.3)(vite@5.1.3)
-  vitest:
-    specifier: ^0.33.0
-    version: 0.33.0(jsdom@20.0.3)
-  webpack-bundle-analyzer:
-    specifier: ^4.6.0
-    version: 4.10.1
+  .: {}
+
+  packages/placemark-app:
+    dependencies:
+      '@aws-sdk/client-s3':
+        specifier: ^3.171.0
+        version: 3.515.0
+      '@blitzjs/auth':
+        specifier: 2.0.2
+        version: 2.0.2(blitz@2.0.2)(next@14.1.0)(secure-password@4.0.0)
+      '@blitzjs/next':
+        specifier: 2.0.2
+        version: 2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)(tslog@4.9.0)
+      '@blitzjs/rpc':
+        specifier: 2.0.2
+        version: 2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@codemirror/commands':
+        specifier: ^6.1.0
+        version: 6.3.3
+      '@codemirror/lang-json':
+        specifier: ^6.0.0
+        version: 6.0.1
+      '@codemirror/language':
+        specifier: ^6.2.1
+        version: 6.10.1
+      '@codemirror/lint':
+        specifier: ^6.0.0
+        version: 6.5.0
+      '@codemirror/state':
+        specifier: ^6.1.1
+        version: 6.4.0
+      '@codemirror/view':
+        specifier: ^6.2.1
+        version: 6.24.0
+      '@deck.gl/core':
+        specifier: ~8.8.14
+        version: 8.8.27
+      '@deck.gl/layers':
+        specifier: ~8.8.14
+        version: 8.8.27(@deck.gl/core@8.8.27)(@loaders.gl/core@3.4.14)(@luma.gl/core@8.5.21)
+      '@deck.gl/mapbox':
+        specifier: ~8.8.14
+        version: 8.8.27(@deck.gl/core@8.8.27)
+      '@dnd-kit/core':
+        specifier: ^6.0.5
+        version: 6.1.0(react-dom@18.2.0)(react@18.2.0)
+      '@dnd-kit/modifiers':
+        specifier: ^6.0.0
+        version: 6.0.1(@dnd-kit/core@6.1.0)(react@18.2.0)
+      '@dnd-kit/sortable':
+        specifier: ^7.0.1
+        version: 7.0.2(@dnd-kit/core@6.1.0)(react@18.2.0)
+      '@dnd-kit/utilities':
+        specifier: ^3.2.2
+        version: 3.2.2(react@18.2.0)
+      '@headlessui/react':
+        specifier: ^1.6.4
+        version: 1.7.18(react-dom@18.2.0)(react@18.2.0)
+      '@lezer/highlight':
+        specifier: ^1.0.0
+        version: 1.2.0
+      '@logtail/node':
+        specifier: ^0.4.5
+        version: 0.4.19
+      '@logtail/types':
+        specifier: ^0.4.5
+        version: 0.4.19
+      '@next/env':
+        specifier: ^14.1.0
+        version: 14.1.0
+      '@octokit/core':
+        specifier: ^4.0.5
+        version: 4.2.4
+      '@octokit/oauth-app':
+        specifier: ^4.0.8
+        version: 4.2.4
+      '@placemarkio/check-geojson':
+        specifier: 0.1.12
+        version: 0.1.12
+      '@placemarkio/flat-drop-files':
+        specifier: ^1.0.2
+        version: 1.0.2
+      '@placemarkio/geojson-rewind':
+        specifier: ^1.0.2
+        version: 1.0.2
+      '@placemarkio/osmtogeojson':
+        specifier: ^3.0.0-beta.6
+        version: 3.0.0-beta.6
+      '@placemarkio/polyline':
+        specifier: ^1.1.0
+        version: 1.2.0(@types/geojson@7946.0.14)
+      '@placemarkio/tokml':
+        specifier: 0.3.3
+        version: 0.3.3
+      '@placemarkio/turf-jsts':
+        specifier: ^2.8.2
+        version: 2.8.2
+      '@prisma/client':
+        specifier: ^5
+        version: 5.9.1(prisma@5.9.1)
+      '@radix-ui/react-accordion':
+        specifier: ^1.0.0
+        version: 1.1.2(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-alert-dialog':
+        specifier: ^1.0.2
+        version: 1.0.5(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-collapsible':
+        specifier: ^1.0.0
+        version: 1.0.3(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-context-menu':
+        specifier: ^2.0.1
+        version: 2.1.5(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-dialog':
+        specifier: ^1.0.0
+        version: 1.0.5(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-dropdown-menu':
+        specifier: ^2.0.1
+        version: 2.0.6(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-icons':
+        specifier: ^1.1.1
+        version: 1.3.0(react@18.2.0)
+      '@radix-ui/react-popover':
+        specifier: ^1.0.0
+        version: 1.0.7(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-portal':
+        specifier: ^1.0.0
+        version: 1.0.4(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-progress':
+        specifier: ^1.0.0
+        version: 1.0.3(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-select':
+        specifier: ^1.0.0
+        version: 1.2.2(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-slot':
+        specifier: ^1.0.0
+        version: 1.0.2(@types/react@18.0.0)(react@18.2.0)
+      '@radix-ui/react-switch':
+        specifier: ^1.0.0
+        version: 1.0.3(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-tabs':
+        specifier: ^1.0.0
+        version: 1.0.4(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-toggle-group':
+        specifier: ^1.0.0
+        version: 1.0.4(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-tooltip':
+        specifier: ^1.0.0
+        version: 1.0.7(@types/react-dom@18.2.19)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-rect':
+        specifier: ^1.0.0
+        version: 1.0.1(@types/react@18.0.0)(react@18.2.0)
+      '@radix-ui/rect':
+        specifier: ^1.0.0
+        version: 1.0.1
+      '@react-aria/interactions':
+        specifier: ^3.11.0
+        version: 3.21.1(react@18.2.0)
+      '@sentry/nextjs':
+        specifier: ^7.81.1
+        version: 7.101.1(next@14.1.0)(react@18.2.0)
+      '@tailwindcss/forms':
+        specifier: ^0.5.2
+        version: 0.5.7(tailwindcss@3.4.1)
+      '@tailwindcss/typography':
+        specifier: ^0.5.4
+        version: 0.5.10(tailwindcss@3.4.1)
+      '@tanstack/react-table':
+        specifier: ^8.5.22
+        version: 8.12.0(react-dom@18.2.0)(react@18.2.0)
+      '@tiptap/extension-image':
+        specifier: ^2.0.0-beta.30
+        version: 2.2.3(@tiptap/core@2.2.3)
+      '@tiptap/extension-link':
+        specifier: ^2.0.0-beta.42
+        version: 2.2.3(@tiptap/core@2.2.3)(@tiptap/pm@2.2.3)
+      '@tiptap/react':
+        specifier: ^2.0.0-beta.113
+        version: 2.2.3(@tiptap/core@2.2.3)(@tiptap/pm@2.2.3)(react-dom@18.2.0)(react@18.2.0)
+      '@tiptap/starter-kit':
+        specifier: ^2.0.0-beta.189
+        version: 2.2.3(@tiptap/pm@2.2.3)
+      '@tmcw/togeojson':
+        specifier: 5.6.0
+        version: 5.6.0(@types/geojson@7946.0.14)
+      '@turf/area':
+        specifier: ^6.5.0
+        version: 6.5.0
+      '@turf/bbox':
+        specifier: ^6.5.0
+        version: 6.5.0
+      '@turf/boolean-point-in-polygon':
+        specifier: ^6.5.0
+        version: 6.5.0
+      '@turf/center':
+        specifier: ^6.5.0
+        version: 6.5.0
+      '@turf/helpers':
+        specifier: ^6.5.0
+        version: 6.5.0
+      '@turf/length':
+        specifier: ^6.5.0
+        version: 6.5.0
+      '@turf/meta':
+        specifier: ^6.5.0
+        version: 6.5.0
+      '@types/d3-array':
+        specifier: ^2.0.0
+        version: 2.12.7
+      '@types/d3-color':
+        specifier: ^2.0.0
+        version: 2.0.6
+      '@types/d3-geo':
+        specifier: ^3.0.2
+        version: 3.1.0
+      '@types/geojson':
+        specifier: ^7946.0.10
+        version: 7946.0.14
+      '@types/polylabel':
+        specifier: ^1.0.5
+        version: 1.1.3
+      '@types/react':
+        specifier: 18.0.0
+        version: 18.0.0
+      '@types/react-dom':
+        specifier: ^18.0.4
+        version: 18.2.19
+      '@workos-inc/node':
+        specifier: ^2.12.0
+        version: 2.20.0
+      '@xmldom/xmldom':
+        specifier: ^0.8.2
+        version: 0.8.10
+      autoprefixer:
+        specifier: ^10.4.8
+        version: 10.4.17(postcss@8.4.35)
+      betterknown:
+        specifier: ^1.0.3
+        version: 1.0.3
+      blitz:
+        specifier: 2.0.2
+        version: 2.0.2(@babel/preset-env@7.23.9)(@types/node@20.11.19)(@types/react@18.0.0)(react@18.2.0)(typescript@5.3.3)
+      browser-fs-access:
+        specifier: ^0.33.0
+        version: 0.33.1
+      classed-components:
+        specifier: ^2.0.0
+        version: 2.0.1(react@18.2.0)
+      clsx:
+        specifier: ^1.2.1
+        version: 1.2.1
+      comlink:
+        specifier: ^4.3.1
+        version: 4.4.1
+      core-js:
+        specifier: ^3.31.0
+        version: 3.36.0
+      d3-array:
+        specifier: ^2.0.0
+        version: 2.12.1
+      d3-color:
+        specifier: ^2.0.0
+        version: 2.0.0
+      d3-dsv:
+        specifier: ^2.0.0
+        version: 2.0.0
+      d3-geo:
+        specifier: ^3.0.1
+        version: 3.1.0
+      date-fns:
+        specifier: ^2.29.3
+        version: 2.30.0
+      email-addresses:
+        specifier: ^5.0.0
+        version: 5.0.0
+      envsafe:
+        specifier: ^2.0.3
+        version: 2.0.3
+      fast-json-patch:
+        specifier: ^3.1.1
+        version: 3.1.1
+      fflate:
+        specifier: ^0.8.0
+        version: 0.8.2
+      flatbush:
+        specifier: ^3.3.0
+        version: 3.3.1
+      flatgeobuf:
+        specifier: ^3.22.2
+        version: 3.27.2(ol@8.2.0)
+      formik:
+        specifier: ^2.2.9
+        version: 2.4.5(react@18.2.0)
+      fractional-indexing:
+        specifier: ^2.0.0
+        version: 2.1.0
+      fuse.js:
+        specifier: ^6.6.2
+        version: 6.6.2
+      geometric:
+        specifier: ^2.5.0
+        version: 2.5.4
+      hasha:
+        specifier: ^5.2.2
+        version: 5.2.2
+      htmlparser2:
+        specifier: ^9.0.0
+        version: 9.1.0
+      jotai:
+        specifier: ^2.0.4
+        version: 2.6.4(@types/react@18.0.0)(react@18.2.0)
+      jotai-optics:
+        specifier: ^0.3.0
+        version: 0.3.2(jotai@2.6.4)(optics-ts@2.4.1)
+      jotai-xstate:
+        specifier: ^0.3.0
+        version: 0.3.0(jotai@2.6.4)(xstate@4.38.3)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      mapbox-gl:
+        specifier: ^2.13.0
+        version: 2.15.0
+      memoize-one:
+        specifier: ^6.0.0
+        version: 6.0.0
+      mproj:
+        specifier: ^0.0.35
+        version: 0.0.35
+      nanoid:
+        specifier: ^3.3.4
+        version: 3.3.7
+      next:
+        specifier: '14'
+        version: 14.1.0(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
+      nodemailer:
+        specifier: 6.x
+        version: 6.9.9
+      nodemailer-postmark-transport:
+        specifier: ^5.2.1
+        version: 5.3.0(nodemailer@6.9.9)
+      optics-ts:
+        specifier: ^2.4.0
+        version: 2.4.1
+      pg:
+        specifier: ^8.8.0
+        version: 8.11.3
+      polygon-clipping:
+        specifier: ^0.15.3
+        version: 0.15.7
+      polylabel:
+        specifier: ^1.1.0
+        version: 1.1.0
+      postcss:
+        specifier: ^8.4.16
+        version: 8.4.35
+      prisma:
+        specifier: ^5
+        version: 5.9.1
+      proj4:
+        specifier: ^2.8.0
+        version: 2.10.0
+      prosemirror-commands:
+        specifier: ^1.5.0
+        version: 1.5.2
+      prosemirror-dropcursor:
+        specifier: ^1.6.1
+        version: 1.8.1
+      prosemirror-gapcursor:
+        specifier: ^1.3.1
+        version: 1.3.2
+      prosemirror-history:
+        specifier: ^1.3.0
+        version: 1.3.2
+      prosemirror-keymap:
+        specifier: ^1.2.0
+        version: 1.2.2
+      prosemirror-model:
+        specifier: ^1.18.3
+        version: 1.19.4
+      prosemirror-schema-list:
+        specifier: ^1.2.2
+        version: 1.3.0
+      prosemirror-state:
+        specifier: ^1.4.2
+        version: 1.4.3
+      prosemirror-transform:
+        specifier: ^1.7.0
+        version: 1.8.0
+      prosemirror-view:
+        specifier: ^1.29.1
+        version: 1.33.1
+      purify-ts:
+        specifier: ^2.0.1
+        version: 2.0.3
+      randomcolor:
+        specifier: ^0.6.2
+        version: 0.6.2
+      raw-body:
+        specifier: ^2.5.1
+        version: 2.5.2
+      rbush:
+        specifier: ^3.0.1
+        version: 3.0.1
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-colorful:
+        specifier: ^5.5.1
+        version: 5.6.1(react-dom@18.2.0)(react@18.2.0)
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-hot-toast:
+        specifier: ^2.4.1
+        version: 2.4.1(csstype@3.1.3)(react-dom@18.2.0)(react@18.2.0)
+      react-hotkeys-hook:
+        specifier: 4.3.2
+        version: 4.3.2(react-dom@18.2.0)(react@18.2.0)
+      react-query:
+        specifier: ^3.39.2
+        version: 3.39.3(react-dom@18.2.0)(react@18.2.0)
+      react-responsive:
+        specifier: ^9.0.0
+        version: 9.0.2(react@18.2.0)
+      react-virtual:
+        specifier: ^2.10.4
+        version: 2.10.4(react@18.2.0)
+      reconnecting-eventsource:
+        specifier: ^1.5.1
+        version: 1.6.2
+      replicache:
+        specifier: ^12.2.1
+        version: 12.2.2
+      secure-password:
+        specifier: ^4.0.0
+        version: 4.0.0
+      strip-ansi:
+        specifier: ^6.0.0
+        version: 6.0.1
+      tailwindcss:
+        specifier: ^3.2.0
+        version: 3.4.1(ts-node@10.9.2)
+      topojson-client:
+        specifier: ^3.1.0
+        version: 3.1.0
+      topojson-server:
+        specifier: ^3.0.1
+        version: 3.0.1
+      ts-pattern:
+        specifier: ^4.0.5
+        version: 4.3.0
+      tslog:
+        specifier: 4.9.0
+        version: 4.9.0
+      type-fest:
+        specifier: ^4.0.0
+        version: 4.10.2
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.1
+      xlsx:
+        specifier: ^0.18.5
+        version: 0.18.5
+      xstate:
+        specifier: ^4.33.4
+        version: 4.38.3
+      zod:
+        specifier: ^3.20.2
+        version: 3.22.4
+    devDependencies:
+      '@mapbox/mapbox-gl-style-spec':
+        specifier: ^13.25.0
+        version: 13.28.0
+      '@testing-library/react':
+        specifier: ^14.0.0
+        version: 14.2.1(react-dom@18.2.0)(react@18.2.0)
+      '@testing-library/react-hooks':
+        specifier: ^8.0.1
+        version: 8.0.1(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@types/chance':
+        specifier: ^1.1.3
+        version: 1.1.6
+      '@types/d3-dsv':
+        specifier: ^2.0.1
+        version: 2.0.9
+      '@types/deep-freeze':
+        specifier: ^0.1.2
+        version: 0.1.5
+      '@types/flatbush':
+        specifier: ^3.3.0
+        version: 3.3.0
+      '@types/lodash':
+        specifier: ^4.14.184
+        version: 4.14.202
+      '@types/mapbox-gl':
+        specifier: ^2.7.5
+        version: 2.7.21
+      '@types/node':
+        specifier: ^20.11.16
+        version: 20.11.19
+      '@types/nodemailer':
+        specifier: ^6.4.5
+        version: 6.4.14
+      '@types/pg':
+        specifier: ^8.6.5
+        version: 8.11.0
+      '@types/preview-email':
+        specifier: 3.0.1
+        version: 3.0.1
+      '@types/proj4':
+        specifier: ^2.5.2
+        version: 2.5.5
+      '@types/randomcolor':
+        specifier: ^0.5.6
+        version: 0.5.9
+      '@types/rbush':
+        specifier: ^3.0.0
+        version: 3.0.3
+      '@types/topojson-client':
+        specifier: ^3.1.1
+        version: 3.1.4
+      '@types/topojson-server':
+        specifier: ^3.0.1
+        version: 3.0.4
+      '@types/uuid':
+        specifier: ^9.0.0
+        version: 9.0.8
+      '@types/wicg-file-system-access':
+        specifier: ^2020.9.5
+        version: 2020.9.8
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.20.0
+        version: 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.56.0)(typescript@5.3.3)
+      '@typescript-eslint/parser':
+        specifier: ^6.20.0
+        version: 6.21.0(eslint@8.56.0)(typescript@5.3.3)
+      '@vitejs/plugin-react':
+        specifier: ^4.0.3
+        version: 4.2.1(vite@5.1.3)
+      chance:
+        specifier: ^1.1.8
+        version: 1.1.11
+      deep-freeze:
+        specifier: ^0.0.1
+        version: 0.0.1
+      eslint:
+        specifier: ^8.56.0
+        version: 8.56.0
+      eslint-config-next:
+        specifier: '14'
+        version: 14.1.0(eslint@8.56.0)(typescript@5.3.3)
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@8.56.0)
+      eslint-plugin-react:
+        specifier: ^7.33.2
+        version: 7.33.2(eslint@8.56.0)
+      eslint-plugin-react-hooks:
+        specifier: ^4.6.0
+        version: 4.6.0(eslint@8.56.0)
+      eslint-plugin-unused-imports:
+        specifier: ^3.0.0
+        version: 3.1.0(@typescript-eslint/eslint-plugin@6.21.0)(eslint@8.56.0)
+      fast-glob:
+        specifier: ^3.2.12
+        version: 3.3.2
+      fastestsmallesttextencoderdecoder:
+        specifier: ^1.0.22
+        version: 1.0.22
+      jest-diff:
+        specifier: ^28.1.1
+        version: 28.1.3
+      jest-matcher-utils:
+        specifier: ^27.5.1
+        version: 27.5.1
+      jsdom:
+        specifier: ^20.0.3
+        version: 20.0.3
+      lint-staged:
+        specifier: 13.1.0
+        version: 13.1.0
+      mime:
+        specifier: ^3.0.0
+        version: 3.0.0
+      prettier:
+        specifier: ^2.7.1
+        version: 2.8.8
+      prettier-plugin-prisma:
+        specifier: '5'
+        version: 5.0.0(prettier@2.8.8)
+      pretty-quick:
+        specifier: 3.1.3
+        version: 3.1.3(prettier@2.8.8)
+      preview-email:
+        specifier: 3.0.7
+        version: 3.0.7
+      random-js:
+        specifier: ^2.1.0
+        version: 2.1.0
+      start-server-and-test:
+        specifier: ^2.0.0
+        version: 2.0.3
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.2(@types/node@20.11.19)(typescript@5.3.3)
+      typescript:
+        specifier: '5'
+        version: 5.3.3
+      vite-tsconfig-paths:
+        specifier: ^4.0.3
+        version: 4.3.1(typescript@5.3.3)(vite@5.1.3)
+      vitest:
+        specifier: ^0.33.0
+        version: 0.33.0(jsdom@20.0.3)
+      webpack-bundle-analyzer:
+        specifier: ^4.6.0
+        version: 4.10.1
 
 packages:
 
@@ -11475,12 +11476,6 @@ packages:
   /human-signals@3.0.1:
     resolution: {integrity: sha512-rQLskxnM/5OCldHo+wNXbpVgDn5A17CUoKX+7Sokwaknlq7CdSnphy0W39GU8dw59XiCXmFXDg4fRuckQRKewQ==}
     engines: {node: '>=12.20.0'}
-    dev: true
-
-  /husky@8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
-    engines: {node: '>=14'}
-    hasBin: true
     dev: true
 
   /hyphenate-style-name@1.0.4:
