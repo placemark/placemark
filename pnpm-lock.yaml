@@ -13,7 +13,7 @@ dependencies:
     version: 2.0.2(blitz@2.0.2)(next@14.1.0)(secure-password@4.0.0)
   '@blitzjs/next':
     specifier: 2.0.2
-    version: 2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)(tslog@4.9.0)
+    version: 2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)(tslog@4.9.2)
   '@blitzjs/rpc':
     specifier: 2.0.2
     version: 2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)
@@ -446,6 +446,9 @@ dependencies:
   ts-pattern:
     specifier: ^4.0.5
     version: 4.3.0
+  tslog:
+    specifier: ^4.9.2
+    version: 4.9.2
   type-fest:
     specifier: ^4.0.0
     version: 4.10.2
@@ -3455,7 +3458,7 @@ packages:
       zod: 3.20.2
     dev: false
 
-  /@blitzjs/next@2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)(tslog@4.9.0):
+  /@blitzjs/next@2.0.2(@tanstack/query-core@4.24.4)(blitz@2.0.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)(tslog@4.9.2):
     resolution: {integrity: sha512-a+r/Ss5x4It/EgvKxsOtZxn7+wKmgUDu0m1nxRkDNrhpXJJmlTarrQbY5BpiPS8zAZBs13o5sEPKJUn956vFSQ==}
     requiresBuild: true
     peerDependencies:
@@ -3474,7 +3477,7 @@ packages:
       react: 18.2.0
       superjson: 1.11.0
       supports-color: 8.1.1
-      tslog: 4.9.0
+      tslog: 4.9.2
     transitivePeerDependencies:
       - '@tanstack/query-core'
       - react-dom
@@ -15970,6 +15973,11 @@ packages:
 
   /tslog@4.9.0:
     resolution: {integrity: sha512-YEb55YxukbKO0bSAAsd9eSnw6RA0e3jt3cniZ00wj9offySAbp20lBrjOh1OTn11L51r58V4kFy8h7dMPnbpmg==}
+    engines: {node: '>=16'}
+    dev: false
+
+  /tslog@4.9.2:
+    resolution: {integrity: sha512-wBM+LRJoNl34Bdu8mYEFxpvmOUedpNUwMNQB/NcuPIZKwdDde6xLHUev3bBjXQU7gdurX++X/YE7gLH8eXYsiQ==}
     engines: {node: '>=16'}
     dev: false
 
