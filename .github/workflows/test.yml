@@ -76,7 +76,7 @@ jobs:
         run: pnpm blitz prisma migrate dev
       - name: Lint
         run: |
-          pnpm run lint
+          pnpm -r run lint
       - name: Run tests with coverage
         run: |
-          pnpm run test
+          pnpm -r run test
