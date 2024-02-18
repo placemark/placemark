@@ -74,6 +74,7 @@ jobs:
           pnpm i
       - name: Migrate DB & generate prisma client
         run: pnpm blitz prisma migrate dev
+        working-directory: packages/placemark-app
       - name: Lint
         run: |
           pnpm -r run lint
