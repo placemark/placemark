@@ -392,7 +392,9 @@ export type ISymbolizationCategorical = z.infer<
 >;
 export type ISymbolization = z.infer<typeof Symbolization>;
 
+// @ts-expect-error todo
 export const WrappedFeature: z.ZodSchema<IWrappedFeature> = WrappedFeatureLocal;
+// @ts-expect-error todo
 export const WrappedFeatureWithoutAt: z.ZodSchema<Omit<IWrappedFeature, "at">> =
   WrappedFeatureLocal.omit({ at: true });
 

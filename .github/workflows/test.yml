@@ -47,16 +47,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - uses: actions/cache@v4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        name: Setup pnpm cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-store-
       - uses: actions/cache@v4
         id: cache-next
         with:
@@ -68,12 +71,12 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
       - name: Install packages
         run: |
-          yarn install --frozen-lockfile
+          pnpm i
       - name: Migrate DB & generate prisma client
-        run: yarn blitz prisma migrate dev
+        run: pnpm blitz prisma migrate dev
       - name: Lint
         run: |
-          yarn lint
+          pnpm run lint
       - name: Run tests with coverage
         run: |
-          yarn test
+          pnpm run test

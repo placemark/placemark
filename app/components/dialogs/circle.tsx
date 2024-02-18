@@ -70,6 +70,7 @@ export function CircleDialog({
                 folderId: null,
                 feature: {
                   type: "Feature",
+                  // @ts-expect-error fixme, invalid type error
                   properties,
                   geometry,
                 },

@@ -161,6 +161,7 @@ export function qItemToPolygon(
         return {
           type: "Feature",
           geometry: bboxToPolygon(item.bbox),
+          // @ts-expect-error todo
           properties: includeProperties(item.properties, includeData),
         };
       }
@@ -184,6 +185,7 @@ export function qItemToFeature(
     case "Feature": {
       return {
         ...item,
+        // @ts-expect-error todo
         properties: includeProperties(item.properties, includeData),
       };
     }

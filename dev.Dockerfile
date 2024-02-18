@@ -11,10 +11,15 @@ RUN apt-get update \
   &&  rm -rf /var/lib/apt/lists/* \
   && chown -R node:node /home/node/app
 
+# This has to happen before USER node, because after
+# that line, we don't have permission to run corepack enable.
+RUN corepack enable
+
 USER node
 
 # Install dependencies based on the preferred package manager
-COPY  --chown=node:node package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY --chown=node:node package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+
 RUN \
   if [ -f yarn.lock ]; then yarn config list && yarn install --frozen-lockfile && yarn cache clean --force; \
   elif [ -f package-lock.json ]; then npm ci; \
