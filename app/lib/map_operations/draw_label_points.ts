@@ -37,12 +37,14 @@ export function drawLabelPoints(wrappedFeatures: IWrappedFeature[]): {
         switch (geometry.type) {
           case "MultiPolygon": {
             return geometry.coordinates.map((polygon) => {
+              // @ts-expect-error todo
               const center = polylabel(polygon) as Pos2;
               return centroidFeature(wrappedFeature, center);
             });
             break;
           }
           case "Polygon": {
+            // @ts-expect-error todo
             const center = polylabel(geometry.coordinates) as Pos2;
             return centroidFeature(wrappedFeature, center);
             break;
