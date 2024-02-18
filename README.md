@@ -47,12 +47,10 @@ Railway, Heroku, or Flightcontrol. It might also work on Fly.io.
 
 ### Installation
 
-This project is built with [yarn](https://github.com/yarnpkg/yarn)
-and last tested with version `1.22.19` of yarn. There's a lockfile
-for yarn. Installing with npm or another package manager will yield
+This project is built with [pnpm](https://pnpm.io/)
+and last tested with version 8.11.0 of pnpm. There's a lockfile
+for pnpm. Installing with npm or another package manager will yield
 different, and potentially broken, dependencies.
-
-I'm open to switching to npm if there is a PR submitted.
 
 #### Database setup for local development
 
@@ -72,15 +70,14 @@ sudo apt install postgresql
 sudo systemctl start postgresql.service
 ```
 
-Update these settings in .env: 
+Update these settings in .env:
 
 ```
 # DATABASE_URL=postgres://postgres:postgres@localhost:5432/placemark
 # POSTGRES_HOST=localhost
 ```
 
-Then: 
-
+Then:
 
 ```
 createdb placemark
@@ -90,7 +87,6 @@ psql -c "GRANT ALL PRIVILEGES ON DATABASE placemark TO postgres;" placemark
 # Create the database schema
 npx prisma migrate reset
 ```
-
 
 ### Environment variables
 

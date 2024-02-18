@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   db:
     image: postgres:16.1
@@ -23,7 +23,7 @@ services:
     volumes:
       - .:/app
     user: node
-    command: /bin/sh -c 'blitz prisma migrate deploy  && blitz prisma generate && yarn dev'
+    command: /bin/sh -c 'blitz prisma migrate deploy  && blitz prisma generate && pnpm run dev'
     ports:
       - 3000:3000
     depends_on:
@@ -36,8 +36,8 @@ services:
     restart: unless-stopped
     command: >
       /bin/sh -c '
-        yarn prisma migrate dev &&
-        yarn studio
+        pnpm run prisma migrate dev &&
+        pnpm run studio
       '
     ports:
       - 5555:5555
