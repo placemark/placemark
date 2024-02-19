@@ -3,42 +3,20 @@ import React, { memo } from "react";
 import { FileInfo } from "app/components/file_info";
 import {
   EnvelopeClosedIcon,
-  GitHubLogoIcon,
   KeyboardIcon,
   LockClosedIcon,
   ReaderIcon,
   Share1Icon,
-  SymbolIcon,
 } from "@radix-ui/react-icons";
 import { MemoryInfo } from "app/components/map_info/memory_info";
 import { usePersistence } from "app/lib/persistence/context";
 import type { IPresence } from "types";
-import * as T from "@radix-ui/react-tooltip";
 import * as DD from "@radix-ui/react-dropdown-menu";
-import * as P from "@radix-ui/react-popover";
-import { formatCount } from "app/lib/utils";
-import {
-  Button,
-  PlacemarkIcon,
-  DDContent,
-  StyledItem,
-  StyledTooltipArrow,
-  TContent,
-  StyledPopoverContent,
-  CopiableURL,
-  StyledPopoverArrow,
-} from "./elements";
-import {
-  followPresenceAtom,
-  dialogAtom,
-  syncingMachineAtom,
-} from "state/jotai";
+import { Button, PlacemarkIcon, DDContent, StyledItem } from "./elements";
+import { dialogAtom } from "state/jotai";
 import { colorFromPresence } from "app/lib/color";
-import { useAtom, useSetAtom } from "jotai";
-import { usePresences } from "app/lib/persistence/shared";
+import { useSetAtom } from "jotai";
 import { MenuBarDropdown } from "./menu_bar/menu_bar_dropdown";
-import { DDSeparator } from "app/components/elements";
-import { gistUrlFromId } from "app/lib/api";
 
 export function MenuBarFallback() {
   return <div className="h-12 bg-gray-800"></div>;
@@ -50,7 +28,7 @@ function WrappedFeatureCollectionInfo() {
   return (
     <>
       <Link
-        href={Routes.PlacemarkIndex()}
+        href="/"
         className="py-1 pl-1 pr-2
           dark:hover:bg-gray-700
           focus-visible:ring-1 focus-visible:ring-purple-300

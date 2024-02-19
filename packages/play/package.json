@@ -1,5 +1,5 @@
 {
-  "name": "placemark",
+  "name": "@placemarkio/play",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -22,7 +22,6 @@
     "not ie 11"
   ],
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.171.0",
     "@codemirror/commands": "^6.1.0",
     "@codemirror/lang-json": "^6.0.0",
     "@codemirror/language": "^6.2.1",
@@ -50,7 +49,6 @@
     "@placemarkio/polyline": "^1.1.0",
     "@placemarkio/tokml": "0.3.3",
     "@placemarkio/turf-jsts": "^2.8.2",
-    "@prisma/client": "^5",
     "@radix-ui/react-accordion": "^1.0.0",
     "@radix-ui/react-alert-dialog": "^1.0.2",
     "@radix-ui/react-collapsible": "^1.0.0",
@@ -93,7 +91,6 @@
     "@types/polylabel": "^1.0.5",
     "@types/react": "18.0.0",
     "@types/react-dom": "^18.0.4",
-    "@workos-inc/node": "^2.12.0",
     "@xmldom/xmldom": "^0.8.2",
     "autoprefixer": "^10.4.8",
     "betterknown": "^1.0.3",
@@ -131,11 +128,9 @@
     "nodemailer": "6.x",
     "nodemailer-postmark-transport": "^5.2.1",
     "optics-ts": "^2.4.0",
-    "pg": "^8.8.0",
     "polygon-clipping": "^0.15.3",
     "polylabel": "^1.1.0",
     "postcss": "^8.4.16",
-    "prisma": "^5",
     "proj4": "^2.8.0",
     "prosemirror-commands": "^1.5.0",
     "prosemirror-dropcursor": "^1.6.1",
