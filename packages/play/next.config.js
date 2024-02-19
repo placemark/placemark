@@ -1,8 +1,6 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const { withSentryConfig } = require("@sentry/nextjs");
-
 const SentryWebpackPluginOptions = {
   silent: true,
 };
@@ -66,9 +64,5 @@ let config = {
     ignoreDuringBuilds: true,
   },
 };
-
-if (isProduction) {
-  config = withSentryConfig(config, SentryWebpackPluginOptions);
-}
 
 module.exports = config;
