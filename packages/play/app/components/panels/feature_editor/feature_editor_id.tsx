@@ -2,7 +2,7 @@ import React from "react";
 import { usePersistence } from "app/lib/persistence/context";
 import type { IWrappedFeature } from "types";
 import { PanelDetailsCollapsible } from "app/components/panel_details";
-import { dialogAtom, panelIdOpen } from "state/jotai";
+import { panelIdOpen } from "state/jotai";
 import {
   Button,
   inputClass,
@@ -10,12 +10,8 @@ import {
   StyledLabelSpan,
 } from "app/components/elements";
 import { Formik, Form } from "formik";
-import * as Sentry from "@sentry/nextjs";
 import toast from "react-hot-toast";
-import { CopyIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import { getAPIURLFeature } from "app/lib/api";
-import { writeToClipboard } from "app/lib/utils";
-import { useSetAtom } from "jotai";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 
 export function FeatureEditorId({
   wrappedFeature,
@@ -23,25 +19,7 @@ export function FeatureEditorId({
   wrappedFeature: IWrappedFeature;
 }) {
   const rep = usePersistence();
-  const [meta] = rep.useMetadata();
   const transact = rep.useTransact();
-  const setDialog = useSetAtom(dialogAtom);
-
-  async function copyAPI() {
-    if (meta.type !== "persisted") {
-      toast.error("Attempted to copy API, but this map isn’t saved");
-      return;
-    }
-    const apiURL = getAPIURLFeature(meta, wrappedFeature.id);
-    await writeToClipboard(apiURL)
-      .then(() => {
-        toast("Copied");
-      })
-      .catch((e) => {
-        Sentry.captureException(e);
-        toast.error("Failed to copy. Try again?");
-      });
-  }
 
   return (
     <PanelDetailsCollapsible title="ID" atom={panelIdOpen}>
@@ -107,46 +85,6 @@ export function FeatureEditorId({
             readOnly
             aria-label="System ID"
           />
-          {meta.type === "persisted" ? (
-            <>
-              <StyledLabelSpan size="xs">API</StyledLabelSpan>
-              {meta.access === "PUBLIC" ? (
-                <div className="flex items-stretch gap-x-2">
-                  <input
-                    className={inputClass({ _size: "xs" })}
-                    value={getAPIURLFeature(meta, wrappedFeature.id)}
-                  />
-                  <Button
-                    type="button"
-                    size="xs"
-                    onClick={() => {
-                      void copyAPI();
-                    }}
-                  >
-                    <CopyIcon className="w-3 h-3" />
-                    Copy
-                  </Button>
-                </div>
-              ) : (
-                <div
-                  className="flex items-center
-                  justify-between
-                  text-xs
-      text-gray-700 dark:text-gray-300"
-                >
-                  API disabled on private maps
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setDialog({ type: "api" });
-                    }}
-                  >
-                    Settings
-                  </Button>
-                </div>
-              )}
-            </>
-          ) : null}
         </div>
         <div className="pt-2 text-right">
           <a
