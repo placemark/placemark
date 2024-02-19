@@ -13,25 +13,8 @@ export type DialogStateImport = {
   files: FileGroups;
 };
 
-export type DialogStateReauth = {
-  type: "reauth";
-  resolve: (value: any) => void;
-};
-
-export type DialogStatePlay = {
-  type: "play-intro";
-};
-
 export type DialogStateExportSVG = {
   type: "export-svg";
-};
-
-export type DialogStateAPI = {
-  type: "api";
-};
-
-export type DialogStateGist = {
-  type: "gist";
 };
 
 export type DialogStateCircle = {
@@ -50,20 +33,6 @@ export type DialogStateImportNotes = {
 
 export type DialogStateExportCode = {
   type: "export_code";
-};
-
-export type DialogStateRenameFolder = {
-  type: "rename_folder";
-  id: string;
-  name: string;
-  folderId: string | null;
-};
-
-export type DialogStateRenameMap = {
-  type: "rename_map";
-  id: string;
-  name: string;
-  description: string;
 };
 
 export type DialogStateCastProperty = {
@@ -87,19 +56,13 @@ export type DialogStateLoadText = {
 };
 
 export type DialogState =
-  | DialogStateReauth
-  | DialogStateAPI
   | DialogStateImport
   | DialogStateImportNotes
   | DialogStateCastProperty
-  | DialogStateRenameMap
-  | DialogStateRenameFolder
   | DialogStateSimplify
   | DialogStateBuffer
-  | DialogStateGist
   | DialogStateCircle
   | DialogStateExamples
-  | DialogStatePlay
   | DialogStateExportCode
   | {
       type: "circle_types";

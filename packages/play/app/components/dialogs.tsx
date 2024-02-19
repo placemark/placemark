@@ -97,10 +97,6 @@ const CheatsheetDialog = dynamic<Record<string, never>>(
   }
 );
 
-const PlayDialog = dynamic<{
-  onClose: () => void;
-}>(() => import("app/components/dialogs/play").then((r) => r.PlayDialog));
-
 const QuickswitcherDialog = dynamic<{
   onClose: () => void;
 }>(
@@ -213,8 +209,6 @@ export const Dialogs = memo(function Dialogs() {
       <ExportSVGDialog onClose={onClose} modal={modal} />
     ))
     .with({ type: "from_url" }, () => <ImportURLDialog onClose={onClose} />)
-    .with({ type: "api" }, () => <APIDialog onClose={onClose} />)
-    .with({ type: "play-intro" }, () => <PlayDialog onClose={onClose} />)
     .with({ type: "import_example" }, () => (
       <ImportExampleDialog onClose={onClose} />
     ))

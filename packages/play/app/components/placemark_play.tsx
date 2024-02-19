@@ -102,15 +102,6 @@ export function PlacemarkPlay() {
     })
   );
 
-  useEffect(() => {
-    if (!hasSeenModal) {
-      setDialogState({
-        type: "play-intro",
-      });
-      setHasSeenModal(true);
-    }
-  }, [hasSeenModal, setDialogState, setHasSeenModal]);
-
   const [persistentTransform, setPersistentTransform] = useAtom(
     persistentTransformAtom
   );
