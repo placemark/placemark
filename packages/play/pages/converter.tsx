@@ -1,10 +1,9 @@
 import Head from "next/head";
-import { BlitzPage } from "@blitzjs/next";
 import Layout from "app/core/layouts/Layout";
 import { Converter } from "app/components/converter";
 import { formatTitle } from "app/lib/utils";
 
-const PlacemarkConverter: BlitzPage = () => {
+const PlacemarkConverter = () => {
   return (
     <>
       <Head>

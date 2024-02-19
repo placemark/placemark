@@ -2,7 +2,6 @@ import { atom } from "jotai";
 import { atomWithStorage, selectAtom } from "jotai/utils";
 import type { FileSystemHandle } from "browser-fs-access";
 import type { SetOptional } from "type-fest";
-import type { MapboxLayer } from "@prisma/client";
 import {
   FeatureMap,
   FolderMap,
@@ -23,6 +22,9 @@ import { createMachine } from "xstate";
 import { QItemAddable } from "app/lib/geocode";
 import { PersistenceMetadataMemory } from "app/lib/persistence/ipersistence";
 import { ScaleUnit } from "app/lib/constants";
+
+// TODO: make this specific
+type MapboxLayer = any;
 
 interface FileInfo {
   handle: FileSystemHandle | FileSystemFileHandle;
@@ -190,7 +192,6 @@ export const followPresenceAtom = atom<IPresence | null>(null);
 export { dialogAtom as dialogAtom } from "state/dialog_state";
 export type {
   DialogStateImport as ModalStateImport,
-  DialogStateRenameMap as ModalStateRenameMap,
   DialogStateCastProperty as ModalStateCastProperty,
 } from "state/dialog_state";
 
