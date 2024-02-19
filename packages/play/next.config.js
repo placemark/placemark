@@ -1,7 +1,11 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
+/**
+ * @type {import('next').NextConfig}
+ */
 let config = {
+  output: "export",
   productionBrowserSourceMaps: true,
   compress: false,
   swcMinify: true,
