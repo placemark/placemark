@@ -12,7 +12,6 @@ import React, {
   Suspense,
   useCallback,
   useContext,
-  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -39,14 +38,8 @@ import {
   ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
 import { Button, StyledTooltipArrow, TContent } from "./elements";
-import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import {
-  dialogAtom,
-  seenPlayModal,
-  splitsAtom,
-  tabAtom,
-  TabOption,
-} from "state/jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
+import { splitsAtom, tabAtom, TabOption } from "state/jotai";
 import clsx from "clsx";
 import {
   DndContext,
@@ -74,8 +67,6 @@ const persistentTransformAtom = atom<Transform>({
 export function PlacemarkPlay() {
   const [map, setMap] = useState<PMap | null>(null);
   useWindowResizeSplits();
-  const [hasSeenModal, setHasSeenModal] = useAtom(seenPlayModal);
-  const setDialogState = useSetAtom(dialogAtom);
   const splits = useAtomValue(splitsAtom);
   const isBigScreen = useBigScreen();
 

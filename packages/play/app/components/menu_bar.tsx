@@ -5,17 +5,13 @@ import {
   EnvelopeClosedIcon,
   GitHubLogoIcon,
   KeyboardIcon,
-  LockClosedIcon,
   ReaderIcon,
-  Share1Icon,
 } from "@radix-ui/react-icons";
 import { MemoryInfo } from "app/components/map_info/memory_info";
 import { usePersistence } from "app/lib/persistence/context";
-import type { IPresence } from "types";
 import * as DD from "@radix-ui/react-dropdown-menu";
 import { Button, PlacemarkIcon, DDContent, StyledItem } from "./elements";
 import { dialogAtom } from "state/jotai";
-import { colorFromPresence } from "app/lib/color";
 import { useSetAtom } from "jotai";
 import { MenuBarDropdown } from "./menu_bar/menu_bar_dropdown";
 
@@ -80,7 +76,6 @@ export const MenuBar = memo(function MenuBar() {
       <div className="flex items-center">
         <WrappedFeatureCollectionInfo />
         <FileInfo />
-        <ShareInfo />
       </div>
       <div className="flex items-center gap-x-2">
         <MenuBarDropdown />

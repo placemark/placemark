@@ -71,9 +71,6 @@ export type DialogState =
       type: "quickswitcher";
     }
   | {
-      type: "quickswitcher_index";
-    }
-  | {
       type: "cheatsheet";
     }
   | {

@@ -2,10 +2,8 @@ import * as E from "app/components/elements";
 import { useQuery } from "react-query";
 import toast from "react-hot-toast";
 import noop from "lodash/noop";
-import * as Sentry from "@sentry/nextjs";
 import useResettable from "app/hooks/use_resettable";
 import isObject from "lodash/isObject";
-import { z } from "zod";
 import {
   PropertyPair,
   OnChangeValue,
@@ -292,18 +290,6 @@ function RichTextEditor(props: PropertyInputProps) {
     },
   });
 }
-
-const CFImageResult = z
-  .object({
-    result: z
-      .object({
-        filename: z.string(),
-        id: z.string(),
-        variants: z.array(z.string()),
-      })
-      .passthrough(),
-  })
-  .passthrough();
 
 function classToolbarButton({ active }: { active: boolean }) {
   return clsx([

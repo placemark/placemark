@@ -61,8 +61,7 @@ type Mode =
   | "custom"
   | "custom-xyz"
   | "custom-mapbox"
-  | "custom-tilejson"
-  | "custom-copy";
+  | "custom-tilejson";
 
 const layerModeAtom = atom<Mode>("initial");
 
@@ -553,10 +552,6 @@ function AddLayer() {
                       TileJSON
                       <CaretRightIcon />
                     </E.Button>
-                    <E.Button onClick={() => setMode("custom-copy")}>
-                      Copy from another map
-                      <CaretRightIcon />
-                    </E.Button>
                   </div>
                 </div>
               ))
@@ -573,11 +568,6 @@ function AddLayer() {
               .with("custom-tilejson", () => (
                 <div className="p-3">
                   <TileJSONLayer onDone={() => setOpen(false)} />
-                </div>
-              ))
-              .with("custom-copy", () => (
-                <div className="p-3">
-                  <CopyLayer onDone={() => setOpen(false)} />
                 </div>
               ))
               .exhaustive()}

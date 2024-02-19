@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { dialogAtom, momentLogAtom } from "state/jotai";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useOpenFiles } from "app/hooks/use_open_files";
@@ -15,7 +14,6 @@ import {
 } from "app/components/elements";
 import React from "react";
 import { usePersistence } from "app/lib/persistence/context";
-import toast from "react-hot-toast";
 
 function UndoList() {
   const rep = usePersistence();
@@ -66,10 +64,7 @@ function UndoList() {
 }
 
 export function MenuBarDropdown() {
-  const router = useRouter();
   const openFiles = useOpenFiles();
-  const rep = usePersistence();
-  const [meta] = rep.useMetadata();
   const setDialogState = useSetAtom(dialogAtom);
 
   return (

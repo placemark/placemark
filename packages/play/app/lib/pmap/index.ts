@@ -32,7 +32,6 @@ import type {
 } from "types";
 import { makeRectangle } from "app/lib/pmap/merge_ephemeral_state";
 import { colorFromPresence } from "app/lib/color";
-import type { Presence } from "@prisma/client";
 import { IDMap } from "app/lib/id_mapper";
 import { shallowArrayEqual } from "app/lib/utils";
 import { MapboxOverlay } from "@deck.gl/mapbox/typed";
@@ -120,7 +119,6 @@ export default class PMap {
   constructor({
     element,
     layerConfigs,
-    lastPresence,
     handlers,
     previewProperty,
     symbolization,
@@ -129,7 +127,6 @@ export default class PMap {
   }: {
     element: HTMLDivElement;
     layerConfigs: LayerConfigMap;
-    lastPresence: Presence | BBox4 | null;
     handlers: React.MutableRefObject<PMapHandlers>;
     symbolization: ISymbolization;
     previewProperty: PreviewProperty;
@@ -137,23 +134,9 @@ export default class PMap {
     controlsCorner?: Parameters<mapboxgl.Map["addControl"]>[1];
   }) {
     this.idMap = idMap;
-    const positionOptions = lastPresence
-      ? Array.isArray(lastPresence)
-        ? {
-            bounds: mapboxgl.LngLatBounds.convert(lastPresence),
-            fitBoundsOptions: { padding: 20 },
-          }
-        : {
-            bounds: mapboxgl.LngLatBounds.convert([
-              [lastPresence.minx, lastPresence.miny],
-              [lastPresence.maxx, lastPresence.maxy],
-            ]),
-            pitch: lastPresence.pitch,
-            bearing: lastPresence.bearing,
-          }
-      : {
-          bounds: DEFAULT_MAP_BOUNDS as mapboxgl.LngLatBoundsLike,
-        };
+    const positionOptions = {
+      bounds: DEFAULT_MAP_BOUNDS as mapboxgl.LngLatBoundsLike,
+    };
 
     const map = new mapboxgl.Map({
       container: element,

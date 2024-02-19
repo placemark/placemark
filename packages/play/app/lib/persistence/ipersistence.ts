@@ -1,8 +1,6 @@
-import type { IPresenceMinus, ISymbolization } from "types";
-import type getWrappedFeatureCollection from "app/wrappedFeatureCollections/queries/getWrappedFeatureCollection";
+import type { ISymbolization } from "types";
 import { EditWrappedFeatureCollection } from "app/wrappedFeatureCollections/validations";
 import type { MomentInput } from "./moment";
-import type { Presence } from "@prisma/client";
 import { IDMap } from "app/lib/id_mapper";
 import { Promisable } from "type-fest";
 import { z } from "zod";
@@ -14,13 +12,7 @@ export type PersistenceMetadataMemory = {
   layer: null;
 };
 
-export type PersistenceMetadataPersisted = Awaited<
-  ReturnType<typeof getWrappedFeatureCollection>
->;
-
-export type PersistenceMetadata =
-  | PersistenceMetadataPersisted
-  | PersistenceMetadataMemory;
+export type PersistenceMetadata = PersistenceMetadataMemory;
 
 export interface TransactOptions {
   quiet?: boolean;
@@ -39,9 +31,9 @@ export type MetaPair = [
 export interface IPersistence {
   idMap: IDMap;
 
-  putPresence(presence: IPresenceMinus): Promise<void>;
+  putPresence(presence: unknown): Promise<void>;
 
-  useLastPresence(): Presence | null;
+  useLastPresence(): null;
 
   useHistoryControl(): (direction: "undo" | "redo") => Promise<void>;
 

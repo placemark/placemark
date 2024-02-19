@@ -183,10 +183,6 @@ export const Dialogs = memo(function Dialogs() {
       dialogSize = "xs";
       return <QuickswitcherDialog onClose={onClose} />;
     })
-    .with({ type: "quickswitcher_index" }, () => {
-      dialogSize = "xs";
-      return <QuickswitcherIndexDialog onClose={onClose} />;
-    })
     .with({ type: "export_code" }, () => <ExportCodeDialog onClose={onClose} />)
     .with({ type: "load_text" }, (modal) => (
       <ImportTextDialog modal={modal} onClose={onClose} />

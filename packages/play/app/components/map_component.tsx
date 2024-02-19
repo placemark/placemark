@@ -2,7 +2,6 @@ import type { PMapHandlers } from "app/lib/pmap";
 import type { IWrappedFeature, HandlerContext, DragTarget } from "types";
 import { SYMBOLIZATION_NONE } from "types";
 import type { FlatbushLike } from "app/lib/generate_flatbush_instance";
-import type { CurrentUser } from "app/users/queries/getCurrentUser";
 import React, {
   useRef,
   useEffect,
@@ -43,7 +42,6 @@ import { useHotkeys } from "integrations/hotkeys";
 import { keybindingOptions } from "app/hooks/use_map_keybindings";
 import { useClipboard } from "app/hooks/use_clipboard";
 import { useAtomCallback } from "jotai/utils";
-import { usePresences } from "app/lib/persistence/shared";
 import { LastSearchResult } from "./last_search_result";
 import { ModeHints } from "./mode_hints";
 import { fMoment } from "app/lib/persistence/moment";
@@ -63,10 +61,9 @@ export const MapComponent = memo(function MapComponent({
   currentUser,
   setMap,
 }: {
-  currentUser: CurrentUser | null;
+  currentUser: null;
   setMap: (arg0: PMap | null) => void;
 }) {
-  const presences = usePresences(currentUser?.id);
   const data = useAtomValue(dataAtom);
   const layerConfigs = useAtomValue(layerConfigAtom);
   const { featureMap, folderMap } = data;
@@ -208,40 +205,9 @@ export const MapComponent = memo(function MapComponent({
           previewProperty: label,
         })
         .catch((e) => Sentry.captureException(e));
-      map.setPresences(presences);
     },
-    [
-      map,
-      folderMap,
-      symbolization,
-      data,
-      layerConfigs,
-      presences,
-      ephemeralState,
-      label,
-    ]
+    [map, folderMap, symbolization, data, layerConfigs, ephemeralState, label]
   );
-
-  useEffect(() => {
-    if (!followPresence || !map) return;
-
-    const lastInstance = presences.find((presence) => {
-      return presence.userId == followPresence.userId;
-    });
-
-    if (!lastInstance) return;
-
-    map.map.fitBounds(
-      [
-        [lastInstance.minx, lastInstance.miny],
-        [lastInstance.maxx, lastInstance.maxy],
-      ],
-      {
-        linear: true,
-        duration: 100,
-      }
-    );
-  }, [followPresence, presences, map]);
 
   const putPresence = useCallback(() => {
     if (followPresence || !map) return;

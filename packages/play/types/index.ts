@@ -1,10 +1,3 @@
-import type { SimpleRolesIsAuthorized } from "@blitzjs/auth";
-import type {
-  User,
-  Organization,
-  GlobalRole,
-  MembershipRole,
-} from "@prisma/client";
 import { z } from "zod";
 import type {
   Feature as IFeature,
@@ -397,28 +390,6 @@ export const WrappedFeature: z.ZodSchema<IWrappedFeature> = WrappedFeatureLocal;
 // @ts-expect-error todo
 export const WrappedFeatureWithoutAt: z.ZodSchema<Omit<IWrappedFeature, "at">> =
   WrappedFeatureLocal.omit({ at: true });
-
-export type Role = MembershipRole | GlobalRole;
-
-export type PublicUser = Pick<User, "name" | "email">;
-export type PublicOrganization = Pick<Organization, "name">;
-
-declare module "@blitzjs/auth" {
-  export interface Session {
-    isAuthorized: SimpleRolesIsAuthorized<Role>;
-    PublicData: {
-      userId: User["id"];
-      // This user's roles:
-      // - One GlobalRole, which can indicate this being an
-      //   admin.
-      // - Their role in the currently active organization.
-      roles: Role[];
-      orgId?: Organization["id"];
-      darkMode: boolean;
-      coordinateOrder: User["coordinateOrder"];
-    };
-  }
-}
 
 export type DragTarget = RawId | IWrappedFeature["id"][];
 
