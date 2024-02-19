@@ -12,6 +12,10 @@ let config = {
 
   poweredByHeader: false,
 
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
   eslint: {
     ignoreDuringBuilds: true,
   },

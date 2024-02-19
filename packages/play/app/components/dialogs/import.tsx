@@ -14,9 +14,6 @@ import { flattenResult } from "./import_utils";
 import { ImportFileGroup } from "./import/import_file_group";
 import { ImportShapefile } from "./import/import_shapefile";
 import { usePersistence } from "app/lib/persistence/context";
-import { UNTITLED } from "app/lib/constants";
-import { getFileName } from "app/lib/group_files";
-import * as Sentry from "@sentry/nextjs";
 
 export type OnNext = (arg0: ConvertResult | null) => void;
 
@@ -39,22 +36,9 @@ export function ImportDialog({
   const progress = files.length > 1 ? `(${index}/${files.length})` : "";
   const hasNext = index < files.length - 1;
 
-  async function maybeRename() {
-    if (meta.type === "persisted" && meta.name === UNTITLED) {
-      try {
-        await setMeta({
-          name: getFileName(file),
-        });
-      } catch (e) {
-        Sentry.captureException(e);
-      }
-    }
-  }
-
   const onNext: OnNext = (result) => {
     let nextExtent = extent;
     if (result) {
-      void maybeRename();
       nextExtent = extendExtent(getExtent(flattenResult(result)), extent);
     }
     if (hasNext) {
