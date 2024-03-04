@@ -19,27 +19,16 @@ const userLikeAtom = atom<MinimalUser>({
  */
 export function useUpdateMaybeUser() {
   const [userLike, setUserLike] = useAtom(userLikeAtom);
-  const [updateUserOptionsMutation] = useMutation(updateUserOptions);
-  const [user, { setQueryData }] = useQuery(
-    getMaybeCurrentUser,
-    null,
-    AVOID_REFETCH
-  );
 
   return {
-    user: user || userLike,
+    user: userLike,
     setUser: async (param: Partial<MinimalUser>) => {
-      if (user) {
-        const updatedUser = await updateUserOptionsMutation(param);
-        void setQueryData(updatedUser, { refetch: false });
-      } else {
-        setUserLike((userLike) => {
-          return {
-            ...userLike,
-            ...param,
-          };
-        });
-      }
+      setUserLike((userLike) => {
+        return {
+          ...userLike,
+          ...param,
+        };
+      });
     },
   };
 }
