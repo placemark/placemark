@@ -16,10 +16,17 @@ import { JsonObject } from "type-fest";
 import Fuse from "fuse.js";
 import { Action } from "app/components/context_actions/action_item";
 import { ContainerNode, LeafNode } from "app/lib/tree";
-import {
-  TreeFolder,
-  TreeWfc,
-} from "app/wrappedFeatureCollections/queries/getWrappedFeatureCollectionTree";
+
+interface TreeFolder {
+  folderId: any;
+  name: string;
+  id: any;
+}
+
+interface TreeWfc {
+  name: string;
+  wrappedFeatureCollectionFolderId: any;
+}
 
 type SearchIndex = Fuse<IWrappedFeature>;
 

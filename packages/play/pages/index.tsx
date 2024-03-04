@@ -62,6 +62,4 @@ const Play = () => {
   );
 };
 
-Play.getLayout = (page) => <Layout title="Placemark">{page}</Layout>;
-
 export default Play;

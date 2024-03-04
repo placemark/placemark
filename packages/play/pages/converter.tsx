@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Layout from "app/core/layouts/Layout";
 import { Converter } from "app/components/converter";
 import { formatTitle } from "app/lib/utils";
 
@@ -27,9 +26,5 @@ const PlacemarkConverter = () => {
     </>
   );
 };
-
-PlacemarkConverter.getLayout = (page) => (
-  <Layout title={formatTitle("Free map file converter")}>{page}</Layout>
-);
 
 export default PlacemarkConverter;

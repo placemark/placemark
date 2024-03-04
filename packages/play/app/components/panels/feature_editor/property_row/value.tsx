@@ -1,6 +1,5 @@
 import * as E from "app/components/elements";
 import { useQuery } from "react-query";
-import toast from "react-hot-toast";
 import noop from "lodash/noop";
 import useResettable from "app/hooks/use_resettable";
 import isObject from "lodash/isObject";
@@ -450,59 +449,10 @@ function RichTextEditorInner(props: PropertyInputProps) {
           >
             Bullet list
           </StyledToolbarButton>
-          <StyledToolbarButton
-            onClick={async () => {
-              try {
-                const file = await fsAccess?.fileOpen({
-                  multiple: false,
-                  description: "Open files…",
-                  extensions: [".png", ".jpg", ".jpeg", ".webp"],
-                });
-                if (!file) {
-                  setUploading(false);
-                  return;
-                }
-                setUploading(true);
-                const uploadedFileInfo = await uploadFile(file);
-                if (!uploadedFileInfo) {
-                  toast.error(
-                    "Cloudflare integration disabled: can’t upload images."
-                  );
-                  return;
-                }
-                // Insert image
-                editor
-                  .chain()
-                  .focus()
-                  .setImage({
-                    src: uploadedFileInfo.result.variants[0],
-                  })
-                  .run();
-              } catch (e) {
-                toast.error("Could not upload image");
-              } finally {
-                setUploading(false);
-              }
-            }}
-            active={false}
-          >
-            Image
-          </StyledToolbarButton>
         </FloatingMenu>
       )}
 
       <EditorContent editor={editor} />
-      {uploading ? (
-        <div
-          className="opacity-100 hover:opacity-100 pointer-events-none
-      bg-gray-200 text-black
-      dark:bg-gray-300/20 dark:text-gray-300 absolute top-2 right-2 rounded
-      py-0.5 px-1
-      text-xs"
-        >
-          Uploading image…
-        </div>
-      ) : null}
     </div>
   );
 }

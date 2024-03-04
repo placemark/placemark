@@ -16,14 +16,12 @@ const RouterProgressBar = dynamic(
 
 const queryClient = new QueryClient();
 
-export default function App({ Component, pageProps }: AppProps) {
-  const getLayout = Component.getLayout || ((page) => page);
-
+export default function App({ Component, pageProps }: any) {
   return (
     <QueryClientProvider client={queryClient}>
       <T.Provider>
         <RouterProgressBar />
-        {getLayout(<Component {...pageProps} />)}
+        <Component {...pageProps} />
       </T.Provider>
     </QueryClientProvider>
   );

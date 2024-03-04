@@ -15,7 +15,6 @@ import type {
 } from "types";
 import Fs from "fs";
 import Path from "path";
-import type { IMutation } from "app/lib/replicache/validations";
 import { IDMap, UIDMap } from "app/lib/id_mapper";
 import { PreviewProperty } from "state/jotai";
 import deepFreeze from "deep-freeze";
@@ -467,7 +466,7 @@ export const putPresenceContent = (
   id: number,
   userId: number,
   wrappedFeatureCollectionId: string
-): IMutation => ({
+) => ({
   id,
   name: "putPresence",
   args: {
@@ -490,7 +489,7 @@ export const putFeaturesContent = (
   id: number,
   wrappedFeatureCollectionId: string,
   featureId = "cf55b1a0-7561-11ec-91c4-2f6e209ecfb8"
-): IMutation => ({
+) => ({
   id,
   name: "putFeatures",
   args: {

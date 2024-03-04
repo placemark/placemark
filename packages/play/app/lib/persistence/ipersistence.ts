@@ -1,5 +1,4 @@
 import type { ISymbolization } from "types";
-import { EditWrappedFeatureCollection } from "app/wrappedFeatureCollections/validations";
 import type { MomentInput } from "./moment";
 import { IDMap } from "app/lib/id_mapper";
 import { Promisable } from "type-fest";
@@ -9,7 +8,7 @@ export type PersistenceMetadataMemory = {
   type: "memory";
   symbolization: ISymbolization;
   label: string | null;
-  layer: null;
+  layer: any;
 };
 
 export type PersistenceMetadata = PersistenceMetadataMemory;
@@ -17,6 +16,17 @@ export type PersistenceMetadata = PersistenceMetadataMemory;
 export interface TransactOptions {
   quiet?: boolean;
 }
+
+export const EditWrappedFeatureCollection = z.object({
+  id: z.string(),
+  name: z.optional(z.string()),
+  label: z.optional(z.string()),
+  layerId: z.optional(z.number().int().nullable()),
+  defaultLayer: z.any(),
+  access: z.any(),
+  symbolization: z.any(),
+  wrappedFeatureCollectionFolderId: z.string().uuid().nullable().optional(),
+});
 
 export type MetaUpdatesInput = Omit<
   z.infer<typeof EditWrappedFeatureCollection>,

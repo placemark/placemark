@@ -404,7 +404,6 @@ export interface HandlerContext {
   folderMap: FolderMap;
   idMap: IDMap;
   rep: IPersistence;
-  userId: number | undefined;
   pmap: PMap;
 }
 

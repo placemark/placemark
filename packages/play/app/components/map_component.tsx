@@ -82,7 +82,6 @@ export const MapComponent = memo(function MapComponent({
   });
 
   const rep = usePersistence();
-  const lastPresence = rep.useLastPresence();
 
   // Atom state
   const selection = data.selection;
@@ -165,7 +164,6 @@ export const MapComponent = memo(function MapComponent({
     mapRef.current = new PMap({
       element: mapDivRef.current,
       layerConfigs,
-      lastPresence,
       handlers: mapHandlers as MutableRefObject<PMapHandlers>,
       symbolization: symbolization || SYMBOLIZATION_NONE,
       previewProperty: label,
@@ -209,35 +207,7 @@ export const MapComponent = memo(function MapComponent({
     [map, folderMap, symbolization, data, layerConfigs, ephemeralState, label]
   );
 
-  const putPresence = useCallback(() => {
-    if (followPresence || !map) return;
-    if (currentUser === null) return;
-
-    const pitch = map.map.getPitch();
-    const bearing = map.map.getBearing();
-    const [[minx, miny], [maxx, maxy]] = map.map.getBounds().toArray();
-    rep
-      .putPresence({
-        pitch,
-        bearing,
-        minx,
-        miny,
-        maxx,
-        maxy,
-        updatedAt: new Date().toUTCString(),
-        userName: currentUser.name || currentUser.email,
-        userId: currentUser.id,
-        ...lastCursor.current,
-      })
-      .catch((e) => {
-        Sentry.captureException(e);
-      });
-  }, [map, followPresence, rep, currentUser]);
-
   const throttledMovePointer = useMemo(() => {
-    const throttledMovePointer = throttle(() => {
-      putPresence();
-    }, 200);
     function fastMovePointer(point: mapboxgl.Point) {
       if (!map) return;
       const features = map.map.queryRenderedFeatures(point, {
@@ -254,10 +224,9 @@ export const MapComponent = memo(function MapComponent({
         // or uninitialized.
         // console.error(e);
       }
-      throttledMovePointer();
     }
     return fastMovePointer;
-  }, [map, putPresence, setCursor]);
+  }, [map, setCursor]);
 
   const idMap = rep.idMap;
 
@@ -270,7 +239,6 @@ export const MapComponent = memo(function MapComponent({
     featureMap,
     folderMap,
     idMap,
-    userId: currentUser?.id,
     selection,
     pmap: mapRef.current!,
     rep,
@@ -334,9 +302,7 @@ export const MapComponent = memo(function MapComponent({
       // if (log) console.log(`${mode.mode} double`);
       HANDLERS[mode.mode].double(e);
     },
-    onMoveEnd() {
-      putPresence();
-    },
+    onMoveEnd() {},
     onMove: throttle((e: mapboxgl.MapboxEvent & mapboxgl.EventData) => {
       const center = e.target.getCenter().toArray();
       const bounds = e.target.getBounds().toArray();

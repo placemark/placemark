@@ -1,5 +1,5 @@
 import { env } from "app/lib/env_client";
-import type { DefaultLayer, LayerConfig } from "@prisma/client";
+import { ILayerConfig } from "types";
 
 const defaults = {
   type: "MAPBOX",
@@ -7,11 +7,11 @@ const defaults = {
 } as const;
 
 export type LayerConfigTemplate = Pick<
-  LayerConfig,
+  ILayerConfig,
   "name" | "url" | "type" | "token"
 >;
 
-const LAYERS: Record<DefaultLayer, LayerConfigTemplate> = {
+const LAYERS: Record<string, LayerConfigTemplate> = {
   MONOCHROME: {
     name: "Monochrome",
     url: "mapbox://styles/mapbox/light-v10",
