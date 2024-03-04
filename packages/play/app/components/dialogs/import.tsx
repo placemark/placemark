@@ -13,7 +13,6 @@ import addedFeaturesToast from "app/components/added_features_toast";
 import { flattenResult } from "./import_utils";
 import { ImportFileGroup } from "./import/import_file_group";
 import { ImportShapefile } from "./import/import_shapefile";
-import { usePersistence } from "app/lib/persistence/context";
 
 export type OnNext = (arg0: ConvertResult | null) => void;
 
@@ -26,8 +25,6 @@ export function ImportDialog({
 }) {
   const { files } = modal;
   const map = useContext(MapContext);
-  const rep = usePersistence();
-  const [meta, setMeta] = rep.useMetadata();
 
   const [index, setIndex] = useState<number>(0);
   const [extent, setExtent] = useState<Maybe<BBox>>(Nothing);

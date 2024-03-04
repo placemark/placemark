@@ -2,11 +2,6 @@ import { atom, useAtom } from "jotai";
 
 type User = any;
 
-const AVOID_REFETCH = {
-  refetchOnWindowFocus: false,
-  refetchOnReconnect: false,
-};
-
 type MinimalUser = Pick<User, "areaUnits" | "lengthUnits">;
 const userLikeAtom = atom<MinimalUser>({
   areaUnits: "meters",
@@ -22,7 +17,7 @@ export function useUpdateMaybeUser() {
 
   return {
     user: userLike,
-    setUser: async (param: Partial<MinimalUser>) => {
+    setUser: (param: Partial<MinimalUser>) => {
       setUserLike((userLike) => {
         return {
           ...userLike,

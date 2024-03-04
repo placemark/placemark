@@ -1,9 +1,5 @@
-import { render as defaultRender } from "@testing-library/react";
 import { vi } from "vitest";
-import {
-  renderHook as defaultRenderHook,
-  act as actHook,
-} from "@testing-library/react-hooks";
+import { act as actHook } from "@testing-library/react-hooks";
 
 export { actHook };
 export * from "@testing-library/react";
@@ -32,10 +28,3 @@ export const mockRouter = {
   },
   isFallback: false,
 };
-
-type DefaultParams = Parameters<typeof defaultRender>;
-type RenderUI = DefaultParams[0];
-type RenderOptions = DefaultParams[1] & { router?: typeof mockRouter };
-
-type DefaultHookParams = Parameters<typeof defaultRenderHook>;
-type RenderHook = DefaultHookParams[0];

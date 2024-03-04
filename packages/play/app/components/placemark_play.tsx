@@ -252,7 +252,7 @@ function DraggableMap({
       }
     >
       <div className="flex-auto relative">
-        <MapComponent currentUser={null} setMap={setMap} />
+        <MapComponent setMap={setMap} />
       </div>
       {layout === "FLOATING" ? null : <Legend />}
       <div

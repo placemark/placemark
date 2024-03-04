@@ -4,7 +4,7 @@
 /**
  * @type {import('next').NextConfig}
  */
-let config = {
+const config = {
   output: "export",
   productionBrowserSourceMaps: true,
   compress: false,

@@ -19,7 +19,6 @@ import * as Sentry from "@sentry/nextjs";
 import {
   ephemeralStateAtom,
   modeAtom,
-  followPresenceAtom,
   Mode,
   dataAtom,
   selectedFeaturesAtom,
@@ -58,16 +57,13 @@ export interface ContextInfo {
 }
 
 export const MapComponent = memo(function MapComponent({
-  currentUser,
   setMap,
 }: {
-  currentUser: null;
   setMap: (arg0: PMap | null) => void;
 }) {
   const data = useAtomValue(dataAtom);
   const layerConfigs = useAtomValue(layerConfigAtom);
   const { featureMap, folderMap } = data;
-  const followPresence = useAtomValue(followPresenceAtom);
   // State
   const [flatbushInstance, setFlatbushInstance] =
     useState<FlatbushLike>(EmptyIndex);

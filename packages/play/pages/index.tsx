@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { Suspense, useRef } from "react";
-import Layout from "app/core/layouts/Layout";
 import { PersistenceContext } from "app/lib/persistence/context";
 import { MemPersistence } from "app/lib/persistence/memory";
 import { Provider, createStore } from "jotai";

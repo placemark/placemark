@@ -1,5 +1,4 @@
 import * as E from "app/components/elements";
-import { useQuery } from "react-query";
 import noop from "lodash/noop";
 import useResettable from "app/hooks/use_resettable";
 import isObject from "lodash/isObject";
@@ -302,11 +301,6 @@ const StyledToolbarButton = classed.button(classToolbarButton);
 
 function RichTextEditorInner(props: PropertyInputProps) {
   const [value, setValue] = useAtom(props.newValueAtom);
-  const [uploading, setUploading] = useState<boolean>(false);
-
-  const { data: fsAccess } = useQuery("browser-fs-access", async () => {
-    return import("browser-fs-access");
-  });
 
   const htmlValue =
     (isObject(value) &&

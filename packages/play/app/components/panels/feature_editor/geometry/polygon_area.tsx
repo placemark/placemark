@@ -55,8 +55,8 @@ function AreaDisplay({ area, label }: { area: number; label: string }) {
         />
         <UnitSelect
           value={areaUnits}
-          onChange={async (unit) => {
-            await setUser({
+          onChange={(unit) => {
+            setUser({
               areaUnits: unit as any,
             });
           }}

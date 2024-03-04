@@ -72,8 +72,8 @@ function LengthDisplay({ length, label }: { length: number; label: string }) {
         />
         <UnitSelect
           value={user.lengthUnits}
-          onChange={async (unit) => {
-            await setUser({
+          onChange={(unit) => {
+            setUser({
               lengthUnits: unit as any,
             });
           }}
