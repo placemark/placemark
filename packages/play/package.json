@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
-    "test:e2e": "NODE_ENV=test start-server-and-test test:server http://localhost:3099 cy:open",
     "test": "vitest run",
     "test:watch": "vitest --watch"
   },

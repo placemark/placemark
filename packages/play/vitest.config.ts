@@ -18,7 +18,6 @@ export default defineConfig({
     },
     globals: true,
     setupFiles: "./test/setup.ts",
-    globalSetup: "./test/global_setup.ts",
     coverage: {
       reporter: ["text", "json", "html"],
     },
