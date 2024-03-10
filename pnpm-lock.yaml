@@ -645,14 +645,14 @@ importers:
         specifier: ^6.2.1
         version: 6.24.0
       '@deck.gl/core':
-        specifier: ~8.8.14
-        version: 8.8.27
+        specifier: ^8.9
+        version: 8.9.35
       '@deck.gl/layers':
-        specifier: ~8.8.14
-        version: 8.8.27(@deck.gl/core@8.8.27)(@loaders.gl/core@3.4.14)(@luma.gl/core@8.5.21)
+        specifier: ^8.9
+        version: 8.9.35(@deck.gl/core@8.9.35)(@loaders.gl/core@3.4.14)(@luma.gl/core@8.5.21)
       '@deck.gl/mapbox':
-        specifier: ~8.8.14
-        version: 8.8.27(@deck.gl/core@8.8.27)
+        specifier: ^8.9
+        version: 8.9.35(@deck.gl/core@8.9.35)
       '@dnd-kit/core':
         specifier: ^6.0.5
         version: 6.1.0(react-dom@18.2.0)(react@18.2.0)
@@ -921,8 +921,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mapbox-gl:
-        specifier: ^2.13.0
-        version: 2.15.0
+        specifier: ^3
+        version: 3.2.0
       memoize-one:
         specifier: ^6.0.0
         version: 6.0.0
@@ -1090,8 +1090,8 @@ importers:
         specifier: ^4.14.184
         version: 4.14.202
       '@types/mapbox-gl':
-        specifier: ^2.7.5
-        version: 2.7.21
+        specifier: ^3
+        version: 3.1.0
       '@types/node':
         specifier: ^20.11.16
         version: 20.11.19
@@ -4184,6 +4184,26 @@ packages:
       mjolnir.js: 2.7.1
     dev: false
 
+  /@deck.gl/core@8.9.35:
+    resolution: {integrity: sha512-xOASWScUCB5fpfuSjPaJrwas8pCJpbKXNIfwQElhvnfP3Yk8GGkAcRbPgiPNCfpkbEno7eDpAWJt6+6UJsSp9g==}
+    dependencies:
+      '@babel/runtime': 7.23.9
+      '@loaders.gl/core': 3.4.14
+      '@loaders.gl/images': 3.4.14
+      '@luma.gl/constants': 8.5.21
+      '@luma.gl/core': 8.5.21
+      '@luma.gl/webgl': 8.5.21
+      '@math.gl/core': 3.6.3
+      '@math.gl/sun': 3.6.3
+      '@math.gl/web-mercator': 3.6.3
+      '@probe.gl/env': 3.6.0
+      '@probe.gl/log': 3.6.0
+      '@probe.gl/stats': 3.6.0
+      gl-matrix: 3.4.3
+      math.gl: 3.6.3
+      mjolnir.js: 2.7.1
+    dev: false
+
   /@deck.gl/layers@8.8.27(@deck.gl/core@8.8.27)(@loaders.gl/core@3.4.14)(@luma.gl/core@8.5.21):
     resolution: {integrity: sha512-B6X0bxAGhXx2i1cgqYZf+Q28ataZQ1ZOaQnm0mk12YcB/QlJ6sjX28Gk4T8kpF1ai/DYSED/Fcb4C3D0JhR9IQ==}
     peerDependencies:
@@ -4204,12 +4224,43 @@ packages:
       earcut: 2.2.4
     dev: false
 
+  /@deck.gl/layers@8.9.35(@deck.gl/core@8.9.35)(@loaders.gl/core@3.4.14)(@luma.gl/core@8.5.21):
+    resolution: {integrity: sha512-4amaGO+tGvaCNi2KZ90twmajGh5xUAaQzBIyh42dnM10GRj/62sOIYD9uT032oV/KpjKY+TfOstx5ooXBGKDjg==}
+    peerDependencies:
+      '@deck.gl/core': ^8.0.0
+      '@loaders.gl/core': ^3.4.13
+      '@luma.gl/core': ^8.0.0
+    dependencies:
+      '@babel/runtime': 7.23.9
+      '@deck.gl/core': 8.9.35
+      '@loaders.gl/core': 3.4.14
+      '@loaders.gl/images': 3.4.14
+      '@loaders.gl/schema': 3.4.14
+      '@luma.gl/constants': 8.5.21
+      '@luma.gl/core': 8.5.21
+      '@mapbox/tiny-sdf': 2.0.6
+      '@math.gl/core': 3.6.3
+      '@math.gl/polygon': 3.6.3
+      '@math.gl/web-mercator': 3.6.3
+      earcut: 2.2.4
+    dev: false
+
   /@deck.gl/mapbox@8.8.27(@deck.gl/core@8.8.27):
     resolution: {integrity: sha512-DOzcCkUWS9coJ23HijBMb7Gr6wMdvBy+J0OiZVAXY36Z0N0cl/daDiaG2ecHtaGhn6tVw+j4AkJ8l+z4X0ZOrw==}
     peerDependencies:
       '@deck.gl/core': ^8.0.0
     dependencies:
       '@deck.gl/core': 8.8.27
+      '@types/mapbox-gl': 2.7.21
+    dev: false
+
+  /@deck.gl/mapbox@8.9.35(@deck.gl/core@8.9.35):
+    resolution: {integrity: sha512-3GKbYkB6OF+65Al/F2g0DlGhiQAPnA7/l/9Tl9cFSaaLBUfw2zT/U0kgZe3/4ZyfwQMzmoW6D3Ybb/FB4FKlmg==}
+    peerDependencies:
+      '@deck.gl/core': ^8.0.0
+    dependencies:
+      '@babel/runtime': 7.23.9
+      '@deck.gl/core': 8.9.35
       '@types/mapbox-gl': 2.7.21
     dev: false
 
@@ -5030,6 +5081,10 @@ packages:
 
   /@mapbox/mapbox-gl-supported@2.0.1:
     resolution: {integrity: sha512-HP6XvfNIzfoMVfyGjBckjiAOQK9WfX0ywdLubuPMPv+Vqf5fj0uCbgBQYpiqcWZT6cbyyRnTSXDheT1ugvF6UQ==}
+    dev: false
+
+  /@mapbox/mapbox-gl-supported@3.0.0:
+    resolution: {integrity: sha512-2XghOwu16ZwPJLOFVuIOaLbN0iKMn867evzXFyf0P22dqugezfJwLmdanAgU25ITvz1TvOfVP4jsDImlDJzcWg==}
     dev: false
 
   /@mapbox/point-geometry@0.1.0:
@@ -8267,6 +8322,12 @@ packages:
     dependencies:
       '@types/geojson': 7946.0.14
 
+  /@types/mapbox-gl@3.1.0:
+    resolution: {integrity: sha512-hI6cQDjw1bkJw7MC/eHMqq5TWUamLwsujnUUeiIX2KDRjxRNSYMjnHz07+LATz9I9XIsKumOtUz4gRYnZOJ/FA==}
+    dependencies:
+      '@types/geojson': 7946.0.14
+    dev: true
+
   /@types/mime@1.3.5:
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
     dev: false
@@ -9478,6 +9539,10 @@ packages:
     dependencies:
       is-regex: 1.1.4
     dev: true
+
+  /cheap-ruler@3.0.2:
+    resolution: {integrity: sha512-02T332h1/HTN6cDSufLP8x4JzDs2+VC+8qZ/N0kWIVPyc2xUkWwWh3B2fJxR7raXkL4Mq7k554mfuM9ofv/vGg==}
+    dev: false
 
   /check-error@1.0.3:
     resolution: {integrity: sha512-iKEoDYaRmd1mxM90a2OEfWhjsjPpYPuQ+lMYsoxB126+t8fw7ySEO48nmDg5COTjxDI65/Y2OWpeEHk3ZOe8zg==}
@@ -13103,6 +13168,10 @@ packages:
     resolution: {integrity: sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==}
     dev: false
 
+  /lodash.clonedeep@4.5.0:
+    resolution: {integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==}
+    dev: false
+
   /lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
     dev: false
@@ -13271,6 +13340,37 @@ packages:
       rw: 1.3.3
       supercluster: 8.0.1
       tinyqueue: 2.0.3
+      vt-pbf: 3.1.3
+    dev: false
+
+  /mapbox-gl@3.2.0:
+    resolution: {integrity: sha512-v8S7x+wTr35kJ9nqzgn/VPiSFZxBkyQhwCk9bdyiFHVwCukNGG3LXt03FoaHHTsOuB9JWenWE96k0Uw+HGMZ8w==}
+    dependencies:
+      '@mapbox/geojson-rewind': 0.5.2
+      '@mapbox/jsonlint-lines-primitives': 2.0.2
+      '@mapbox/mapbox-gl-supported': 3.0.0
+      '@mapbox/point-geometry': 0.1.0
+      '@mapbox/tiny-sdf': 2.0.6
+      '@mapbox/unitbezier': 0.0.1
+      '@mapbox/vector-tile': 1.3.1
+      '@mapbox/whoots-js': 3.1.0
+      cheap-ruler: 3.0.2
+      csscolorparser: 1.0.3
+      earcut: 2.2.4
+      geojson-vt: 3.2.1
+      gl-matrix: 3.4.3
+      grid-index: 1.1.0
+      kdbush: 4.0.2
+      lodash.clonedeep: 4.5.0
+      murmurhash-js: 1.0.0
+      pbf: 3.2.1
+      potpack: 2.0.0
+      quickselect: 2.0.0
+      rw: 1.3.3
+      serialize-to-js: 3.1.2
+      supercluster: 8.0.1
+      tinyqueue: 2.0.3
+      tweakpane: 4.0.3
       vt-pbf: 3.1.3
     dev: false
 
@@ -15666,6 +15766,11 @@ packages:
       type-fest: 0.20.2
     dev: false
 
+  /serialize-to-js@3.1.2:
+    resolution: {integrity: sha512-owllqNuDDEimQat7EPG0tH7JjO090xKNzUtYz6X+Sk2BXDnOCilDdNLwjWeFywG9xkJul1ULvtUQa9O4pUaY0w==}
+    engines: {node: '>=4.0.0'}
+    dev: false
+
   /set-function-length@1.2.1:
     resolution: {integrity: sha512-j4t6ccc+VsKwYHso+kElc5neZpjtq9EnRICFZtWyBsLojhmeF/ZBd/elqm22WJh/BziDe/SBiOeAt0m2mfLD0g==}
     engines: {node: '>= 0.4'}
@@ -16569,6 +16674,10 @@ packages:
   /tsscmp@1.0.6:
     resolution: {integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==}
     engines: {node: '>=0.6.x'}
+    dev: false
+
+  /tweakpane@4.0.3:
+    resolution: {integrity: sha512-BlcWOAe8oe4c+k9pmLBARGdWB6MVZMszayekkixQXTgkxTaYoTUpHpwVEp+3HkoamZkomodpbBf0CkguIHTgLg==}
     dev: false
 
   /type-check@0.4.0:

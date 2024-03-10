@@ -50,6 +50,14 @@ import toast from "react-hot-toast";
 import { DECK_SYNTHETIC_ID } from "app/lib/constants";
 mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
+mapboxgl.setRTLTextPlugin(
+  "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js",
+  (err) => {
+    console.error(err);
+  },
+  true // Lazy load the plugin
+);
+
 export interface ContextInfo {
   features: ReturnType<typeof wrappedFeaturesFromMapFeatures>;
   selectedFeatures: IWrappedFeature[];
