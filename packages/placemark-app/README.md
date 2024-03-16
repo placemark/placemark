@@ -1,6 +1,6 @@
 ### Placemark
 
-![Placemark screenshot](./.github/screenshot.png)
+![Placemark screenshot](/.github/screenshot.png)
 
 The Placemark application. This is a web application that lets you
 import, create, export, visualize, and publish geospatial data. It supports
@@ -30,12 +30,12 @@ the best way to get me – I'll get notifications for new issues.
 
 ---
 
-See [docs/architecture.md](./packages/placemark-app/docs/architecture.md) for notes on
+See [docs/architecture.md](./docs/architecture.md) for notes on
 the technologies under the hood.
 
 ### Running with Docker
 
-✨ There's now an example Docker file! See [docs/docker](./packages/placemark-app/docs/docker.md) for details.
+✨ There's now an example Docker file! See [docs/docker](./docs/docker.md) for details.
 
 ### Running in Render
 
@@ -56,7 +56,7 @@ different, and potentially broken, dependencies.
 
 Placemark requires Postgres to run.
 
-Note that if you're running Placemark with the [docker-compose configuration](./packages/placemark-app/docs/docker.md), Postgres is set up for you as part of the docker configuration. These instructions are relevant if you're running Placemark without Docker.
+Note that if you're running Placemark with the [docker-compose configuration](./docs/docker.md), Postgres is set up for you as part of the docker configuration. These instructions are relevant if you're running Placemark without Docker.
 
 ```
 # macOS:
@@ -97,8 +97,8 @@ it's better for applications to crash now rather than later (see [rule of repair
 
 You can see a list of the required environment variables at
 
-- [packages/placemark-app/app/lib/env_server.ts](./packages/placemark-app/app/lib/env_server.ts)
-- [packages/placemark-app/app/lib/env_client.ts](./packages/placemark-app/app/lib/env_client.ts)
+- [packages/placemark-app/app/lib/env_server.ts](./app/lib/env_server.ts)
+- [packages/placemark-app/app/lib/env_client.ts](./app/lib/env_client.ts)
 
 Note that there's a lot of these. Placemark relies on:
 
