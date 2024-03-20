@@ -86,7 +86,7 @@ module.exports = {
         // because Routes will not be generated.
         "@typescript-eslint/no-unsafe-call": 1,
         "@typescript-eslint/no-unsafe-assignment": 0,
-        "@typescript-eslint/no-unsafe-argument": 1,
+        "@typescript-eslint/no-unsafe-argument": 0,
         "@typescript-eslint/no-unsafe-member-access": 0,
         "@typescript-eslint/unbound-method": 0,
       },
