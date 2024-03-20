@@ -52,8 +52,8 @@ mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 mapboxgl.setRTLTextPlugin(
   "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js",
-  (err) => {
-    console.error(err);
+  (_err) => {
+    // console.error(err);
   },
   true // Lazy load the plugin
 );
