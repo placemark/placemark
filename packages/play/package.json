@@ -75,6 +75,7 @@
     "@tiptap/extension-link": "^2.0.0-beta.42",
     "@tiptap/react": "^2.0.0-beta.113",
     "@tiptap/starter-kit": "^2.0.0-beta.189",
+    "@tiptap/pm": "^2.2.4",
     "@tmcw/togeojson": "5.6.0",
     "@turf/area": "^6.5.0",
     "@turf/bbox": "^6.5.0",
