@@ -56,4 +56,5 @@ npx serve@latest out
 5. Visit [http://localhost:3000](http://localhost:3000)
 
 If you're planning to run this often or publicly, take care to secure your
-tokens better, and consider copying and revising the `.env.sample` file.
+tokens better by adding [URL restrictions to the Mapbox token](https://docs.mapbox.com/help/getting-started/access-tokens/#url-restrictions) and setting allowed Referrer Hostnames to the Geocode Earth one,
+and consider copying and revising the `.env.sample` file.
