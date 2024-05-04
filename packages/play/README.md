@@ -19,3 +19,42 @@ and all of that. It's a real experiment - expect breakage, and hopefully contrib
 pull requests. I'm happy to try and make Placemark useful to folks, and don't
 feel bad or bitter about the fate of the company, but realistically if the
 open source project is to succeed, it'll need contributors as well as users.
+
+## Getting started
+
+There are more sophisticated approaches using Docker or Render (see files), but
+the following simple approach works locally on macOS:
+
+1. Clone the repository, change to this directory, and install dependencies:
+
+```
+git clone 
+cd placemark/packages/play
+pnpm install
+```
+
+2. Obtain a [Mapbox public access token](https://account.mapbox.com/)
+([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) and
+[Geocode Earth token](https://app.geocode.earth/keys)
+([docs](https://geocode.earth/docs/intro/authentication/)).
+
+4. Build the package with the tokens from the previous step:
+
+```sh
+NEXT_PUBLIC_MAPBOX_TOKEN="<your Mapbox public access token>" \
+NEXT_PUBLIC_GEOCODE_EARTH_TOKEN="<your Geocode Earth token>" \
+pnpm build
+
+```
+
+4. Start the server:
+
+```sh
+npx serve@latest out
+```
+
+5. Visit [http://localhost:3000](http://localhost:3000)
+
+If you're planning to run this often or publicly, take care to secure your
+tokens better by adding [URL restrictions to the Mapbox token](https://docs.mapbox.com/help/getting-started/access-tokens/#url-restrictions) and setting allowed Referrer Hostnames to the Geocode Earth one,
+and consider copying and revising the `.env.sample` file.
