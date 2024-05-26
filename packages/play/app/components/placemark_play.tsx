@@ -12,6 +12,7 @@ import React, {
   Suspense,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -38,8 +39,8 @@ import {
   ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
 import { Button, StyledTooltipArrow, TContent } from "./elements";
-import { atom, useAtom, useAtomValue } from "jotai";
-import { splitsAtom, tabAtom, TabOption } from "state/jotai";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { dialogAtom, splitsAtom, tabAtom, TabOption } from "state/jotai";
 import clsx from "clsx";
 import {
   DndContext,
@@ -51,6 +52,11 @@ import {
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import debounce from "lodash/debounce";
 import { useAtomCallback } from "jotai/utils";
+import { useSearchParams } from "next/navigation";
+import { useImportFile, useImportString } from "app/hooks/use_import";
+import toast from "react-hot-toast";
+import { DEFAULT_IMPORT_OPTIONS, detectType } from "app/lib/convert";
+import { match } from "ts-pattern";
 
 type ResolvedLayout = "HORIZONTAL" | "VERTICAL" | "FLOATING";
 
@@ -63,6 +69,82 @@ const persistentTransformAtom = atom<Transform>({
   x: 5,
   y: 5,
 });
+
+function UrlAPI() {
+  const doImportString = useImportString();
+  const setDialogState = useSetAtom(dialogAtom);
+  const doImportFile = useImportFile();
+  const searchParams = useSearchParams();
+  const load = searchParams?.get("load");
+  const done = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (load && !done.current) {
+      done.current = true;
+      (async () => {
+        try {
+          const url = new URL(load);
+          if (url.protocol === "https:") {
+            const res = await fetch(url);
+            const buffer = await res.arrayBuffer();
+            const file = new File(
+              [buffer],
+              url.pathname.split("/").pop() || "",
+              {
+                type: res.headers.get("Content-Type") || "",
+              }
+            );
+            const options = (await detectType(file)).unsafeCoerce();
+            doImportFile(file, options, () => {});
+          } else if (url.protocol === "data:") {
+            console.log(url);
+            const [description, ...parts] = url.pathname.split(",");
+            const data = parts.join(",");
+            const [type, encoding] = description.split(";", 2) as [
+              string,
+              string | undefined
+            ];
+
+            let decoded = match(encoding)
+              .with(undefined, () => decodeURIComponent(data))
+              .with("base64", () => atob(data))
+              .otherwise(() => {
+                throw new Error("Unknown encoding in data url");
+              });
+
+            if (type === "application/json") {
+              doImportString(
+                decoded,
+                {
+                  ...DEFAULT_IMPORT_OPTIONS,
+                  type: "geojson",
+                },
+                (...args) => {
+                  console.log(args);
+                }
+              );
+            } else {
+              setDialogState({
+                type: "load_text",
+                initialValue: decoded,
+              });
+            }
+          } else {
+            toast.error(
+              "Couldn’t handle this ?load argument - urls and data urls are supported"
+            );
+          }
+        } catch (e) {
+          toast.error(
+            e instanceof Error ? e.message : "Failed to load data from URL"
+          );
+        }
+      })();
+    }
+  }, [load, doImportString, doImportFile]);
+
+  return null;
+}
 
 export function PlacemarkPlay() {
   const [map, setMap] = useState<PMap | null>(null);
@@ -171,6 +253,7 @@ export function PlacemarkPlay() {
           ) : null}
         </div>
         <Drop />
+        <UrlAPI />
         <Dialogs />
         <Suspense fallback={null}>
           <Keybindings />
