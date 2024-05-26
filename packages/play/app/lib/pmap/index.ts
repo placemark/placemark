@@ -149,7 +149,7 @@ export default class PMap {
       layers: [],
     });
 
-    map.addControl(this.overlay);
+    map.addControl(this.overlay as any);
 
     map.addControl(
       new mapboxgl.GeolocateControl({

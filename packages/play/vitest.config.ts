@@ -9,7 +9,6 @@ loadEnvConfig(projectDir);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // @ts-expect-error todo
   plugins: [react(), tsconfigPaths()],
   test: {
     dir: "./",
