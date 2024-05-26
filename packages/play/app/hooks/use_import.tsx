@@ -151,24 +151,26 @@ export function useImportString() {
       name: string = "Imported text",
       existingFolderId?: string
     ) => {
-      return (
-        await stringToGeoJSON(text, options, Comlink.proxy(progress))
-      ).map(async (result) => {
-        await transact(
-          resultToTransact({
-            result,
-            file: { name },
-            track: [
-              "import-string",
-              {
-                format: "geojson",
-              },
-            ],
-            existingFolderId,
-          })
-        );
-        return result;
-      });
+      return (await stringToGeoJSON(text, options, Comlink.proxy(progress)))
+        .map(async (result) => {
+          await transact(
+            resultToTransact({
+              result,
+              file: { name },
+              track: [
+                "import-string",
+                {
+                  format: "geojson",
+                },
+              ],
+              existingFolderId,
+            })
+          );
+          return result;
+        })
+        .mapLeft((e) => {
+          console.error(e);
+        });
     },
     [transact]
   );
