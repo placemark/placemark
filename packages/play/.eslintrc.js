@@ -1,7 +1,4 @@
-const config = require("@blitzjs/next/eslint");
-
 module.exports = {
-  ...config,
   env: {
     browser: true,
     es2021: true,
