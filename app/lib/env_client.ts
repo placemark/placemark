@@ -16,6 +16,6 @@ export const env = envsafe({
    */
   NEXT_PUBLIC_GEOCODE_EARTH_TOKEN: str({
     input: process.env.NEXT_PUBLIC_GEOCODE_EARTH_TOKEN,
-    devDefault: "_",
+    default: "_",
   }),
 });
