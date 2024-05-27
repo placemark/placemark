@@ -1,5 +1,0 @@
-:443
-
-reverse_proxy :3000
-
-tls ./toms-air.dingo-herring.ts.net.crt ./toms-air.dingo-herring.ts.net.key
