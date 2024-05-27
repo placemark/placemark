@@ -1,5 +1,7 @@
 # Play
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fplacemark%2Fplacemark&env=NEXT_PUBLIC_MAPBOX_TOKEN)
+
 At some point during Placemark development, I tried making a free-as-in-beer
 interface that supported a lot of the things that Placemark could, but for free.
 The main difference between this and the main application being that Placemark Play
@@ -28,17 +30,17 @@ the following simple approach works locally on macOS:
 1. Clone the repository, change to this directory, and install dependencies:
 
 ```
-git clone 
+git clone
 cd placemark/packages/play
 pnpm install
 ```
 
 2. Obtain a [Mapbox public access token](https://account.mapbox.com/)
-([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) and
-[Geocode Earth token](https://app.geocode.earth/keys)
-([docs](https://geocode.earth/docs/intro/authentication/)).
+   ([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) and
+   [Geocode Earth token](https://app.geocode.earth/keys)
+   ([docs](https://geocode.earth/docs/intro/authentication/)).
 
-4. Build the package with the tokens from the previous step:
+3. Build the package with the tokens from the previous step:
 
 ```sh
 NEXT_PUBLIC_MAPBOX_TOKEN="<your Mapbox public access token>" \
