@@ -169,6 +169,7 @@ export function useImportString() {
           return result;
         })
         .mapLeft((e) => {
+          // eslint-disable-next-line no-console
           console.error(e);
         });
     },
