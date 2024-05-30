@@ -7,22 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: test
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/placemark_test
-      NEXT_PUBLIC_FILE_WARN_MB: 5
-      NEXT_PUBLIC_FILE_LIMIT_MB: 5
-      PUSHER_SERVER_INTERNAL_ADDRESS: xxx
-      NEXT_PUBLIC_STRIPE_PRICE_ID_ENTERPRISE: xx
-      PUSHER_SERVER_INTERNAL_PORT: xxx
-      NEXT_PUBLIC_POSTHOG_API_HOST: xxx
-      NEXT_PUBLIC_POSTHOG_API_TOKEN: xxx
       NEXT_PUBLIC_MAPBOX_TOKEN: pk.eyJ1IjoidG1jdyIsImEiOiJja2twd25qdWowMXBuMnVxdDZodXJzaDZoIn0.UL4e2OtC7xrGr9hohU1odg
-      BLOG_RSS_URL: xxx
       WFC_QUOTA: 10
       WFC_QUOTA_ENTERPRISE: 100
       TEAM_EMAIL: foo@bar.com
       DOMAIN: test.local
-      CAMPAIGNMONITOR_KEY: xxx
-      CYPRESS_INSTALL_BINARY: 0
       GITHUB_CLIENT_ID: xx
       GITHUB_CLIENT_SECRET: xx
     strategy:
@@ -76,12 +65,9 @@ jobs:
       - name: Install packages
         run: |
           pnpm i
-      - name: Migrate DB & generate prisma client
-        run: pnpm blitz prisma migrate dev
-        working-directory: packages/placemark-app
       - name: Lint
         run: |
-          pnpm -r run lint
+          pnpm lint
       - name: Run tests with coverage
         run: |
-          pnpm -r run test
+          pnpm test

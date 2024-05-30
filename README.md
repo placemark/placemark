@@ -31,7 +31,6 @@ the following simple approach works locally on macOS:
 
 ```
 git clone
-cd placemark/packages/play
 pnpm install
 ```
 

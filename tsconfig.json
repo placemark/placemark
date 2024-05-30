@@ -22,10 +22,7 @@
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "react": ["./node_modules/@types/react"]
-    }
+    ]
   },
   "include": [
     "blitz-env.d.ts",

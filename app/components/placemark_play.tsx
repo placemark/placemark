@@ -97,7 +97,6 @@ function UrlAPI() {
             const options = (await detectType(file)).unsafeCoerce();
             doImportFile(file, options, () => {});
           } else if (url.protocol === "data:") {
-            console.log(url);
             const [description, ...parts] = url.pathname.split(",");
             const data = parts.join(",");
             const [type, encoding] = description.split(";", 2) as [
@@ -120,6 +119,7 @@ function UrlAPI() {
                   type: "geojson",
                 },
                 (...args) => {
+                  // eslint-disable-next-line no-console
                   console.log(args);
                 }
               );
