@@ -39,6 +39,7 @@ import { PolygonLayer, ScatterplotLayer } from "@deck.gl/layers/typed";
 
 const MAP_OPTIONS: Omit<mapboxgl.MapboxOptions, "container"> = {
   style: { version: 8, layers: [], sources: {} },
+  maxZoom: 26,
   boxZoom: false,
   dragRotate: false,
   attributionControl: false,
@@ -350,19 +351,19 @@ export default class PMap {
         }),
 
         ephemeralState.type === "lasso" &&
-          new PolygonLayer<number[]>({
-            id: DECK_LASSO_ID,
-            data: [makeRectangle(ephemeralState)],
-            visible: ephemeralState.type === "lasso",
-            pickable: false,
-            stroked: true,
-            filled: true,
-            lineWidthUnits: "pixels",
-            getPolygon: (d) => d,
-            getFillColor: LASSO_YELLOW,
-            getLineColor: LASSO_DARK_YELLOW,
-            getLineWidth: 1,
-          }),
+        new PolygonLayer<number[]>({
+          id: DECK_LASSO_ID,
+          data: [makeRectangle(ephemeralState)],
+          visible: ephemeralState.type === "lasso",
+          pickable: false,
+          stroked: true,
+          filled: true,
+          lineWidthUnits: "pixels",
+          getPolygon: (d) => d,
+          getFillColor: LASSO_YELLOW,
+          getLineColor: LASSO_DARK_YELLOW,
+          getLineWidth: 1,
+        }),
       ],
     });
 
