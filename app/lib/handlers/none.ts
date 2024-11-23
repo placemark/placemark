@@ -274,7 +274,8 @@ export function useNoneHandlers({
                 e,
                 featureMap,
                 pmap,
-                idMap
+                idMap,
+                selection.id
               ) as Pos2;
             }
 
