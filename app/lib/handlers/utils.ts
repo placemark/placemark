@@ -76,7 +76,8 @@ export function createOrUpdateFeature({
 const getNeighborCandidate = (
   point: mapboxgl.Point,
   pmap: PMap,
-  idMap: IDMap
+  idMap: IDMap,
+  excludeFeatureId?: string
 ): string | null => {
   const { x, y } = point;
   const distance = 12;
@@ -84,14 +85,24 @@ const getNeighborCandidate = (
     [x - distance, y - distance] as PointLike,
     [x + distance, y + distance] as PointLike,
   ] as [PointLike, PointLike];
+
   const pointFeatures = pmap.map.queryRenderedFeatures(searchBox, {
     layers: CLICKABLE_LAYERS,
   });
+
   if (!pointFeatures.length) return null;
-  const id = pointFeatures[0].id;
-  const decodedId = decodeId(id as RawId);
-  const uuid = UIDMap.getUUID(idMap, decodedId.featureId);
-  return uuid;
+
+  for (const feature of pointFeatures) {
+    const id = feature.id;
+    const decodedId = decodeId(id as RawId);
+    const uuid = UIDMap.getUUID(idMap, decodedId.featureId);
+
+    if (uuid !== excludeFeatureId) {
+      return uuid;
+    }
+  }
+
+  return null;
 };
 
 const getNearestPointFromMultiPoint = (
@@ -157,10 +168,17 @@ export const getSnappingCoordinates = (
   e: MapMouseEvent | MapTouchEvent,
   featureMap: FeatureMap,
   pmap: PMap,
-  idMap: IDMap
+  idMap: IDMap,
+  excludeFeatureId?: string
 ): Position => {
   const cursorCoordinates = getMapCoord(e);
-  const featureId = getNeighborCandidate(e.point, pmap, idMap);
+  const featureId = getNeighborCandidate(
+    e.point,
+    pmap,
+    idMap,
+    excludeFeatureId
+  );
+
   if (!featureId) return cursorCoordinates;
 
   const wrappedFeature = featureMap.get(featureId);

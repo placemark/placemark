@@ -121,6 +121,16 @@ export function usePolygonHandlers({
         nextCoord = lockDirection(lastCoord, nextCoord);
       }
 
+      if (altHeld.current && lastCoord) {
+        nextCoord = getSnappingCoordinates(
+          e,
+          featureMap,
+          pmap,
+          idMap,
+          selection.id
+        ) as Pos2;
+      }
+
       // Adding a vertex to a polygon
       const newRing = feature.geometry.coordinates[0].slice();
       newRing.splice(-2, 0, nextCoord);
@@ -163,7 +173,13 @@ export function usePolygonHandlers({
       }
 
       if (altHeld.current && lastCoord) {
-        nextCoord = getSnappingCoordinates(e, featureMap, pmap, idMap) as Pos2;
+        nextCoord = getSnappingCoordinates(
+          e,
+          featureMap,
+          pmap,
+          idMap,
+          selection.id
+        ) as Pos2;
       }
 
       const newRing = feature.geometry.coordinates[0].slice();
