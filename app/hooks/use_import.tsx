@@ -171,6 +171,7 @@ export function useImportString() {
         .mapLeft((e) => {
           // eslint-disable-next-line no-console
           console.error(e);
+          return e;
         });
     },
     [transact]
