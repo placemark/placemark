@@ -36,7 +36,44 @@ export async function addMapboxStyle(
       };
     });
 
-  return style;
+  const updatedStyle = applySatelliteStyleModifications(style, layer.opacity);
+  return updatedStyle;
+}
+
+function applySatelliteStyleModifications(
+  style: mapboxgl.Style,
+  rasterOpacity: number
+): mapboxgl.Style {
+  if (style.name !== "Mapbox Satellite Streets") {
+    return style;
+  }
+
+  const updatedLayers = style.layers.map((layer) => {
+    if (layer.type === "raster") {
+      return {
+        ...layer,
+        paint: {
+          ...(layer.paint || {}),
+          "raster-opacity": rasterOpacity,
+        },
+      };
+    }
+    if (layer.type === "background" && layer.paint) {
+      return {
+        ...layer,
+        paint: {
+          ...layer.paint,
+          "background-color": "#ffffff",
+        },
+      };
+    }
+    return layer;
+  });
+
+  return {
+    ...style,
+    layers: updatedLayers,
+  };
 }
 
 export function paintLayoutFromRasterLayer(
