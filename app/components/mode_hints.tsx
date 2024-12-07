@@ -1,6 +1,7 @@
 import { Cross1Icon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { contentLike } from "app/components/elements";
 import { useBreakpoint } from "app/hooks/use_responsive";
+import { getIsMac, localizeKeybinding } from "app/lib/utils";
 import clsx from "clsx";
 import { useAtom, useAtomValue } from "jotai";
 import { hideHintsAtom, selectionAtom } from "state/jotai";
@@ -47,10 +48,18 @@ export function ModeHints() {
   const mode = useAtomValue(modeAtom);
   const selection = useAtomValue(selectionAtom);
   const show = useBreakpoint("lg");
+  const isMac = getIsMac();
 
   if (!show) {
     return null;
   }
+
+  const hold = (shift: boolean = false) => (
+    <div className="text-xs">
+      Hold {localizeKeybinding("Option", isMac)} to snap to existing features.
+      {shift ? <> Hold Shift to snap to right angles.</> : null}
+    </div>
+  );
 
   switch (mode.mode) {
     case Mode.DRAW_RECTANGLE: {
@@ -73,10 +82,12 @@ export function ModeHints() {
       return (
         <ModeHint mode={mode.mode}>
           {selection.type === "single" ? (
-            <>
+            <div>
               Finish by clicking the starting point, double-clicking or hitting
               Enter
-            </>
+              <br />
+              {hold(true)}
+            </div>
           ) : (
             <>Click to start the polygon, then click to add each vertex</>
           )}
@@ -94,8 +105,12 @@ export function ModeHints() {
         } else {
           return (
             <ModeHint mode={mode.mode}>
-              Hold space bar & drag to move entire features. Hold option & drag
-              to rotate.
+              <div>
+                Hold space bar & drag to move entire features. Hold option &
+                drag to rotate.
+                <br />
+                {hold()}
+              </div>
             </ModeHint>
           );
         }
@@ -117,7 +132,11 @@ export function ModeHints() {
       return (
         <ModeHint mode={mode.mode}>
           {selection.type === "single" ? (
-            <>End a line by double-clicking or hitting Enter</>
+            <div>
+              End a line by double-clicking or hitting Enter
+              <br />
+              {hold(true)}
+            </div>
           ) : (
             <>Click to start the line, then click to add each vertex</>
           )}
