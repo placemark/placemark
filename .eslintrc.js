@@ -74,6 +74,7 @@ module.exports = {
         "unused-imports/no-unused-imports": "error",
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/no-base-to-string": 0,
+        "@typescript-eslint/no-redundant-type-constituents": 0,
         "@typescript-eslint/no-floating-promises": 1,
         "@typescript-eslint/switch-exhaustiveness-check": 2,
         "@typescript-eslint/no-misused-promises": 0,

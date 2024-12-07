@@ -51,3 +51,18 @@ export function useSpaceHeld() {
 
   return spaceHeld;
 }
+
+export function useAltHeld() {
+  const altHeld = useRef<boolean>(false);
+
+  useHotkeys(
+    "*",
+    (e) => {
+      altHeld.current = e.altKey;
+    },
+    { keydown: true, keyup: true },
+    []
+  );
+
+  return altHeld;
+}

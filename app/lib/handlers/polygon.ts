@@ -10,9 +10,13 @@ import { usePopMoment } from "app/lib/persistence/shared";
 import { closePolygon } from "app/lib/map_operations";
 import { CURSOR_DEFAULT, DECK_SYNTHETIC_ID } from "app/lib/constants";
 import { UIDMap } from "app/lib/id_mapper";
-import { createOrUpdateFeature, getMapCoord } from "./utils";
+import {
+  createOrUpdateFeature,
+  getMapCoord,
+  getSnappingCoordinates,
+} from "./utils";
 import { useRef } from "react";
-import { lockDirection, useShiftHeld } from "app/hooks/use_held";
+import { lockDirection, useShiftHeld, useAltHeld } from "app/hooks/use_held";
 
 export function usePolygonHandlers({
   rep,
@@ -36,6 +40,7 @@ export function usePolygonHandlers({
   const usingTouchEvents = useRef<boolean>(false);
 
   const shiftHeld = useShiftHeld();
+  const altHeld = useAltHeld();
 
   const handlers: Handlers = {
     click: (e) => {
@@ -116,6 +121,16 @@ export function usePolygonHandlers({
         nextCoord = lockDirection(lastCoord, nextCoord);
       }
 
+      if (altHeld.current && lastCoord) {
+        nextCoord = getSnappingCoordinates(
+          e,
+          featureMap,
+          pmap,
+          idMap,
+          selection.id
+        ) as Pos2;
+      }
+
       // Adding a vertex to a polygon
       const newRing = feature.geometry.coordinates[0].slice();
       newRing.splice(-2, 0, nextCoord);
@@ -155,6 +170,16 @@ export function usePolygonHandlers({
       const lastCoord = feature.geometry.coordinates[0].at(-3);
       if (shiftHeld.current && lastCoord) {
         nextCoord = lockDirection(lastCoord, nextCoord);
+      }
+
+      if (altHeld.current && lastCoord) {
+        nextCoord = getSnappingCoordinates(
+          e,
+          featureMap,
+          pmap,
+          idMap,
+          selection.id
+        ) as Pos2;
       }
 
       const newRing = feature.geometry.coordinates[0].slice();

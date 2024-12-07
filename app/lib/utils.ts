@@ -78,7 +78,9 @@ export const getIsMac = once((): boolean => {
 export const MAC_CMD_SYMBOL = "⌘";
 
 export function localizeKeybinding(keys: string, isMac: boolean): string {
-  return keys.replace("Command", isMac ? MAC_CMD_SYMBOL : "Ctrl");
+  return keys
+    .replace("Command", isMac ? MAC_CMD_SYMBOL : "Ctrl")
+    .replace("Option", isMac ? "Option" : "Alt");
 }
 
 type ClipboardInput = Promisable<string>;

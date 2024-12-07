@@ -22,9 +22,9 @@ import { useEndSnapshot, useStartSnapshot } from "app/lib/persistence/shared";
 import { filterLockedFeatures } from "app/lib/folder";
 import { CURSOR_DEFAULT, DECK_SYNTHETIC_ID } from "app/lib/constants";
 import { UIDMap } from "app/lib/id_mapper";
-import { getMapCoord } from "./utils";
+import { getMapCoord, getSnappingCoordinates } from "./utils";
 import { useRef } from "react";
-import { useSpaceHeld } from "app/hooks/use_held";
+import { useSpaceHeld, useAltHeld } from "app/hooks/use_held";
 
 export function useNoneHandlers({
   setFlatbushInstance,
@@ -47,6 +47,7 @@ export function useNoneHandlers({
   const startSnapshot = useStartSnapshot();
   const lastPoint = useRef<mapboxgl.LngLat | null>(null);
   const spaceHeld = useSpaceHeld();
+  const altHeld = useAltHeld();
 
   const handlers: Handlers = {
     double: noop,
@@ -267,7 +268,17 @@ export function useNoneHandlers({
             const feature = featureMap.get(selection.id);
             if (!feature) return;
 
-            const nextCoord = getMapCoord(e);
+            let nextCoord = getMapCoord(e);
+            if (altHeld.current) {
+              nextCoord = getSnappingCoordinates(
+                e,
+                featureMap,
+                pmap,
+                idMap,
+                selection.id
+              ) as Pos2;
+            }
+
             const { feature: newFeature, wasRectangle } = ops.setCoordinates({
               feature: feature.feature,
               position: nextCoord,

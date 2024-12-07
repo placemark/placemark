@@ -7,15 +7,21 @@ import replaceCoordinates from "app/lib/replace_coordinates";
 import { useSetAtom } from "jotai";
 import { usePopMoment } from "app/lib/persistence/shared";
 import { CURSOR_DEFAULT } from "app/lib/constants";
-import { createOrUpdateFeature, getMapCoord } from "./utils";
+import {
+  createOrUpdateFeature,
+  getMapCoord,
+  getSnappingCoordinates,
+} from "./utils";
 import { useRef } from "react";
-import { lockDirection, useShiftHeld } from "app/hooks/use_held";
+import { lockDirection, useShiftHeld, useAltHeld } from "app/hooks/use_held";
 
 export function useLineHandlers({
   rep,
   featureMap,
   folderMap,
   selection,
+  pmap,
+  idMap,
   mode,
   dragTargetRef,
 }: HandlerContext): Handlers {
@@ -27,6 +33,7 @@ export function useLineHandlers({
   const popMoment = usePopMoment();
   const usingTouchEvents = useRef<boolean>(false);
   const shiftHeld = useShiftHeld();
+  const altHeld = useAltHeld();
 
   const handlers: Handlers = {
     click: (e) => {
@@ -113,6 +120,10 @@ export function useLineHandlers({
       const lastCoord = feature.geometry.coordinates.at(-2);
       if (shiftHeld.current && lastCoord) {
         nextCoord = lockDirection(lastCoord, nextCoord);
+      }
+
+      if (altHeld.current && lastCoord) {
+        nextCoord = getSnappingCoordinates(e, featureMap, pmap, idMap);
       }
 
       void transact({
