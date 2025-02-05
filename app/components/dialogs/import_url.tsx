@@ -69,6 +69,9 @@ export function ImportURLDialog({ onClose }: { onClose: () => void }) {
               </a>
               .
             </TextWell>
+            <TextWell>
+              You can use <code>?load=URL</code> to skip this dialog.
+            </TextWell>
           </div>
           <SimpleDialogActions onClose={onClose} action="Load" />
         </Form>
