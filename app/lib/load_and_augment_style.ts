@@ -46,7 +46,7 @@ export const FEATURES_FILL_LAYER_NAME = "features-fill";
 const emptyGeoJSONSource = {
   type: "geojson",
   data: emptyFeatureCollection,
-  buffer: 512,
+  buffer: 0,
   tolerance: 0,
 } as const;
 
