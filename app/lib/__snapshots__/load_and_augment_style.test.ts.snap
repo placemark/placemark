@@ -213,7 +213,7 @@ exports[`loadAndAugmentStyle 1`] = `
   "name": "XYZ Layer",
   "sources": {
     "ephemeral": {
-      "buffer": 0,
+      "buffer": 4,
       "data": {
         "features": [],
         "type": "FeatureCollection",
@@ -222,7 +222,7 @@ exports[`loadAndAugmentStyle 1`] = `
       "type": "geojson",
     },
     "features": {
-      "buffer": 0,
+      "buffer": 4,
       "data": {
         "features": [],
         "type": "FeatureCollection",
@@ -1502,7 +1502,7 @@ exports[`makeLayers > ramp 2`] = `
       color = ramp[i + 1];
     }
   }
-
+  
   return {
     color: color || \\"#312E81\\",
     weight: 2,
