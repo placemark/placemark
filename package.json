@@ -223,8 +223,7 @@
 		"showDetails": true
 	},
 	"volta": {
-		"node": "20.11.0",
-		"yarn": "1.22.19"
+		"node": "22"
 	},
 	"engines": {
 		"node": ">=20",
