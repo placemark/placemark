@@ -222,12 +222,8 @@
 		"budgetPercentIncreaseRed": 20,
 		"showDetails": true
 	},
-	"volta": {
-		"node": "20.11.0",
-		"yarn": "1.22.19"
-	},
 	"engines": {
 		"node": ">=20",
-		"pnpm": "9.5.0"
+		"pnpm": "9"
 	}
 }
