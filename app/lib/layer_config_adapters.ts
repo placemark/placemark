@@ -36,46 +36,73 @@ export async function addMapboxStyle(
       };
     });
 
-  const updatedStyle = applySatelliteStyleModifications(style, layer.opacity);
+  const updatedStyle = updateMapboxStyle(style, {
+    labelVisibility: layer.labelVisibility,
+    rasterOpacity: layer.opacity,
+  });
   return updatedStyle;
 }
 
-function applySatelliteStyleModifications(
+function updateMapboxStyle(
   style: mapboxgl.Style,
-  rasterOpacity: number
+  options: {
+    labelVisibility?: boolean;
+    rasterOpacity?: number;
+  }
 ): mapboxgl.Style {
-  if (style.name !== "Mapbox Satellite Streets") {
+  const { labelVisibility = true, rasterOpacity } = options;
+
+  if (!style.layers) {
     return style;
   }
 
-  const updatedLayers = style.layers.map((layer) => {
-    if (layer.type === "raster") {
-      return {
-        ...layer,
-        paint: {
-          ...(layer.paint || {}),
-          "raster-opacity": rasterOpacity,
-        },
-      };
-    }
-    if (layer.type === "background" && layer.paint) {
-      return {
-        ...layer,
-        paint: {
-          ...layer.paint,
-          "background-color": "#ffffff",
-        },
-      };
-    }
-    return layer;
-  });
+  const isSatelliteStyle =
+    style.name === "Mapbox Satellite Streets" ||
+    style.name === "Mapbox Satellite";
+
+  const updatedLayers = style.layers
+    .map((layer) => {
+      // Identify label layers
+      const isLabelLayer =
+        layer.type === "symbol" && layer.layout?.["text-field"] !== undefined;
+
+      if (!labelVisibility && isLabelLayer) {
+        return null;
+      }
+
+      if (
+        isSatelliteStyle &&
+        layer.type === "raster" &&
+        rasterOpacity !== undefined
+      ) {
+        return {
+          ...layer,
+          paint: {
+            ...(layer.paint || {}),
+            "raster-opacity": rasterOpacity,
+          },
+        };
+      }
+
+      if (isSatelliteStyle && layer.type === "background" && layer.paint) {
+        return {
+          ...layer,
+          paint: {
+            ...layer.paint,
+            "background-color": "#ffffff",
+          },
+        };
+      }
+
+      return layer;
+    })
+    .filter(Boolean) as mapboxgl.AnyLayer[];
 
   return {
     ...style,
     layers: updatedLayers,
   };
 }
-
 export function paintLayoutFromRasterLayer(
   layer: ILayerConfig
 ): Pick<mapboxgl.RasterLayer, "type" | "paint" | "layout"> {

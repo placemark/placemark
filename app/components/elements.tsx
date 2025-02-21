@@ -20,6 +20,8 @@ import {
   ClipboardCopyIcon,
   EyeNoneIcon,
   EyeOpenIcon,
+  TextIcon,
+  TextNoneIcon,
 } from "@radix-ui/react-icons";
 import { SUPPORT_EMAIL } from "app/lib/constants";
 import Placemark from "./icons/placemark";
@@ -908,4 +910,8 @@ export const VisibilityToggleIcon = ({
   visibility: boolean;
 }) => {
   return visibility ? <EyeOpenIcon /> : <EyeNoneIcon />;
+};
+
+export const LabelToggleIcon = ({ visibility }: { visibility: boolean }) => {
+  return visibility ? <TextIcon /> : <TextNoneIcon />;
 };

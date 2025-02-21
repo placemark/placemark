@@ -42,6 +42,7 @@ test("zLayerConfigCommon", () => {
       name: "Foo",
       opacity: 10,
       id: newFeatureId(),
+      labelVisibility: true,
       at: "a0",
       visibility: true,
     })
@@ -53,6 +54,7 @@ test("zLayerConfigCommon", () => {
     {
       "at": "a0",
       "id": Any<String>,
+      "labelVisibility": true,
       "name": "Foo",
       "opacity": 1,
       "tms": false,
