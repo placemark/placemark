@@ -48,6 +48,7 @@ const Play = () => {
           opacity: 1,
           tms: false,
           visibility: true,
+          labelVisibility: true,
           id: layerId,
         },
       ],

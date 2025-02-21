@@ -72,6 +72,7 @@ const SHARED_INTIAL_VALUES = {
   url: "",
   token: "",
   visibility: true,
+  labelVisibility: true,
   tms: false,
   opacity: 1,
 } as const;
@@ -213,6 +214,7 @@ function MapboxLayer({
               ...values,
               name,
               visibility: true,
+              labelVisibility: true,
               tms: false,
               opacity: 1,
               at: oldAt || getNextAt(items),
@@ -490,6 +492,7 @@ function AddLayer() {
                   opacity: 1,
                   at: oldAt || nextAt,
                   id: newFeatureId(),
+                  labelVisibility: true,
                 },
               ],
             });
@@ -707,6 +710,25 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
             className={"opacity-30 hover:opacity-100 select-none"}
           >
             <E.VisibilityToggleIcon visibility={layerConfig.visibility} />
+          </div>
+          <div
+            role="checkbox"
+            title="Toggle label visibility"
+            onClick={async () => {
+              await transact({
+                note: "Toggle label visibility",
+                putLayerConfigs: [
+                  {
+                    ...layerConfig,
+                    labelVisibility: !layerConfig.labelVisibility,
+                  },
+                ],
+              });
+            }}
+            aria-checked={layerConfig.labelVisibility}
+            className={"opacity-30 hover:opacity-100 select-none"}
+          >
+            <E.LabelToggleIcon visibility={layerConfig.labelVisibility} />
           </div>
 
           <button
