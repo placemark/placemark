@@ -4,7 +4,7 @@ import { PersistenceContext } from "app/lib/persistence/context";
 import { MemPersistence } from "app/lib/persistence/memory";
 import { Provider, createStore } from "jotai";
 import { UIDMap } from "app/lib/id_mapper";
-import { layerConfigAtom } from "state/jotai";
+import { Store, layerConfigAtom } from "state/jotai";
 import { newFeatureId } from "app/lib/id";
 import LAYERS from "app/lib/default_layers";
 import dynamic from "next/dynamic";
@@ -16,11 +16,13 @@ const PlacemarkPlay = dynamic(
   }
 );
 
-function ScratchpadInner() {
+function ScratchpadInner({ store }: { store: Store }) {
   const idMap = useRef(UIDMap.empty());
 
   return (
-    <PersistenceContext.Provider value={new MemPersistence(idMap.current)}>
+    <PersistenceContext.Provider
+      value={new MemPersistence(idMap.current, store)}
+    >
       <>
         <Head>
           <title>Placemark Play</title>
@@ -57,7 +59,7 @@ const Play = () => {
 
   return (
     <Provider key="play" store={store}>
-      <ScratchpadInner />
+      <ScratchpadInner store={store} />
     </Provider>
   );
 };

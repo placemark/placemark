@@ -1,4 +1,4 @@
-import { atom } from "jotai";
+import { atom, createStore } from "jotai";
 import { atomWithStorage, selectAtom } from "jotai/utils";
 import type { FileSystemHandle } from "browser-fs-access";
 import type { SetOptional } from "type-fest";
@@ -22,6 +22,8 @@ import { createMachine } from "xstate";
 import { QItemAddable } from "app/lib/geocode";
 import { PersistenceMetadataMemory } from "app/lib/persistence/ipersistence";
 import { ScaleUnit } from "app/lib/constants";
+
+export type Store = ReturnType<typeof createStore>;
 
 // TODO: make this specific
 type MapboxLayer = any;
