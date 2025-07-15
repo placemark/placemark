@@ -164,7 +164,7 @@
 		"uuid": "^9.0.1",
 		"xlsx": "^0.18.5",
 		"xstate": "^4.38.3",
-		"zod": "^3.23.8"
+		"zod": "^3.25.76"
 	},
 	"devDependencies": {
 		"@mapbox/mapbox-gl-style-spec": "^13.28.0",
