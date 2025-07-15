@@ -186,7 +186,7 @@
 		"@types/topojson-client": "^3.1.4",
 		"@types/topojson-server": "^3.0.4",
 		"@types/uuid": "^9.0.8",
-		"@types/wicg-file-system-access": "^2020.9.8",
+		"@types/wicg-file-system-access": "^2023.10.6",
 		"@typescript-eslint/eslint-plugin": "^6.21.0",
 		"@typescript-eslint/parser": "^6.21.0",
 		"@vitejs/plugin-react": "^4.3.0",
