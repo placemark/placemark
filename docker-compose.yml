@@ -1,7 +1,7 @@
 version: "3"
 services:
   db:
-    image: postgres:16.1
+    image: postgres:16.9
     container_name: placemark-db
     restart: always
     env_file:
