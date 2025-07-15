@@ -112,7 +112,7 @@
 		"fuse.js": "^6.6.2",
 		"geometric": "^2.5.4",
 		"hasha": "^5.2.2",
-		"htmlparser2": "^9.1.0",
+		"htmlparser2": "^10.0.0",
 		"jotai": "^2.8.1",
 		"jotai-optics": "^0.3.2",
 		"jotai-xstate": "^0.3.0",
