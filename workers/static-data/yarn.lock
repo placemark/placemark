@@ -9,10 +9,10 @@
   dependencies:
     mime "^3.0.0"
 
-"@cloudflare/workers-types@^3.16.0":
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-3.17.0.tgz#8cee4499019daa6a23c9cc5501aa8382bb94d4da"
-  integrity sha512-u0cUQ4ntWFFwn5jx0ETa2ItvwvfOMjyaKF2fX2vFVujrSgNES/PnvRzPAhdt9CMYAMidInm0MGkIjxHRsFBaeg==
+"@cloudflare/workers-types@^4.20250715.0":
+  version "4.20250715.0"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20250715.0.tgz#8218dc4a80cbc7743868df5edc0ac9c8d94f7323"
+  integrity sha512-uMp+ClvvhNlk3ojIgWuIB5Zteq4YVmZcyX16hpJ8eCeCX3izagfEZwXe/vETlv4cc5vtM3xAOMdV//0BD0E98g==
 
 "@esbuild-plugins/node-globals-polyfill@^0.1.1":
   version "0.1.1"
