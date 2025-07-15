@@ -151,7 +151,7 @@
 		"react-query": "^3.39.3",
 		"react-responsive": "^9.0.2",
 		"react-virtual": "^2.10.4",
-		"reconnecting-eventsource": "^1.6.2",
+		"reconnecting-eventsource": "^1.6.4",
 		"replicache": "^12.2.2",
 		"secure-password": "^4.0.0",
 		"strip-ansi": "^6.0.1",
