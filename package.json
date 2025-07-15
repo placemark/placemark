@@ -119,7 +119,7 @@
 		"lodash": "^4.17.21",
 		"mapbox-gl": "^3.4.0",
 		"memoize-one": "^6.0.0",
-		"mproj": "^0.0.35",
+		"mproj": "^0.0.40",
 		"nanoid": "^3.3.7",
 		"next": "^14.2.3",
 		"nodemailer": "~6.9.13",
