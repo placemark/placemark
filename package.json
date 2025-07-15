@@ -30,7 +30,7 @@
 		"@dnd-kit/utilities": "^3.2.2",
 		"@headlessui/react": "^1.7.19",
 		"@lezer/highlight": "^1.2.0",
-		"@logtail/node": "^0.4.21",
+		"@logtail/node": "^0.5.5",
 		"@logtail/types": "^0.4.20",
 		"@next/env": "^14.2.3",
 		"@octokit/core": "^4.2.4",
