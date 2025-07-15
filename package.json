@@ -100,7 +100,7 @@
 		"d3-color": "^2.0.0",
 		"d3-dsv": "^2.0.0",
 		"d3-geo": "^3.1.1",
-		"date-fns": "^2.30.0",
+		"date-fns": "^4.1.0",
 		"email-addresses": "^5.0.0",
 		"envsafe": "^2.0.3",
 		"fast-json-patch": "^3.1.1",
