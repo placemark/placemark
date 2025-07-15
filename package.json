@@ -64,7 +64,7 @@
 		"@sentry/nextjs": "^7.116.0",
 		"@tailwindcss/forms": "^0.5.7",
 		"@tailwindcss/typography": "^0.5.13",
-		"@tanstack/react-table": "^8.17.3",
+		"@tanstack/react-table": "^8.21.3",
 		"@tiptap/extension-image": "^2.4.0",
 		"@tiptap/extension-link": "^2.4.0",
 		"@tiptap/pm": "^2.4.0",
