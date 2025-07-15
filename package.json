@@ -122,7 +122,7 @@
 		"mproj": "^0.0.35",
 		"nanoid": "^3.3.7",
 		"next": "^14.2.3",
-		"nodemailer": "~6.9.13",
+		"nodemailer": "~7.0.5",
 		"nodemailer-postmark-transport": "^5.3.0",
 		"optics-ts": "^2.4.1",
 		"polygon-clipping": "^0.15.7",
