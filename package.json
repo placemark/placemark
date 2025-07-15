@@ -223,7 +223,7 @@
 		"showDetails": true
 	},
 	"engines": {
-		"node": ">=20",
+		"node": ">=22.17.1",
 		"pnpm": "9"
 	}
 }

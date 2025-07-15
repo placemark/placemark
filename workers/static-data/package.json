@@ -12,6 +12,6 @@
     "deploy": "wrangler publish"
   },
   "volta": {
-    "node": "16.18.0"
+    "node": "22.17.1"
   }
 }
