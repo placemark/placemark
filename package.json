@@ -178,7 +178,7 @@
 		"@types/mapbox-gl": "^3.1.0",
 		"@types/node": "^20.12.12",
 		"@types/nodemailer": "^6.4.15",
-		"@types/pg": "^8.11.6",
+		"@types/pg": "^8.15.4",
 		"@types/preview-email": "3.0.1",
 		"@types/proj4": "^2.5.5",
 		"@types/randomcolor": "^0.5.9",
