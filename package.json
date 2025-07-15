@@ -204,7 +204,7 @@
 		"jest-matcher-utils": "^27.5.1",
 		"jsdom": "^20.0.3",
 		"lint-staged": "13.1.0",
-		"mime": "^3.0.0",
+		"mime": "^4.0.7",
 		"prettier": "^2.8.8",
 		"prettier-plugin-prisma": "^5.0.0",
 		"pretty-quick": "3.1.3",
