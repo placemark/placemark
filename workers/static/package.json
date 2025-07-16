@@ -2,9 +2,9 @@
   "name": "static",
   "version": "0.0.0",
   "devDependencies": {
-    "@cloudflare/workers-types": "^3.16.0",
-    "typescript": "^4.8.3",
-    "wrangler": "2.0.29"
+    "@cloudflare/workers-types": "^4.20250715.0",
+    "typescript": "^5.8.3",
+    "wrangler": "4.24.3"
   },
   "private": true,
   "scripts": {
