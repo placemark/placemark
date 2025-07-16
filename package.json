@@ -137,7 +137,7 @@
 		"@types/d3-dsv": "^2.0.9",
 		"@types/deep-freeze": "^0.1.5",
 		"@types/flatbush": "^3.3.0",
-		"@types/lodash": "^4.17.4",
+		"@types/lodash": "^4.17.20",
 		"@types/mapbox-gl": "^3.1.0",
 		"@types/node": "^20.12.12",
 		"@types/proj4": "^2.5.5",
