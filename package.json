@@ -125,7 +125,7 @@
 		"topojson-server": "^3.0.1",
 		"ts-pattern": "^5.7.1",
 		"type-fest": "^4.41.0",
-		"uuid": "^9.0.1",
+		"uuid": "11",
 		"xlsx": "^0.18.5",
 		"xstate": "^4.38.3",
 		"zod": "^3.25.76"
@@ -145,7 +145,6 @@
 		"@types/rbush": "^3.0.4",
 		"@types/topojson-client": "^3.1.5",
 		"@types/topojson-server": "^3.0.4",
-		"@types/uuid": "^9.0.8",
 		"@typescript-eslint/eslint-plugin": "^6.21.0",
 		"@typescript-eslint/parser": "^6.21.0",
 		"@vitejs/plugin-react": "^4.6.0",
