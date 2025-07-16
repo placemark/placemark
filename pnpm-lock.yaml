@@ -216,8 +216,8 @@ importers:
         specifier: ^2.4.6
         version: 2.4.6(react@18.3.1)
       fractional-indexing:
-        specifier: ^2.1.0
-        version: 2.1.0
+        specifier: ^3.2.0
+        version: 3.2.0
       fuse.js:
         specifier: ^6.6.2
         version: 6.6.2
@@ -3274,9 +3274,9 @@ packages:
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
 
-  fractional-indexing@2.1.0:
-    resolution: {integrity: sha512-4tIVui+5dxsXe/BG7D9EzgNIDK9fEoBzjvAf9gFfxFDPo2LsPSjfFKB2QmtcvmioD2IlshtcJFXGEcDPTG6R/A==}
-    engines: {node: '>=12'}
+  fractional-indexing@3.2.0:
+    resolution: {integrity: sha512-PcOxmqwYCW7O2ovKRU8OoQQj2yqTfEB/yeTYk4gPid6dN5ODRfU1hXd9tTVZzax/0NkO7AxpHykvZnT1aYp/BQ==}
+    engines: {node: ^14.13.1 || >=16.0.0}
 
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -8359,7 +8359,7 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
-  fractional-indexing@2.1.0: {}
+  fractional-indexing@3.2.0: {}
 
   fs.realpath@1.0.0: {}
 
