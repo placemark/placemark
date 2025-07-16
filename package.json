@@ -37,7 +37,7 @@
 		"@dnd-kit/utilities": "^3.2.2",
 		"@headlessui/react": "^1.7.19",
 		"@lezer/highlight": "^1.2.0",
-		"@next/env": "^14.2.3",
+		"@next/env": "^14.2.30",
 		"@placemarkio/check-geojson": "0.1.12",
 		"@placemarkio/flat-drop-files": "^1.0.2",
 		"@placemarkio/geojson-rewind": "^1.0.2",
