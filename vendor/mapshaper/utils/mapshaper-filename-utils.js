@@ -43,7 +43,7 @@ export function getFileExtension(path) {
   return parseLocalPath(path).extension;
 }
 
-export function getPathBase(path) {
+function getPathBase(path) {
   var info = parseLocalPath(path);
   if (!info.extension) return path;
   return path.slice(0, path.length - info.extension.length - 1);
@@ -53,7 +53,7 @@ export function replaceFileExtension(path, ext) {
   return getPathBase(path) + "." + ext;
 }
 
-export function getCommonFileBase(names) {
+function getCommonFileBase(names) {
   return names.reduce(function (memo, name, i) {
     if (i === 0) {
       memo = getFileBase(name);

@@ -31,7 +31,7 @@ export function mergeDatasetsForExport(arr) {
   return mergeDatasets(copy);
 }
 
-export function mergeCommandTargets(targets, catalog) {
+function mergeCommandTargets(targets, catalog) {
   var targetLayers = [];
   var targetDatasets = [];
   var datasetsWithArcs = 0;

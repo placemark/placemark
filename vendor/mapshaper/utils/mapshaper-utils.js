@@ -7,7 +7,7 @@ import * as utils from "../utils/mapshaper-utils";
 export default utils;
 
 var uniqCount = 0;
-export function getUniqueName(prefix) {
+function getUniqueName(prefix) {
   return (prefix || "__id_") + ++uniqCount;
 }
 
@@ -32,7 +32,7 @@ export function isNumber(obj) {
   return obj != null && obj.constructor == Number;
 }
 
-export function isValidNumber(val) {
+function isValidNumber(val) {
   return isNumber(val) && !isNaN(val);
 }
 
@@ -46,7 +46,7 @@ export function isFiniteNumber(val) {
 //   return val > -Infinity && val < Infinity;
 // }
 
-export function isNonNegNumber(val) {
+function isNonNegNumber(val) {
   return isNumber(val) && val >= 0;
 }
 
@@ -54,11 +54,11 @@ export function isInteger(obj) {
   return isNumber(obj) && (obj | 0) === obj;
 }
 
-export function isEven(obj) {
+function isEven(obj) {
   return obj % 2 === 0;
 }
 
-export function isOdd(obj) {
+function isOdd(obj) {
   return obj % 2 === 1;
 }
 
@@ -75,7 +75,7 @@ export function isBoolean(obj) {
   return obj === true || obj === false;
 }
 
-export function formatDateISO(d) {
+function formatDateISO(d) {
   if (!isDate(d)) return "";
   return d.toISOString().replace(":00.000Z", "Z");
 }
@@ -108,7 +108,7 @@ export function isArrayLike(obj) {
 }
 
 // See https://raw.github.com/kvz/phpjs/master/functions/strings/addslashes.js
-export function addslashes(str) {
+function addslashes(str) {
   return (str + "").replace(/[\\"']/g, "\\$&").replace(/\u0000/g, "\\0");
 }
 
@@ -127,7 +127,7 @@ var entityMap = {
   "'": "&#39;",
   "/": "&#x2F;",
 };
-export function htmlEscape(s) {
+function htmlEscape(s) {
   return String(s).replace(/[&<>"'\/]/g, function (s) {
     return entityMap[s];
   });
@@ -168,7 +168,7 @@ export function extend(o) {
 //    inherit(Child, Parent);
 // Call parent's constructor (inside child constructor):
 //    this.__super__([args...]);
-export function inherit(targ, src) {
+function inherit(targ, src) {
   var f = function () {
     if (this.__super__ == f) {
       // add __super__ of parent to front of lookup chain
@@ -195,7 +195,7 @@ export function inherit(targ, src) {
 //    done: function(err, memo)
 // @memo: Initial value
 //
-export function reduceAsync(arr, memo, iter, done) {
+function reduceAsync(arr, memo, iter, done) {
   var call = typeof setImmediate == "undefined" ? setTimeout : setImmediate;
   var i = 0;
   next(null, memo);
@@ -239,13 +239,13 @@ export function difference(arr, other) {
 }
 
 // Return the intersection of two arrays
-export function intersection(a, b) {
+function intersection(a, b) {
   return a.filter(function (el) {
     return b.includes(el);
   });
 }
 
-export function indexOf(arr, item) {
+function indexOf(arr, item) {
   var nan = item !== item;
   for (var i = 0, len = arr.length || 0; i < len; i++) {
     if (arr[i] === item) return i;
@@ -270,7 +270,7 @@ export function some(arr, test) {
   }, false);
 }
 
-export function every(arr, test) {
+function every(arr, test) {
   return arr.reduce(function (val, item) {
     return val && test(item);
   }, true);
@@ -281,7 +281,7 @@ export function find(arr, test, ctx) {
   return matches.length === 0 ? null : matches[0];
 }
 
-export function range(len, start, inc) {
+function range(len, start, inc) {
   var arr = [],
     v = start === void 0 ? 0 : start,
     i = inc === void 0 ? 1 : inc;
@@ -376,21 +376,21 @@ export function pluck(arr, key) {
   });
 }
 
-export function countValues(arr) {
+function countValues(arr) {
   return arr.reduce(function (memo, val) {
     memo[val] = val in memo ? memo[val] + 1 : 1;
     return memo;
   }, {});
 }
 
-export function indexOn(arr, k) {
+function indexOn(arr, k) {
   return arr.reduce(function (index, o) {
     index[o[k]] = o;
     return index;
   }, {});
 }
 
-export function groupBy(arr, k) {
+function groupBy(arr, k) {
   return arr.reduce(function (index, o) {
     var keyval = o[k];
     if (keyval in index) {
@@ -420,7 +420,7 @@ export function forEach(arr, func, ctx) {
   }
 }
 
-export function forEachProperty(o, func, ctx) {
+function forEachProperty(o, func, ctx) {
   Object.keys(o).forEach(function (key) {
     func.call(ctx, o[key], key);
   });
@@ -433,14 +433,14 @@ export function initializeArray(arr, init) {
   return arr;
 }
 
-export function replaceArray(arr, arr2) {
+function replaceArray(arr, arr2) {
   arr.splice(0, arr.length);
   for (var i = 0, n = arr2.length; i < n; i++) {
     arr.push(arr2[i]);
   }
 }
 
-export function repeatString(src, n) {
+function repeatString(src, n) {
   var str = "";
   for (var i = 0; i < n; i++) str += src;
   return str;
@@ -454,7 +454,7 @@ export function pluralSuffix(count) {
   return count != 1 ? "s" : "";
 }
 
-export function endsWith(str, ending) {
+function endsWith(str, ending) {
   return str.indexOf(ending, str.length - ending.length) !== -1;
 }
 
@@ -470,21 +470,21 @@ export function rpad(str, size, pad) {
   return str + repeatString(pad, size - str.length);
 }
 
-export function trim(str) {
+function trim(str) {
   return ltrim(rtrim(str));
 }
 
 var ltrimRxp = /^\s+/;
-export function ltrim(str) {
+function ltrim(str) {
   return str.replace(ltrimRxp, "");
 }
 
 var rtrimRxp = /\s+$/;
-export function rtrim(str) {
+function rtrim(str) {
   return str.replace(rtrimRxp, "");
 }
 
-export function addThousandsSep(str) {
+function addThousandsSep(str) {
   var fmt = "",
     start = str[0] == "-" ? 1 : 0,
     dec = str.indexOf("."),
@@ -498,7 +498,7 @@ export function addThousandsSep(str) {
   return str.substring(0, end) + fmt;
 }
 
-export function numToStr(num, decimals) {
+function numToStr(num, decimals) {
   return decimals >= 0 ? num.toFixed(decimals) : String(num);
 }
 
@@ -511,7 +511,7 @@ export function formatIntlNumber(val) {
   return '"' + str.replace(".", ",") + '"'; // need to quote if comma-delimited
 }
 
-export function formatNumberForDisplay(num, decimals, nullStr, showPos) {
+function formatNumberForDisplay(num, decimals, nullStr, showPos) {
   var fmt;
   if (isNaN(num)) {
     fmt = nullStr || "-";
@@ -525,7 +525,7 @@ export function formatNumberForDisplay(num, decimals, nullStr, showPos) {
   return fmt;
 }
 
-export function shuffle(arr) {
+function shuffle(arr) {
   var tmp, i, j;
   for (i = arr.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1));
@@ -566,13 +566,13 @@ export function genericSort(arr, ascending) {
   return arr;
 }
 
-export function getSortedIds(arr, asc) {
+function getSortedIds(arr, asc) {
   var ids = range(arr.length);
   sortArrayIndex(ids, arr, asc);
   return ids;
 }
 
-export function sortArrayIndex(ids, arr, asc) {
+function sortArrayIndex(ids, arr, asc) {
   var compare = getGenericComparator(asc);
   ids.sort(function (i, j) {
     // added i, j comparison to guarantee that sort is stable
@@ -581,7 +581,7 @@ export function sortArrayIndex(ids, arr, asc) {
   });
 }
 
-export function reorderArray(arr, idxs) {
+function reorderArray(arr, idxs) {
   var len = idxs.length;
   var arr2 = [];
   for (var i = 0; i < len; i++) {
@@ -592,14 +592,14 @@ export function reorderArray(arr, idxs) {
   replaceArray(arr, arr2);
 }
 
-export function getKeyComparator(key, asc) {
+function getKeyComparator(key, asc) {
   var compare = getGenericComparator(asc);
   return function (a, b) {
     return compare(a[key], b[key]);
   };
 }
 
-export function getGenericComparator(asc) {
+function getGenericComparator(asc) {
   asc = asc !== false;
   return function (a, b) {
     var retn = 0;
@@ -628,7 +628,7 @@ export function quicksort(arr, asc) {
 }
 
 // Moved out of quicksort() (saw >100% speedup in Chrome with deep recursion)
-export function quicksortPartition(a, lo, hi) {
+function quicksortPartition(a, lo, hi) {
   var i = lo,
     j = hi,
     pivot,
@@ -661,7 +661,7 @@ export function findRankByValue(arr, value) {
   return rank;
 }
 
-export function findValueByPct(arr, pct) {
+function findValueByPct(arr, pct) {
   var rank = Math.ceil((1 - pct) * arr.length);
   return findValueByRank(arr, rank);
 }
@@ -832,7 +832,7 @@ function formatValue(val, matches) {
 }
 
 // Get a function for interpolating formatted values into a string.
-export function formatter(fmt) {
+function formatter(fmt) {
   var codeRxp = /%([\',+0]*)([1-9]?)((?:\.[1-9])?)([sdifxX%])/g;
   var literals = [],
     formatCodes = [],
@@ -894,7 +894,7 @@ export function createBuffer(arg, arg2) {
   }
 }
 
-export function expandoBuffer(constructor, rate) {
+function expandoBuffer(constructor, rate) {
   var capacity = 0,
     k = rate >= 1 ? rate : 1.2,
     buf;
@@ -936,7 +936,7 @@ export function mergeNames(name1, name2) {
   return merged || "";
 }
 
-export function findStringPrefix(a, b) {
+function findStringPrefix(a, b) {
   var i = 0;
   for (var n = a.length; i < n; i++) {
     if (a[i] !== b[i]) break;
@@ -944,7 +944,7 @@ export function findStringPrefix(a, b) {
   return a.substr(0, i);
 }
 
-export function parsePercent(o) {
+function parsePercent(o) {
   var str = String(o);
   var isPct = str.indexOf("%") > 0;
   var pct;
@@ -995,7 +995,7 @@ export function uniqifyNames(names, formatter) {
 }
 
 // Assume: @raw is string, undefined or null
-export function parseString(raw) {
+function parseString(raw) {
   return raw ? raw : "";
 }
 
@@ -1018,7 +1018,7 @@ function parseToNum(raw, clean) {
 }
 
 // Remove comma separators from strings
-export function cleanNumericString(str) {
+function cleanNumericString(str) {
   return str.indexOf(",") > 0 ? str.replace(/,([0-9]{3})/g, "$1") : str;
 }
 
@@ -1027,7 +1027,7 @@ function convertIntlNumString(str) {
   return str.replace(",", ".");
 }
 
-export function trimQuotes(raw) {
+function trimQuotes(raw) {
   var len = raw.length,
     first,
     last;

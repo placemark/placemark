@@ -23,7 +23,7 @@ export function getClippingDataset(src, dest, opts) {
   return getUnprojectedBoundingPolygon(src, dest, opts);
 }
 
-export function getUnprojectedBoundingPolygon(src, dest, opts) {
+function getUnprojectedBoundingPolygon(src, dest, opts) {
   var dataset;
   if (isCircleClippedProjection(dest) || opts.clip_angle || dest.clip_angle) {
     dataset = getBoundingCircle(src, dest, opts);
@@ -46,7 +46,7 @@ export function getUnprojectedBoundingPolygon(src, dest, opts) {
 // }
 
 // Return projected polygon extent of both clipped and unclipped projections
-export function getPolygonDataset(src, dest, opts) {
+function getPolygonDataset(src, dest, opts) {
   // use clipping area if projection is clipped
   var dataset = getUnprojectedBoundingPolygon(src, dest, opts);
   if (!dataset) {
@@ -58,7 +58,7 @@ export function getPolygonDataset(src, dest, opts) {
 }
 
 // Return projected outline of clipped projections
-export function getOutlineDataset(src, dest, opts) {
+function getOutlineDataset(src, dest, opts) {
   var dataset = getUnprojectedBoundingPolygon(src, dest, opts);
   if (dataset) {
     // project, with cutting & cleanup
@@ -94,13 +94,13 @@ function getBoundingCircle(src, dest, opts) {
   return importGeoJSON(geojson);
 }
 
-export function isRectangleClippedProjection(P) {
+function isRectangleClippedProjection(P) {
   // TODO: add tmerc, etmerc, ...
   // return inList(P, 'tmerc,utm,etmerc,merc,bertin1953');
   return inList(P, "merc,bertin1953");
 }
 
-export function getDefaultClipBBox(P) {
+function getDefaultClipBBox(P) {
   var e = 1e-3;
   var slug = getCrsSlug(P);
   var tmerc = [-179, -90, 179, 90];
@@ -124,7 +124,7 @@ export function getClampBBox(P) {
   return bbox;
 }
 
-export function isCircleClippedProjection(P) {
+function isCircleClippedProjection(P) {
   return inList(P, "stere,sterea,ups,ortho,gnom,laea,nsper,tpers");
 }
 
@@ -138,7 +138,7 @@ function getPerspectiveClipAngle(P) {
   return theta;
 }
 
-export function getDefaultClipAngle(P) {
+function getDefaultClipAngle(P) {
   var slug = getCrsSlug(P);
   if (slug == "nsper") return getPerspectiveClipAngle(P);
   if (slug == "tpers") {
@@ -159,7 +159,7 @@ export function getDefaultClipAngle(P) {
   );
 }
 
-export function getRotationParams(P) {
+function getRotationParams(P) {
   var slug = getCrsSlug(P);
   if (slug == "bertin1953") return [-16.5, -42];
   if (slug == "tmerc" || slug == "utm" || slug == "etmerc") {

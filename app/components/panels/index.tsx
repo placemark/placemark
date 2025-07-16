@@ -169,7 +169,7 @@ export const FullPanel = memo(function FullPanelInner() {
   );
 });
 
-export const Panel = memo(function PanelInner({
+const Panel = memo(function PanelInner({
   tabOrder,
   showSymbolization = true,
 }: {

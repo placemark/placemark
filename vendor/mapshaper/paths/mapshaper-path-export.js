@@ -2,7 +2,7 @@ import geom from "../geom/mapshaper-geom";
 import { verbose } from "../utils/mapshaper-logging";
 import { Bounds } from "../geom/mapshaper-bounds";
 
-export function exportPointData(points) {
+function exportPointData(points) {
   var data, path;
   if (!points || points.length === 0) {
     data = { partCount: 0, pointCount: 0 };

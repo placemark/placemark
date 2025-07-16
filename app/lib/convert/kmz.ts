@@ -8,7 +8,7 @@ import { solveRootItems } from "app/components/panels/feature_editor/feature_edi
 import { KML } from "app/lib/convert/kml";
 import { unzip } from "./local/shared";
 
-export class CKMZ implements FileType {
+class CKMZ implements FileType {
   id = "kmz" as const;
   label = "KMZ";
   extensions = [".kmz"];

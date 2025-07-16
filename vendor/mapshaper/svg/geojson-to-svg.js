@@ -5,7 +5,7 @@ import { getTransform, symbolRenderers } from "../svg/svg-common";
 import { stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
 
-export function importGeoJSONFeatures(features, opts) {
+function importGeoJSONFeatures(features, opts) {
   opts = opts || {};
   return features.map(function (obj, i) {
     var geom = obj.type == "Feature" ? obj.geometry : obj; // could be null
@@ -35,7 +35,7 @@ export function importGeoJSONFeatures(features, opts) {
   });
 }
 
-export function applyStyleAttributes(svgObj, geomType, rec) {
+function applyStyleAttributes(svgObj, geomType, rec) {
   var symbolType = GeoJSON.translateGeoJSONType(geomType);
   if (symbolType == "point" && "label-text" in rec) {
     symbolType = "label";
@@ -85,7 +85,7 @@ function importMultiPath(coords, importer) {
   return o;
 }
 
-export function importLineString(coords) {
+function importLineString(coords) {
   var d = stringifyLineStringCoords(coords);
   return {
     tag: "path",
@@ -93,7 +93,7 @@ export function importLineString(coords) {
   };
 }
 
-export function importMultiLineString(coords) {
+function importMultiLineString(coords) {
   var d = coords.map(stringifyLineStringCoords).join(" ");
   return {
     tag: "path",
@@ -103,7 +103,7 @@ export function importMultiLineString(coords) {
 
 // Kludge for applying fill and other styles to a <text> element
 // (for rendering labels in the GUI with the dot in Canvas, not SVG)
-export function importStyledLabel(rec, p) {
+function importStyledLabel(rec, p) {
   var o = importLabel(rec, p);
   applyStyleAttributes(o, "Point", rec);
   return o;
@@ -114,7 +114,7 @@ function toLabelString(val) {
   return "";
 }
 
-export function importLabel(rec, p) {
+function importLabel(rec, p) {
   var line = toLabelString(rec["label-text"]);
   var morelines, obj;
   // Accepting \n (two chars) as an alternative to the newline character
@@ -163,7 +163,7 @@ function getEmptySymbol() {
   return { tag: "g", properties: {}, children: [] };
 }
 
-export function renderSymbol(d, x, y) {
+function renderSymbol(d, x, y) {
   var renderer = symbolRenderers[d.type];
   if (!renderer) {
     stop(
@@ -176,7 +176,7 @@ export function renderSymbol(d, x, y) {
 }
 
 // d: svg-symbol object from feature data object
-export function importSymbol(d, xy) {
+function importSymbol(d, xy) {
   var renderer;
   if (!d) {
     return getEmptySymbol();
@@ -194,7 +194,7 @@ export function importSymbol(d, xy) {
   };
 }
 
-export function importPoint(coords, rec, layerOpts) {
+function importPoint(coords, rec, layerOpts) {
   rec = rec || {};
   if ("svg-symbol" in rec) {
     return importSymbol(rec["svg-symbol"], coords);

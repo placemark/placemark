@@ -138,7 +138,7 @@ function simplifyDouglasPeucker(points: Position[], sqTolerance: number) {
 }
 
 // both algorithms combined for awesome performance
-export function simplifyJS(
+function simplifyJS(
   points: Position[],
   { tolerance, highQuality }: SimplifyOptions
 ) {
@@ -247,4 +247,3 @@ function checkValidity(ring: Position[]): boolean {
   );
 }
 
-export default simplify;

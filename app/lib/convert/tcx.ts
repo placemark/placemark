@@ -5,7 +5,7 @@ import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
 import { FeatureCollection } from "types";
 
-export class CTCX implements FileType {
+class CTCX implements FileType {
   id = "tcx" as const;
   label = "TCX";
   extensions = [".tcx"];

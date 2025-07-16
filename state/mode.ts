@@ -20,7 +20,7 @@ export enum CIRCLE_TYPE {
   DEGREES = "Degrees",
 }
 
-export interface ModeOptions {
+interface ModeOptions {
   /**
    * A weird special case: in "none" mode,
    * you can resize a rectangle. This shows a help

@@ -1,6 +1,6 @@
 import { Geometry, IWrappedFeature } from "types";
 
-export interface Stat {
+interface Stat {
   min: number | null;
   max: number | null;
   strings: Map<string, number>;

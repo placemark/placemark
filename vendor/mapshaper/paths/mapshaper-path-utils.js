@@ -42,7 +42,7 @@ this.getAvgSegmentSph2 = function() {
 };
 */
 
-export function getDirectedArcPresenceTest(shapes, n) {
+function getDirectedArcPresenceTest(shapes, n) {
   var flags = new Uint8Array(n);
   forEachArcId(shapes, function (id) {
     var absId = absArcId(id);
@@ -87,7 +87,7 @@ export function getPathBounds(shapes, arcs) {
 }
 
 // Returns subset of shapes in @shapes that contain one or more arcs in @arcIds
-export function findShapesByArcId(shapes, arcIds, numArcs) {
+function findShapesByArcId(shapes, arcIds, numArcs) {
   var index = numArcs ? new Uint8Array(numArcs) : [],
     found = [];
   arcIds.forEach(function (id) {
@@ -122,7 +122,7 @@ export function clampIntervalByPct(z, pct) {
 // Return id of the vertex between @start and @end with the highest
 // threshold that is less than @zlim, or -1 if none
 //
-export function findNextRemovableVertex(zz, zlim, start, end) {
+function findNextRemovableVertex(zz, zlim, start, end) {
   var tmp,
     jz = 0,
     j = -1,
@@ -252,7 +252,7 @@ export function getPathMetadata(shape, arcs, type) {
   return data;
 }
 
-export function quantizeArcs(arcs, quanta) {
+function quantizeArcs(arcs, quanta) {
   // Snap coordinates to a grid of @quanta locations on both axes
   // This may snap nearby points to the same coordinates.
   // Consider a cleanup pass to remove dupes, make sure collapsed arcs are

@@ -8,6 +8,7 @@ type GTFSRow = {
   shape_pt_lon: number;
 };
 
+/** @public */
 export function GTFSLinesToGeoJSON(gtfs: string): FeatureCollection {
   const points = dsvFormat(",")
     .parse(gtfs)

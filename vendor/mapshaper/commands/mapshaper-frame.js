@@ -68,7 +68,7 @@ cmd.frame = function (catalog, source, opts) {
 };
 
 // Convert width and height args to aspect ratio arg for the rectangle() function
-export function getAspectRatioArg(widthArg, heightArg) {
+function getAspectRatioArg(widthArg, heightArg) {
   // heightArg is a string containing either a number or a
   // comma-sep. pair of numbers (range);
   return heightArg
@@ -115,27 +115,27 @@ export function findFrameLayerInDataset(dataset) {
   });
 }
 
-export function findFrameDataset(catalog) {
+function findFrameDataset(catalog) {
   var target = utils.find(catalog.getLayers(), function (o) {
     return isFrameLayer(o.layer);
   });
   return target ? target.dataset : null;
 }
 
-export function findFrameLayer(catalog) {
+function findFrameLayer(catalog) {
   var target = utils.find(catalog.getLayers(), function (o) {
     return isFrameLayer(o.layer);
   });
   return (target && target.layer) || null;
 }
 
-export function getFrameLayerBounds(lyr) {
+function getFrameLayerBounds(lyr) {
   return new Bounds(getFurnitureLayerData(lyr).bbox);
 }
 
 // @data frame data, including crs property if available
 // Returns a single value: the ratio or
-export function getMapFrameMetersPerPixel(data) {
+function getMapFrameMetersPerPixel(data) {
   var bounds = new Bounds(data.bbox);
   var k, toMeters, metersPerPixel;
   if (data.crs) {

@@ -50,7 +50,7 @@ function verticalCenterOfRectangle(rect: ClientRect): number {
  * Returns the closest rectangles from an array of rectangles to
  * pointer.
  */
-export const closestVerticalCenter: CollisionDetection = ({
+const closestVerticalCenter: CollisionDetection = ({
   pointerCoordinates,
   droppableRects,
   droppableContainers,
@@ -99,7 +99,7 @@ function isPointWithinRect(point: Coordinates, rect: ClientRect): boolean {
  * is over a folder (vertically), then you drop into the folder.
  * Simple as that.
  */
-export const customPointerWithin = (
+const customPointerWithin = (
   {
     droppableContainers,
     droppableRects,

@@ -22,11 +22,11 @@ var _message = function () {
   logArgs(arguments);
 };
 
-export function enableLogging() {
+function enableLogging() {
   LOGGING = true;
 }
 
-export function loggingEnabled() {
+function loggingEnabled() {
   return !!LOGGING;
 }
 
@@ -40,7 +40,7 @@ export function stop() {
   _stop.apply(null, utils.toArray(arguments));
 }
 
-export function interrupt() {
+function interrupt() {
   _interrupt.apply(null, utils.toArray(arguments));
 }
 
@@ -50,7 +50,7 @@ export function message() {
 }
 
 // A way for the GUI to replace the CLI logging functions
-export function setLoggingFunctions(message, error, stop) {
+function setLoggingFunctions(message, error, stop) {
   _message = message;
   _error = error;
   _stop = stop;
@@ -76,7 +76,7 @@ export function debug() {
   }
 }
 
-export function printError(err) {
+function printError(err) {
   var msg;
   if (!LOGGING) return;
   if (utils.isString(err)) {
@@ -98,19 +98,19 @@ export function printError(err) {
   }
 }
 
-export function UserError(msg) {
+function UserError(msg) {
   var err = new Error(msg);
   err.name = "UserError";
   return err;
 }
 
-export function NonFatalError(msg) {
+function NonFatalError(msg) {
   var err = new Error(msg);
   err.name = "NonFatalError";
   return err;
 }
 
-export function formatColumns(arr, alignments) {
+function formatColumns(arr, alignments) {
   var widths = arr.reduce(function (memo, line) {
     return line.map(function (str, i) {
       return memo ? Math.max(memo[i], str.length) : str.length;
@@ -148,7 +148,7 @@ export function formatStringsAsGrid(arr) {
 }
 
 // expose so GUI can use it
-export function formatLogArgs(args) {
+function formatLogArgs(args) {
   return utils.toArray(args).join(" ");
 }
 
@@ -161,7 +161,7 @@ function messageArgs(args) {
   return arr;
 }
 
-export function logArgs(args) {
+function logArgs(args) {
   if (!LOGGING || getStateVar("QUIET") || !utils.isArrayLike(args)) return;
   var msg = formatLogArgs(args);
   if (STDOUT) console.log(msg);

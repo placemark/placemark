@@ -8,7 +8,7 @@ import { getHighPrecisionSnapInterval } from "../paths/mapshaper-snapping";
 // Convert an array of intersections into an ArcCollection (for display)
 //
 
-export function getIntersectionPoints(intersections) {
+function getIntersectionPoints(intersections) {
   return intersections.map(function (obj) {
     return [obj.x, obj.y];
   });
@@ -115,13 +115,13 @@ export function findSegmentIntersections(arcs, optArg) {
   );
 }
 
-export function sortIntersections(arr) {
+function sortIntersections(arr) {
   arr.sort(function (a, b) {
     return a.x - b.x || a.y - b.y;
   });
 }
 
-export function dedupIntersections(arr, keyFunction) {
+function dedupIntersections(arr, keyFunction) {
   var index = {};
   var getKey = keyFunction || getIntersectionKey;
   return arr.filter(function (o) {
@@ -146,14 +146,14 @@ function getUniqueIntersectionKey(o) {
 
 // Fast method
 // TODO: measure performance using a range of input data
-export function calcSegmentIntersectionStripeCount2(arcs) {
+function calcSegmentIntersectionStripeCount2(arcs) {
   var segs = arcs.getFilteredPointCount() - arcs.size();
   var stripes = Math.pow(segs, 0.4) * 2;
   return Math.ceil(stripes) || 1;
 }
 
 // Alternate fast method
-export function calcSegmentIntersectionStripeCount(arcs) {
+function calcSegmentIntersectionStripeCount(arcs) {
   var segs = arcs.getFilteredPointCount() - arcs.size();
   var stripes = Math.ceil(Math.pow(segs * 10, 0.6) / 40);
   return stripes > 0 ? stripes : 1;
@@ -177,7 +177,7 @@ function calcSegmentIntersectionStripeCount_old(arcs) {
 // @ids: Array of indexes: [s0p0, s0p1, s1p0, s1p1, ...] where xx[sip0] <= xx[sip1]
 // @xx, @yy: Arrays of x- and y-coordinates
 //
-export function intersectSegments(ids, xx, yy, optsArg) {
+function intersectSegments(ids, xx, yy, optsArg) {
   var lim = ids.length - 2,
     opts = optsArg || {},
     intersections = [],
@@ -285,7 +285,7 @@ export function intersectSegments(ids, xx, yy, optsArg) {
   }
 }
 
-export function formatIntersection(xy, s1, s2, xx, yy) {
+function formatIntersection(xy, s1, s2, xx, yy) {
   var x = xy[0],
     y = xy[1],
     a,

@@ -27,10 +27,6 @@ import { Left, Right } from "purify-ts/Either";
 import { ConvertError } from "./errors";
 import { EMPTY_ARRAY } from "./constants";
 
-export function bbox4SimpleCenter(extent: BBox4): Pos2 {
-  return [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2];
-}
-
 export function formatCoordinates(pos: Pos2) {
   function n(dec: number) {
     return (+Math.abs(dec).toPrecision(4)).toString();
@@ -76,7 +72,7 @@ export function parseBBOX(str: string) {
   return trimAndSplitIntoNumbers(str, 4) as Either<ConvertError, BBox4>;
 }
 
-export function polygonCoordinatesFromPositions(
+function polygonCoordinatesFromPositions(
   a: Pos2,
   b: Pos2
 ): Polygon["coordinates"] {

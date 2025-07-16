@@ -74,7 +74,7 @@ var propertiesBySymbolType = {
   ),
 };
 
-export function isSupportedSvgStyleProperty(name) {
+function isSupportedSvgStyleProperty(name) {
   return name in stylePropertyTypes;
 }
 
@@ -92,7 +92,7 @@ export function findPropertiesBySymbolGeom(fields, type) {
 // Returns a function that returns an object containing property values for a single record
 // opts: parsed command line options for the -symbols command
 //
-export function getSymbolDataAccessor(lyr, opts) {
+function getSymbolDataAccessor(lyr, opts) {
   var functions = {};
   var properties = [];
   var fields = lyr.data ? lyr.data.getFields() : [];
@@ -124,13 +124,13 @@ export function getSymbolDataAccessor(lyr, opts) {
 // * invalid patterns: dots 45deg black 3px red
 // * ???
 //
-export function mightBeExpression(str, fields) {
+function mightBeExpression(str, fields) {
   fields = fields || [];
   if (fields.indexOf(str.trim()) > -1) return true;
   return /[(){}./*?:&|=\[+-]/.test(str);
 }
 
-export function getSymbolPropertyAccessor(val, svgName, lyr) {
+function getSymbolPropertyAccessor(val, svgName, lyr) {
   var strVal = String(val).trim();
   var typeHint = symbolPropertyTypes[svgName];
   var fields = lyr.data ? lyr.data.getFields() : [];
@@ -204,23 +204,23 @@ function isDashArray(str) {
   return /^[0-9]+( [0-9]+)*$/.test(str);
 }
 
-export function isSvgClassName(str) {
+function isSvgClassName(str) {
   return /^( ?[_a-z][-_a-z0-9]*\b)+$/i.test(str);
 }
 
-export function isSvgNumber(o) {
+function isSvgNumber(o) {
   return (
     utils.isFiniteNumber(o) || (utils.isString(o) && /^-?[.0-9]+$/.test(o))
   );
 }
 
-export function parseBoolean(o) {
+function parseBoolean(o) {
   if (o === true || o === "true") return true;
   if (o === false || o === "false") return false;
   return null;
 }
 
-export function isSvgMeasure(o) {
+function isSvgMeasure(o) {
   return (
     utils.isFiniteNumber(o) ||
     (utils.isString(o) && /^-?[.0-9]+[a-z]*$/.test(o))
@@ -228,11 +228,11 @@ export function isSvgMeasure(o) {
 }
 
 // Can be a number or a string
-export function parseSvgMeasure(str) {
+function parseSvgMeasure(str) {
   return utils.isString(str) && /[a-z]/.test(str) ? str : Number(str);
 }
 
-export function isSvgColor(str) {
+function isSvgColor(str) {
   return (
     /^[a-z]+$/i.test(str) ||
     /^#[0-9a-f]+$/i.test(str) ||

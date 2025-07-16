@@ -5,7 +5,7 @@ import { stringToBlob, ConvertResult, okResult } from "./utils";
 import { ConvertError } from "app/lib/errors";
 import { EitherAsync } from "purify-ts/EitherAsync";
 
-export class CPolyline implements FileType {
+class CPolyline implements FileType {
   id = "polyline" as const;
   label = "Google encoded polyline";
   extensions = [] as string[];

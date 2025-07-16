@@ -197,7 +197,7 @@ export function filterFeatures({
     .map((result) => result.item);
 }
 
-export function FeatureTableInner({ data }: { data: Data }) {
+function FeatureTableInner({ data }: { data: Data }) {
   const { featureMap, folderMap } = data;
   const panelWidth = useAtomValue(splitsAtom).right;
   const panelIsWide = panelWidth > 300;

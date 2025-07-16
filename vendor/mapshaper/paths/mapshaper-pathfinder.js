@@ -31,11 +31,11 @@ export function setBits(bits, arcBits, mask) {
   return (bits & ~mask) | (arcBits & mask);
 }
 
-export function andBits(bits, arcBits, mask) {
+function andBits(bits, arcBits, mask) {
   return bits & (~mask | arcBits);
 }
 
-export function setRouteBits(arcBits, arcId, routesArr) {
+function setRouteBits(arcBits, arcId, routesArr) {
   var idx = absArcId(arcId), // get index of path in
     mask;
   if (idx == arcId) {
@@ -49,7 +49,7 @@ export function setRouteBits(arcBits, arcId, routesArr) {
   routesArr[idx] &= arcBits | mask;
 }
 
-export function getRouteBits(arcId, routesArr) {
+function getRouteBits(arcId, routesArr) {
   var idx = absArcId(arcId),
     bits = routesArr[idx];
   if (idx != arcId) bits = bits >> 4;

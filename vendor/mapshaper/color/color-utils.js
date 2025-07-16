@@ -33,7 +33,7 @@ function testChannel(c) {
   return c >= 0 && c < 256; // allow fractional values
 }
 
-export function parseRGBA(arg) {
+function parseRGBA(arg) {
   var str = rgbaRxp.exec(arg)[1];
   var parts = str.split(",").map(function (part) {
     return parseFloat(part);
@@ -80,7 +80,7 @@ function formatHexChannel(arg) {
 }
 
 // returns {r, g, b} object
-export function parseHexColor(str) {
+function parseHexColor(str) {
   var hex = hexRxp.exec(str)[1];
   if (hex.length == 3 || hex.length == 4) {
     hex = hex.split("").map(function (c) {

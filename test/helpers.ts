@@ -21,12 +21,6 @@ import deepFreeze from "deep-freeze";
 
 export const NIL_PREVIEW: PreviewProperty = null;
 
-export function tid(i: number) {
-  return i.toString(16).padStart(21, "x");
-}
-
-export const ID_0 = tid(0);
-
 function loadFixture(path: string): FeatureCollection {
   return JSON.parse(
     Fs.readFileSync(Path.join(__dirname, path), "utf8")
@@ -95,7 +89,7 @@ export function wrapMapAndId(fc: FeatureCollection) {
   return { wrappedFeatures, idMap, featureMap };
 }
 
-export function f(features: IFeature | IFeature[]): IFeatureCollection {
+function f(features: IFeature | IFeature[]): IFeatureCollection {
   return deepFreeze({
     type: "FeatureCollection",
     features: (Array.isArray(features) ? features : [features]).map(
@@ -108,14 +102,6 @@ export function f(features: IFeature | IFeature[]): IFeatureCollection {
     ),
   }) as IFeatureCollection;
 }
-
-export const FIRST_COORDS = [
-  "geojson",
-  "features",
-  0,
-  "geometry",
-  "coordinates",
-];
 
 export const point: Point = deepFreeze({
   type: "Point",
@@ -157,7 +143,7 @@ export const fc = f([
   },
 ]);
 
-export const multiPoint: MultiPoint = deepFreeze({
+const multiPoint: MultiPoint = deepFreeze({
   type: "MultiPoint",
   coordinates: [
     [0, 0],
@@ -232,25 +218,6 @@ export const fcLineString = f([
     },
   },
 ]);
-
-export const fcRectangle = f({
-  type: "Feature",
-  properties: {
-    x: 1,
-  },
-  geometry: {
-    type: "Polygon",
-    coordinates: [
-      [
-        [0, 0],
-        [0, 1],
-        [1, 1],
-        [1, 0],
-        [0, 0],
-      ],
-    ],
-  },
-});
 
 const poly: Polygon = deepFreeze({
   type: "Polygon",
@@ -461,52 +428,3 @@ export const features = [
   fcMultiPoly.features[0],
   fcGeometryCollection.features[0],
 ] as Feature[];
-
-export const putPresenceContent = (
-  id: number,
-  userId: number,
-  wrappedFeatureCollectionId: string
-) => ({
-  id,
-  name: "putPresence",
-  args: {
-    pitch: 0,
-    bearing: 0,
-    minx: -123.18990452935536,
-    miny: 49.25629237633768,
-    maxx: -123.06318631791868,
-    maxy: 49.27505273474617,
-    updatedAt: "Wed, 08 Dec 2021 17:19:38 GMT",
-    userName: "tom@macwright.com",
-    userId: userId,
-    cursorLongitude: -123.12995097556933,
-    cursorLatitude: 49.25846336122666,
-    wrappedFeatureCollectionId,
-  },
-});
-
-export const putFeaturesContent = (
-  id: number,
-  wrappedFeatureCollectionId: string,
-  featureId = "cf55b1a0-7561-11ec-91c4-2f6e209ecfb8"
-) => ({
-  id,
-  name: "putFeatures",
-  args: {
-    features: [
-      {
-        id: featureId,
-        at: "a0",
-        feature: {
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "Point",
-            coordinates: [-123.16384809712915, 49.273347542362075],
-          },
-        },
-      },
-    ],
-    wrappedFeatureCollectionId,
-  },
-});

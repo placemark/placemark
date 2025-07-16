@@ -1,7 +1,7 @@
 import { ArcCollection } from "../paths/mapshaper-arcs";
 import geom from "../geom/mapshaper-geom";
 
-export function simplifyArcsFast(arcs, dist) {
+function simplifyArcsFast(arcs, dist) {
   var xx = [],
     yy = [],
     nn = [],

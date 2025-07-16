@@ -13,7 +13,7 @@ export function compileValueExpression(exp, lyr, arcs, opts) {
   return compileFeatureExpression(exp, lyr, arcs, opts);
 }
 
-export function cleanExpression(exp) {
+function cleanExpression(exp) {
   // workaround for problem in GNU Make v4: end-of-line backslashes inside
   // quoted strings are left in the string (other shell environments remove them)
   return exp.replace(/\\\n/g, " ");
@@ -126,7 +126,7 @@ export function compileFeatureExpression(rawExp, lyr, arcs, opts_) {
 
 // Return array of variables on the left side of assignment operations
 // @hasDot (bool) Return property assignments via dot notation
-export function getAssignedVars(exp, hasDot) {
+function getAssignedVars(exp, hasDot) {
   var rxp = /[a-z_$][.a-z0-9_$]*(?= *=[^>=])/gi; // ignore arrow functions and comparisons
   var matches = exp.match(rxp) || [];
   var f = function (s) {
@@ -139,7 +139,7 @@ export function getAssignedVars(exp, hasDot) {
 
 // Return array of objects with properties assigned via dot notation
 // e.g.  'd.value = 45' ->  ['d']
-export function getAssignmentObjects(exp) {
+function getAssignmentObjects(exp) {
   var matches = getAssignedVars(exp, true),
     names = [];
   matches.forEach(function (s) {

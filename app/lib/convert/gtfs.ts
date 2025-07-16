@@ -4,7 +4,7 @@ import { ConvertResult, okResult } from "./utils";
 import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
 
-export class CGTFS implements FileType {
+class CGTFS implements FileType {
   id = "gtfs" as const;
   label = "GTFS shapes.txt";
   filenames = ["shapes.txt"];

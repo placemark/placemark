@@ -1,4 +1,4 @@
-export interface RootNode<Container, Leaf> {
+interface RootNode<Container, Leaf> {
   type: "root";
   children: Array<LeafNode<Leaf> | ContainerNode<Container, Leaf>>;
 }
@@ -14,17 +14,6 @@ export interface ContainerNode<Container, Leaf> {
   children: Array<LeafNode<Leaf> | ContainerNode<Container, Leaf>>;
 }
 
-export type extractContainer<Type> = Type extends RootNode<
-  infer Container,
-  unknown
->
-  ? Container
-  : never;
-
-export type extractLeaf<Type> = Type extends RootNode<unknown, infer Leaf>
-  ? Leaf
-  : never;
-
 function makeIndex<X>(items: X[], idMember: keyof X) {
   const m = new Map<null | string, X[]>();
 
@@ -36,33 +25,6 @@ function makeIndex<X>(items: X[], idMember: keyof X) {
   }
 
   return m;
-}
-
-export function collectChildren<Container, Leaf>(
-  container: RootNode<Container, Leaf> | ContainerNode<Container, Leaf>
-): Set<ContainerNode<Container, Leaf> | LeafNode<Leaf>> {
-  const set = new Set<ContainerNode<Container, Leaf> | LeafNode<Leaf>>();
-
-  function traverse(
-    node:
-      | RootNode<Container, Leaf>
-      | ContainerNode<Container, Leaf>
-      | LeafNode<Leaf>
-  ) {
-    if (node.type !== "root") {
-      set.add(node);
-    }
-    if (node.type === "leaf") {
-      return;
-    }
-    for (const child of node.children) {
-      traverse(child);
-    }
-  }
-
-  traverse(container);
-
-  return set;
 }
 
 /**

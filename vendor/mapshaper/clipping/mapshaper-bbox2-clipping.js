@@ -102,7 +102,7 @@ function findBBoxCutPoints(arcs, bbox) {
   }
 }
 
-export function segmentOutsideBBox(ax, ay, bx, by, xmin, ymin, xmax, ymax) {
+function segmentOutsideBBox(ax, ay, bx, by, xmin, ymin, xmax, ymax) {
   return (
     (ax < xmin && bx < xmin) ||
     (ax > xmax && bx > xmax) ||
@@ -111,7 +111,7 @@ export function segmentOutsideBBox(ax, ay, bx, by, xmin, ymin, xmax, ymax) {
   );
 }
 
-export function segmentInsideBBox(ax, ay, bx, by, xmin, ymin, xmax, ymax) {
+function segmentInsideBBox(ax, ay, bx, by, xmin, ymin, xmax, ymax) {
   return (
     ax > xmin &&
     bx > xmin &&

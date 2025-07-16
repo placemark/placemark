@@ -176,15 +176,7 @@ const HtmlValue = z.object({
   value: z.string(),
 });
 
-export type IHtmlValue = z.infer<typeof HtmlValue>;
-
-/**
- * Determines if this value is the object
- * that denotes a rich text block.
- */
-export function isHTML(value: JsonValue | undefined): boolean {
-  return HtmlValue.safeParse(value).success;
-}
+type IHtmlValue = z.infer<typeof HtmlValue>;
 
 /**
  * Determines if this value is the object

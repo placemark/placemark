@@ -25,7 +25,7 @@ export function getCategoryClassifier(fields, data) {
   };
 }
 
-export function getMultiFieldKeyFunction(fields) {
+function getMultiFieldKeyFunction(fields) {
   return fields.reduce(function (partial, field) {
     // TODO: consider using JSON.stringify for fields that contain objects
     var strval = function (rec) {
@@ -55,7 +55,7 @@ export function aggregateDataRecords(records, getGroupId, opts) {
 // getSourceIds()  receives the id of an output record and returns
 //    an array of input record ids
 //
-export function recombineDataRecords(records, getSourceIds, n, opts) {
+function recombineDataRecords(records, getSourceIds, n, opts) {
   var groups = [];
   for (var i = 0; i < n; i++) {
     groups.push(getSourceIds(i));

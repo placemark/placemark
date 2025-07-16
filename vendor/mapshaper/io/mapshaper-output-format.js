@@ -32,7 +32,7 @@ export function getOutputFormat(dataset, opts) {
 }
 
 // Infer output format by considering file name and (optional) input format
-export function inferOutputFormat(file, inputFormat) {
+function inferOutputFormat(file, inputFormat) {
   var ext = getFileExtension(file).toLowerCase(),
     format = null;
   if (ext == "shp") {

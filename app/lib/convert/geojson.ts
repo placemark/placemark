@@ -9,7 +9,7 @@ import { Right } from "purify-ts/Either";
 import { EitherAsync } from "purify-ts/EitherAsync";
 import { geojsonToString } from "./local/geojson";
 
-export class CGeoJSON implements FileType {
+class CGeoJSON implements FileType {
   id = "geojson" as const;
   label = "GeoJSON";
   extensions = [".geojson", ".json"];

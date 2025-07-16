@@ -199,7 +199,7 @@ function getDividedArcUpdater(map, arcCount) {
 
 // Divides a collection of arcs at points where arc paths cross each other
 // Returns array for remapping arc ids
-export function divideArcs(arcs, opts) {
+function divideArcs(arcs, opts) {
   var points = findClippingPoints(arcs, opts);
   // TODO: avoid the following if no points need to be added
   var map = insertCutPoints(points, arcs);
@@ -209,7 +209,7 @@ export function divideArcs(arcs, opts) {
   return map;
 }
 
-export function cutPathsAtIntersections(dataset, opts) {
+function cutPathsAtIntersections(dataset, opts) {
   var n = dataset.arcs.getPointCount();
   var map = divideArcs(dataset.arcs, opts);
   var n2 = dataset.arcs.getPointCount();
@@ -335,7 +335,7 @@ export function getCutPoint(x, y, i, j, xx, yy) {
 // Sort insertion points in order of insertion
 // Insertion order: ascending id of first endpoint of containing segment and
 //   ascending distance from same endpoint.
-export function sortCutPoints(points, xx, yy) {
+function sortCutPoints(points, xx, yy) {
   points.sort(function (a, b) {
     if (a.i != b.i) return a.i - b.i;
     return (
@@ -351,7 +351,7 @@ export function sortCutPoints(points, xx, yy) {
 }
 
 // Removes duplicate points and arc endpoints
-export function filterSortedCutPoints(points, arcs) {
+function filterSortedCutPoints(points, arcs) {
   var filtered = [],
     pointId = 0;
   arcs.forEach2(function (i, n, xx, yy) {
@@ -379,7 +379,7 @@ export function filterSortedCutPoints(points, arcs) {
   return filtered;
 }
 
-export function findClippingPoints(arcs, opts) {
+function findClippingPoints(arcs, opts) {
   var intersections = findSegmentIntersections(arcs, opts),
     data = arcs.getVertexData();
   return convertIntersectionsToCutPoints(intersections, data.xx, data.yy);

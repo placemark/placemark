@@ -755,7 +755,7 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
   );
 }
 
-export { FORM_ERROR } from "app/core/components/Form";
+;
 
 export function LayersPopover() {
   const rep = usePersistence();

@@ -58,7 +58,7 @@ interface MoveArgs {
   vertexId: VertexId;
 }
 
-export function moveAsCircle({ feature, position, vertexId: _v }: MoveArgs) {
+function moveAsCircle({ feature, position, vertexId: _v }: MoveArgs) {
   const prop = getCircleProp(feature);
 
   if (!prop) return null;
@@ -73,7 +73,7 @@ export function moveAsCircle({ feature, position, vertexId: _v }: MoveArgs) {
   };
 }
 
-export function moveAsRectangle({
+function moveAsRectangle({
   feature,
   position,
   vertexId,

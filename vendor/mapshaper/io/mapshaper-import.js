@@ -71,7 +71,7 @@ export function importContent(obj, opts) {
 }
 
 // Deprecated (included for compatibility with older tests)
-export function importFileContent(content, filename, opts) {
+function importFileContent(content, filename, opts) {
   var type = guessInputType(filename, content),
     input = {};
   input[type] = { filename: filename, content: content };

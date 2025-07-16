@@ -11,12 +11,12 @@ var toUtf8 = getNativeEncoder("utf8");
 var fromUtf8 = getNativeDecoder("utf8");
 
 // Return list of supported encodings
-export function getEncodings() {
+function getEncodings() {
   iconv.encodingExists("ascii"); // make iconv load its encodings
   return Object.keys(iconv.encodings);
 }
 
-export function validateEncoding(enc) {
+function validateEncoding(enc) {
   if (!encodingIsSupported(enc)) {
     stop(
       "Unknown encoding:",
@@ -27,7 +27,7 @@ export function validateEncoding(enc) {
   return enc;
 }
 
-export function stringsAreAscii(arr) {
+function stringsAreAscii(arr) {
   return stringIsAscii(arr.join(""));
 }
 
@@ -124,7 +124,7 @@ export function decodeString(buf, enc) {
   return str;
 }
 
-export function encodingIsSupported(raw) {
+function encodingIsSupported(raw) {
   var enc = standardizeEncodingName(raw);
   return getEncodings().includes(enc);
 }
@@ -137,7 +137,7 @@ export function trimBOM(str) {
   return str;
 }
 
-export function printEncodings() {
+function printEncodings() {
   var encodings = getEncodings().filter(function (name) {
     // filter out some aliases and non-applicable encodings
     return !/^(_|cs|internal|ibm|isoir|singlebyte|table|[0-9]|l[0-9]|windows)/.test(

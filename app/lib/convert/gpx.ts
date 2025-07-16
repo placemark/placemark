@@ -5,7 +5,7 @@ import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
 import { FeatureCollection } from "types";
 
-export class CGPX implements FileType {
+class CGPX implements FileType {
   id = "gpx" as const;
   label = "GPX";
   extensions = [".gpx"];

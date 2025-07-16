@@ -19,8 +19,7 @@ function featureContainsFeature(
 export enum CanInnerRingResult {
   Yes,
   No,
-  Overlap,
-}
+  }
 
 export function canInnerRing(features: Feature[]): CanInnerRingResult {
   if (features.length !== 2) return CanInnerRingResult.No;

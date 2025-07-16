@@ -7,7 +7,7 @@ import { ConvertError } from "app/lib/errors";
 import { rough } from "app/lib/roughly_geojson";
 import { Maybe } from "purify-ts/Maybe";
 
-export class CWKT implements FileType {
+class CWKT implements FileType {
   id = "wkt" as const;
   label = "WKT";
   extensions = [] as string[];

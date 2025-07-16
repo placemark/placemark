@@ -48,7 +48,7 @@ function cleanPath(path, arcs) {
 
 // Remove pairs of ids where id[n] == ~id[n+1] or id[0] == ~id[n-1];
 // (in place)
-export function removeSpikesInPath(ids) {
+function removeSpikesInPath(ids) {
   var n = ids.length;
   if (n >= 2) {
     if (ids[0] == ~ids[n - 1]) {
@@ -159,7 +159,7 @@ export function getSelfIntersectionSplitter(nodes) {
 // @path An array of arc ids describing a self-intersecting polygon ring
 // @ids An array of two or more indexes of arcs that originate from a single vertex
 //      where @path intersects itself -- assumes indexes are in ascending sequence
-export function splitPathByIds(path, indexes) {
+function splitPathByIds(path, indexes) {
   var subPaths = [];
   utils.genericSort(indexes, true); // sort ascending
   if (indexes[0] > 0) {

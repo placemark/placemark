@@ -35,8 +35,7 @@ import { ProxyMarked } from "comlink";
 
 export enum GeocodingBehavior {
   NULL_GEOMETRY,
-  DISCARD,
-}
+  }
 
 export interface ExportedData {
   extensions: FileType["extensions"];
@@ -152,7 +151,7 @@ export const COORDINATE_STRING_ORDERS: Array<{
   },
 ];
 
-export type Winding = "RFC7946" | "d3";
+type Winding = "RFC7946" | "d3";
 
 export interface ExportOptions {
   type: FileType["id"];

@@ -2,7 +2,7 @@ import utils from "../utils/mapshaper-utils";
 
 // Returns a function for converting simplification ratio [0-1] to an interval value.
 // If the dataset is large, the value is an approximation (for speed while using slider)
-export function getThresholdFunction(arcs) {
+function getThresholdFunction(arcs) {
   var size = arcs.getPointCount(),
     nth = Math.ceil(size / 5e5),
     sortedThresholds = arcs.getRemovableThresholds(nth);

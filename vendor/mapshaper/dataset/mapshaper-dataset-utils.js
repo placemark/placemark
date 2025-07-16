@@ -31,7 +31,7 @@ export function splitDataset(dataset) {
   });
 }
 
-export function splitApartLayers(dataset, layers) {
+function splitApartLayers(dataset, layers) {
   var datasets = [];
   dataset.layers = dataset.layers.filter(function (lyr) {
     if (!layers.includes(lyr)) {
@@ -54,7 +54,7 @@ export function splitApartLayers(dataset, layers) {
 }
 
 // clone all layers, make a filtered copy of arcs
-export function copyDataset(dataset) {
+function copyDataset(dataset) {
   var d2 = utils.extend({}, dataset);
   d2.layers = d2.layers.map(copyLayer);
   if (d2.arcs) {
@@ -109,7 +109,7 @@ export function datasetHasPaths(dataset) {
 // Remove ArcCollection of a dataset if not referenced by any layer
 // TODO: consider doing arc dissolve, or just removing unreferenced arcs
 // (currently cleanupArcs() is run after every command, so be mindful of performance)
-export function cleanupArcs(dataset) {
+function cleanupArcs(dataset) {
   if (dataset.arcs && !utils.some(dataset.layers, layerHasPaths)) {
     dataset.arcs = null;
     return true;
@@ -118,7 +118,7 @@ export function cleanupArcs(dataset) {
 
 // Remove unused arcs from a dataset
 // Warning: using dissolveArcs() means that adjacent arcs are combined when possible
-export function pruneArcs(dataset) {
+function pruneArcs(dataset) {
   cleanupArcs(dataset);
   if (dataset.arcs) {
     dissolveArcs(dataset);
@@ -148,14 +148,14 @@ export function replaceLayers(dataset, cutLayers, newLayers) {
 // Replace a layer with a layer from a second dataset
 // (in-place)
 // (Typically, the second dataset is imported from dynamically generated GeoJSON and contains one layer)
-export function replaceLayerContents(lyr, dataset, dataset2) {
+function replaceLayerContents(lyr, dataset, dataset2) {
   var lyr2 = mergeOutputLayerIntoDataset(lyr, dataset, dataset2, {});
   if (layerHasPaths(lyr2)) {
     buildTopology(dataset);
   }
 }
 
-export function mergeOutputLayerIntoDataset(lyr, dataset, dataset2, opts) {
+function mergeOutputLayerIntoDataset(lyr, dataset, dataset2, opts) {
   if (!dataset2 || dataset2.layers.length != 1) {
     error("Invalid source dataset");
   }

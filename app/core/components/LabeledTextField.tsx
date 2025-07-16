@@ -5,7 +5,7 @@ import { InlineError } from "app/components/inline_error";
 import type { B3Size } from "app/components/elements";
 import { Input, StyledLabelSpan } from "app/components/elements";
 
-export interface LabeledTextFieldProps
+interface LabeledTextFieldProps
   extends PropsWithoutRef<JSX.IntrinsicElements["input"]> {
   name: string;
   label: string;
@@ -47,5 +47,3 @@ export const LabeledTextField = forwardRef<
     );
   }
 );
-
-export default LabeledTextField;

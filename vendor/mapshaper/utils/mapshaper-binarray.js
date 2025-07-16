@@ -2,7 +2,7 @@ import utils from "../utils/mapshaper-utils";
 import { error } from "../utils/mapshaper-logging";
 import { Buffer } from "../utils/mapshaper-node-buffer";
 
-export function buffersAreIdentical(a, b) {
+function buffersAreIdentical(a, b) {
   var alen = BinArray.bufferSize(a);
   var blen = BinArray.bufferSize(b);
   if (alen != blen) {

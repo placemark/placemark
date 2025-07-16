@@ -96,7 +96,7 @@ function findMaxPathInterval(coords) {
   return Math.sqrt(maxSq);
 }
 
-export function densifyUnprojectedPathByDistance(coords, meters) {
+function densifyUnprojectedPathByDistance(coords, meters) {
   // stub
 }
 

@@ -126,7 +126,7 @@ function AutoReset({
   return null;
 }
 
-export function UnitSelectField() {
+function UnitSelectField() {
   const { values, setFieldValue } = useFormikContext<{
     radius: number;
     units: Units;

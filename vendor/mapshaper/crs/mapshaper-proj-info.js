@@ -31,7 +31,7 @@ export function isAxisAligned(P) {
   return true;
 }
 
-export function getBoundingMeridian(P) {
+function getBoundingMeridian(P) {
   if (P.lam0 === 0) return 180;
   return getAntimeridian((P.lam0 * 180) / Math.PI);
 }
@@ -44,20 +44,20 @@ export function isMeridianBounded(P) {
 }
 
 // Is the projection bounded by parallels or polar lines?
-export function isParallelBounded(P) {
+function isParallelBounded(P) {
   // TODO: add polar azimuthal projections
   // TODO: reject world projections that do not have polar lines
   return isAxisAligned(P);
 }
 
-export function isConic(P) {
+function isConic(P) {
   return inList(
     P,
     "aea,bonne,eqdc,lcc,poly,euler,murd1,murd2,murd3,pconic,tissot,vitk1"
   );
 }
 
-export function isAzimuthal(P) {
+function isAzimuthal(P) {
   return inList(
     P,
     "aeqd,gnom,laea,mil_os,lee_os,gs48,alsk,gs50,nsper,tpers,ortho,qsc,stere,ups,sterea"

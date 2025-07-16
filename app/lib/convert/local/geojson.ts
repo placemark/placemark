@@ -5,7 +5,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { FeatureCollection, FeatureMap, IWrappedFeature } from "types";
 import { ExportOptions } from "..";
 
-export function wrappedFeatureToExportable(
+function wrappedFeatureToExportable(
   wrappedFeature: IWrappedFeature,
   options: ExportOptions["geojsonOptions"]
 ) {
@@ -29,22 +29,6 @@ export function wrappedFeatureToExportable(
   }
 
   return feature;
-}
-
-export function wrappedFeaturesToFeatureCollection(
-  wrappedFeatures: IWrappedFeature[],
-  options: ExportOptions["geojsonOptions"]
-) {
-  const features = wrappedFeatures.map((wrappedFeature) => {
-    return wrappedFeatureToExportable(wrappedFeature, options);
-  });
-
-  const featureCollection: FeatureCollection = {
-    type: "FeatureCollection",
-    features,
-  };
-
-  return featureCollection;
 }
 
 export function geojsonToString(

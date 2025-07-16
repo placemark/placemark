@@ -111,7 +111,7 @@ function applyRectangleOptions(bounds, crs, opts) {
 }
 
 // opt: aspect ratio as a single number or a range (e.g. "1,2");
-export function applyAspectRatio(opt, bounds) {
+function applyAspectRatio(opt, bounds) {
   var range = String(opt).split(",").map(parseFloat),
     aspectRatio = bounds.width() / bounds.height(),
     min,

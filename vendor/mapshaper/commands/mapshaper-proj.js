@@ -101,7 +101,7 @@ function projCmd(dataset, destInfo, opts) {
 // name: a layer identifier, .prj file or projection defn
 // Converts layer ids and .prj files to CRS defn
 // Returns projection defn
-export function getCrsInfo(name, catalog) {
+function getCrsInfo(name, catalog) {
   var dataset,
     source,
     info = {};
@@ -222,7 +222,7 @@ export function projectArcs(arcs, proj) {
   arcs.updateVertexData(data.nn, xx, yy, zz);
 }
 
-export function projectArcs2(arcs, proj) {
+function projectArcs2(arcs, proj) {
   return editArcs(arcs, onPoint);
   function onPoint(append, x, y, prevX, prevY, i) {
     var p = proj(x, y);

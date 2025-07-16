@@ -78,7 +78,7 @@ export function coordPropsAttr({ x, y }: CoordProps) {
   };
 }
 
-export default function SimpleText({
+function SimpleText({
   value,
   onChange,
   readOnly,

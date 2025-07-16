@@ -48,7 +48,7 @@ export function adjustForFgb(
   };
 }
 
-export class CFlatGeobuf implements FileType {
+class CFlatGeobuf implements FileType {
   id = "flatgeobuf" as const;
   label = "FlatGeobuf";
   extensions = [".fgb"];

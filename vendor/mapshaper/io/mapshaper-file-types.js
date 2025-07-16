@@ -33,7 +33,7 @@ export function guessInputType(file, content) {
 }
 
 //
-export function stringLooksLikeJSON(str) {
+function stringLooksLikeJSON(str) {
   return /^\s*[{[]/.test(String(str));
 }
 
@@ -42,16 +42,16 @@ export function couldBeDsvFile(name) {
   return /csv|tsv|txt$/.test(ext);
 }
 
-export function isZipFile(file) {
+function isZipFile(file) {
   return /\.zip$/i.test(file);
 }
 
-export function isSupportedOutputFormat(fmt) {
+function isSupportedOutputFormat(fmt) {
   var types = ["geojson", "topojson", "json", "dsv", "dbf", "shapefile", "svg"];
   return types.indexOf(fmt) > -1;
 }
 
-export function getFormatName(fmt) {
+function getFormatName(fmt) {
   return (
     {
       geojson: "GeoJSON",
@@ -72,7 +72,7 @@ export function isSupportedBinaryInputType(path) {
 }
 
 // Detect extensions of some unsupported file types, for cmd line validation
-export function filenameIsUnsupportedOutputType(file) {
+function filenameIsUnsupportedOutputType(file) {
   var rxp = /\.(shx|prj|xls|xlsx|gdb|sbn|sbx|xml|kml)$/i;
   return rxp.test(file);
 }

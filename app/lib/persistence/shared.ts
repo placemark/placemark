@@ -1,16 +1,9 @@
-import {
-  IWrappedFeature,
-  IFolder,
-  IPresence,
-  ILayerConfig,
-  LayerConfigMap,
-} from "types";
+import { IWrappedFeature, IFolder, ILayerConfig, LayerConfigMap } from "types";
 import { fMoment, Moment, MomentInput, UMomentLog } from "./moment";
 import { useCallback } from "react";
 import { useAtomCallback } from "jotai/utils";
 import { useAtomValue } from "jotai";
-import { Data, dataAtom, momentLogAtom, presencesAtom } from "state/jotai";
-import { EMPTY_ARRAY } from "app/lib/constants";
+import { Data, dataAtom, momentLogAtom } from "state/jotai";
 
 // This  used to send to posthog, but now could be removed
 // or wired into your own product analytics.
@@ -124,16 +117,6 @@ export function useStartSnapshot() {
   );
 }
 
-export function usePresences(userId: number | undefined): IPresence[] {
-  const rawPresences = useAtomValue(presencesAtom).presences.entries();
-  if (userId === undefined) return EMPTY_ARRAY as IPresence[];
-  const others = Array.from(rawPresences).filter((pair) => {
-    return pair[0] !== userId;
-  });
-  if (others.length === 0) return EMPTY_ARRAY as IPresence[];
-  return others.map((val) => val[1]);
-}
-
 /**
  * Dangerous! This makes the assumption that the
  * previous history state is about to be undone. This
@@ -155,14 +138,4 @@ export function usePopMoment() {
  */
 export function useFeatureMap(): Map<string, IWrappedFeature> {
   return useAtomValue(dataAtom).featureMap;
-}
-
-/**
- * Subscribe to the raw map of features indexed
- * by ID.
- *
- * @returns map of folders
- */
-export function useFolderMap(): Map<string, IFolder> {
-  return useAtomValue(dataAtom).folderMap;
 }

@@ -11,7 +11,7 @@ import type {
   MultiLineString,
 } from "types";
 
-export function mergeGeometryCollection(features: Feature[]): Feature {
+function mergeGeometryCollection(features: Feature[]): Feature {
   const newFeature: IFeature<GeometryCollection> = {
     type: "Feature",
     properties: {},
@@ -124,7 +124,7 @@ function combineFeaturesLineString(features: Feature[]) {
 
 type MergeableFamilies = "Polygon" | "Point" | "LineString";
 
-export function mergeFeatureFamily(
+function mergeFeatureFamily(
   features: Feature[],
   family: MergeableFamilies
 ): Feature {

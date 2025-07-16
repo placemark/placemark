@@ -29,7 +29,7 @@ export function exportJSON(dataset, opts) {
   }, []);
 }
 
-export function exportJSONTable(lyr, opts) {
+function exportJSONTable(lyr, opts) {
   opts = opts || {};
   var records = lyr.data.getRecords();
   if (opts.ndjson) {

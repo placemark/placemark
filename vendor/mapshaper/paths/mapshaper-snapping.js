@@ -79,7 +79,7 @@ export function snapCoordsByInterval(arcs, snapDist) {
   }
 }
 
-export function sortCoordinateIds(a) {
+function sortCoordinateIds(a) {
   var n = a.length,
     ids = new Uint32Array(n);
   for (var i = 0; i < n; i++) {

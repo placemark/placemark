@@ -70,7 +70,7 @@ export function readFixedWidthRecordsFromString(str, ops) {
   return records;
 }
 
-export function parseFixedWidthInfo(sample) {
+function parseFixedWidthInfo(sample) {
   var lines = utils.splitLines(sample);
   if (lines.length > 2) lines.pop(); // remove possible partial line
   var n = getMaxLineLength(lines);
@@ -115,7 +115,7 @@ function readValue(line, start, end) {
   return line.substring(start, end).trim();
 }
 
-export function parseFixedWidthLine(str, fields) {
+function parseFixedWidthLine(str, fields) {
   var obj = {},
     field;
   for (var i = 0; i < fields.length; i++) {

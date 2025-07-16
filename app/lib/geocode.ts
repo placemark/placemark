@@ -246,7 +246,7 @@ export function getActions(query: string, actions: Action[]): QItemAction[] {
   });
 }
 
-export function getFeatureItems(
+function getFeatureItems(
   query: string,
   searchIndex: SearchIndex
 ): QItemWrappedFeature[] {

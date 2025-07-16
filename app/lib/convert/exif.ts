@@ -5,7 +5,7 @@ import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
 
 // https://github.com/geotiffjs/cog-explorer/blob/master/src/components/mapview.jsx#L202
-export class CEXIF implements FileType {
+class CEXIF implements FileType {
   id = "exif" as const;
   label = "EXIF (JPEG)";
   extensions = [".jpg", ".jpeg"];

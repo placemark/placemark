@@ -27,7 +27,7 @@ export function pick(
   return ret;
 }
 
-export const stripFeatureExcept = function stripFeature(
+const stripFeatureExcept = function stripFeature(
   feature: IWrappedFeature,
   id: number,
   properties: readonly string[]

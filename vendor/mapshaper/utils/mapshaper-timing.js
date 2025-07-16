@@ -9,7 +9,7 @@ export var T = {
   },
 };
 
-export function tick(msg) {
+function tick(msg) {
   var now = Date.now();
   var elapsed = tickTime ? " - " + (now - tickTime) + "ms" : "";
   tickTime = now;

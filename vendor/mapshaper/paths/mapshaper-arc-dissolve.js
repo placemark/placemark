@@ -124,7 +124,7 @@ function dissolveArcCollection(arcs, newArcs, newLen) {
 }
 
 // Test whether two arcs can be merged together
-export function getArcDissolveTest(layers, arcs) {
+function getArcDissolveTest(layers, arcs) {
   var nodes = new NodeCollection(arcs, getArcPresenceTest2(layers, arcs)),
     // don't allow dissolving through endpoints of polyline paths
     lineLayers = layers.filter(function (lyr) {

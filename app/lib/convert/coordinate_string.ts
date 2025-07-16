@@ -7,7 +7,7 @@ import { ConvertError } from "app/lib/errors";
 import readAsText from "app/lib/read_as_text";
 import { eitherToAsync } from "app/lib/utils";
 
-export class CCoordinateString implements FileType {
+class CCoordinateString implements FileType {
   id = "coordinate-string" as const;
   label = "Coordinate string";
   extensions = [] as string[];
