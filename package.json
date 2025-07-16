@@ -93,7 +93,7 @@
 		"formik": "^2.4.6",
 		"fractional-indexing": "^2.1.0",
 		"fuse.js": "^6.6.2",
-		"geometric": "^2.5.4",
+		"geometric": "^2.5.5",
 		"iconv-lite": "^0.6.3",
 		"jotai": "^2.8.1",
 		"jotai-optics": "^0.3.2",
