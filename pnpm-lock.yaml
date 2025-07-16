@@ -372,8 +372,8 @@ importers:
         specifier: ^1.6.2
         version: 1.6.2
       replicache:
-        specifier: ^12.2.2
-        version: 12.2.2
+        specifier: ^15.0.1
+        version: 15.0.1
       secure-password:
         specifier: ^4.0.0
         version: 4.0.0
@@ -676,6 +676,10 @@ packages:
     resolution: {integrity: sha512-WaMsgi6Q8zMgMth93GvWPXkhAIEobfsIkLTacoVZoK1J0CevIPGYY2Vo5YvJGqyHqXM6P4ppOYGsIRU8MM9pFQ==}
     engines: {node: '>=6.9.0'}
 
+  '@badrap/valita@0.3.16':
+    resolution: {integrity: sha512-slP2blSd6A+xUBgGf+wW6adGd72ojBLxemU0jXQ0fXQcsZWYQ70wTLTJggs6+oxcAqN/bvYA3Ops8SqR2Imyaw==}
+    engines: {node: '>= 16'}
+
   '@codemirror/commands@6.8.1':
     resolution: {integrity: sha512-KlGVYufHMQzxbdQONiLyGQDUW0itrLZwq3CcY7xpv9ZLRHqzkBSoteocBHtMCoY7/Ci4xhzSrToIeLg7FxHuaw==}
 
@@ -932,6 +936,7 @@ packages:
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -939,6 +944,7 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
+    deprecated: Use @eslint/object-schema instead
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -1995,6 +2001,17 @@ packages:
 
   '@repeaterjs/repeater@3.0.5':
     resolution: {integrity: sha512-l3YHBLAol6d/IKnB9LhpD0cEZWAoe3eFKUyTYWmFmCO2Q/WOckxLQAUyMZWwZV2M/m3+4vgRoaolFqaII82/TA==}
+
+  '@rocicorp/lock@1.0.4':
+    resolution: {integrity: sha512-FavTiO8ETXFXDVfA87IThGduTTTR8iqzBnr/c60gUUmbk7knGEXPmf2B+yiNuluJD0ku0fL2V2r62UXnsLXl6w==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  '@rocicorp/logger@5.4.0':
+    resolution: {integrity: sha512-kmMR5iLrwRIsvPZ+UXnmyAM3Mlvz6rCHrYfMsrMPgFYKLfo7amUH1RwHo6tuuqJiAvUbeaCoDtc8e+V0Mr4PSA==}
+
+  '@rocicorp/resolver@1.0.2':
+    resolution: {integrity: sha512-TfjMTQp9cNNqNtHFfa+XHEGdA7NnmDRu+ZJH4YF3dso0Xk/b9DMhg/sl+b6CR4ThFZArXXDsG1j8Mwl34wcOZQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   '@rollup/plugin-commonjs@24.0.0':
     resolution: {integrity: sha512-0w0wyykzdyRRPHOb0cQt14mIBLujfAv6GgP6g8nvg/iBxEm112t3YPPq+Buqe2+imvElTka+bjNlJ/gB56TD8g==}
@@ -3444,6 +3461,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   espree@9.6.1:
@@ -5181,8 +5199,8 @@ packages:
   remove-accents@0.5.0:
     resolution: {integrity: sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==}
 
-  replicache@12.2.2:
-    resolution: {integrity: sha512-vdbRUEMJKpgdyxiqZPSa2fDRx/WYSwOTfiCKzsyPyw2JO8vaBDHl2AV6lvr7yVVdl8TzTQOknn4fbc22NG7q8g==}
+  replicache@15.0.1:
+    resolution: {integrity: sha512-I7HK6h2eT2QNxO4mwQFDqbuxhvCQgSlU4QuwfN9dqA6EKnO73VYiKB676r36N3q5W7L+htLgAcrSsrX+JPsRlQ==}
     engines: {node: '>=14.8.0'}
     hasBin: true
 
@@ -5220,6 +5238,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   robust-predicates@3.0.2:
@@ -6192,6 +6211,8 @@ snapshots:
       '@babel/helper-string-parser': 7.24.6
       '@babel/helper-validator-identifier': 7.24.6
       to-fast-properties: 2.0.0
+
+  '@badrap/valita@0.3.16': {}
 
   '@codemirror/commands@6.8.1':
     dependencies:
@@ -7644,6 +7665,14 @@ snapshots:
   '@remirror/core-constants@2.0.2': {}
 
   '@repeaterjs/repeater@3.0.5': {}
+
+  '@rocicorp/lock@1.0.4':
+    dependencies:
+      '@rocicorp/resolver': 1.0.2
+
+  '@rocicorp/logger@5.4.0': {}
+
+  '@rocicorp/resolver@1.0.2': {}
 
   '@rollup/plugin-commonjs@24.0.0(rollup@2.78.0)':
     dependencies:
@@ -11340,7 +11369,12 @@ snapshots:
 
   remove-accents@0.5.0: {}
 
-  replicache@12.2.2: {}
+  replicache@15.0.1:
+    dependencies:
+      '@badrap/valita': 0.3.16
+      '@rocicorp/lock': 1.0.4
+      '@rocicorp/logger': 5.4.0
+      '@rocicorp/resolver': 1.0.2
 
   requires-port@1.0.0: {}
 
