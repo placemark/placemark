@@ -80,7 +80,7 @@
 		"classed-components": "^2.0.1",
 		"clsx": "^1.2.1",
 		"comlink": "^4.4.1",
-		"core-js": "^3.37.1",
+		"core-js": "^3.44.0",
 		"d3-array": "^2.12.1",
 		"d3-color": "^2.0.0",
 		"d3-dsv": "^2.0.0",
