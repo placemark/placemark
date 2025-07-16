@@ -79,7 +79,7 @@
 		"browser-fs-access": "^0.33.1",
 		"classed-components": "^2.0.1",
 		"clsx": "^1.2.1",
-		"comlink": "^4.4.1",
+		"comlink": "^4.4.2",
 		"core-js": "^3.37.1",
 		"d3-array": "^2.12.1",
 		"d3-color": "^2.0.0",
