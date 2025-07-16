@@ -19,8 +19,7 @@ import {
   ResetIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
-import * as Accordion from "@radix-ui/react-accordion";
-import * as P from "@radix-ui/react-popover";
+import { Accordion, Popover as P } from "radix-ui";
 import {
   Button,
   inputClass,

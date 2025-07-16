@@ -3,7 +3,7 @@ import {
   menuItemLike,
   StyledTooltipArrow,
 } from "app/components/elements";
-import * as Tooltip from "@radix-ui/react-tooltip";
+import { Tooltip } from "radix-ui";
 import clsx from "clsx";
 import { Thumbnail } from "./thumbnail";
 import { LayerConfigTemplate } from "app/lib/default_layers";

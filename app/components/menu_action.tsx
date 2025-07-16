@@ -1,6 +1,6 @@
 import { useHotkeys } from "integrations/hotkeys";
 import { TContent, Keycap, Button } from "./elements";
-import * as Tooltip from "@radix-ui/react-tooltip";
+import { Tooltip } from "radix-ui";
 
 export default function MenuAction({
   selected = false,

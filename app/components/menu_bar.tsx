@@ -9,7 +9,7 @@ import {
 } from "@radix-ui/react-icons";
 import { MemoryInfo } from "app/components/map_info/memory_info";
 import { usePersistence } from "app/lib/persistence/context";
-import * as DD from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu as DD } from "radix-ui";
 import { Button, PlacemarkIcon, DDContent, StyledItem } from "./elements";
 import { dialogAtom } from "state/jotai";
 import { useSetAtom } from "jotai";

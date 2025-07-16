@@ -28,7 +28,7 @@ import {
 import { MapContext } from "app/context/map_context";
 import PMap from "app/lib/pmap";
 import { EmptyIndex } from "app/lib/generate_flatbush_instance";
-import * as CM from "@radix-ui/react-context-menu";
+import { ContextMenu as CM } from "radix-ui";
 import { CLICKABLE_LAYERS } from "app/lib/load_and_augment_style";
 import { env } from "app/lib/env_client";
 import { MapContextMenu } from "app/components/map_context_menu";

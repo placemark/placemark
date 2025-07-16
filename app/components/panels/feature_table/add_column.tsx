@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { PlusIcon } from "@radix-ui/react-icons";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import {
   Button,
   PopoverTitleAndClose,

@@ -20,7 +20,7 @@ import {
 } from "./elements";
 import { match } from "ts-pattern";
 import { MapContext } from "app/context/map_context";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import { SCALE_UNITS, ScaleUnit, zScaleUnit } from "app/lib/constants";
 import { useAtom, useSetAtom } from "jotai";
 import throttle from "lodash/throttle";

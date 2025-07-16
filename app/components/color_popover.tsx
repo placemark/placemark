@@ -3,7 +3,7 @@ import {
   HexColorInput,
   RgbaStringColorPicker,
 } from "react-colorful";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import { FieldProps } from "formik";
 import * as d3 from "d3-color";
 import clsx from "clsx";

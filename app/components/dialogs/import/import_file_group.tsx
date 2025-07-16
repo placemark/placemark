@@ -5,7 +5,7 @@ import {
 } from "app/components/csv_options_form";
 import { SelectFileType } from "app/components/fields";
 import * as E from "app/components/elements";
-import * as C from "@radix-ui/react-collapsible";
+import { Collapsible as C } from "radix-ui";
 import { Formik, FormikHelpers, Form } from "formik";
 import { useImportFile } from "app/hooks/use_import";
 import {

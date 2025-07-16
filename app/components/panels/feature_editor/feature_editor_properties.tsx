@@ -19,7 +19,7 @@ import {
 } from "app/components/elements";
 import { PanelDetails } from "app/components/panel_details";
 import { extractPropertyKeys } from "app/lib/multi_properties";
-import * as Tooltip from "@radix-ui/react-tooltip";
+import { Tooltip as Tooltip } from "radix-ui";
 import { useAtom, useAtomValue } from "jotai";
 import { dataAtom, showAllAtom } from "state/jotai";
 import { onArrow } from "app/lib/arrow_navigation";

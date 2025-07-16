@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from "react";
-import * as T from "@radix-ui/react-tooltip";
+import { Tooltip as T } from "radix-ui";
 import { useSetAtom, useAtom } from "jotai";
 import { Side, splitsAtom, Splits, MIN_SPLITS, OTHER_SIDE } from "state/jotai";
 import { useMove } from "@react-aria/interactions";

@@ -10,7 +10,7 @@ import {
 } from "app/lib/convert";
 import { lib } from "app/lib/worker";
 import * as E from "app/components/elements";
-import * as C from "@radix-ui/react-collapsible";
+import { Collapsible as C } from "radix-ui";
 import * as Sentry from "@sentry/nextjs";
 import toast from "react-hot-toast";
 import { DownloadIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";

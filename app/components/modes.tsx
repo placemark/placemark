@@ -32,7 +32,7 @@ import {
   DDSeparator,
   StyledItem,
 } from "app/components/elements";
-import * as DD from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu as DD } from "radix-ui";
 import { CIRCLE_TYPE } from "state/mode";
 
 function CircleMenu() {

@@ -4,7 +4,7 @@ import type { JsonValue } from "type-fest";
 import isObject from "lodash/isObject";
 import { CardStackIcon } from "@radix-ui/react-icons";
 import { pluralize } from "app/lib/utils";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import { useVirtual } from "react-virtual";
 import { Formik, Form } from "formik";
 import {

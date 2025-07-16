@@ -1,7 +1,7 @@
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { Cross1Icon } from "@radix-ui/react-icons";
-import * as D from "@radix-ui/react-dialog";
+import { Dialog as D } from "radix-ui";
 
 type SlottableIcon =
   | React.FC<React.ComponentProps<"svg">>

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import type { PersistenceMetadataMemory } from "app/lib/persistence/ipersistence";
 import React from "react";
 import { formatTitle } from "app/lib/utils";

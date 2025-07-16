@@ -8,12 +8,11 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
-import * as T from "@radix-ui/react-tooltip";
+import { Tooltip as T, Popover as P } from "radix-ui";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { layerConfigAtom } from "state/jotai";
 import * as E from "app/components/elements";
 import { usePersistence } from "app/lib/persistence/context";
-import * as P from "@radix-ui/react-popover";
 import LAYERS from "app/lib/default_layers";
 import { Maybe } from "purify-ts/Maybe";
 import { DefaultLayerItem } from "./default_layer_item";

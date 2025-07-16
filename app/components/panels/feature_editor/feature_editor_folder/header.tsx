@@ -6,7 +6,7 @@ import {
   styledSelect,
   TextWell,
 } from "app/components/elements";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import { extractPropertyKeys } from "app/lib/multi_properties";
 import { FeatureMap } from "types";
 import { AddFolder } from "./add_folder";
