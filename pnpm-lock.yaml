@@ -207,8 +207,8 @@ importers:
         specifier: ^0.8.2
         version: 0.8.2
       flatbush:
-        specifier: ^3.3.1
-        version: 3.3.1
+        specifier: ^4.4.1
+        version: 4.4.1
       flatgeobuf:
         specifier: ^3.38.0
         version: 3.38.0
@@ -346,8 +346,8 @@ importers:
         specifier: ^0.1.5
         version: 0.1.5
       '@types/flatbush':
-        specifier: ^3.3.0
-        version: 3.3.0
+        specifier: ^4.2.2
+        version: 4.2.2
       '@types/lodash':
         specifier: ^4.17.20
         version: 4.17.20
@@ -2266,8 +2266,9 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
-  '@types/flatbush@3.3.0':
-    resolution: {integrity: sha512-fSPSZ1d5v3DaAmWhuoFSCeaFA7JHdtcvF5F2Pdo0cAdrV4aRl9tCcKl1BuV7/QYWLN/vyefPGrsUHMGGtq6ASQ==}
+  '@types/flatbush@4.2.2':
+    resolution: {integrity: sha512-MqfHQCcALbBBa0mL8h2SxRxK8Yn0vHeBoqJqEvkqQFXfPEvB6fanCs4dI3ENgr4tKZ2mK6nRYcCX4yXnTYE/eQ==}
+    deprecated: This is a stub types definition. flatbush provides its own type definitions, so you do not need this installed.
 
   '@types/geojson@7946.0.16':
     resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
@@ -3092,14 +3093,15 @@ packages:
   flatbuffers@24.12.23:
     resolution: {integrity: sha512-dLVCAISd5mhls514keQzmEG6QHmUUsNuWsb4tFafIUwvvgDjXhtfAYSKOzt5SWOy+qByV5pbsDZ+Vb7HUOBEdA==}
 
-  flatbush@3.3.1:
-    resolution: {integrity: sha512-oKuPbtT+DS2CxH+9Vhbsq8HifmSCuOw+3Cy5zt/vCIrZl5KyengoTHDBLmtpZoBhcwa7/biNjgL1DwdLMJYm1A==}
+  flatbush@4.4.1:
+    resolution: {integrity: sha512-g3eA6ZF0viCV0UslH/mdUzCLcT7aGj0Fjk9MBxxNkbADSXqSHDZhthFBDFgo2umc6SVmSItNefTjWnfyo7DunA==}
 
   flatgeobuf@3.38.0:
     resolution: {integrity: sha512-2BLAF81ZT19t3cVRxiNAU2LUrwfMUo4ASBvRtguPUAUJjmyPpnlkBDCrSyswYBg5MrC+ByhdE9SvZIPAgYhwgA==}
 
-  flatqueue@1.2.1:
-    resolution: {integrity: sha512-X86TpWS1rGuY7m382HuA9vngLeDuWA9lJvhEG+GfgKMV5onSvx5a71cl7GMbXzhWtlN9dGfqOBrpfqeOtUfGYQ==}
+  flatqueue@2.0.3:
+    resolution: {integrity: sha512-RZCWZNkmxzUOh8jqEcEGZCycb3B8KAfpPwg3H//cURasunYxsg1eIvE+QDSjX+ZPHTIVfINfK1aLTrVKKO0i4g==}
+    engines: {node: '>= 12.17.0'}
 
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
@@ -7084,7 +7086,9 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
-  '@types/flatbush@3.3.0': {}
+  '@types/flatbush@4.2.2':
+    dependencies:
+      flatbush: 4.4.1
 
   '@types/geojson@7946.0.16': {}
 
@@ -8111,9 +8115,9 @@ snapshots:
 
   flatbuffers@24.12.23: {}
 
-  flatbush@3.3.1:
+  flatbush@4.4.1:
     dependencies:
-      flatqueue: 1.2.1
+      flatqueue: 2.0.3
 
   flatgeobuf@3.38.0:
     dependencies:
@@ -8123,7 +8127,7 @@ snapshots:
     optionalDependencies:
       ol: 10.6.1
 
-  flatqueue@1.2.1: {}
+  flatqueue@2.0.3: {}
 
   flatted@3.3.3: {}
 
