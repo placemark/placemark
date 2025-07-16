@@ -71,11 +71,11 @@ const iphoneExif = {
 describe("EXIF", () => {
   it("toGeoJSON (bad data)", async () => {
     await expect(
-      toGeoJSON(Buffer.from([0xff, 0xd8]).buffer)
+      toGeoJSON(Buffer.from([0xff, 0xd8]).buffer as ArrayBuffer)
     ).resolves.toBeLeft();
   });
   it("toGeoJSON", async () => {
-    const input = Fs.readFileSync(Path.join("test", "exifimage.jpg")).buffer;
+    const input = Fs.readFileSync(Path.join("test", "exifimage.jpg")).buffer as ArrayBuffer;
     const gj = (await toGeoJSON(input)).unsafeCoerce();
     expect(gj).toEqual({
       type: "FeatureCollection",

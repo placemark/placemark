@@ -10,7 +10,7 @@ describe("getGeotiffExtent", () => {
   it("can get an extent", async () => {
     const arrayBuffer = Fs.readFileSync(
       Path.join(__dirname, "../test/red.tif")
-    ).buffer;
+    ).buffer as ArrayBuffer;
     const output = await getGeotiffExtent(arrayBuffer);
     expect(output).toEqual({
       features: [

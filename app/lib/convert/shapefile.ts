@@ -223,7 +223,9 @@ class CShapefile implements FileType {
           if (!types.length) return undefined;
           const name = types.sort((a, b) => a.length - b.length)[0];
           const file = unzipped[name];
-          const content = new TextDecoder().decode(file.buffer);
+          const content = new TextDecoder().decode(
+            file.buffer as unknown as ArrayBuffer
+          );
           return { content };
         }
 

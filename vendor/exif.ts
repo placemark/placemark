@@ -22,7 +22,7 @@ type TagObject = {
  * Determine the starting point in the file for reading EXIF data.
  */
 export function getImageData(
-  file: ArrayBuffer
+  file: ArrayBufferLike
 ): Either<PlacemarkError, TagObject> {
   const dataView = new DataView(file);
 
