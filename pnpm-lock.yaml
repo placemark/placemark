@@ -171,8 +171,8 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5
       browser-fs-access:
-        specifier: ^0.33.1
-        version: 0.33.1
+        specifier: ^0.38.0
+        version: 0.38.0
       classed-components:
         specifier: ^2.0.1
         version: 2.0.1(react@18.3.1)
@@ -2609,8 +2609,8 @@ packages:
   broadcast-channel@3.7.0:
     resolution: {integrity: sha512-cIAKJXAxGJceNZGTZSBzMxzyOn72cVgPnKx4dc6LRjQgbaJUQqhy5rzL3zbMxkMWsGKkv2hSFkPRMEXfoMZ2Mg==}
 
-  browser-fs-access@0.33.1:
-    resolution: {integrity: sha512-CQw9hPRVKqnbohAvQeUqyK2yGsbNjb19PTbDIF23g2c8XZljOBbazm+HZC4AFHp5xt3rdm6fLjwyRSu9HDy4MQ==}
+  browser-fs-access@0.38.0:
+    resolution: {integrity: sha512-JveqW2w6pEZqFEEfMgCszXzYpE89dG+nPsmOdcs741mFFAROeL+iqjGEpR07RI+s0YY0EFr+4KnOoACprJTpOw==}
 
   browserslist@4.25.1:
     resolution: {integrity: sha512-KGj0KoOMXLpSNkkEI6Z6mShmQy0bc1I+T7K9N81k4WWMrfz+6fQ6es80B/YLAeRoKvjYE1YSHHOW1qe9xIVzHw==}
@@ -7505,7 +7505,7 @@ snapshots:
       rimraf: 3.0.2
       unload: 2.2.0
 
-  browser-fs-access@0.33.1: {}
+  browser-fs-access@0.38.0: {}
 
   browserslist@4.25.1:
     dependencies:

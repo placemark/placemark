@@ -76,7 +76,7 @@
 		"@xmldom/xmldom": "^0.8.10",
 		"autoprefixer": "^10.4.21",
 		"betterknown": "^1.0.5",
-		"browser-fs-access": "^0.33.1",
+		"browser-fs-access": "^0.38.0",
 		"classed-components": "^2.0.1",
 		"clsx": "^2.1.1",
 		"comlink": "^4.4.2",
