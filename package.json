@@ -95,7 +95,7 @@
 		"fuse.js": "^6.6.2",
 		"geometric": "^2.5.4",
 		"iconv-lite": "^0.6.3",
-		"jotai": "^2.8.1",
+		"jotai": "^2.12.5",
 		"jotai-optics": "^0.3.2",
 		"jotai-xstate": "^0.3.0",
 		"lodash": "^4.17.21",
