@@ -1,7 +1,7 @@
 import { dialogAtom, momentLogAtom } from "state/jotai";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useOpenFiles } from "app/hooks/use_open_files";
-import * as DD from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu as DD } from "radix-ui";
 import { CaretRightIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import {
   styledButton,

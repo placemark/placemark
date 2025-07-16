@@ -1,4 +1,4 @@
-import * as ProgressPrimitive from "@radix-ui/react-progress";
+import { Progress as ProgressPrimitive } from "radix-ui";
 import classed from "classed-components";
 import { Progress } from "app/lib/convert";
 

@@ -3,15 +3,17 @@ import classed from "classed-components";
 import clsx from "clsx";
 import type { ClassValue } from "clsx";
 import { Field } from "formik";
-import * as Tooltip from "@radix-ui/react-tooltip";
-import * as DD from "@radix-ui/react-dropdown-menu";
-import * as CM from "@radix-ui/react-context-menu";
-import * as Popover from "@radix-ui/react-popover";
-import * as Dialog from "@radix-ui/react-dialog";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import * as S from "@radix-ui/react-switch";
+import {
+  Tooltip,
+  DropdownMenu as DD,
+  ContextMenu as CM,
+  Popover,
+  Dialog,
+  AlertDialog,
+  Switch as S,
+  Select,
+} from "radix-ui";
 import * as Sentry from "@sentry/nextjs";
-import * as Select from "@radix-ui/react-select";
 import React from "react";
 import {
   SymbolIcon,
@@ -26,7 +28,7 @@ import {
 import { SUPPORT_EMAIL } from "app/lib/constants";
 import Placemark from "./icons/placemark";
 import { toast } from "react-hot-toast";
-import { Portal } from "@radix-ui/react-portal";
+import { Portal } from "radix-ui";
 
 export function CopiableURL({ url }: { url: string }) {
   return (
@@ -124,13 +126,13 @@ export function StyledDropOverlayIndex({
   children,
 }: React.PropsWithChildren<Record<string, unknown>>) {
   return (
-    <Portal>
+    <Portal.Portal>
       <div className="absolute bottom-10 left-1/2">
         <div className="px-3 py-2 text-white bg-gray-500 rounded-md w-48 -m-24">
           {children}
         </div>
       </div>
-    </Portal>
+    </Portal.Portal>
   );
 }
 
@@ -426,7 +428,10 @@ export const StyledFieldTextareaProse = classed(Field)(
     {
       size = "md",
       variant = "default",
-    }: { size: B3Size; variant: B3Variant } = { size: "sm", variant: "default" }
+    }: {
+      size: B3Size;
+      variant: B3Variant;
+    } = { size: "sm", variant: "default" }
   ) =>
     clsx(
       sharedEqualPadding(size),
@@ -674,9 +679,9 @@ export const styledButton = ({
       dark:aria-expanded:bg-purple-600
     data-state-on:bg-purple-400 dark:data-state-on:bg-gray-900`
       : variant === "primary"
-      ? `aria-expanded:bg-purple-600
+        ? `aria-expanded:bg-purple-600
     data-state-on:bg-purple-600`
-      : `
+        : `
     aria-expanded:bg-gray-200 dark:aria-expanded:bg-black
     data-state-on:bg-gray-200 dark:data-state-on:bg-gray-600`,
     "disabled:opacity-50 disabled:cursor-not-allowed",

@@ -2,16 +2,13 @@ import * as E from "app/components/elements";
 import noop from "lodash/noop";
 import useResettable from "app/hooks/use_resettable";
 import isObject from "lodash/isObject";
-import {
+import type {
   PropertyPair,
   OnChangeValue,
   OnCast,
   OnDeleteKey,
   Pair,
 } from "../property_row";
-import * as P from "@radix-ui/react-popover";
-import { useMemo, useEffect, useRef, useState } from "react";
-import { atom, PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import {
   TrashIcon,
   UpdateIcon,
@@ -19,11 +16,11 @@ import {
   CheckIcon,
   QuestionMarkIcon,
 } from "@radix-ui/react-icons";
-import * as T from "@radix-ui/react-tooltip";
-import { JsonObject, JsonValue } from "type-fest";
+import { Popover as P, Tooltip as T, DropdownMenu as DD, Tabs } from "radix-ui";
+import { useMemo, useEffect, useRef, useState } from "react";
+import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
+import type { JsonObject, JsonValue } from "type-fest";
 import { asHTML, castExplicit, ExplicitCast } from "app/lib/cast";
-import * as DD from "@radix-ui/react-dropdown-menu";
-import * as Tabs from "@radix-ui/react-tabs";
 import { HexColorPicker, HexColorInput } from "react-colorful";
 import * as d3 from "d3-color";
 import classed from "classed-components";
@@ -47,7 +44,7 @@ import { history, historyKeymap, defaultKeymap } from "@codemirror/commands";
 import { json } from "@codemirror/lang-json";
 import { placemarkTheme } from "app/lib/codemirror_theme";
 import clsx from "clsx";
-import { CoordProps } from "types";
+import type { CoordProps } from "types";
 import { Field, Form, Formik } from "formik";
 import { parseOrError } from "app/lib/errors";
 import { dataAtom } from "state/jotai";

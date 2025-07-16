@@ -3,7 +3,7 @@ import type { MultiPair } from "app/lib/multi_properties";
 import { ExplicitCast } from "app/lib/cast";
 import { styledTd } from "app/components/elements";
 import type { JsonValue } from "type-fest";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import { PropertyRowKey, PropertyRowKeyReadonly } from "./property_row/key";
 import { PropertyRowValue } from "./property_row/value";
 import { MultiValueEditor } from "app/components/shared/multi_value_editor";

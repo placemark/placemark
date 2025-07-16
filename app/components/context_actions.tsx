@@ -3,12 +3,10 @@ import {
   RulerHorizontalIcon,
   Cross1Icon,
 } from "@radix-ui/react-icons";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P, DropdownMenu as DD, Tooltip as T } from "radix-ui";
 import * as E from "app/components/elements";
-import * as DD from "@radix-ui/react-dropdown-menu";
 import { useAtomValue } from "jotai";
 import { selectedFeaturesAtom } from "state/jotai";
-import * as T from "@radix-ui/react-tooltip";
 import React from "react";
 import { FeatureEditorGeometry } from "./panels/feature_editor/feature_editor_geometry";
 import { GeometryActions } from "./context_actions/geometry_actions";

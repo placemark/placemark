@@ -8,7 +8,7 @@ import {
   TextWell,
 } from "app/components/elements";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import Modes from "app/components/modes";
 
 export const FeatureEditorNullGeometry = memo(

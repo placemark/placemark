@@ -16,7 +16,7 @@ import { JsonValue } from "type-fest";
 import { CSS } from "@dnd-kit/utilities";
 import { InlineNameEditor } from "./inline_name_editor";
 import { FlattenedFeature, FlattenedFolder, FlattenedItem } from "./math";
-import * as CM from "@radix-ui/react-context-menu";
+import { ContextMenu as CM } from "radix-ui";
 import {
   CMContent,
   CMItem,

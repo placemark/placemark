@@ -7,7 +7,7 @@ import Modes from "app/components/modes";
 import { Dialogs } from "app/components/dialogs";
 import { CSS } from "@dnd-kit/utilities";
 import ContextActions from "app/components/context_actions";
-import * as T from "@radix-ui/react-tooltip";
+import { Tooltip as T } from "radix-ui";
 import React, {
   Suspense,
   useCallback,

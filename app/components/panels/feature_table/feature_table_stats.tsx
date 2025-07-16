@@ -7,7 +7,7 @@ import {
   RetStat,
 } from "app/lib/stats";
 import { useVirtual } from "react-virtual";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import * as E from "app/components/elements";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 

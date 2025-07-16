@@ -1,4 +1,4 @@
-import * as CM from "@radix-ui/react-context-menu";
+import { ContextMenu as CM } from "radix-ui";
 import React, { memo } from "react";
 import { useSetAtom } from "jotai";
 import { USelection } from "state";

@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useState } from "react";
 import type { VirtualItem } from "react-virtual";
-import * as DD from "@radix-ui/react-dropdown-menu";
-import * as P from "@radix-ui/react-popover";
+import { DropdownMenu as DD, Popover as P } from "radix-ui";
 import { virtualPositionTop } from "../feature_table";
 import * as E from "app/components/elements";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";

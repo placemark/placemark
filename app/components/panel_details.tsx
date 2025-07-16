@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { styledPanelTitle } from "./elements";
-import * as C from "@radix-ui/react-collapsible";
+import { Collapsible as C } from "radix-ui";
 import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { useAtom } from "jotai";

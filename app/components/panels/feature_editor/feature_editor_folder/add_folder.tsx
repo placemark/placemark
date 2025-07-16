@@ -5,7 +5,7 @@ import {
   PopoverTitleAndClose,
   StyledField,
 } from "app/components/elements";
-import * as P from "@radix-ui/react-popover";
+import { Popover as P } from "radix-ui";
 import * as Sentry from "@sentry/nextjs";
 import { Formik, Form } from "formik";
 import { newFeatureId } from "app/lib/id";

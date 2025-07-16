@@ -1,4 +1,4 @@
-import { Portal } from "@radix-ui/react-portal";
+import { Portal } from "radix-ui";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { atomWithMachine } from "jotai-xstate";
@@ -122,7 +122,7 @@ export function RouterProgressBar() {
   const show = machine.matches("visible") || machine.matches("done");
 
   return (
-    <Portal>
+    <Portal.Portal>
       <div
         className={clsx(
           "fixed top-0 left-0 right-0",
@@ -138,6 +138,6 @@ export function RouterProgressBar() {
           />
         ) : null}
       </div>
-    </Portal>
+    </Portal.Portal>
   );
 }

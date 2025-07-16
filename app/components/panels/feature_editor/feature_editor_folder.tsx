@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import * as Portal from "@radix-ui/react-portal";
+import { Portal } from "radix-ui";
 import * as Sentry from "@sentry/nextjs";
 import { useVirtual } from "react-virtual";
 import {

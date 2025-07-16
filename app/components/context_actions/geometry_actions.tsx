@@ -10,13 +10,13 @@ import {
   DotIcon,
   TextIcon,
 } from "@radix-ui/react-icons";
-import * as Tooltip from "@radix-ui/react-tooltip";
+import { Tooltip } from "radix-ui";
 import type {
   Action,
   ActionProps,
 } from "app/components/context_actions/action_item";
 import { ToolbarTrigger } from "app/components/context_actions";
-import * as DD from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu as DD } from "radix-ui";
 import {
   TContent,
   StyledTooltipArrow,

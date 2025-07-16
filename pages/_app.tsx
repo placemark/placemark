@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import * as T from "@radix-ui/react-tooltip";
+import { Tooltip as T } from "radix-ui";
 import { QueryClientProvider, QueryClient } from "react-query";
 import dynamic from "next/dynamic";
 import "core-js/features/array/at";

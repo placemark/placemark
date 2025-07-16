@@ -1,12 +1,10 @@
 import { InlineError } from "app/components/inline_error";
 import { Form, Formik } from "formik";
-import * as Tooltip from "@radix-ui/react-tooltip";
-import * as DD from "@radix-ui/react-dropdown-menu";
+import { Tooltip, DropdownMenu as DD, Dialog as D } from "radix-ui";
+import { Cross1Icon } from "@radix-ui/react-icons";
 import SimpleDialogActions from "./dialogs/simple_dialog_actions";
 import { ToolbarTrigger } from "app/components/context_actions";
 import MenuAction from "./menu_action";
-import { Cross1Icon } from "@radix-ui/react-icons";
-import * as D from "@radix-ui/react-dialog";
 import {
   B3Size,
   B3Variant,
