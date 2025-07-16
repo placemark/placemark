@@ -1,5 +1,5 @@
 import type { FileType, ImportOptions } from ".";
-import { ConvertResult, okResult } from "./utils";
+import { type ConvertResult, okResult } from "./utils";
 // import { ConvertError } from "lib/errors";
 import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";

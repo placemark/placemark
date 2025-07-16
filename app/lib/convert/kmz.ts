@@ -24,7 +24,9 @@ class CKMZ implements FileType {
         if (!kmlFile) {
           return throwE(new PlacemarkError("No KML file found within KMZ"));
         }
-        const text = await liftEither(await readAsText(kmlFile[1]));
+        const text = await liftEither(
+          await readAsText(kmlFile[1] as unknown as ArrayBuffer)
+        );
         return liftEither(await KML.forwardString(text));
       }
     );
