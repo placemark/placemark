@@ -161,7 +161,7 @@
 		"knip": "^5.61.3",
 		"random-js": "^2.1.0",
 		"typescript": "^5.8.3",
-		"vite-tsconfig-paths": "^4.3.2",
+		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^0.33.0"
 	},
 	"nextBundleAnalysis": {
