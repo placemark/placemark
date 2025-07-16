@@ -142,7 +142,7 @@
 		"@types/node": "^20.12.12",
 		"@types/proj4": "^2.5.5",
 		"@types/randomcolor": "^0.5.9",
-		"@types/rbush": "^3.0.3",
+		"@types/rbush": "^3.0.4",
 		"@types/topojson-client": "^3.1.4",
 		"@types/topojson-server": "^3.0.4",
 		"@types/uuid": "^9.0.8",
