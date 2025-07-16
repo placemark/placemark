@@ -106,7 +106,7 @@
 		"optics-ts": "^2.4.1",
 		"polygon-clipping": "^0.15.7",
 		"polylabel": "^1.1.0",
-		"postcss": "^8.4.38",
+		"postcss": "^8.5.6",
 		"proj4": "^2.11.0",
 		"purify-ts": "^2.0.3",
 		"radix-ui": "^1.4.2",
