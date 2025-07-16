@@ -78,7 +78,7 @@
 		"betterknown": "^1.0.5",
 		"browser-fs-access": "^0.33.1",
 		"classed-components": "^2.0.1",
-		"clsx": "^1.2.1",
+		"clsx": "^2.1.1",
 		"comlink": "^4.4.2",
 		"core-js": "^3.44.0",
 		"d3-array": "^2.12.1",
