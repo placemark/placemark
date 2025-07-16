@@ -75,7 +75,7 @@
 		"@vitest/coverage-v8": "^3.2.4",
 		"@xmldom/xmldom": "^0.8.10",
 		"autoprefixer": "^10.4.19",
-		"betterknown": "^1.0.4",
+		"betterknown": "^1.0.5",
 		"browser-fs-access": "^0.33.1",
 		"classed-components": "^2.0.1",
 		"clsx": "^1.2.1",
