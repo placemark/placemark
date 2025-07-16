@@ -108,8 +108,8 @@ importers:
         specifier: ^2.26.1
         version: 2.26.1
       '@tmcw/togeojson':
-        specifier: 5.6.0
-        version: 5.6.0(@types/geojson@7946.0.16)
+        specifier: 5.8.1
+        version: 5.8.1(@types/geojson@7946.0.16)
       '@turf/area':
         specifier: ^6.5.0
         version: 6.5.0
@@ -2162,8 +2162,8 @@ packages:
   '@tiptap/starter-kit@2.26.1':
     resolution: {integrity: sha512-oziMGCds8SVQ3s5dRpBxVdEKZAmO/O//BjZ69mhA3q4vJdR0rnfLb5fTxSeQvHiqB878HBNn76kNaJrHrV35GA==}
 
-  '@tmcw/togeojson@5.6.0':
-    resolution: {integrity: sha512-p+c0kbSY/tIwd3C0rpmTf3iFAOUYV6bkJbDiq0oQDGROOc7c6uh/X8r/mijY6SIFYIkVuKc8MS2REKhur2e6Jw==}
+  '@tmcw/togeojson@5.8.1':
+    resolution: {integrity: sha512-2YNrbis3l5kS0XrYwiHEZcGwiRp0MJ5CvwGwtMWp2z2tsVlskeec2qgvKHnF0RCwI5GnjrrBOoKsWfndEnd3LA==}
     peerDependencies:
       '@types/geojson': '*'
 
@@ -6941,7 +6941,7 @@ snapshots:
       '@tiptap/extension-text-style': 2.26.1(@tiptap/core@2.26.1(@tiptap/pm@2.26.1))
       '@tiptap/pm': 2.26.1
 
-  '@tmcw/togeojson@5.6.0(@types/geojson@7946.0.16)':
+  '@tmcw/togeojson@5.8.1(@types/geojson@7946.0.16)':
     dependencies:
       '@types/geojson': 7946.0.16
 

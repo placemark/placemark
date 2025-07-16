@@ -55,7 +55,7 @@
 		"@tiptap/pm": "^2.26.1",
 		"@tiptap/react": "^2.26.1",
 		"@tiptap/starter-kit": "^2.26.1",
-		"@tmcw/togeojson": "5.6.0",
+		"@tmcw/togeojson": "5.8.1",
 		"@turf/area": "^6.5.0",
 		"@turf/bbox": "^6.5.0",
 		"@turf/center": "^6.5.0",
