@@ -10,8 +10,5 @@
   "scripts": {
     "start": "wrangler dev",
     "deploy": "wrangler publish"
-  },
-  "volta": {
-    "node": "16.18.0"
   }
 }
