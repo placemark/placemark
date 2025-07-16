@@ -36,7 +36,7 @@ export function parsePattern(str) {
   return obj;
 }
 
-export function parseDashes(parts, str) {
+function parseDashes(parts, str) {
   // format:
   // "dashes" dash-len dash-space width color1 [color2...] space bg-color
   // examples:
@@ -77,7 +77,7 @@ export function parseDashes(parts, str) {
   };
 }
 
-export function parseHatches(parts, str) {
+function parseHatches(parts, str) {
   // format:
   // [hatches] [rotation] width1 color1 [width2 color2 ...]
   // examples:
@@ -107,7 +107,7 @@ function isSize(str) {
   return parseInt(str) > 0;
 }
 
-export function parseDots(parts, str) {
+function parseDots(parts, str) {
   // format:
   // "dots"|"squares" [rotation] size color1 [color2 ...] spacing bg-color
   // examples:
@@ -154,7 +154,7 @@ function getHashId(str) {
 // properties: properties object of a path data object (prior to conversion to SVG)
 // defs: array of definition objects
 //
-export function convertFillPattern(properties, defs) {
+function convertFillPattern(properties, defs) {
   var hatchStr = properties["fill-pattern"];
   var hashId = getHashId(hatchStr);
   var hash = utils.find(defs, function (o) {

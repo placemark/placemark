@@ -36,7 +36,7 @@ export type FeatureCollection = IFeatureCollection<Geometry | null>;
 export type GeoJSON = Geometry | Feature | FeatureCollection;
 
 export type {
-  GeoJSON as IGeoJSON,
+  
   BBox,
   Geometry,
   GeometryCollection,
@@ -96,7 +96,7 @@ export type LayerConfigMap = Map<string, ILayerConfig> & { version?: number };
 
 export type IWrappedFeatureInput = SetOptional<IWrappedFeature, "at">;
 
-export const Presence = z.object({
+const Presence = z.object({
   bearing: z.number(),
   pitch: z.number(),
   minx: z.number(),
@@ -114,12 +114,12 @@ export const Presence = z.object({
 
 export type IPresence = z.infer<typeof Presence>;
 
-export type IPresenceMinus = Omit<
+type IPresenceMinus = Omit<
   IPresence,
   "replicacheClientId" | "wrappedFeatureCollectionId"
 >;
 
-export const Folder = z.object({
+const Folder = z.object({
   id: z.string(),
   at: z.string(),
   name: z.string(),
@@ -268,7 +268,7 @@ const SymbolizationCategorical = SymbolizationBaseInternal.extend({
  * The previous version of symbolization ramp,
  * used for upgrading.
  */
-export const SymbolizationRamp_v0 = z.object({
+const SymbolizationRamp_v0 = z.object({
   type: z.literal("ramp"),
   min: z.object({
     input: z.number(),
@@ -362,7 +362,7 @@ const SymbolizationRamp = SymbolizationBaseInternal.extend({
     }),
 });
 
-export const SymbolizationNone = SymbolizationBaseInternal.extend({
+const SymbolizationNone = SymbolizationBaseInternal.extend({
   type: z.literal("none"),
 });
 
@@ -387,9 +387,9 @@ export type ISymbolizationCategorical = z.infer<
 export type ISymbolization = z.infer<typeof Symbolization>;
 
 // @ts-expect-error todo
-export const WrappedFeature: z.ZodSchema<IWrappedFeature> = WrappedFeatureLocal;
+const WrappedFeature: z.ZodSchema<IWrappedFeature> = WrappedFeatureLocal;
 // @ts-expect-error todo
-export const WrappedFeatureWithoutAt: z.ZodSchema<Omit<IWrappedFeature, "at">> =
+const WrappedFeatureWithoutAt: z.ZodSchema<Omit<IWrappedFeature, "at">> =
   WrappedFeatureLocal.omit({ at: true });
 
 export type DragTarget = RawId | IWrappedFeature["id"][];

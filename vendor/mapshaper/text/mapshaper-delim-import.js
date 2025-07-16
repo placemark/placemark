@@ -19,7 +19,7 @@ import {
 import { Buffer } from "../utils/mapshaper-node-buffer";
 
 // Convert a string containing delimited text data into a dataset object
-export function importDelim(str, opts) {
+function importDelim(str, opts) {
   return importDelim2({ content: str }, opts);
 }
 
@@ -91,11 +91,11 @@ export function importDelim2(data, opts) {
 
 var supportedDelimiters = ["|", "\t", ",", ";", " "];
 
-export function isSupportedDelimiter(d) {
+function isSupportedDelimiter(d) {
   return utils.contains(supportedDelimiters, d);
 }
 
-export function guessDelimiter(content) {
+function guessDelimiter(content) {
   return (
     utils.find(supportedDelimiters, function (delim) {
       var rxp = getDelimiterRxp(delim);
@@ -112,7 +112,7 @@ function getDelimiterRxp(delim) {
   return new RegExp(rxp);
 }
 
-export function getFieldTypeHints(opts) {
+function getFieldTypeHints(opts) {
   var hints = {};
   opts = opts || {};
   if (opts.string_fields) {
@@ -145,7 +145,7 @@ export function getFieldTypeHints(opts) {
 // Detect and convert data types of data from csv files.
 // TODO: decide how to handle records with inconstent properties. Mapshaper
 //    currently assumes tabular data
-export function adjustRecordTypes(records, optsArg) {
+function adjustRecordTypes(records, optsArg) {
   var opts = optsArg || {},
     typeIndex = getFieldTypeHints(opts),
     singleType = typeIndex["*"], // support for setting all fields to a single type

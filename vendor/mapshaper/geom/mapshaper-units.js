@@ -25,7 +25,7 @@ var TO_METERS = {
 // @paramUnits: units code of distance param, or null if units are not specified
 // @crs: Proj.4 CRS object, or null (unknown latlong CRS);
 //
-export function getIntervalConversionFactor(paramUnits, crs) {
+function getIntervalConversionFactor(paramUnits, crs) {
   var fromParam = 0,
     fromCRS = 0,
     k;
@@ -62,7 +62,7 @@ export function getIntervalConversionFactor(paramUnits, crs) {
 }
 
 // throws an error if measure is non-parsable
-export function parseMeasure(m) {
+function parseMeasure(m) {
   var o = parseMeasure2(m);
   if (isNaN(o.value)) {
     stop("Invalid parameter:", m);

@@ -12,7 +12,7 @@ import { stop } from "../utils/mapshaper-logging";
 import { DataTable } from "../datatable/mapshaper-data-table";
 import { MosaicIndex } from "../polygons/mapshaper-mosaic-index";
 
-export function dissolveBufferDataset(dataset, optsArg) {
+function dissolveBufferDataset(dataset, optsArg) {
   var opts = optsArg || {};
   var lyr = dataset.layers[0];
   var tmp;
@@ -71,32 +71,32 @@ function debugBufferDivision(lyr, nodes) {
 
 // n = number of segments used to approximate a circle
 // Returns tolerance as a percent of circle radius
-export function getBufferToleranceFromCircleSegments(n) {
+function getBufferToleranceFromCircleSegments(n) {
   return 1 - Math.cos(Math.PI / n);
 }
 
-export function getArcDegreesFromTolerancePct(pct) {
+function getArcDegreesFromTolerancePct(pct) {
   return (360 * Math.acos(1 - pct)) / Math.PI;
 }
 
 // n = number of segments used to approximate a circle
 // Returns tolerance as a percent of circle radius
-export function getBufferToleranceFromCircleSegments2(n) {
+function getBufferToleranceFromCircleSegments2(n) {
   return 1 / Math.cos(Math.PI / n) - 1;
 }
 
-export function getArcDegreesFromTolerancePct2(pct) {
+function getArcDegreesFromTolerancePct2(pct) {
   return (360 * Math.acos(1 / (pct + 1))) / Math.PI;
 }
 
 // return constant distance in meters, or return null if unparsable
-export function parseConstantBufferDistance(str, crs) {
+function parseConstantBufferDistance(str, crs) {
   var parsed = parseMeasure2(str);
   if (!parsed.value) return null;
   return convertDistanceParam(str, crs) || null;
 }
 
-export function getBufferToleranceFunction(dataset, opts) {
+function getBufferToleranceFunction(dataset, opts) {
   var crs = getDatasetCRS(dataset);
   var constTol = opts.tolerance
     ? parseConstantBufferDistance(opts.tolerance, crs)

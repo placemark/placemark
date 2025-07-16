@@ -135,7 +135,7 @@ export function ResultsOptions({
  * is the match.
  * If we have one, format it. Otherwise null.
  */
-export function formatMatches(
+function formatMatches(
   matches: readonly Fuse.FuseResultMatch[] | undefined
 ) {
   if (!matches?.length) return null;

@@ -5,7 +5,7 @@ import { useSetAtom } from "jotai";
 import { dialogAtom } from "state/dialog_state";
 import { Button } from "./elements";
 
-export function AddedFeaturesToast({ result }: { result: ConvertResult }) {
+function AddedFeaturesToast({ result }: { result: ConvertResult }) {
   const setModal = useSetAtom(dialogAtom);
   return (
     <div className="flex items-center justify-between flex-auto gap-x-4">

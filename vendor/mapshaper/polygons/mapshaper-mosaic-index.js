@@ -162,7 +162,7 @@ export function MosaicIndex(lyr, nodes, optsArg) {
 // Map arc ids to shape ids, assuming perfect topology
 // (an arcId maps to at most one shape)
 // Supports looking up a shape id using an arc id.
-export function ShapeArcIndex(shapes, arcs) {
+function ShapeArcIndex(shapes, arcs) {
   var n = arcs.size();
   var index = new IdLookupIndex(n);
   var shapeId;

@@ -63,7 +63,7 @@ export function useBigScreen() {
   return useMediaQuery({ minWidth: 640 });
 }
 
-export function solveSplits(
+function solveSplits(
   splits: Splits,
   side: Side,
   newValue: number

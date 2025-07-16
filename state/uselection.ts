@@ -215,6 +215,6 @@ export const USelection = {
   },
 };
 
-export const SELECTION_NONE: Sel = {
+const SELECTION_NONE: Sel = {
   type: "none",
 };

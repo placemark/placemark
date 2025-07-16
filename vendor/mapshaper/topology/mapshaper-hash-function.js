@@ -20,7 +20,7 @@ export function getXYHash(size) {
 }
 
 // Get function to Hash a single coordinate to a non-negative integer
-export function getXHash(size) {
+function getXHash(size) {
   var buf = new ArrayBuffer(8),
     floats = new Float64Array(buf),
     uints = new Uint32Array(buf),

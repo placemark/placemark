@@ -52,7 +52,7 @@ export function clipLayersInPlace(layers, clipSrc, dataset, type, opts) {
 
 // @clipSrc: layer in @dataset or filename
 // @type: 'clip' or 'erase'
-export function clipLayers(targetLayers, clipSrc, targetDataset, type, opts) {
+function clipLayers(targetLayers, clipSrc, targetDataset, type, opts) {
   var usingPathClip = utils.some(targetLayers, layerHasPaths);
   var mergedDataset, clipLyr, nodes;
   opts = opts || { no_cleanup: true }; // TODO: update testing functions
@@ -85,7 +85,7 @@ export function clipLayers(targetLayers, clipSrc, targetDataset, type, opts) {
   return clipLayersByLayer(targetLayers, clipLyr, nodes, type, opts);
 }
 
-export function clipLayersByBBox(layers, dataset, opts) {
+function clipLayersByBBox(layers, dataset, opts) {
   var bbox = opts.bbox2;
   var clipLyr = divideDatasetByBBox(dataset, bbox);
   var nodes = new NodeCollection(dataset.arcs);
@@ -93,7 +93,7 @@ export function clipLayersByBBox(layers, dataset, opts) {
   return retn;
 }
 
-export function clipLayersByLayer(targetLayers, clipLyr, nodes, type, opts) {
+function clipLayersByLayer(targetLayers, clipLyr, nodes, type, opts) {
   requirePolygonLayer(clipLyr, "Requires a polygon clipping layer");
   return targetLayers.reduce(function (memo, targetLyr) {
     if (type == "slice") {
@@ -184,7 +184,7 @@ function clipLayerByLayer(targetLyr, clipLyr, nodes, type, opts) {
   return outputLyr;
 }
 
-export function getClipMessage(nullCount, sliverCount) {
+function getClipMessage(nullCount, sliverCount) {
   var nullMsg = nullCount
     ? utils.format(
         "%,d null feature%s",

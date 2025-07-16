@@ -6,7 +6,7 @@ import { EitherAsync } from "purify-ts/EitherAsync";
 import { ConvertError } from "app/lib/errors";
 import { solveRootItems } from "app/components/panels/feature_editor/feature_editor_folder/math";
 
-export class CKML implements FileType {
+class CKML implements FileType {
   id = "kml" as const;
   label = "KML";
   extensions = [".kml"];

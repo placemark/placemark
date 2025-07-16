@@ -215,7 +215,7 @@ function FeatureEditorPropertiesRaw({
   );
 }
 
-export function FeatureEditorPropertiesReadonly({
+function FeatureEditorPropertiesReadonly({
   wrappedFeature,
 }: {
   wrappedFeature: IWrappedFeature;

@@ -28,7 +28,7 @@ import type { Root } from "@tmcw/togeojson";
 import { FeatureMap } from "types";
 import { pluralize } from "app/lib/utils";
 
-export function fallbackSave(result: ExportedData, type: FileType) {
+function fallbackSave(result: ExportedData, type: FileType) {
   const a = document.createElement("a");
   a.download = `untitled${type.extensions[0] || ""}`;
   a.href = URL.createObjectURL(result.result.blob);
@@ -40,7 +40,7 @@ export function fallbackSave(result: ExportedData, type: FileType) {
   a.click();
 }
 
-export function CSVOptions({
+function CSVOptions({
   root,
   featureMap,
   values,

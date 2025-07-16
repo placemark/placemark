@@ -15,7 +15,7 @@ import { dialogAtom } from "state/jotai";
 import { useSetAtom } from "jotai";
 import { MenuBarDropdown } from "./menu_bar/menu_bar_dropdown";
 
-export function MenuBarFallback() {
+function MenuBarFallback() {
   return <div className="h-12 bg-gray-800"></div>;
 }
 
@@ -70,7 +70,7 @@ export const MenuBarPlay = memo(function MenuBar() {
   );
 });
 
-export const MenuBar = memo(function MenuBar() {
+const MenuBar = memo(function MenuBar() {
   return (
     <div className="flex justify-between h-12 pr-2 text-black dark:text-white">
       <div className="flex items-center">
@@ -86,7 +86,7 @@ export const MenuBar = memo(function MenuBar() {
   );
 });
 
-export function HelpDot() {
+function HelpDot() {
   const setDialogState = useSetAtom(dialogAtom);
   return (
     <DD.Root>

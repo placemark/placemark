@@ -55,7 +55,7 @@ function getCountDataSummary(o) {
   };
 }
 
-export function getModeData(values, verbose) {
+function getModeData(values, verbose) {
   var counts = getValueCountData(values);
   var modes = getCountDataSummary(counts);
   if (verbose) {

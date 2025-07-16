@@ -12,7 +12,7 @@ import utils from "../utils/mapshaper-utils";
 import { absArcId } from "../paths/mapshaper-arc-utils";
 
 // Insert a column of values into a (new or existing) data field
-export function insertFieldValues(lyr, fieldName, values) {
+function insertFieldValues(lyr, fieldName, values) {
   var size = getFeatureCount(lyr) || values.length,
     table = (lyr.data = lyr.data || new DataTable(size)),
     records = table.getRecords(),
@@ -27,7 +27,7 @@ export function insertFieldValues(lyr, fieldName, values) {
   }
 }
 
-export function getLayerDataTable(lyr) {
+function getLayerDataTable(lyr) {
   var data = lyr.data;
   if (!data) {
     data = lyr.data = new DataTable(lyr.shapes ? lyr.shapes.length : 0);
@@ -35,7 +35,7 @@ export function getLayerDataTable(lyr) {
   return data;
 }
 
-export function layerHasNonNullData(lyr) {
+function layerHasNonNullData(lyr) {
   return lyr.data && getFirstNonEmptyRecord(lyr.data.getRecords())
     ? true
     : false;
@@ -56,13 +56,13 @@ export function layerHasPoints(lyr) {
   return lyr.geometry_type == "point" && layerHasNonNullShapes(lyr);
 }
 
-export function layerHasNonNullShapes(lyr) {
+function layerHasNonNullShapes(lyr) {
   return utils.some(lyr.shapes || [], function (shp) {
     return !!shp;
   });
 }
 
-export function deleteFeatureById(lyr, i) {
+function deleteFeatureById(lyr, i) {
   if (lyr.shapes) lyr.shapes.splice(i, 1);
   if (lyr.data) lyr.data.getRecords().splice(i, 1);
 }
@@ -88,7 +88,7 @@ export function getFeatureCount(lyr) {
   return count;
 }
 
-export function layerIsEmpty(lyr) {
+function layerIsEmpty(lyr) {
   return getFeatureCount(lyr) == 0;
 }
 
@@ -100,7 +100,7 @@ export function requireDataField(obj, field, msg) {
   }
 }
 
-export function requireDataFields(table, fields) {
+function requireDataFields(table, fields) {
   if (!fields || !fields.length) return;
   if (!table) {
     stop("Missing attribute data");
@@ -117,7 +117,7 @@ export function requireDataFields(table, fields) {
   }
 }
 
-export function layerTypeMessage(lyr, defaultMsg, customMsg) {
+function layerTypeMessage(lyr, defaultMsg, customMsg) {
   var msg;
   // check that custom msg is a string (could be an index if require function is called by forEach)
   if (customMsg && utils.isString(customMsg)) {
@@ -138,7 +138,7 @@ export function requirePointLayer(lyr, msg) {
     stop(layerTypeMessage(lyr, "Expected a point layer", msg));
 }
 
-export function requireSinglePointLayer(lyr, msg) {
+function requireSinglePointLayer(lyr, msg) {
   requirePointLayer(lyr);
   if (countMultiPartFeatures(lyr) > 0) {
     stop(
@@ -148,7 +148,7 @@ export function requireSinglePointLayer(lyr, msg) {
   }
 }
 
-export function requirePolylineLayer(lyr, msg) {
+function requirePolylineLayer(lyr, msg) {
   if (!lyr || lyr.geometry_type !== "polyline")
     stop(layerTypeMessage(lyr, "Expected a polyline layer", msg));
 }
@@ -158,13 +158,13 @@ export function requirePolygonLayer(lyr, msg) {
     stop(layerTypeMessage(lyr, "Expected a polygon layer", msg));
 }
 
-export function requirePathLayer(lyr, msg) {
+function requirePathLayer(lyr, msg) {
   if (!lyr || !layerHasPaths(lyr))
     stop(layerTypeMessage(lyr, "Expected a polygon or polyline layer", msg));
 }
 
 // Used by info command and gui layer menu
-export function getLayerSourceFile(lyr, dataset) {
+function getLayerSourceFile(lyr, dataset) {
   var inputs = dataset.info && dataset.info.input_files;
   return (inputs && inputs[0]) || "";
 }
@@ -195,7 +195,7 @@ export function divideFeaturesByType(shapes, properties, types) {
 }
 
 // make a stub copy if the no_replace option is given, else pass thru src layer
-export function getOutputLayer(src, opts) {
+function getOutputLayer(src, opts) {
   return opts && opts.no_replace ? { geometry_type: src.geometry_type } : src;
 }
 
@@ -223,7 +223,7 @@ export function copyLayer(lyr) {
 // Make a shallow copy of a path layer; replace layer.shapes with an array that is
 // filtered to exclude paths containing any of the arc ids contained in arcIds.
 // arcIds: an array of (non-negative) arc ids to exclude
-export function filterPathLayerByArcIds(pathLyr, arcIds) {
+function filterPathLayerByArcIds(pathLyr, arcIds) {
   var index = arcIds.reduce(function (memo, id) {
     memo[id] = true;
     return memo;
@@ -268,7 +268,7 @@ export function getArcPresenceTest2(layers, arcs) {
 }
 
 // Count arcs in a collection of layers
-export function countArcsInLayers(layers, arcs) {
+function countArcsInLayers(layers, arcs) {
   var counts = new Uint32Array(arcs.size());
   layers.filter(layerHasPaths).forEach(function (lyr) {
     countArcsInShapes(lyr.shapes, counts);
@@ -293,7 +293,7 @@ export function getLayerBounds(lyr, arcs) {
   return bounds;
 }
 
-export function isolateLayer(layer, dataset) {
+function isolateLayer(layer, dataset) {
   return utils.defaults(
     {
       layers: dataset.layers.filter(function (lyr) {

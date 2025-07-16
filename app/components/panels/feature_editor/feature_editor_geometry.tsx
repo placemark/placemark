@@ -59,7 +59,7 @@ export function GeometryEditor({
   ) : null;
 }
 
-export function MultipleGeometryEditor({
+function MultipleGeometryEditor({
   wrappedFeatures,
 }: {
   wrappedFeatures: IWrappedFeature[];

@@ -2,7 +2,7 @@ import { layerHasPoints } from "../dataset/mapshaper-layer-utils";
 import { Bounds } from "../geom/mapshaper-bounds";
 import { stop } from "../utils/mapshaper-logging";
 
-export function countPointsInLayer(lyr) {
+function countPointsInLayer(lyr) {
   var count = 0;
   if (layerHasPoints(lyr)) {
     forEachPoint(lyr.shapes, function () {
@@ -32,7 +32,7 @@ export function getPointFeatureBounds(shape, bounds) {
 }
 
 // NOTE: layers can have multipoint features and null features
-export function getPointsInLayer(lyr) {
+function getPointsInLayer(lyr) {
   var coords = [];
   forEachPoint(lyr.shapes, function (p) {
     coords.push(p);

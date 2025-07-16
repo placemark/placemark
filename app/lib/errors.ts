@@ -14,11 +14,11 @@ export class GeometryError extends PlacemarkError {
   name = "GeometryError";
 }
 
-export class QuotaError extends PlacemarkError {
+class QuotaError extends PlacemarkError {
   name = "QuotaError";
 }
 
-export class SSOError {
+class SSOError {
   code: keyof typeof ERROR_CODES;
   constructor(code: keyof typeof ERROR_CODES) {
     this.code = code;

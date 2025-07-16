@@ -30,7 +30,7 @@ import Placemark from "./icons/placemark";
 import { toast } from "react-hot-toast";
 import { Portal } from "radix-ui";
 
-export function CopiableURL({ url }: { url: string }) {
+function CopiableURL({ url }: { url: string }) {
   return (
     <div className="flex gap-x-2 items-stretch">
       <Input readOnly value={url} />
@@ -122,7 +122,7 @@ export function PlacemarkIcon({ className }: React.HTMLAttributes<SVGElement>) {
   );
 }
 
-export function StyledDropOverlayIndex({
+function StyledDropOverlayIndex({
   children,
 }: React.PropsWithChildren<Record<string, unknown>>) {
   return (
@@ -155,7 +155,7 @@ type ErrorData = {
   resetError(): void;
 };
 
-export function Badge({
+function Badge({
   children,
   variant = "default",
 }: React.PropsWithChildren<{
@@ -238,7 +238,7 @@ export const CapsLabel = classed.label(
 const overlayClasses =
   "fixed inset-0 bg-black/20 dark:bg-white/20 z-50 placemark-fadein";
 
-export const StyledAlertDialogOverlay = classed(AlertDialog.Overlay)(
+const StyledAlertDialogOverlay = classed(AlertDialog.Overlay)(
   overlayClasses
 );
 export const StyledDialogOverlay = classed(Dialog.Overlay)(overlayClasses);
@@ -264,7 +264,7 @@ const styledDialogContent = ({ size = "sm" }: { size?: B3Size }) =>
   );
 
 export const StyledDialogContent = classed(Dialog.Content)(styledDialogContent);
-export const StyledAlertDialogContent = classed(AlertDialog.Content)(
+const StyledAlertDialogContent = classed(AlertDialog.Content)(
   styledDialogContent
 );
 
@@ -285,7 +285,7 @@ export const styledCheckbox = ({
 
 export const FieldCheckbox = classed(Field)(styledCheckbox);
 
-export const StyledDialogClose = () => (
+const StyledDialogClose = () => (
   <Dialog.Close
     aria-label="Close"
     className="absolute top-4 right-4 text-gray-500"
@@ -362,7 +362,7 @@ export const StyledTooltipArrow = () => (
   </Tooltip.Arrow>
 );
 
-export const StyledDropDownArrow = () => (
+const StyledDropDownArrow = () => (
   <DD.Arrow offset={5} width={11} height={5} className={arrowLike} asChild>
     {ArrowSVG}
   </DD.Arrow>
@@ -423,7 +423,7 @@ export const StyledLabelSpan = classed.span(
     )
 );
 
-export const StyledFieldTextareaProse = classed(Field)(
+const StyledFieldTextareaProse = classed(Field)(
   (
     {
       size = "md",
@@ -457,13 +457,13 @@ const styledLabel =
 
 export const DivLabel = classed.div(styledLabel);
 export const DDLabel = classed(DD.Label)(styledLabel);
-export const StyledSelectLabel = classed(Select.Label)(styledLabel);
+const StyledSelectLabel = classed(Select.Label)(styledLabel);
 
 const styledSeparator = "border-t border-gray-100 dark:border-gray-700 my-1";
 
 export const DivSeparator = classed.div(styledSeparator);
 export const DDSeparator = classed(DD.Separator)(styledSeparator);
-export const StyledSelectSeparator = classed(Select.Separator)(styledSeparator);
+const StyledSelectSeparator = classed(Select.Separator)(styledSeparator);
 
 export const styledInlineA =
   "text-purple-700 underline hover:text-black dark:text-purple-500 dark:hover:text-purple-300";
@@ -487,11 +487,11 @@ export const menuItemLike = ({
     text-sm gap-x-2`,
   ]);
 
-export const StyledButtonItem = classed.div(menuItemLike);
-export const StyledRadioItem = classed(DD.RadioItem)(menuItemLike);
+const StyledButtonItem = classed.div(menuItemLike);
+const StyledRadioItem = classed(DD.RadioItem)(menuItemLike);
 export const StyledItem = classed(DD.Item)(menuItemLike);
-export const StyledSelectItem = classed(Select.Item)(menuItemLike);
-export const StyledMenuLink = React.forwardRef(
+const StyledSelectItem = classed(Select.Item)(menuItemLike);
+const StyledMenuLink = React.forwardRef(
   (
     {
       children,
@@ -530,7 +530,7 @@ export const CMSubTriggerItem = classed(CM.SubTrigger)(
 );
 export const CMItem = classed(CM.Item)(menuItemLike);
 
-export const StyledPopoverCross = () => (
+const StyledPopoverCross = () => (
   <Popover.Close
     className="flex
   focus-visible:text-black dark:focus-visible:text-white
@@ -555,7 +555,7 @@ export type B3Variant =
   | "code"
   | "quiet/mode"
   | "destructive";
-export type B3Side = "default" | "left" | "right" | "middle";
+type B3Side = "default" | "left" | "right" | "middle";
 
 export const sharedPadding = (
   size: B3Size,
@@ -570,7 +570,7 @@ export const sharedPadding = (
   "rounded-none": side === "middle",
 });
 
-export const sharedEqualPadding = (size: B3Size): ClassValue => ({
+const sharedEqualPadding = (size: B3Size): ClassValue => ({
   "p-1.5 text-xs rounded-sm": size === "xs",
   "p-2 text-sm rounded": size === "sm",
   "p-3 text-md rounded": size === "md",
@@ -800,14 +800,14 @@ export const TextWell = classed.div(
     })
 );
 
-export const StyledSwitch = classed(S.Root)(
+const StyledSwitch = classed(S.Root)(
   `w-10 h-5 relative rounded-full
   bg-gray-200 dark:bg-black
   data-state-checked:bg-gray-600 dark:data-state-checked:bg-gray-600
   dark:ring-1 dark:ring-gray-400
   transition-all`
 );
-export const StyledThumb = classed(S.Thumb)(
+const StyledThumb = classed(S.Thumb)(
   `w-5 h-5 border-2
   border-gray-200 dark:border-black
   data-state-checked:border-gray-600 dark:data-state-checked:border-gray-600
@@ -837,10 +837,10 @@ export const StyledPopoverTrigger = classed(Popover.Trigger)(
   )
 );
 
-export const H1 = classed.h2("font-bold text-2xl");
-export const H2 = classed.h2("font-bold text-xl");
+const H1 = classed.h2("font-bold text-2xl");
+const H2 = classed.h2("font-bold text-xl");
 
-export const MinimalHeaderLogoLink = () => {
+const MinimalHeaderLogoLink = () => {
   return (
     <Link
       href="/"
@@ -859,7 +859,7 @@ export const MinimalHeaderLogoLink = () => {
   );
 };
 
-export const MinimalHeader = () => {
+const MinimalHeader = () => {
   return (
     <div className="flex border-b dark:border-black border-gray-200">
       <nav className="w-full max-w-4xl mx-auto flex items-center flex-auto gap-x-2 py-2">
@@ -869,7 +869,7 @@ export const MinimalHeader = () => {
   );
 };
 
-export function Table({ children }: React.PropsWithChildren<unknown>) {
+function Table({ children }: React.PropsWithChildren<unknown>) {
   return (
     <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -883,7 +883,7 @@ export function Table({ children }: React.PropsWithChildren<unknown>) {
   );
 }
 
-export function TableHead({ children }: React.PropsWithChildren<unknown>) {
+function TableHead({ children }: React.PropsWithChildren<unknown>) {
   return (
     <thead className="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200">
       <tr>{children}</tr>
@@ -891,21 +891,21 @@ export function TableHead({ children }: React.PropsWithChildren<unknown>) {
   );
 }
 
-export const Th = classed.td(({ first = false }: { first?: boolean }) =>
+const Th = classed.td(({ first = false }: { first?: boolean }) =>
   clsx(
     "py-2 pr-3 text-left text-sm font-semibold",
     first ? "pl-4 sm:pl-6" : "px-3"
   )
 );
 
-export const Td = classed.td(({ first = false }: { first?: boolean }) => {
+const Td = classed.td(({ first = false }: { first?: boolean }) => {
   return clsx(
     "whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium",
     first && "sm:pl-6"
   );
 });
 
-export const Tbody = classed.tbody(
+const Tbody = classed.tbody(
   "divide-y divide-gray-200 dark:divide-gray-500 bg-white dark:bg-gray-800"
 );
 

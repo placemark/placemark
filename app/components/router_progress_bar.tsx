@@ -93,7 +93,7 @@ const progressMachine = createMachine<{ percent: number }>({
   },
 });
 
-export const progressMachineAtom = atomWithMachine(() => progressMachine);
+const progressMachineAtom = atomWithMachine(() => progressMachine);
 
 export function RouterProgressBar() {
   const [machine, send] = useAtom(progressMachineAtom);

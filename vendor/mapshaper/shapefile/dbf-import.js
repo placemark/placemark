@@ -13,7 +13,7 @@ export function importDbfTable(buf, o) {
 // just the shapes and exporting in Shapefile format.
 // TODO: consider accepting just the filename, so buffer doesn't consume memory needlessly.
 //
-export function ShapefileTable(buf, encoding) {
+function ShapefileTable(buf, encoding) {
   var reader = new DbfReader(buf, encoding),
     altered = false,
     table;

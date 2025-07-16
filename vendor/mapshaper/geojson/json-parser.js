@@ -32,7 +32,7 @@ var BUFLEN = 1e7; // buffer chunk size
 var MAX_STRLEN = 5e6; // max byte len of a value string (object keys are shorter)
 
 // Parse from a Buffer -- similar to JSON.parse(), used for testing
-export function parse(buf) {
+function parse(buf) {
   var reader = new BufferReader(buf);
   var src = ByteReader(reader, 0);
   skipWS(src);

@@ -73,7 +73,7 @@ export function readDelimRecordsFromString(str, delim, opts) {
 
 // Get index in string of the nth line
 // line numbers are 1-based (first line is 1)
-export function indexOfLine(str, nth) {
+function indexOfLine(str, nth) {
   var rxp = /\r\n|[\r\n]|.$/g; // dot prevents matching end of string twice
   var i = 1;
   if (nth === 1) return 0;
@@ -92,7 +92,7 @@ function getDelimHeaderLines(opts) {
 }
 
 // Adapted from https://github.com/d3/d3-dsv
-export function getRowConverter(fields) {
+function getRowConverter(fields) {
   return new Function(
     "arr",
     "return {" +
@@ -105,7 +105,7 @@ export function getRowConverter(fields) {
   );
 }
 
-export function parseDelimHeaderSection(str, delim, opts) {
+function parseDelimHeaderSection(str, delim, opts) {
   var nodata = { headers: [], import_fields: [] },
     retn = {},
     i;
@@ -162,7 +162,7 @@ function getDelimRecordFilterFunction(expression) {
 
 // Returns a function for filtering fields by column index
 // The function returns true for retained fields and false for excluded fields
-export function getDelimFieldFilter(header, fieldsToKeep) {
+function getDelimFieldFilter(header, fieldsToKeep) {
   var index = utils.arrayToIndex(fieldsToKeep);
   var map = header.map(function (name) {
     return name in index;
@@ -197,7 +197,7 @@ function skipDelimLines(reader, lines) {
   reader.advance(retn.bytesRead);
 }
 
-export function readLinesAsString(reader, lines, encoding) {
+function readLinesAsString(reader, lines, encoding) {
   var buf = reader.readSync();
   var retn = readLinesFromBuffer(buf, lines);
   var str;
@@ -248,7 +248,7 @@ function readLinesFromBuffer(buf, linesToRead) {
 // convert: optional function for converting an array record to an object record (values indexed by field names)
 // colFilter: optional function for filtering columns by numerical column id (0-based); accepts an array record and an id
 // rowFilter: optional function for filtering rows; accepts a record in object format
-export function parseDelimText(text, delim, convert, colFilter, rowFilter) {
+function parseDelimText(text, delim, convert, colFilter, rowFilter) {
   var CR = 13,
     LF = 10,
     DQUOTE = 34,

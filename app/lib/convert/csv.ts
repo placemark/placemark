@@ -11,7 +11,7 @@ import { stringToBlob, ConvertResult, okResult } from "./utils";
 import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
 
-export class CCSV implements FileType {
+class CCSV implements FileType {
   id = "csv" as const;
   label = "CSV";
   extensions = [".csv", ".tsv"];

@@ -16,7 +16,7 @@ export function rotateDatasetCoords(dataset, rotation, inv) {
   }
 }
 
-export function getRotationFunction(rotation, inv) {
+function getRotationFunction(rotation, inv) {
   var f = getRotationFunction2(rotation, inv);
   return function (lng, lat) {
     return f([lng, lat]);

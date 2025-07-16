@@ -7,7 +7,7 @@ import type { FeatureMap, IWrappedFeature } from "types";
  * property -> { value: FeatureId[] }
  */
 type PropertyKey = string;
-export type SubMap = Map<JsonValue | undefined, number>;
+type SubMap = Map<JsonValue | undefined, number>;
 type MultiPropertyMap = Map<PropertyKey, SubMap>;
 export type MultiPair = [string, SubMap];
 

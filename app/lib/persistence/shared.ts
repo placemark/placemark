@@ -124,7 +124,7 @@ export function useStartSnapshot() {
   );
 }
 
-export function usePresences(userId: number | undefined): IPresence[] {
+function usePresences(userId: number | undefined): IPresence[] {
   const rawPresences = useAtomValue(presencesAtom).presences.entries();
   if (userId === undefined) return EMPTY_ARRAY as IPresence[];
   const others = Array.from(rawPresences).filter((pair) => {
@@ -163,6 +163,6 @@ export function useFeatureMap(): Map<string, IWrappedFeature> {
  *
  * @returns map of folders
  */
-export function useFolderMap(): Map<string, IFolder> {
+function useFolderMap(): Map<string, IFolder> {
   return useAtomValue(dataAtom).folderMap;
 }

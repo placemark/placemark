@@ -11,13 +11,13 @@ export type PersistenceMetadataMemory = {
   layer: any;
 };
 
-export type PersistenceMetadata = PersistenceMetadataMemory;
+type PersistenceMetadata = PersistenceMetadataMemory;
 
-export interface TransactOptions {
+interface TransactOptions {
   quiet?: boolean;
 }
 
-export const EditWrappedFeatureCollection = z.object({
+const EditWrappedFeatureCollection = z.object({
   id: z.string(),
   name: z.optional(z.string()),
   label: z.optional(z.string()),

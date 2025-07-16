@@ -60,7 +60,7 @@ function setter(obj: any, pointer: Pointer, value: any): JsonValue {
   return oldValue as JsonValue;
 }
 
-export function compilePointer(pointer: Pointer) {
+function compilePointer(pointer: Pointer) {
   if (typeof pointer === "string") {
     pointer = pointer.split("/");
     if (pointer[0] === "") return pointer;
@@ -119,7 +119,7 @@ export function set(obj: any, pointer: Pointer, value: any) {
   return setter(obj, pointer, value);
 }
 
-export function compile(pointer: Pointer) {
+function compile(pointer: Pointer) {
   const compiled = compilePointer(pointer);
   return {
     get: function (object: any) {

@@ -17,7 +17,7 @@ export function addUtils(env) {
 }
 
 // piecewise linear interpolation (for a special project)
-export function interpolated_median(counts, breaks) {
+function interpolated_median(counts, breaks) {
   if (!counts || !breaks || counts.length != breaks.length - 1) return null;
   var total = utils.sum(counts);
   var medianIdx = Math.floor(total / 2);

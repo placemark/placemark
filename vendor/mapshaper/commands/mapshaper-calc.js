@@ -36,7 +36,7 @@ cmd.calc = function (lyr, arcs, opts) {
   return result;
 };
 
-export function evalCalcExpression(lyr, arcs, exp) {
+function evalCalcExpression(lyr, arcs, exp) {
   return compileCalcExpression(lyr, arcs, exp)();
 }
 

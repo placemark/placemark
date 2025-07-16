@@ -21,7 +21,7 @@ export function copyRecord(o) {
   return o2;
 }
 
-export function getValueType(val) {
+function getValueType(val) {
   var type = null;
   if (utils.isString(val)) {
     type = "string";
@@ -74,7 +74,7 @@ function patchMissingFields(records, fields) {
   }
 }
 
-export function fieldListContainsAll(list, fields) {
+function fieldListContainsAll(list, fields) {
   return list.indexOf("*") > -1 || utils.difference(fields, list).length === 0;
 }
 
@@ -127,13 +127,13 @@ export function getUniqFieldNames(fields, maxLen, encoding) {
   });
 }
 
-export function getFieldValues(records, field) {
+function getFieldValues(records, field) {
   return records.map(function (rec) {
     return rec ? rec[field] : undefined;
   });
 }
 
-export function getUniqFieldValues(records, field) {
+function getUniqFieldValues(records, field) {
   var index = {};
   var values = [];
   records.forEach(function (rec) {
@@ -174,7 +174,7 @@ function adjustEncodedFieldName(name, maxLen, i, encoding) {
   return name2;
 }
 
-export function applyFieldOrder(arr, option) {
+function applyFieldOrder(arr, option) {
   if (option == "ascending") {
     arr.sort(function (a, b) {
       return a.toLowerCase() < b.toLowerCase() ? -1 : 1;

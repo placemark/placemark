@@ -4,7 +4,7 @@ import type { ConvertError } from "app/lib/errors";
 import readAsText from "app/lib/read_as_text";
 import { ConvertResult, okResult, toDom } from "./utils";
 
-export class COSM implements FileType {
+class COSM implements FileType {
   id = "osm" as const;
   label = "OpenStreetMap XML";
   extensions = [".osm", ".xml"];

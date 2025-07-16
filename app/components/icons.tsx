@@ -67,7 +67,7 @@ export function Folder16(attrs: React.SVGAttributes<SVGSVGElement>) {
   );
 }
 
-export function FolderDetails(attrs: React.SVGAttributes<SVGSVGElement>) {
+function FolderDetails(attrs: React.SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       id="icon"
@@ -116,7 +116,7 @@ export function ShapeUnite16() {
   );
 }
 
-export const PlacemarkIcon = memo(function PlacemarkIcon(props: IconProps) {
+const PlacemarkIcon = memo(function PlacemarkIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 300 300" fill="none" {...props}>
       <circle cx="75" cy="75" r="17.5" stroke="#9333EA" strokeWidth="15" />

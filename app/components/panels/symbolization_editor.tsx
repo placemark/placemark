@@ -872,7 +872,7 @@ function CategoryWizard() {
   );
 }
 
-export function NoneSymbolization() {
+function NoneSymbolization() {
   const rep = usePersistence();
   const [meta, setMeta] = rep.useMetadata();
 
@@ -968,7 +968,7 @@ function ExportSymbolization() {
   );
 }
 
-export function SymbolizationEditor() {
+function SymbolizationEditor() {
   const rep = usePersistence();
   const [meta, setMeta] = rep.useMetadata();
   const [regenerate, setRegenerate] = useAtom(regenerateAtom);

@@ -14,7 +14,7 @@ import { EitherAsync } from "purify-ts/EitherAsync";
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
 type ExifValue = string | number | number[] | File;
-export type TagObject = {
+type TagObject = {
   [key: string]: ExifValue;
 };
 

@@ -117,7 +117,7 @@ function pointInPolygon(
   }
 }
 
-export function concaveman(
+function concaveman(
   points: Pos2[],
   concavity?: number,
   lengthThreshold?: number

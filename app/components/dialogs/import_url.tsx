@@ -2,7 +2,7 @@ import { Formik, Form } from "formik";
 import { GlobeIcon } from "@radix-ui/react-icons";
 import { DialogHeader } from "app/components/dialog";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
-import LabeledTextField from "app/core/components/LabeledTextField";
+import { LabeledTextField } from "app/core/components/LabeledTextField";
 import { useState } from "react";
 import { InlineError } from "app/components/inline_error";
 import { useSetAtom } from "jotai";

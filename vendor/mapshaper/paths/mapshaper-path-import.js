@@ -39,7 +39,7 @@ export function cleanPathsAfterImport(dataset, opts) {
   });
 }
 
-export function pointHasValidCoords(p) {
+function pointHasValidCoords(p) {
   // The Shapefile spec states that "measures" less then -1e38 indicate null values
   // This should not apply to coordinate data, but in-the-wild Shapefiles have been
   // seen with large negative values indicating null coordinates.

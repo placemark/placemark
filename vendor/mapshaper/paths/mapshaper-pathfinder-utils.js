@@ -117,7 +117,7 @@ function chooseRighthandPath(fromX, fromY, nodeX, nodeY, ax, ay, bx, by) {
   return code;
 }
 
-export function chooseRighthandVector(ax, ay, bx, by) {
+function chooseRighthandVector(ax, ay, bx, by) {
   var orient = geom.orient2D(ax, ay, 0, 0, bx, by);
   var code;
   if (orient > 0) {

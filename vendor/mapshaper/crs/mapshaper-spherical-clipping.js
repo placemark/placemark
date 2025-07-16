@@ -38,7 +38,7 @@ export function preProjectionClip(dataset, src, dest, opts) {
   return cut || clipped;
 }
 
-export function insertPreProjectionCuts(dataset, src, dest) {
+function insertPreProjectionCuts(dataset, src, dest) {
   var antimeridian = getAntimeridian((dest.lam0 * 180) / Math.PI);
   // currently only supports adding a single vertical cut to earth axis-aligned
   // map projections centered on a non-zero longitude.

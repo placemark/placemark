@@ -30,18 +30,18 @@ const CIRCLE_LAYOUT: mapboxgl.CircleLayout = {};
 export const FEATURES_SOURCE_NAME = "features";
 export const EPHEMERAL_SOURCE_NAME = "ephemeral";
 
-export const EPHEMERAL_LINE_LAYER_NAME = "ephemeral-line";
-export const EPHEMERAL_FILL_LAYER_NAME = "ephemeral-fill";
+const EPHEMERAL_LINE_LAYER_NAME = "ephemeral-line";
+const EPHEMERAL_FILL_LAYER_NAME = "ephemeral-fill";
 
-export const FEATURES_POINT_HALO_LAYER_NAME = "features-symbol-halo";
-export const FEATURES_POINT_LAYER_NAME = "features-symbol";
-export const FEATURES_POINT_LABEL_LAYER_NAME = "features-point-label";
-export const FEATURES_FILL_LABEL_LAYER_NAME = "features-fill-label";
-export const FEATURES_LINE_LABEL_LAYER_NAME = "features-line-label";
-export const FEATURES_LINE = "features-label";
-export const CURSORS_POINT_LAYER_NAME = "cursors-symbol";
-export const FEATURES_LINE_LAYER_NAME = "features-line";
-export const FEATURES_FILL_LAYER_NAME = "features-fill";
+const FEATURES_POINT_HALO_LAYER_NAME = "features-symbol-halo";
+const FEATURES_POINT_LAYER_NAME = "features-symbol";
+const FEATURES_POINT_LABEL_LAYER_NAME = "features-point-label";
+const FEATURES_FILL_LABEL_LAYER_NAME = "features-fill-label";
+const FEATURES_LINE_LABEL_LAYER_NAME = "features-line-label";
+const FEATURES_LINE = "features-label";
+const CURSORS_POINT_LAYER_NAME = "cursors-symbol";
+const FEATURES_LINE_LAYER_NAME = "features-line";
+const FEATURES_FILL_LAYER_NAME = "features-fill";
 
 const emptyGeoJSONSource = {
 	type: "geojson",
@@ -55,7 +55,7 @@ const emptyGeoJSONSource = {
 	tolerance: 0,
 } as const;
 
-export const CONTENT_LAYER_FILTERS: {
+const CONTENT_LAYER_FILTERS: {
 	[key: string]: mapboxgl.Layer["filter"];
 } = {
 	[FEATURES_LINE_LAYER_NAME]: [
@@ -237,7 +237,7 @@ export function makeLayers({
 	];
 }
 
-export function asNumberExpression({
+function asNumberExpression({
 	symbolization,
 	defaultValue = 2,
 	part,
@@ -457,7 +457,7 @@ export function LINE_PAINT(
 	};
 }
 
-export const CONTENT_LAYERS = [
+const CONTENT_LAYERS = [
 	FEATURES_POINT_LAYER_NAME,
 	FEATURES_FILL_LAYER_NAME,
 	FEATURES_LINE_LAYER_NAME,

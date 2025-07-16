@@ -247,7 +247,7 @@ function getLineRecordDecorator(exp, lyr, arcs) {
   };
 }
 
-export function createLineLayer(lines, records) {
+function createLineLayer(lines, records) {
   return {
     geometry_type: "polyline",
     shapes: lines,
@@ -262,7 +262,7 @@ function extractOuterLines(shapes, classifier) {
   return extractLines(shapes, classifier(key));
 }
 
-export function extractInnerLines(shapes, classifier) {
+function extractInnerLines(shapes, classifier) {
   var key = function (a, b) {
     return b > -1 ? a + "-" + b : null;
   };

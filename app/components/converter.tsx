@@ -268,7 +268,7 @@ function convertResultToExportInput(
   return { featureMap, folderMap };
 }
 
-export function CustomError({ children }: React.PropsWithChildren<unknown>) {
+function CustomError({ children }: React.PropsWithChildren<unknown>) {
   return (
     <div
       role="alert"

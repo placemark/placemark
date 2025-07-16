@@ -4,7 +4,7 @@ import { editShapes, forEachShapePart } from "../paths/mapshaper-shape-utils";
 import { debug } from "../utils/mapshaper-logging";
 
 // TODO: also delete positive-space rings nested inside holes
-export function deleteHoles(lyr, arcs) {
+function deleteHoles(lyr, arcs) {
   editShapes(lyr.shapes, function (path) {
     if (geom.getPathArea(path, arcs) <= 0) {
       return null; // null deletes the path

@@ -5,7 +5,7 @@ import utils from "../utils/mapshaper-utils";
 
 // @shp An element of the layer.shapes array
 //   (may be null, or, depending on layer type, an array of points or an array of arrays of arc ids)
-export function cloneShape(shp) {
+function cloneShape(shp) {
   if (!shp) return null;
   return shp.map(function (part) {
     return part.concat();

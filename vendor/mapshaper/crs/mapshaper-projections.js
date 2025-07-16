@@ -20,18 +20,18 @@ var projectionAliases = {
 };
 
 // This stub is replaced when loaded in GUI, which may need to load some files
-export function initProjLibrary(opts, done) {
+function initProjLibrary(opts, done) {
   if (!asyncLoader) return done();
   asyncLoader(opts, done);
 }
 
-export function setProjectionLoader(loader) {
+function setProjectionLoader(loader) {
   asyncLoader = loader;
 }
 
 // Find Proj.4 definition file names in strings like "+init=epsg:3000"
 // (Used by GUI, defined here for testing)
-export function findProjLibs(str) {
+function findProjLibs(str) {
   var matches = str.match(/\b(esri|epsg|nad83|nad27)(?=:[0-9]+\b)/gi) || [];
   return utils.uniq(
     matches.map(function (str) {
@@ -43,7 +43,7 @@ export function findProjLibs(str) {
 // Returns a function for reprojecting [x, y] points; function throws an error
 // if the transformation fails
 // src, dest: proj4 objects
-export function getProjTransform(src, dest) {
+function getProjTransform(src, dest) {
   var clampSrc = isLatLngCRS(src);
   dest = dest.__mixed_crs || dest;
   return function (x, y) {
@@ -88,7 +88,7 @@ export function getProjTransform2(src, dest) {
   };
 }
 
-export function toLngLat(xy, P) {
+function toLngLat(xy, P) {
   var proj;
   if (isLatLngCRS(P)) {
     return xy.concat();
@@ -97,7 +97,7 @@ export function toLngLat(xy, P) {
   return proj(xy);
 }
 
-export function getProjInfo(dataset) {
+function getProjInfo(dataset) {
   var P, info;
   try {
     P = getDatasetCRS(dataset);
@@ -127,7 +127,7 @@ export function crsAreEqual(a, b) {
   return !!str && str == crsToProj4(b);
 }
 
-export function getProjDefn(str) {
+function getProjDefn(str) {
   // var mproj = mproj;
   var defn;
   // prepend '+proj=' to bare proj names
@@ -159,7 +159,7 @@ function looksLikeInitString(str) {
   return /^(esri|epsg|nad83|nad27):[0-9]+$/i.test(String(str));
 }
 
-export function looksLikeProj4String(str) {
+function looksLikeProj4String(str) {
   return /^(\+[^ ]+ *)+$/.test(str);
 }
 
@@ -178,7 +178,7 @@ export function getCRS(str) {
   return P || null;
 }
 
-export function requireProjectedDataset(dataset) {
+function requireProjectedDataset(dataset) {
   if (isLatLngCRS(getDatasetCRS(dataset))) {
     stop("Command requires a target with projected coordinates (not lat-long)");
   }
@@ -232,7 +232,7 @@ export function getScaleFactorAtXY(x, y, crs) {
   return k;
 }
 
-export function isProjectedCRS(P) {
+function isProjectedCRS(P) {
   return !isLatLngCRS(P);
 }
 
@@ -240,11 +240,11 @@ export function isLatLngCRS(P) {
   return (P && P.is_latlong) || false;
 }
 
-export function isLatLngDataset(dataset) {
+function isLatLngDataset(dataset) {
   return isLatLngCRS(getDatasetCRS(dataset));
 }
 
-export function printProjections() {
+function printProjections() {
   var index = mproj.internal.pj_list;
   var msg = "Proj4 projections\n";
   Object.keys(index)
@@ -261,7 +261,7 @@ export function printProjections() {
   print(msg);
 }
 
-export function translatePrj(str) {
+function translatePrj(str) {
   var proj4;
   try {
     proj4 = mproj.internal.wkt_to_proj4(str);

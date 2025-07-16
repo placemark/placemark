@@ -36,7 +36,7 @@ import { duplicateFeatures } from "app/lib/map_operations/duplicate_features";
 const visibilityToggleClass =
   "hidden opacity-30 hover:opacity-100 group-hover:inline-block pr-2";
 
-export function ItemFolder({
+function ItemFolder({
   rep,
   item,
   overlay,
@@ -143,7 +143,7 @@ export function ItemFolder({
   );
 }
 
-export function ItemInner({
+function ItemInner({
   item,
   preview,
   overlay,
@@ -217,7 +217,7 @@ function Spacer({
   );
 }
 
-export function ItemFeature({
+function ItemFeature({
   item,
   rep,
   preview,

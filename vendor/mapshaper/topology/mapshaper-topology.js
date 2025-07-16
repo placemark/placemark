@@ -37,7 +37,7 @@ export function buildTopology(dataset) {
 //
 // Negative arc ids in the paths array indicate a reversal of arc -(id + 1)
 //
-export function buildPathTopology(nn, xx, yy) {
+function buildPathTopology(nn, xx, yy) {
   var pointCount = xx.length,
     chainIds = initPointChains(xx, yy),
     pathIds = initPathIds(pointCount, nn),

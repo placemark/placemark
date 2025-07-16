@@ -103,7 +103,7 @@ function updateMapboxStyle(
     layers: updatedLayers,
   };
 }
-export function paintLayoutFromRasterLayer(
+function paintLayoutFromRasterLayer(
   layer: ILayerConfig
 ): Pick<mapboxgl.RasterLayer, "type" | "paint" | "layout"> {
   return {

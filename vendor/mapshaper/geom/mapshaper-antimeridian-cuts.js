@@ -85,7 +85,7 @@ export function removePolygonCrosses(rings) {
 // Stitch an array of split-apart paths into coordinate rings
 // Assumes that the first and last point of each split-apart path is 180 or -180
 // parts: array of paths that have been split at the antimeridian
-export function reconnectSplitParts(parts) {
+function reconnectSplitParts(parts) {
   var yy = getSortedIntersections(parts);
   var rings = [];
   var usedParts = [];
@@ -203,7 +203,7 @@ export function countCrosses(path) {
   return c;
 }
 
-export function splitPathAtAntimeridian(path) {
+function splitPathAtAntimeridian(path) {
   var parts = [];
   var part = [];
   var firstPoint = path[0];
@@ -240,7 +240,7 @@ export function segmentCrossesAntimeridian(a, b) {
   return Math.abs(a[0] - b[0]) > 180;
 }
 
-export function getSortedIntersections(parts) {
+function getSortedIntersections(parts) {
   var values = parts.map(function (p) {
     return p[0][1];
   });

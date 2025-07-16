@@ -21,7 +21,7 @@ import { getFileBase } from "../utils/mapshaper-filename-utils";
 
 // @targets - non-empty output from Catalog#findCommandTargets()
 //
-export function exportTargetLayers(targets, opts) {
+function exportTargetLayers(targets, opts) {
   // convert target fmt to dataset fmt
   var datasets = targets.map(function (target) {
     return utils.defaults({ layers: target.layers }, target.dataset);
@@ -205,7 +205,7 @@ function validateFileNames(files) {
   });
 }
 
-export function assignUniqueLayerNames(layers) {
+function assignUniqueLayerNames(layers) {
   var names = layers.map(function (lyr) {
     return lyr.name || "layer";
   });
@@ -223,7 +223,7 @@ function assignUniqueLayerNames2(datasets) {
   assignUniqueLayerNames(layers);
 }
 
-export function assignUniqueFileNames(output) {
+function assignUniqueFileNames(output) {
   var names = output.map(function (o) {
     return o.filename;
   });
@@ -249,7 +249,7 @@ function exportDataTables(layers, opts) {
   return tables;
 }
 
-export function formatVersionedFileName(filename, i) {
+function formatVersionedFileName(filename, i) {
   var parts = filename.split(".");
   var ext, base;
   if (parts.length < 2) {

@@ -24,7 +24,7 @@ function underline(color: string) {
 }
 
 /// The editor theme styles for One Dark.
-export const placemarkBaseTheme = EditorView.theme(
+const placemarkBaseTheme = EditorView.theme(
   {
     ".cm-lintRange-error": { backgroundImage: underline("#DC2626") },
     "&": {
@@ -110,7 +110,7 @@ export const placemarkBaseTheme = EditorView.theme(
 );
 
 /// The highlighting style for code in the One Dark theme.
-export const placemarkHighlightStyle = HighlightStyle.define([
+const placemarkHighlightStyle = HighlightStyle.define([
   {
     tag: [
       t.keyword,

@@ -1,10 +1,10 @@
 import { vi } from "vitest";
 import { act as actHook } from "@testing-library/react-hooks";
 
-export { actHook };
+;
 export * from "@testing-library/react";
 
-export const mockRouter = {
+const mockRouter = {
   basePath: "",
   pathname: "/",
   route: "/",

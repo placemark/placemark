@@ -13,12 +13,12 @@ function getGeodesic(P) {
   return new GeographicLib.Geodesic.Geodesic(P.a, f);
 }
 
-export function interpolatePoint2D(ax, ay, bx, by, k) {
+function interpolatePoint2D(ax, ay, bx, by, k) {
   var j = 1 - k;
   return [ax * j + bx * k, ay * j + by * k];
 }
 
-export function getInterpolationFunction(P) {
+function getInterpolationFunction(P) {
   var spherical = P && isLatLngCRS(P);
   if (!spherical) return interpolatePoint2D;
   var geod = getGeodesic(P);
@@ -30,7 +30,7 @@ export function getInterpolationFunction(P) {
   };
 }
 
-export function getPlanarSegmentEndpoint(x, y, bearing, meterDist) {
+function getPlanarSegmentEndpoint(x, y, bearing, meterDist) {
   var rad = (bearing / 180) * Math.PI;
   var dx = Math.sin(rad) * meterDist;
   var dy = Math.cos(rad) * meterDist;
@@ -65,7 +65,7 @@ export function getGeodeticSegmentFunction(P) {
   };
 }
 
-export function getFastGeodeticSegmentFunction(P) {
+function getFastGeodeticSegmentFunction(P) {
   // CAREFUL: this function has higher error at very large distances and at the poles
   // also, it wouldn't work for other planets than Earth
   return isLatLngCRS(P)
@@ -73,16 +73,16 @@ export function getFastGeodeticSegmentFunction(P) {
     : getPlanarSegmentEndpoint;
 }
 
-export function bearingDegrees(a, b, c, d) {
+function bearingDegrees(a, b, c, d) {
   return (geom.bearing(a, b, c, d) * 180) / Math.PI;
 }
 
-export function bearingDegrees2D(a, b, c, d) {
+function bearingDegrees2D(a, b, c, d) {
   return (geom.bearing2D(a, b, c, d) * 180) / Math.PI;
 }
 
 // return function to calculate bearing of a segment in degrees
-export function getBearingFunction(dataset) {
+function getBearingFunction(dataset) {
   var P = getDatasetCRS(dataset);
   return isLatLngCRS(P) ? bearingDegrees : bearingDegrees2D;
 }

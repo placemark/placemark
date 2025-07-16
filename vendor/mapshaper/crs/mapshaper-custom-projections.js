@@ -72,7 +72,7 @@ export function AlbersUSA(optsArg) {
   return mixed;
 }
 
-export function parseCustomParams(arr) {
+function parseCustomParams(arr) {
   var opts = {};
   arr.forEach(function (str) {
     parseCustomParam(str, opts);

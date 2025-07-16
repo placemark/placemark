@@ -13,7 +13,7 @@ import utils from "../utils/mapshaper-utils";
 //    that create a mosaic as an intermediate data structure)
 // Create additional layers if the "debug" flag is present
 //
-export function mosaic(dataset, opts) {
+function mosaic(dataset, opts) {
   var layers2 = [];
   var nodes, output;
   if (!dataset.arcs) stop("Dataset is missing path data");

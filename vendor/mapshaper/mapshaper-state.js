@@ -29,7 +29,7 @@ function createContext() {
 // Install a new set of context variables, clear them when an async callback is called.
 // @cb callback function to wrap
 // returns wrapped callback function
-export function createAsyncContext(cb) {
+function createAsyncContext(cb) {
   context = createContext();
   return function () {
     cb.apply(null, utils.toArray(arguments));

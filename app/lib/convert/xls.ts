@@ -3,7 +3,7 @@ import { ConvertResult, okResult } from "./utils";
 import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
 
-export class CXLS implements FileType {
+class CXLS implements FileType {
   id = "xls" as const;
   label = "Excel (.xls, .xlsx)";
   extensions = [".xls", ".xlsx"];

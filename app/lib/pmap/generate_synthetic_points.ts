@@ -20,7 +20,7 @@ import memoize from "memoize-one";
 // fp = FromPoint
 const propertiesFromPoint = { fp: true };
 
-export class Vertex implements IFeature<Point> {
+class Vertex implements IFeature<Point> {
   id: RawId;
   geometry: Point;
   constructor(id: RawId, coordinate: Position, fromPoint: boolean) {

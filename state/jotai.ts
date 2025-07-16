@@ -42,7 +42,7 @@ type WalkthroughState =
       index: number;
     };
 
-export const walkthroughAtom = atom<WalkthroughState>({
+const walkthroughAtom = atom<WalkthroughState>({
   type: "active",
   index: 0,
 });
@@ -123,7 +123,7 @@ export const MIN_SPLITS = {
   left: 100,
   right: 200,
 } as const;
-export const MAX_SPLIT = 640;
+const MAX_SPLIT = 640;
 
 export interface Splits {
   layout: PanelLayout;
@@ -134,7 +134,7 @@ export interface Splits {
   left: number;
 }
 
-export type PanelLayout = "AUTO" | "FLOATING" | "VERTICAL";
+type PanelLayout = "AUTO" | "FLOATING" | "VERTICAL";
 
 export const splitsAtom = atom<Splits>({
   layout: "AUTO",
@@ -151,7 +151,7 @@ export const showPanelBottomAtom = atom<boolean>(true);
 /**
  * Other UI state
  */
-export const listModeAtom = atomWithStorage<"grid" | "list">(
+const listModeAtom = atomWithStorage<"grid" | "list">(
   "listMode",
   "grid"
 );
@@ -175,7 +175,7 @@ export const scaleUnitAtom = atomWithStorage<ScaleUnit>(
   "imperial"
 );
 
-export const showFolderTreeAtom = atomWithStorage<"hide" | "show">(
+const showFolderTreeAtom = atomWithStorage<"hide" | "show">(
   "showFolderTree",
   "hide"
 );
@@ -185,7 +185,7 @@ export const addMetadataWithGeocoderAtom = atomWithStorage(
   false
 );
 
-export const followPresenceAtom = atom<IPresence | null>(null);
+const followPresenceAtom = atom<IPresence | null>(null);
 
 // ----------------------------------------------------------------------------
 /**
@@ -351,7 +351,7 @@ const syncingMachine = createMachine({
   },
 });
 
-export const syncingMachineAtom = atomWithMachine(() => syncingMachine);
+const syncingMachineAtom = atomWithMachine(() => syncingMachine);
 
 export enum TabOption {
   Feature = "Feature",
@@ -385,7 +385,7 @@ export const initialFilterValues: FilterOptions = {
 
 export const tableFilterAtom = atom<FilterOptions>(initialFilterValues);
 
-export const seenPlayModal = atomWithStorage<boolean>("seenPlayModal", false);
+const seenPlayModal = atomWithStorage<boolean>("seenPlayModal", false);
 
 export const circleTypeAtom = atomWithStorage<CIRCLE_TYPE>(
   "circleType",

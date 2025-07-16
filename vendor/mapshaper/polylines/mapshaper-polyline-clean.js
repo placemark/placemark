@@ -147,7 +147,7 @@ function getOtherEndpointId(ids, endpointId) {
   error("Indexing error");
 }
 
-export function extendPolylinePart(
+function extendPolylinePart(
   parts,
   partId1,
   endpoint1,

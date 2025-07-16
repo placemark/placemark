@@ -1,7 +1,7 @@
 import { getLayerBounds } from "../dataset/mapshaper-layer-utils";
 import { addGetters } from "../expressions/mapshaper-expression-utils";
 
-export function addBBoxGetter(obj, lyr, arcs) {
+function addBBoxGetter(obj, lyr, arcs) {
   var bbox;
   addGetters(obj, {
     bbox: function () {
@@ -31,7 +31,7 @@ function getBBox(lyr, arcs) {
 }
 
 // Returns an object representing a layer in a JS expression
-export function getLayerProxy(lyr, arcs) {
+function getLayerProxy(lyr, arcs) {
   var obj = {};
   var records = lyr.data ? lyr.data.getRecords() : null;
   var getters = {

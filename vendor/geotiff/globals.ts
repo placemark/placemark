@@ -122,12 +122,12 @@ export const fieldTagNames: {
   0x87b1: "GeoAsciiParams",
 };
 
-export const fieldTags: Record<ValueOf<typeof fieldTagNames>, number> = {};
+const fieldTags: Record<ValueOf<typeof fieldTagNames>, number> = {};
 for (const [key, value] of Object.entries(fieldTagNames)) {
   fieldTags[value] = parseInt(key, 10);
 }
 
-export const fieldTagTypes = {
+const fieldTagTypes = {
   256: "SHORT",
   257: "SHORT",
   258: "SHORT",
@@ -173,7 +173,7 @@ export const arrayFields = [
   fieldTags.TileOffsets,
 ];
 
-export const fieldTypeNames = {
+const fieldTypeNames = {
   0x0001: "BYTE",
   0x0002: "ASCII",
   0x0003: "SHORT",
@@ -199,7 +199,7 @@ for (const [key, value] of Object.entries(fieldTypeNames)) {
   fieldTypes[value] = parseInt(key, 10);
 }
 
-export const photometricInterpretations: { [key: string]: number } = {
+const photometricInterpretations: { [key: string]: number } = {
   WhiteIsZero: 0,
   BlackIsZero: 1,
   RGB: 2,
@@ -212,7 +212,7 @@ export const photometricInterpretations: { [key: string]: number } = {
   ICCLab: 9,
 };
 
-export const ExtraSamplesValues: { [key: string]: number } = {
+const ExtraSamplesValues: { [key: string]: number } = {
   Unspecified: 0,
   Assocalpha: 1,
   Unassalpha: 2,
@@ -270,7 +270,7 @@ export const geoKeyNames: {
   4099: "VerticalUnitsGeoKey",
 };
 
-export const geoKeys: Record<ValueOf<typeof geoKeyNames>, number> = {};
+const geoKeys: Record<ValueOf<typeof geoKeyNames>, number> = {};
 for (const [key, value] of Object.entries(geoKeyNames)) {
   geoKeys[value] = parseInt(key, 10);
 }

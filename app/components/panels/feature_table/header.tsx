@@ -19,7 +19,7 @@ type RenameFormValues = {
   renameTo: string;
 };
 
-export function RenamePropertyDialog({
+function RenamePropertyDialog({
   onClose,
   column,
   localOrder,

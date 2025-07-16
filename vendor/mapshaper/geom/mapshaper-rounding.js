@@ -7,7 +7,7 @@ export function roundToSignificantDigits(n, d) {
   return +n.toPrecision(d);
 }
 
-export function roundToDigits(n, d) {
+function roundToDigits(n, d) {
   return +n.toFixed(d); // string conversion makes this slow
 }
 
@@ -43,7 +43,7 @@ export function getBoundsPrecisionForDisplay(bbox) {
   return digits;
 }
 
-export function getRoundedCoordString(coords, decimals) {
+function getRoundedCoordString(coords, decimals) {
   return coords
     .map(function (n) {
       return n.toFixed(decimals);
@@ -51,11 +51,11 @@ export function getRoundedCoordString(coords, decimals) {
     .join(",");
 }
 
-export function getRoundedCoords(coords, decimals) {
+function getRoundedCoords(coords, decimals) {
   return getRoundedCoordString(coords, decimals).split(",").map(parseFloat);
 }
 
-export function roundPoints(lyr, round) {
+function roundPoints(lyr, round) {
   forEachPoint(lyr.shapes, function (p) {
     p[0] = round(p[0]);
     p[1] = round(p[1]);

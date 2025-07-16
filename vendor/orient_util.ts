@@ -76,12 +76,12 @@ export function sum(elen: number, e: number[] | Float64Array, flen: number, f: F
   return hindex;
 }
 
-export function sum_three(alen: number, a: Float64Array | number[], blen: number, b: number[], clen: number, c: number[], tmp: number[], out: number[]) {
+function sum_three(alen: number, a: Float64Array | number[], blen: number, b: number[], clen: number, c: number[], tmp: number[], out: number[]) {
   return sum(sum(alen, a, blen, b, tmp), tmp, clen, c, out);
 }
 
 // scale_expansion_zeroelim routine from oritinal code
-export function scale(elen: number, e: number[], b: number, h: number[]) {
+function scale(elen: number, e: number[], b: number, h: number[]) {
   let Q, sum, hh, product1, product0;
   let bvirt, c, ahi, alo, bhi, blo;
 
@@ -123,7 +123,7 @@ export function scale(elen: number, e: number[], b: number, h: number[]) {
   return hindex;
 }
 
-export function negate(elen: number, e: number[]) {
+function negate(elen: number, e: number[]) {
   for (let i = 0; i < elen; i++) e[i] = -e[i];
   return elen;
 }

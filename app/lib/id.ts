@@ -3,7 +3,7 @@ import type { Geometry, Position, Feature } from "types";
 import { v1 as uuidv1, v4 } from "uuid";
 import { customAlphabet } from "nanoid";
 
-export function shortUnsafeId(): string {
+function shortUnsafeId(): string {
   return v4().slice(0, 8);
 }
 
@@ -36,7 +36,7 @@ export function encodeMidpoint(featureId: number, vertex: number): RawId {
   return ((featureId + 1) * A + vertex * 2 + 1) as RawId;
 }
 
-export class CFeatureId implements FeatureId {
+class CFeatureId implements FeatureId {
   type = "feature" as const;
   featureId: number;
   constructor(id: number) {
@@ -60,7 +60,7 @@ export class CVertexId implements VertexId {
   }
 }
 
-export class CMidpointId implements MidpointId {
+class CMidpointId implements MidpointId {
   type = "midpoint" as const;
   featureId: number;
   vertex: number;
@@ -70,7 +70,7 @@ export class CMidpointId implements MidpointId {
   }
 }
 
-export function toFeatureId(id: Id): FeatureId {
+function toFeatureId(id: Id): FeatureId {
   return CFeatureId.from(id);
 }
 

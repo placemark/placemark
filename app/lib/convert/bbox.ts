@@ -8,7 +8,7 @@ import readAsText from "app/lib/read_as_text";
 import { eitherToAsync } from "app/lib/utils";
 import { Maybe } from "purify-ts/Maybe";
 
-export class CBBOX implements FileType {
+class CBBOX implements FileType {
   id = "bbox" as const;
   label = "BBOX";
   extensions = [] as string[];

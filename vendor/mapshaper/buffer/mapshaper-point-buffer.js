@@ -19,7 +19,7 @@ function ringArea(ring) {
   return getSphericalPathArea2(iter);
 }
 
-export function makePointBuffer(lyr, dataset, opts) {
+function makePointBuffer(lyr, dataset, opts) {
   var geojson = makePointBufferGeoJSON(lyr, dataset, opts);
   return importGeoJSON(geojson, {});
 }
@@ -55,7 +55,7 @@ function makePointBufferGeoJSON(lyr, dataset, opts) {
   };
 }
 
-export function getPointBufferPolygon(
+function getPointBufferPolygon(
   points,
   distance,
   vertices,
@@ -100,7 +100,7 @@ export function getPointBufferPolygon(
   };
 }
 
-export function getPointBufferLineString(points, distance, vertices, geod) {
+function getPointBufferLineString(points, distance, vertices, geod) {
   var rings = [],
     coords;
   if (!points || !points.length) return null;
@@ -121,7 +121,7 @@ export function getPointBufferLineString(points, distance, vertices, geod) {
 }
 
 // Returns array of [x, y] coordinates in a closed ring
-export function getPointBufferCoordinates(center, meterDist, vertices, geod) {
+function getPointBufferCoordinates(center, meterDist, vertices, geod) {
   var coords = [],
     angle = 360 / vertices,
     theta;

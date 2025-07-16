@@ -6,4 +6,3 @@ export async function buffer(feature: Feature, options: BufferOptions) {
   return lib.bufferFeature(feature, options);
 }
 
-export default buffer;

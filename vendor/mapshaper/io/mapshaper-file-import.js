@@ -43,7 +43,7 @@ cmd.importFiles = function (opts) {
 };
 
 // Let the web UI replace importFile() with a browser-friendly version
-export function replaceImportFile(func) {
+function replaceImportFile(func) {
   _importFile = func;
 }
 

@@ -22,7 +22,7 @@ export type DialogStateCircle = {
   position: Pos2;
 };
 
-export type DialogStateExamples = {
+type DialogStateExamples = {
   type: "import_example";
 };
 
@@ -31,7 +31,7 @@ export type DialogStateImportNotes = {
   result: ConvertResult;
 };
 
-export type DialogStateExportCode = {
+type DialogStateExportCode = {
   type: "export_code";
 };
 
@@ -55,7 +55,7 @@ export type DialogStateLoadText = {
   initialValue?: string;
 };
 
-export type DialogState =
+type DialogState =
   | DialogStateImport
   | DialogStateImportNotes
   | DialogStateCastProperty

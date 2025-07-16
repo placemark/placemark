@@ -12,7 +12,7 @@ import { bufferToString } from "../text/mapshaper-encodings";
 import { importJSONTable } from "../datatable/mapshaper-json-table";
 
 // Identify JSON type from the initial subset of a JSON string
-export function identifyJSONString(str, opts) {
+function identifyJSONString(str, opts) {
   var maxChars = 1000;
   var fmt = null;
   if (str.length > maxChars) str = str.substr(0, maxChars);
@@ -30,7 +30,7 @@ export function identifyJSONString(str, opts) {
   return fmt;
 }
 
-export function identifyJSONObject(o) {
+function identifyJSONObject(o) {
   var fmt = null;
   if (!o) {
     //
@@ -44,7 +44,7 @@ export function identifyJSONObject(o) {
   return fmt;
 }
 
-export function importGeoJSONFile(fileReader, opts) {
+function importGeoJSONFile(fileReader, opts) {
   var importer = new GeoJSONParser(opts);
   new GeoJSONReader(fileReader).readObjects(importer.parseObject);
   return importer.done();

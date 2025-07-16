@@ -31,7 +31,7 @@ export function exportGeoJSON2(dataset, opts) {
   return exportGeoJSON(dataset, opts);
 }
 
-export function exportGeoJSON(dataset, opts) {
+function exportGeoJSON(dataset, opts) {
   opts = opts || {};
   var extension = opts.extension || "json";
   var layerGroups, warn;
@@ -75,7 +75,7 @@ export function exportGeoJSON(dataset, opts) {
 
 // Return an array of Features or Geometries as objects or strings
 //
-export function exportLayerAsGeoJSON(lyr, dataset, opts, asFeatures, ofmt) {
+function exportLayerAsGeoJSON(lyr, dataset, opts, asFeatures, ofmt) {
   var properties = exportProperties(lyr.data, opts),
     shapes = lyr.shapes,
     ids = exportIds(lyr.data, opts),
@@ -124,7 +124,7 @@ export function exportLayerAsGeoJSON(lyr, dataset, opts, asFeatures, ofmt) {
   }, []);
 }
 
-export function getRFC7946Warnings(dataset) {
+function getRFC7946Warnings(dataset) {
   var P = getDatasetCRS(dataset);
   var str;
   if (!P || !isLatLngCRS(P)) {
@@ -134,7 +134,7 @@ export function getRFC7946Warnings(dataset) {
   return str;
 }
 
-export function getDatasetBbox(dataset, rfc7946) {
+function getDatasetBbox(dataset, rfc7946) {
   var P = getDatasetCRS(dataset),
     wrapped = rfc7946 && P && isLatLngCRS(P),
     westBounds = new Bounds(),
@@ -171,7 +171,7 @@ export function getDatasetBbox(dataset, rfc7946) {
   return bbox || null;
 }
 
-export function exportDatasetAsGeoJSON(dataset, opts, ofmt) {
+function exportDatasetAsGeoJSON(dataset, opts, ofmt) {
   var geojson = {};
   var layers = dataset.layers;
   var useFeatures = useFeatureCollection(layers, opts);
@@ -324,7 +324,7 @@ GeoJSON.exporters = {
 // pass through any original CRS object if the crs has not been set by mapshaper
 // jsonObj: a top-level GeoJSON or TopoJSON object
 //
-export function preserveOriginalCRS(dataset, jsonObj) {
+function preserveOriginalCRS(dataset, jsonObj) {
   var info = dataset.info || {};
   if (!info.crs && "input_geojson_crs" in info) {
     // use input geojson crs if available and coords have not changed
@@ -340,7 +340,7 @@ export function preserveOriginalCRS(dataset, jsonObj) {
   // }
 }
 
-export function useFeatureCollection(layers, opts) {
+function useFeatureCollection(layers, opts) {
   var type = opts.geojson_type || "";
   if (type == "Feature" || type == "FeatureCollection") {
     return true;
@@ -391,7 +391,7 @@ export function exportProperties(table, opts) {
 
 // @opt value of id-field option (empty, string or array of strings)
 // @fields array
-export function getIdField(fields, opts) {
+function getIdField(fields, opts) {
   var ids = [];
   var opt = opts.id_field;
   if (utils.isString(opt)) {

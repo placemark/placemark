@@ -9,7 +9,7 @@ const MAXEXTENT = 20037508.342789244;
 const R2D = 180 / Math.PI;
 const A = 6378137.0;
 
-export const CircleProp = z
+const CircleProp = z
   .object({
     "@circle": z.object({
       type: z.nativeEnum(CIRCLE_TYPE),
@@ -148,7 +148,7 @@ function getVerticesMercator(
  * https://github.com/Turfjs/turf/blob/master/packages/turf-circle/index.ts
  * https://github.com/henrythasler/Leaflet.Geodesic/blob/master/src/geodesic-geom.ts#L240
  */
-export function makeCircleGeodesic(center: Pos2, radians: number): Polygon {
+function makeCircleGeodesic(center: Pos2, radians: number): Polygon {
   // TODO: auto steps
   const steps = 100;
 
@@ -164,7 +164,7 @@ export function makeCircleGeodesic(center: Pos2, radians: number): Polygon {
   };
 }
 
-export function makeCircleDegrees(center: Pos2, degrees: number): Polygon {
+function makeCircleDegrees(center: Pos2, degrees: number): Polygon {
   // TODO: auto steps
   const steps = 100;
 
@@ -180,7 +180,7 @@ export function makeCircleDegrees(center: Pos2, degrees: number): Polygon {
   };
 }
 
-export function makeCircleMercator(
+function makeCircleMercator(
   center: Pos2,
   distanceInMercatorMeters: number
 ): Polygon {

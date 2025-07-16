@@ -67,7 +67,7 @@ export function getSliverTest(arcs, threshold, strength) {
 }
 
 // Strength: 0-1
-export function getSliverAreaFunction(arcs, strength) {
+function getSliverAreaFunction(arcs, strength) {
   var k = Math.sqrt(strength); // more sensible than linear weighted avg.
   return function (ring) {
     var area = geom.getPathArea(ring, arcs);
@@ -104,7 +104,7 @@ export function getDefaultSliverThreshold(lyr, arcs) {
 }
 
 // Original function for calculating default area threshold
-export function calcMaxSliverArea(arcs) {
+function calcMaxSliverArea(arcs) {
   var k = 2,
     dxMax = arcs.getBounds().width() / k,
     dyMax = arcs.getBounds().height() / k,

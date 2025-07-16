@@ -21,7 +21,7 @@ export function exportDelim(dataset, opts) {
   }, []);
 }
 
-export function exportLayerAsDSV(lyr, delim, optsArg) {
+function exportLayerAsDSV(lyr, delim, optsArg) {
   var opts = optsArg || {};
   var encoding = opts.encoding || "utf8";
   var records = lyr.data.getRecords();
@@ -90,7 +90,7 @@ function getDelimRowFormatter(fields, delim, opts) {
   };
 }
 
-export function getDelimValueFormatter(delim, opts) {
+function getDelimValueFormatter(delim, opts) {
   var dquoteRxp = new RegExp('["\n\r' + delim + "]");
   var decimalComma = (opts && opts.decimal_comma) || false;
   function formatString(s) {

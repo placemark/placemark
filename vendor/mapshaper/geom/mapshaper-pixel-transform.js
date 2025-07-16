@@ -29,7 +29,7 @@ export function transformDatasetToPixels(dataset, opts) {
   return [Math.round(bounds2.width()), Math.round(bounds2.height()) || 1];
 }
 
-export function parseMarginOption(opt) {
+function parseMarginOption(opt) {
   var str = utils.isNumber(opt) ? String(opt) : opt || "";
   var margins = str.trim().split(/[, ] */);
   if (margins.length == 1) margins.push(margins[0]);
@@ -44,7 +44,7 @@ export function parseMarginOption(opt) {
 // bounds: Bounds object containing bounds of content in geographic coordinates
 // returns Bounds object containing bounds of pixel output
 // side effect: bounds param is modified to match the output frame
-export function calcOutputSizeInPixels(bounds, opts) {
+function calcOutputSizeInPixels(bounds, opts) {
   var padX = 0,
     padY = 0,
     offX = 0,

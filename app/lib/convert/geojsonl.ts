@@ -8,7 +8,7 @@ import { rough } from "app/lib/roughly_geojson";
 import { Right } from "purify-ts/Either";
 import type { ConvertError } from "app/lib/errors";
 
-export class CGeoJSONL implements FileType {
+class CGeoJSONL implements FileType {
   id = "geojsonl" as const;
   label = "GeoJSONL (newline-delimited GeoJSON)";
   extensions = [".geojsonl", ".geojsons", ".ld"];

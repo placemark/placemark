@@ -21,11 +21,11 @@ import deepFreeze from "deep-freeze";
 
 export const NIL_PREVIEW: PreviewProperty = null;
 
-export function tid(i: number) {
+function tid(i: number) {
   return i.toString(16).padStart(21, "x");
 }
 
-export const ID_0 = tid(0);
+const ID_0 = tid(0);
 
 function loadFixture(path: string): FeatureCollection {
   return JSON.parse(
@@ -95,7 +95,7 @@ export function wrapMapAndId(fc: FeatureCollection) {
   return { wrappedFeatures, idMap, featureMap };
 }
 
-export function f(features: IFeature | IFeature[]): IFeatureCollection {
+function f(features: IFeature | IFeature[]): IFeatureCollection {
   return deepFreeze({
     type: "FeatureCollection",
     features: (Array.isArray(features) ? features : [features]).map(
@@ -109,7 +109,7 @@ export function f(features: IFeature | IFeature[]): IFeatureCollection {
   }) as IFeatureCollection;
 }
 
-export const FIRST_COORDS = [
+const FIRST_COORDS = [
   "geojson",
   "features",
   0,
@@ -157,7 +157,7 @@ export const fc = f([
   },
 ]);
 
-export const multiPoint: MultiPoint = deepFreeze({
+const multiPoint: MultiPoint = deepFreeze({
   type: "MultiPoint",
   coordinates: [
     [0, 0],
@@ -233,7 +233,7 @@ export const fcLineString = f([
   },
 ]);
 
-export const fcRectangle = f({
+const fcRectangle = f({
   type: "Feature",
   properties: {
     x: 1,
@@ -462,7 +462,7 @@ export const features = [
   fcGeometryCollection.features[0],
 ] as Feature[];
 
-export const putPresenceContent = (
+const putPresenceContent = (
   id: number,
   userId: number,
   wrappedFeatureCollectionId: string
@@ -485,7 +485,7 @@ export const putPresenceContent = (
   },
 });
 
-export const putFeaturesContent = (
+const putFeaturesContent = (
   id: number,
   wrappedFeatureCollectionId: string,
   featureId = "cf55b1a0-7561-11ec-91c4-2f6e209ecfb8"
