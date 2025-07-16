@@ -1,4 +1,3 @@
-import Link from "next/link";
 import classed from "classed-components";
 import clsx from "clsx";
 import type { ClassValue } from "clsx";
@@ -9,49 +8,18 @@ import {
   ContextMenu as CM,
   Popover,
   Dialog,
-  AlertDialog,
-  Switch as S,
-  Select,
 } from "radix-ui";
 import * as Sentry from "@sentry/nextjs";
-import React from "react";
+import type React from "react";
 import {
   SymbolIcon,
-  Cross1Icon,
   QuestionMarkCircledIcon,
-  ClipboardCopyIcon,
   EyeNoneIcon,
   EyeOpenIcon,
   TextIcon,
   TextNoneIcon,
 } from "@radix-ui/react-icons";
 import { SUPPORT_EMAIL } from "app/lib/constants";
-import Placemark from "./icons/placemark";
-import { toast } from "react-hot-toast";
-import { Portal } from "radix-ui";
-
-function CopiableURL({ url }: { url: string }) {
-  return (
-    <div className="flex gap-x-2 items-stretch">
-      <Input readOnly value={url} />
-      <Button
-        variant="quiet"
-        onClick={() => {
-          navigator.clipboard
-            .writeText(url)
-            .then(() => {
-              toast("Copied");
-            })
-            .catch(() => {
-              toast.error("Could not copy");
-            });
-        }}
-      >
-        <ClipboardCopyIcon />
-      </Button>
-    </div>
-  );
-}
 
 export function Hint({ children }: { children: React.ReactNode }) {
   return (
@@ -122,20 +90,6 @@ export function PlacemarkIcon({ className }: React.HTMLAttributes<SVGElement>) {
   );
 }
 
-function StyledDropOverlayIndex({
-  children,
-}: React.PropsWithChildren<Record<string, unknown>>) {
-  return (
-    <Portal.Portal>
-      <div className="absolute bottom-10 left-1/2">
-        <div className="px-3 py-2 text-white bg-gray-500 rounded-md w-48 -m-24">
-          {children}
-        </div>
-      </div>
-    </Portal.Portal>
-  );
-}
-
 export function StyledDropOverlay({
   children,
 }: React.PropsWithChildren<Record<string, unknown>>) {
@@ -154,29 +108,6 @@ type ErrorData = {
   eventId: string | null;
   resetError(): void;
 };
-
-function Badge({
-  children,
-  variant = "default",
-}: React.PropsWithChildren<{
-  variant?: B3Variant;
-}>) {
-  return (
-    <div
-      className={clsx(
-        {
-          "bg-purple-100 dark:bg-gray-700": variant === "default",
-          "": variant === "quiet",
-        },
-        `inline-flex uppercase
-    text-gray-700 dark:text-gray-100
-    font-bold text-xs px-1.5 py-0.5 rounded`
-      )}
-    >
-      {children}
-    </div>
-  );
-}
 
 export function ErrorFallback(props: ErrorData) {
   return (
@@ -238,9 +169,6 @@ export const CapsLabel = classed.label(
 const overlayClasses =
   "fixed inset-0 bg-black/20 dark:bg-white/20 z-50 placemark-fadein";
 
-const StyledAlertDialogOverlay = classed(AlertDialog.Overlay)(
-  overlayClasses
-);
 export const StyledDialogOverlay = classed(Dialog.Overlay)(overlayClasses);
 
 const styledDialogContent = ({ size = "sm" }: { size?: B3Size }) =>
@@ -264,9 +192,6 @@ const styledDialogContent = ({ size = "sm" }: { size?: B3Size }) =>
   );
 
 export const StyledDialogContent = classed(Dialog.Content)(styledDialogContent);
-const StyledAlertDialogContent = classed(AlertDialog.Content)(
-  styledDialogContent
-);
 
 export const styledCheckbox = ({
   variant = "default",
@@ -284,15 +209,6 @@ export const styledCheckbox = ({
   ]);
 
 export const FieldCheckbox = classed(Field)(styledCheckbox);
-
-const StyledDialogClose = () => (
-  <Dialog.Close
-    aria-label="Close"
-    className="absolute top-4 right-4 text-gray-500"
-  >
-    <Cross1Icon />
-  </Dialog.Close>
-);
 
 export const TContent = classed(Tooltip.Content)(
   ({ size = "sm" }: { size?: B3Size }) => [
@@ -362,12 +278,6 @@ export const StyledTooltipArrow = () => (
   </Tooltip.Arrow>
 );
 
-const StyledDropDownArrow = () => (
-  <DD.Arrow offset={5} width={11} height={5} className={arrowLike} asChild>
-    {ArrowSVG}
-  </DD.Arrow>
-);
-
 export const StyledPopoverContent = classed(Popover.Content)(
   ({
     size = "sm",
@@ -423,23 +333,6 @@ export const StyledLabelSpan = classed.span(
     )
 );
 
-const StyledFieldTextareaProse = classed(Field)(
-  (
-    {
-      size = "md",
-      variant = "default",
-    }: {
-      size: B3Size;
-      variant: B3Variant;
-    } = { size: "sm", variant: "default" }
-  ) =>
-    clsx(
-      sharedEqualPadding(size),
-      sharedOutline(variant),
-      "block w-full mt-1 focus-visible:border-gray-300 dark:bg-transparent dark:text-white"
-    )
-);
-
 export const contentLike = `py-1
     bg-white dark:bg-gray-900
     rounded-sm
@@ -457,13 +350,11 @@ const styledLabel =
 
 export const DivLabel = classed.div(styledLabel);
 export const DDLabel = classed(DD.Label)(styledLabel);
-const StyledSelectLabel = classed(Select.Label)(styledLabel);
 
 const styledSeparator = "border-t border-gray-100 dark:border-gray-700 my-1";
 
 export const DivSeparator = classed.div(styledSeparator);
 export const DDSeparator = classed(DD.Separator)(styledSeparator);
-const StyledSelectSeparator = classed(Select.Separator)(styledSeparator);
 
 export const styledInlineA =
   "text-purple-700 underline hover:text-black dark:text-purple-500 dark:hover:text-purple-300";
@@ -487,59 +378,12 @@ export const menuItemLike = ({
     text-sm gap-x-2`,
   ]);
 
-const StyledButtonItem = classed.div(menuItemLike);
-const StyledRadioItem = classed(DD.RadioItem)(menuItemLike);
 export const StyledItem = classed(DD.Item)(menuItemLike);
-const StyledSelectItem = classed(Select.Item)(menuItemLike);
-const StyledMenuLink = React.forwardRef(
-  (
-    {
-      children,
-      variant = "default",
-      ...attributes
-    }: {
-      children: React.ReactNode;
-      variant?: B3Variant;
-    } & React.HTMLAttributes<HTMLAnchorElement>,
-    ref: React.ForwardedRef<HTMLAnchorElement>
-  ) => {
-    return (
-      <a
-        className={menuItemLike({ variant })}
-        ref={ref}
-        {...attributes}
-        onClick={(e) => {
-          attributes.onClick?.(e);
-          try {
-            document.dispatchEvent(
-              new KeyboardEvent("keydown", { key: "Escape" })
-            );
-          } catch (e) {
-            Sentry.captureException(e);
-          }
-        }}
-      >
-        {children}
-      </a>
-    );
-  }
-);
 export const DDSubTriggerItem = classed(DD.SubTrigger)(menuItemLike);
 export const CMSubTriggerItem = classed(CM.SubTrigger)(
   menuItemLike({ variant: "default" }) + " justify-between"
 );
 export const CMItem = classed(CM.Item)(menuItemLike);
-
-const StyledPopoverCross = () => (
-  <Popover.Close
-    className="flex
-  focus-visible:text-black dark:focus-visible:text-white
-  text-gray-500 dark:text-gray-300
-  hover:text-black dark:hover:text-white"
-  >
-    <Cross1Icon className="w-3 h-3" />
-  </Popover.Close>
-);
 
 export const PopoverTitleAndClose = ({ title }: { title: string }) => (
   <div className="flex items-start justify-between pb-2">
@@ -568,12 +412,6 @@ export const sharedPadding = (
   "rounded-l-none": side === "right",
   "rounded-r-none": side === "left",
   "rounded-none": side === "middle",
-});
-
-const sharedEqualPadding = (size: B3Size): ClassValue => ({
-  "p-1.5 text-xs rounded-sm": size === "xs",
-  "p-2 text-sm rounded": size === "sm",
-  "p-3 text-md rounded": size === "md",
 });
 
 export const styledRadio = clsx(
@@ -800,20 +638,6 @@ export const TextWell = classed.div(
     })
 );
 
-const StyledSwitch = classed(S.Root)(
-  `w-10 h-5 relative rounded-full
-  bg-gray-200 dark:bg-black
-  data-state-checked:bg-gray-600 dark:data-state-checked:bg-gray-600
-  dark:ring-1 dark:ring-gray-400
-  transition-all`
-);
-const StyledThumb = classed(S.Thumb)(
-  `w-5 h-5 border-2
-  border-gray-200 dark:border-black
-  data-state-checked:border-gray-600 dark:data-state-checked:border-gray-600
-  rounded-full bg-white transition-all block shadow-sm data-state-checked:translate-x-5`
-);
-
 export const StyledPopoverTrigger = classed(Popover.Trigger)(
   clsx(
     `aria-expanded:bg-gray-200 dark:aria-expanded:bg-gray-900
@@ -835,78 +659,6 @@ export const StyledPopoverTrigger = classed(Popover.Trigger)(
     // Colored variants
     {}
   )
-);
-
-const H1 = classed.h2("font-bold text-2xl");
-const H2 = classed.h2("font-bold text-xl");
-
-const MinimalHeaderLogoLink = () => {
-  return (
-    <Link
-      href="/"
-      className="py-1 pl-1 pr-2
-                      flex
-                      gap-x-2
-                      items-center
-                      dark:hover:bg-gray-700
-                      focus-visible:ring-1 focus-visible:ring-purple-300
-                      text-purple-500 hover:text-purple-700 dark:hover:text-purple-300"
-      title="Home"
-    >
-      <PlacemarkIcon className="w-8 h-8" />
-      <Placemark className="hidden sm:block w-24 text-gray-700 dark:text-gray-300" />
-    </Link>
-  );
-};
-
-const MinimalHeader = () => {
-  return (
-    <div className="flex border-b dark:border-black border-gray-200">
-      <nav className="w-full max-w-4xl mx-auto flex items-center flex-auto gap-x-2 py-2">
-        <MinimalHeaderLogoLink />
-      </nav>
-    </div>
-  );
-};
-
-function Table({ children }: React.PropsWithChildren<unknown>) {
-  return (
-    <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-        <div className="overflow-hidden ring-1 ring-gray-300 dark:ring-gray-500 md:rounded-lg">
-          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
-            {children}
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TableHead({ children }: React.PropsWithChildren<unknown>) {
-  return (
-    <thead className="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200">
-      <tr>{children}</tr>
-    </thead>
-  );
-}
-
-const Th = classed.td(({ first = false }: { first?: boolean }) =>
-  clsx(
-    "py-2 pr-3 text-left text-sm font-semibold",
-    first ? "pl-4 sm:pl-6" : "px-3"
-  )
-);
-
-const Td = classed.td(({ first = false }: { first?: boolean }) => {
-  return clsx(
-    "whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium",
-    first && "sm:pl-6"
-  );
-});
-
-const Tbody = classed.tbody(
-  "divide-y divide-gray-200 dark:divide-gray-500 bg-white dark:bg-gray-800"
 );
 
 export const VisibilityToggleIcon = ({

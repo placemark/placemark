@@ -114,11 +114,6 @@ const Presence = z.object({
 
 export type IPresence = z.infer<typeof Presence>;
 
-type IPresenceMinus = Omit<
-  IPresence,
-  "replicacheClientId" | "wrappedFeatureCollectionId"
->;
-
 const Folder = z.object({
   id: z.string(),
   at: z.string(),
@@ -202,38 +197,6 @@ export const UWrappedFeature = {
     };
   },
 };
-
-const WrappedFeatureLocal = z.object({
-  id: z.string(),
-  folderId: z.nullable(z.string()),
-  at: z.string(),
-  feature: z
-    .object({
-      type: z.literal("Feature"),
-      geometry: z.nullable(
-        z.union([
-          z.object({
-            type: z.enum([
-              "MultiLineString",
-              "LineString",
-              "Point",
-              "MultiPoint",
-              "Polygon",
-              "MultiPolygon",
-            ]),
-            coordinates: z.array(z.any()),
-          }),
-          z.object({
-            type: z.enum(["GeometryCollection"]),
-            geometries: z.array(z.any()),
-          }),
-        ])
-      ),
-      id: z.optional(z.union([z.string(), z.number()])),
-      properties: z.nullable(z.object({}).passthrough()),
-    })
-    .passthrough(),
-});
 
 /**
  * Symbolization --------------------------------------------------
@@ -385,12 +348,6 @@ export type ISymbolizationCategorical = z.infer<
   typeof SymbolizationCategorical
 >;
 export type ISymbolization = z.infer<typeof Symbolization>;
-
-// @ts-expect-error todo
-const WrappedFeature: z.ZodSchema<IWrappedFeature> = WrappedFeatureLocal;
-// @ts-expect-error todo
-const WrappedFeatureWithoutAt: z.ZodSchema<Omit<IWrappedFeature, "at">> =
-  WrappedFeatureLocal.omit({ at: true });
 
 export type DragTarget = RawId | IWrappedFeature["id"][];
 

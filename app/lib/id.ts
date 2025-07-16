@@ -1,11 +1,7 @@
 import { match } from "ts-pattern";
 import type { Geometry, Position, Feature } from "types";
-import { v1 as uuidv1, v4 } from "uuid";
+import { v1 as uuidv1 } from "uuid";
 import { customAlphabet } from "nanoid";
-
-function shortUnsafeId(): string {
-  return v4().slice(0, 8);
-}
 
 export function newFeatureId(): string {
   return uuidv1();
@@ -68,10 +64,6 @@ class CMidpointId implements MidpointId {
     this.featureId = featureId;
     this.vertex = vertex;
   }
-}
-
-function toFeatureId(id: Id): FeatureId {
-  return CFeatureId.from(id);
 }
 
 export function encodeId(id: Id): RawId {

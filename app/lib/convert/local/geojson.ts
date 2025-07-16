@@ -31,22 +31,6 @@ function wrappedFeatureToExportable(
   return feature;
 }
 
-function wrappedFeaturesToFeatureCollection(
-  wrappedFeatures: IWrappedFeature[],
-  options: ExportOptions["geojsonOptions"]
-) {
-  const features = wrappedFeatures.map((wrappedFeature) => {
-    return wrappedFeatureToExportable(wrappedFeature, options);
-  });
-
-  const featureCollection: FeatureCollection = {
-    type: "FeatureCollection",
-    features,
-  };
-
-  return featureCollection;
-}
-
 export function geojsonToString(
   featureMap: FeatureMap,
   options: ExportOptions["geojsonOptions"]

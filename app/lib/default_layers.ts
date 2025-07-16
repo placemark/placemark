@@ -34,6 +34,4 @@ const LAYERS: Record<string, LayerConfigTemplate> = {
   },
 };
 
-const DEFAULT_LAYER = LAYERS.MONOCHROME;
-
 export default LAYERS;

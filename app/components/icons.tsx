@@ -67,25 +67,6 @@ export function Folder16(attrs: React.SVGAttributes<SVGSVGElement>) {
   );
 }
 
-function FolderDetails(attrs: React.SVGAttributes<SVGSVGElement>) {
-  return (
-    <svg
-      id="icon"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 32 32"
-      {...attrs}
-    >
-      <rect fill="currentColor" x="16" y="20" width="14" height="2" />
-      <rect fill="currentColor" x="16" y="24" width="14" height="2" />
-      <rect fill="currentColor" x="16" y="28" width="7" height="2" />
-      <path
-        fill="currentColor"
-        d="M14,26H4V6h7.17l3.42,3.41.58.59H28v8h2V10a2,2,0,0,0-2-2H16L12.59,4.59A2,2,0,0,0,11.17,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H14Z"
-      />
-    </svg>
-  );
-}
-
 export function ShapeIntersect16() {
   return (
     <svg
@@ -116,49 +97,49 @@ export function ShapeUnite16() {
   );
 }
 
-const PlacemarkIcon = memo(function PlacemarkIcon(props: IconProps) {
-  return (
-    <svg viewBox="0 0 300 300" fill="none" {...props}>
-      <circle cx="75" cy="75" r="17.5" stroke="#9333EA" strokeWidth="15" />
-      <circle cx="225" cy="225" r="17.5" stroke="#9333EA" strokeWidth="15" />
-      <circle cx="225" cy="75" r="17.5" stroke="#9333EA" strokeWidth="15" />
-      <circle cx="75" cy="225" r="17.5" stroke="#9333EA" strokeWidth="15" />
-      <line
-        x1="75"
-        y1="95"
-        x2="75"
-        y2="208"
-        stroke="#9333EA"
-        strokeWidth="20"
-      />
-      <line
-        x1="226"
-        y1="95"
-        x2="226"
-        y2="208"
-        stroke="#9333EA"
-        strokeWidth="20"
-      />
-      <line
-        x1="95"
-        y1="75"
-        x2="208"
-        y2="75"
-        stroke="#9333EA"
-        strokeWidth="20"
-      />
-      <line
-        x1="95"
-        y1="225"
-        x2="208"
-        y2="225"
-        stroke="#9333EA"
-        strokeWidth="20"
-      />
-      <rect x="110" y="110" width="80" height="80" rx="5" fill="#9333EA" />
-    </svg>
-  );
-});
+// const PlacemarkIcon = memo(function PlacemarkIcon(props: IconProps) {
+//   return (
+//     <svg viewBox="0 0 300 300" fill="none" {...props}>
+//       <circle cx="75" cy="75" r="17.5" stroke="#9333EA" strokeWidth="15" />
+//       <circle cx="225" cy="225" r="17.5" stroke="#9333EA" strokeWidth="15" />
+//       <circle cx="225" cy="75" r="17.5" stroke="#9333EA" strokeWidth="15" />
+//       <circle cx="75" cy="225" r="17.5" stroke="#9333EA" strokeWidth="15" />
+//       <line
+//         x1="75"
+//         y1="95"
+//         x2="75"
+//         y2="208"
+//         stroke="#9333EA"
+//         strokeWidth="20"
+//       />
+//       <line
+//         x1="226"
+//         y1="95"
+//         x2="226"
+//         y2="208"
+//         stroke="#9333EA"
+//         strokeWidth="20"
+//       />
+//       <line
+//         x1="95"
+//         y1="75"
+//         x2="208"
+//         y2="75"
+//         stroke="#9333EA"
+//         strokeWidth="20"
+//       />
+//       <line
+//         x1="95"
+//         y1="225"
+//         x2="208"
+//         y2="225"
+//         stroke="#9333EA"
+//         strokeWidth="20"
+//       />
+//       <rect x="110" y="110" width="80" height="80" rx="5" fill="#9333EA" />
+//     </svg>
+//   );
+// });
 
 export const ConvexIcon = memo(function ConvexIcon(props: IconProps) {
   return (

@@ -5,13 +5,6 @@ type GeoJSONTypeList = GeoJSON["type"][];
 type GeometryTypeList = Geometry["type"][];
 
 /**
- * Just the washington post visual forensics team.
- * They asked for pausable memberships and I implemented them.
- * Maybe a mistake?
- */
-const PAUSABLE_ORGS = new Set([600]);
-
-/**
  * Size of a row in the left panel
  */
 export const LEFT_PANEL_ROW_HEIGHT = 24;
@@ -28,15 +21,11 @@ export const DECK_LASSO_ID = "deckgl-lasso";
  */
 export const purple900 = "#312E81";
 
-const LINE_COLORS_IDLE = "#8B5CF6";
-const LINE_COLORS_IDLE_RGBA = hexToArray("#8B5CF6");
-
 export const LINE_COLORS_SELECTED = "#D6409F";
 export const LINE_COLORS_SELECTED_RGB = hexToArray("#D6409F");
 
 // Note, this is also in the database schema.
 // If changing it here, it may need to be changed there too.
-const UNTITLED = "Untitled";
 
 /**
  * Utilities ------------------------------------------------------------------
@@ -59,15 +48,10 @@ export const ERROR_CODES = {
     "You were redirected back to Placemark after authenticating with GitHub, but the token was missing.",
 } as const;
 
-function errorUrl(code: keyof typeof ERROR_CODES) {
-  return `/error?code=${code}`;
-}
-
 export const SUPPORT_EMAIL = "support@placemark.io";
 
 export const emptySelection = new Set<RawId>();
 export const CURSOR_DEFAULT = "";
-const CURSOR_CROSSHAIR = "crosshair";
 
 export const MAX_GEOCODER_ROWS = 100;
 
@@ -187,8 +171,6 @@ export const GROUPED_UNIT_OPTIONS = {
   ],
 };
 
-const SCHEMA_VERSION = "1";
-
 export const MB_TO_BYTES = 1_000_000;
 
 export const geometryTypes: GeometryTypeList = [
@@ -247,24 +229,11 @@ export const MULTI_TO_SINGULAR: GeometryMap = {
   GeometryCollection: null,
 };
 
-const COORDINATE_ORDERS = {
-  LONLAT: "Longitude, latitude",
-  LATLON: "Latitude, longitude",
-};
-
 export const GEOJSON_TYPES: Set<string> = new Set(geojsonTypes);
 
 export const GEOJSON_MULTI_GEOMETRY_TYPES: Set<string> = new Set(
   multiGeometryTypes
 );
-
-const DEFAULT_QUERY_OPTIONS = {
-  refetchOnWindowFocus: false,
-};
-
-const IMAGE_SYM: unique symbol = Symbol("image");
-
-const NONE_VAL = "@@NONE@@";
 
 export const emptyFeatureCollection: IFeatureCollection = {
   type: "FeatureCollection",
@@ -281,17 +250,7 @@ export const SCALE_UNITS = ["imperial", "metric", "nautical"] as const;
 export type ScaleUnit = (typeof SCALE_UNITS)[number];
 export const zScaleUnit = z.enum(SCALE_UNITS);
 
-const purple900a: RGBA = [49, 46, 129, 255];
-
 export const WHITE: RGBA = [255, 255, 255, 255];
-
-const LINE_COLORS = {
-  idle: "#8B5CF6",
-  selected: "#D6409F",
-} as const;
-
-const LINE_IDLE = hexToArray(LINE_COLORS.idle);
-const LINE_SELECTED = hexToArray(LINE_COLORS.selected);
 
 export const LASSO_YELLOW = hexToArray("#FDE68A55");
 export const LASSO_DARK_YELLOW = hexToArray("#F59E0B");

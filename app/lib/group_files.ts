@@ -15,15 +15,6 @@ function asFileGroup(file: File): FileGroup {
   return { type: "file" as const, file };
 }
 
-function getFileName(file: FileGroup | ShapefileGroup) {
-  switch (file.type) {
-    case "file":
-      return file.file.name;
-    case "shapefile":
-      return file.files.shp.name;
-  }
-}
-
 function asShapefileGroup(file: File): ShapefileGroup {
   return {
     type: "shapefile",

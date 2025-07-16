@@ -1,7 +1,7 @@
-import React, { useRef, memo, useMemo } from "react";
-import { PropertyRow, PropertyRowReadonly } from "./property_row";
+import { useRef, memo, useMemo } from "react";
+import { PropertyRow } from "./property_row";
 import { NewRow } from "./new_row";
-import { castExplicit, ExplicitCast } from "app/lib/cast";
+import { castExplicit, type ExplicitCast } from "app/lib/cast";
 import { usePersistence } from "app/lib/persistence/context";
 import type { Feature, IWrappedFeature } from "types";
 import without from "lodash/without";
@@ -209,55 +209,6 @@ function FeatureEditorPropertiesRaw({
             );
           })}
           <NewRow y={pairs.length} onCommit={addRow} />
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function FeatureEditorPropertiesReadonly({
-  wrappedFeature,
-}: {
-  wrappedFeature: IWrappedFeature;
-}) {
-  const {
-    feature: { properties },
-  } = wrappedFeature;
-
-  const localOrder = useRef<string[]>(
-    Object.keys({
-      ...(properties || {}),
-    })
-  );
-
-  const pairs = sortBy(
-    Object.entries({
-      ...(properties || {}),
-    }),
-    ([key]) => {
-      return localOrder.current.indexOf(key);
-    }
-  );
-
-  return (
-    <div
-      className="overflow-y-auto placemark-scrollbar"
-      data-focus-scope
-      onKeyDown={onArrow}
-    >
-      <table className="pb-2 w-full">
-        <PropertyTableHead />
-        <tbody>
-          {pairs.map((pair, y) => {
-            return (
-              <PropertyRowReadonly
-                key={pair[0]}
-                pair={pair}
-                y={y}
-                even={y % 2 === 0}
-              />
-            );
-          })}
         </tbody>
       </table>
     </div>

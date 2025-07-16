@@ -118,15 +118,3 @@ export function set(obj: any, pointer: Pointer, value: any) {
   if (pointer.length === 0) throw new Error("Invalid JSON pointer for set.");
   return setter(obj, pointer, value);
 }
-
-function compile(pointer: Pointer) {
-  const compiled = compilePointer(pointer);
-  return {
-    get: function (object: any) {
-      return get(object, compiled);
-    },
-    set: function (object: any, value: any) {
-      return set(object, compiled, value);
-    },
-  };
-}

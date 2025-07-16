@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { memo } from "react";
+import { memo } from "react";
 import { FileInfo } from "app/components/file_info";
 import {
   EnvelopeClosedIcon,
@@ -7,37 +7,11 @@ import {
   KeyboardIcon,
   ReaderIcon,
 } from "@radix-ui/react-icons";
-import { MemoryInfo } from "app/components/map_info/memory_info";
-import { usePersistence } from "app/lib/persistence/context";
 import { DropdownMenu as DD } from "radix-ui";
 import { Button, PlacemarkIcon, DDContent, StyledItem } from "./elements";
 import { dialogAtom } from "state/jotai";
 import { useSetAtom } from "jotai";
 import { MenuBarDropdown } from "./menu_bar/menu_bar_dropdown";
-
-function MenuBarFallback() {
-  return <div className="h-12 bg-gray-800"></div>;
-}
-
-function WrappedFeatureCollectionInfo() {
-  const p = usePersistence();
-  const [meta] = p.useMetadata();
-  return (
-    <>
-      <Link
-        href="/"
-        className="py-1 pl-1 pr-2
-          dark:hover:bg-gray-700
-          focus-visible:ring-1 focus-visible:ring-purple-300
-          text-purple-500 hover:text-purple-700 dark:hover:text-purple-300"
-        title="Home"
-      >
-        <PlacemarkIcon className="w-8 h-8" />
-      </Link>
-      <MemoryInfo metadata={meta} />
-    </>
-  );
-}
 
 export const MenuBarPlay = memo(function MenuBar() {
   return (
@@ -59,22 +33,6 @@ export const MenuBarPlay = memo(function MenuBar() {
             Open Source
           </Link>
         </span>
-        <FileInfo />
-      </div>
-      <div className="flex items-center gap-x-2">
-        <MenuBarDropdown />
-
-        <HelpDot />
-      </div>
-    </div>
-  );
-});
-
-const MenuBar = memo(function MenuBar() {
-  return (
-    <div className="flex justify-between h-12 pr-2 text-black dark:text-white">
-      <div className="flex items-center">
-        <WrappedFeatureCollectionInfo />
         <FileInfo />
       </div>
       <div className="flex items-center gap-x-2">

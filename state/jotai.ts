@@ -33,19 +33,7 @@ interface FileInfo {
   options: ExportOptions;
 }
 
-type WalkthroughState =
-  | {
-      type: "idle";
-    }
-  | {
-      type: "active";
-      index: number;
-    };
 
-const walkthroughAtom = atom<WalkthroughState>({
-  type: "active",
-  index: 0,
-});
 
 export type PreviewProperty = PersistenceMetadataMemory["label"];
 
@@ -123,7 +111,6 @@ export const MIN_SPLITS = {
   left: 100,
   right: 200,
 } as const;
-const MAX_SPLIT = 640;
 
 export interface Splits {
   layout: PanelLayout;
@@ -148,13 +135,6 @@ export const splitsAtom = atom<Splits>({
 export const showPanelBottomAtom = atom<boolean>(true);
 
 // ----------------------------------------------------------------------------
-/**
- * Other UI state
- */
-const listModeAtom = atomWithStorage<"grid" | "list">(
-  "listMode",
-  "grid"
-);
 export const showAllAtom = atomWithStorage("showAll", true);
 export const panelIdOpen = atomWithStorage("panelIdOpen", false);
 export const panelRawOpen = atomWithStorage("panelRawOpen", false);
@@ -175,17 +155,12 @@ export const scaleUnitAtom = atomWithStorage<ScaleUnit>(
   "imperial"
 );
 
-const showFolderTreeAtom = atomWithStorage<"hide" | "show">(
-  "showFolderTree",
-  "hide"
-);
 
 export const addMetadataWithGeocoderAtom = atomWithStorage(
   "addMetadataWithGeocoder",
   false
 );
 
-const followPresenceAtom = atom<IPresence | null>(null);
 
 // ----------------------------------------------------------------------------
 /**
@@ -310,48 +285,8 @@ const fileInfoMachine = createMachine({
 
 export const fileInfoMachineAtom = atomWithMachine(() => fileInfoMachine);
 
-/**
- * Time in milliseconds to wait for a sync operation
- * to finish before showing a spinner UI.
- */
-const SPINNER_WAIT = 500;
 
-/**
- * A debounced spinner machine. When Replicache is syncing,
- * the SYNC event tells this to show a spinner in SPINNER_WAIT
- * milliseconds. When a sync completes, the UNSYNC command
- * returns to idle state and cancels the timeout if
- * necessary.
- */
-const syncingMachine = createMachine({
-  schema: {
-    context: {} as { elapsed: number },
-    events: {} as { type: "SYNC" } | { type: "UNSYNC" },
-  },
-  predictableActionArguments: true,
-  id: "syncingMachine",
-  initial: "idle",
-  on: {
-    UNSYNC: "idle",
-  },
-  states: {
-    idle: {
-      on: {
-        SYNC: "syncing",
-      },
-    },
-    syncing: {
-      after: {
-        [SPINNER_WAIT]: {
-          target: "spinner",
-        },
-      },
-    },
-    spinner: {},
-  },
-});
 
-const syncingMachineAtom = atomWithMachine(() => syncingMachine);
 
 export enum TabOption {
   Feature = "Feature",
@@ -385,7 +320,6 @@ export const initialFilterValues: FilterOptions = {
 
 export const tableFilterAtom = atom<FilterOptions>(initialFilterValues);
 
-const seenPlayModal = atomWithStorage<boolean>("seenPlayModal", false);
 
 export const circleTypeAtom = atomWithStorage<CIRCLE_TYPE>(
   "circleType",
