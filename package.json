@@ -139,7 +139,7 @@
 		"@types/flatbush": "^3.3.0",
 		"@types/lodash": "^4.17.20",
 		"@types/mapbox-gl": "^3.4.1",
-		"@types/node": "^20.19.8",
+		"@types/node": "^22.16.4",
 		"@types/proj4": "^2.19.0",
 		"@types/randomcolor": "^0.5.9",
 		"@types/rbush": "^3.0.4",
