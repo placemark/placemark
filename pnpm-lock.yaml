@@ -264,8 +264,8 @@ importers:
         specifier: ^8.4.38
         version: 8.4.38
       proj4:
-        specifier: ^2.11.0
-        version: 2.11.0
+        specifier: ^2.19.7
+        version: 2.19.7
       purify-ts:
         specifier: ^2.0.3
         version: 2.0.3
@@ -358,8 +358,8 @@ importers:
         specifier: ^20.12.12
         version: 20.12.12
       '@types/proj4':
-        specifier: ^2.5.5
-        version: 2.5.5
+        specifier: ^2.19.0
+        version: 2.19.0
       '@types/randomcolor':
         specifier: ^0.5.9
         version: 0.5.9
@@ -820,6 +820,7 @@ packages:
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -827,6 +828,7 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
+    deprecated: Use @eslint/object-schema instead
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -2333,8 +2335,9 @@ packages:
   '@types/polylabel@1.1.3':
     resolution: {integrity: sha512-9Zw2KoDpi+T4PZz2G6pO2xArE0m/GSMTW1MIxF2s8ZY8x9XDO6fv9um0ydRGvcbkFLlaq8yNK6eZxnmMZtDgWQ==}
 
-  '@types/proj4@2.5.5':
-    resolution: {integrity: sha512-y4tHUVVoMEOm2nxRLQ2/ET8upj/pBmoutGxFw2LZJTQWPgWXI+cbxVEUFFmIzr/bpFR83hGDOTSXX6HBeObvZA==}
+  '@types/proj4@2.19.0':
+    resolution: {integrity: sha512-mirdnXu5sW9+IphQ4r+ZVii2JVLDbXgMp1lxqbiCppdgL22EwMwL4Dy/cyHVaJ2y/mi7LUQHghpILd3w3j2bnA==}
+    deprecated: This is a stub types definition. proj4 provides its own type definitions, so you do not need this installed.
 
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
@@ -3044,6 +3047,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   espree@9.6.1:
@@ -4126,8 +4130,8 @@ packages:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
 
-  proj4@2.11.0:
-    resolution: {integrity: sha512-SasuTkAx8HnWQHfIyhkdUNJorSJqINHAN3EyMWYiQRVorftz9DHz650YraFgczwgtHOxqnfuDxSNv3C8MUnHeg==}
+  proj4@2.19.7:
+    resolution: {integrity: sha512-1YdHp6/MyGh6s0T1zCwGnOUiah/ov/8HJYkHMXHD8YuUTpkbo82OuCSivSs4ydCIODZVico5QVTTXi5yoDkMZA==}
 
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
@@ -4393,6 +4397,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   robust-predicates@3.0.2:
@@ -4981,8 +4986,8 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
-  wkt-parser@1.3.3:
-    resolution: {integrity: sha512-ZnV3yH8/k58ZPACOXeiHaMuXIiaTk1t0hSUVisbO0t4RjA5wPpUytcxeyiN2h+LZRrmuHIh/1UlrR9e7DHDvTw==}
+  wkt-parser@1.5.2:
+    resolution: {integrity: sha512-1ZUiV1FTwSiSrgWzV9KXJuOF2BVW91KY/mau04BhnmgOdroRQea7Q0s5TVqwGLm0D2tZwObd/tBYXW49sSxp3Q==}
 
   wmf@1.0.2:
     resolution: {integrity: sha512-/p9K7bEh0Dj6WbXg4JG0xvLQmIadrner1bi45VMJTfnbVHsc7yIajZyoSoK60/dtVBs12Fm6WkUI5/3WAVsNMw==}
@@ -5534,7 +5539,7 @@ snapshots:
   '@jridgewell/trace-mapping@0.3.9':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.4
     optional: true
 
   '@lezer/common@1.2.1': {}
@@ -7152,7 +7157,9 @@ snapshots:
 
   '@types/polylabel@1.1.3': {}
 
-  '@types/proj4@2.5.5': {}
+  '@types/proj4@2.19.0':
+    dependencies:
+      proj4: 2.19.7
 
   '@types/prop-types@15.7.15': {}
 
@@ -9209,10 +9216,10 @@ snapshots:
 
   progress@2.0.3: {}
 
-  proj4@2.11.0:
+  proj4@2.19.7:
     dependencies:
       mgrs: 1.0.0
-      wkt-parser: 1.3.3
+      wkt-parser: 1.5.2
 
   prop-types@15.8.1:
     dependencies:
@@ -10173,7 +10180,7 @@ snapshots:
       siginfo: 2.0.0
       stackback: 0.0.2
 
-  wkt-parser@1.3.3: {}
+  wkt-parser@1.5.2: {}
 
   wmf@1.0.2: {}
 
