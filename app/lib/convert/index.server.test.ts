@@ -208,28 +208,28 @@ describe("convert", () => {
         ],
       })
     ).toMatchInlineSnapshot(`
-    {
-      "features": [
-        {
-          "geometry": {
-            "coordinates": [
-              1,
-              2,
-            ],
-            "type": "Point",
+      {
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                1,
+                2,
+              ],
+              "type": "Point",
+            },
+            "properties": {
+              "b": "{"x":1}",
+              "q": null,
+              "x": "[1]",
+              "y": 2,
+            },
+            "type": "Feature",
           },
-          "properties": {
-            "b": "{\\"x\\":1}",
-            "q": null,
-            "x": "[1]",
-            "y": 2,
-          },
-          "type": "Feature",
-        },
-      ],
-      "type": "FeatureCollection",
-    }
-  `);
+        ],
+        "type": "FeatureCollection",
+      }
+    `);
   });
   it("getExtension", () => {
     expect(getExtension("foo.bar")).toEqual(".bar");

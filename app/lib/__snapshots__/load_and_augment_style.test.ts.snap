@@ -249,78 +249,78 @@ exports[`makeLayers > categorical 1`] = `
   {
     "name": "Mapbox GL Style: Line",
     "value": "{
-  \\"line-opacity\\": 1,
-  \\"line-width\\": 2,
-  \\"line-color\\": [
-    \\"match\\",
+  "line-opacity": 1,
+  "line-width": 2,
+  "line-color": [
+    "match",
     [
-      \\"get\\",
-      \\"foo\\"
+      "get",
+      "foo"
     ],
     1,
-    \\"#fff000\\",
-    \\"#312E81\\"
+    "#fff000",
+    "#312E81"
   ]
 }",
   },
   {
     "name": "Mapbox GL Style: Fill",
     "value": "{
-  \\"fill-opacity\\": 0.3,
-  \\"fill-color\\": [
-    \\"match\\",
+  "fill-opacity": 0.3,
+  "fill-color": [
+    "match",
     [
-      \\"get\\",
-      \\"foo\\"
+      "get",
+      "foo"
     ],
     1,
-    \\"#fff000\\",
-    \\"#312E81\\"
+    "#fff000",
+    "#312E81"
   ]
 }",
   },
   {
     "name": "Mapbox GL Style: Circle",
     "value": "{
-  \\"circle-stroke-color\\": [
-    \\"match\\",
+  "circle-stroke-color": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
-    \\"#D6409F\\",
-    \\"white\\"
+    "selected",
+    "#D6409F",
+    "white"
   ],
-  \\"circle-stroke-width\\": 1,
-  \\"circle-radius\\": [
-    \\"match\\",
+  "circle-stroke-width": 1,
+  "circle-radius": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
+    "selected",
     6,
     4
   ],
-  \\"circle-opacity\\": 1,
-  \\"circle-color\\": [
-    \\"match\\",
+  "circle-opacity": 1,
+  "circle-color": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
-    \\"white\\",
+    "selected",
+    "white",
     [
-      \\"match\\",
+      "match",
       [
-        \\"get\\",
-        \\"foo\\"
+        "get",
+        "foo"
       ],
       1,
-      \\"#fff000\\",
-      \\"#312E81\\"
+      "#fff000",
+      "#312E81"
     ]
   ]
 }",
@@ -328,33 +328,33 @@ exports[`makeLayers > categorical 1`] = `
   {
     "name": "Mapbox GL Expression",
     "value": "[
-  \\"match\\",
+  "match",
   [
-    \\"get\\",
-    \\"foo\\"
+    "get",
+    "foo"
   ],
   1,
-  \\"#fff000\\",
-  \\"#312E81\\"
+  "#fff000",
+  "#312E81"
 ]",
   },
   {
     "name": "Leaflet",
     "value": "function style(feature) {
   const properties = feature.properties || {};
-  const fallback = \\"#312E81\\";
-  const property = \\"foo\\";
+  const fallback = "#312E81";
+  const property = "foo";
   const drivenValue = properties[property];
   // Data-driven styles
   const ramp = {
-  \\"1\\": \\"#fff000\\"
+  "1": "#fff000"
 };
   const color = ramp[drivenValue] || fallback;
   return {
-    color: color || \\"#312E81\\",
+    color: color || "#312E81",
     weight: 2,
     opacity: 1,
-    fillColor: color || \\"#312E81\\",
+    fillColor: color || "#312E81",
     fillOpacity: 0.5,
   }
 }",
@@ -620,37 +620,37 @@ exports[`makeLayers > categorical with override 1`] = `
   {
     "name": "Mapbox GL Style: Line",
     "value": "{
-  \\"line-opacity\\": [
-    \\"coalesce\\",
+  "line-opacity": [
+    "coalesce",
     [
-      \\"get\\",
-      \\"stroke-opacity\\"
+      "get",
+      "stroke-opacity"
     ],
     1
   ],
-  \\"line-width\\": [
-    \\"coalesce\\",
+  "line-width": [
+    "coalesce",
     [
-      \\"get\\",
-      \\"stroke-width\\"
+      "get",
+      "stroke-width"
     ],
     2
   ],
-  \\"line-color\\": [
-    \\"coalesce\\",
+  "line-color": [
+    "coalesce",
     [
-      \\"get\\",
-      \\"stroke\\"
+      "get",
+      "stroke"
     ],
     [
-      \\"match\\",
+      "match",
       [
-        \\"get\\",
-        \\"foo\\"
+        "get",
+        "foo"
       ],
       1,
-      \\"#fff000\\",
-      \\"#312E81\\"
+      "#fff000",
+      "#312E81"
     ]
   ]
 }",
@@ -658,29 +658,29 @@ exports[`makeLayers > categorical with override 1`] = `
   {
     "name": "Mapbox GL Style: Fill",
     "value": "{
-  \\"fill-opacity\\": [
-    \\"coalesce\\",
+  "fill-opacity": [
+    "coalesce",
     [
-      \\"get\\",
-      \\"fill-opacity\\"
+      "get",
+      "fill-opacity"
     ],
     0.3
   ],
-  \\"fill-color\\": [
-    \\"coalesce\\",
+  "fill-color": [
+    "coalesce",
     [
-      \\"get\\",
-      \\"fill\\"
+      "get",
+      "fill"
     ],
     [
-      \\"match\\",
+      "match",
       [
-        \\"get\\",
-        \\"foo\\"
+        "get",
+        "foo"
       ],
       1,
-      \\"#fff000\\",
-      \\"#312E81\\"
+      "#fff000",
+      "#312E81"
     ]
   ]
 }",
@@ -688,51 +688,51 @@ exports[`makeLayers > categorical with override 1`] = `
   {
     "name": "Mapbox GL Style: Circle",
     "value": "{
-  \\"circle-stroke-color\\": [
-    \\"match\\",
+  "circle-stroke-color": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
-    \\"#D6409F\\",
-    \\"white\\"
+    "selected",
+    "#D6409F",
+    "white"
   ],
-  \\"circle-stroke-width\\": 1,
-  \\"circle-radius\\": [
-    \\"match\\",
+  "circle-stroke-width": 1,
+  "circle-radius": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
+    "selected",
     6,
     4
   ],
-  \\"circle-opacity\\": 1,
-  \\"circle-color\\": [
-    \\"match\\",
+  "circle-opacity": 1,
+  "circle-color": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
-    \\"white\\",
+    "selected",
+    "white",
     [
-      \\"coalesce\\",
+      "coalesce",
       [
-        \\"get\\",
-        \\"stroke\\"
+        "get",
+        "stroke"
       ],
       [
-        \\"match\\",
+        "match",
         [
-          \\"get\\",
-          \\"foo\\"
+          "get",
+          "foo"
         ],
         1,
-        \\"#fff000\\",
-        \\"#312E81\\"
+        "#fff000",
+        "#312E81"
       ]
     ]
   ]
@@ -741,33 +741,33 @@ exports[`makeLayers > categorical with override 1`] = `
   {
     "name": "Mapbox GL Expression",
     "value": "[
-  \\"match\\",
+  "match",
   [
-    \\"get\\",
-    \\"foo\\"
+    "get",
+    "foo"
   ],
   1,
-  \\"#fff000\\",
-  \\"#312E81\\"
+  "#fff000",
+  "#312E81"
 ]",
   },
   {
     "name": "Leaflet",
     "value": "function style(feature) {
   const properties = feature.properties || {};
-  const fallback = \\"#312E81\\";
-  const property = \\"foo\\";
+  const fallback = "#312E81";
+  const property = "foo";
   const drivenValue = properties[property];
   // Data-driven styles
   const ramp = {
-  \\"1\\": \\"#fff000\\"
+  "1": "#fff000"
 };
   const color = ramp[drivenValue] || fallback;
   return {
-    color: properties.stroke || color || \\"#312E81\\",
+    color: properties.stroke || color || "#312E81",
     weight: properties['stroke-width'] || 2,
     opacity: properties['stroke-opacity'] || 1,
-    fillColor: properties['fill'] || color || \\"#312E81\\",
+    fillColor: properties['fill'] || color || "#312E81",
     fillOpacity: properties['fill-opacity'] || 0.5,
   }
 }",
@@ -1328,126 +1328,126 @@ exports[`makeLayers > ramp 2`] = `
   {
     "name": "Mapbox GL Style: Line",
     "value": "{
-  \\"line-opacity\\": 1,
-  \\"line-width\\": 2,
-  \\"line-color\\": [
-    \\"match\\",
+  "line-opacity": 1,
+  "line-width": 2,
+  "line-color": [
+    "match",
     [
-      \\"typeof\\",
+      "typeof",
       [
-        \\"get\\",
-        \\"foo\\"
+        "get",
+        "foo"
       ]
     ],
-    \\"number\\",
+    "number",
     [
-      \\"interpolate-lab\\",
+      "interpolate-lab",
       [
-        \\"linear\\"
+        "linear"
       ],
       [
-        \\"get\\",
-        \\"foo\\"
+        "get",
+        "foo"
       ],
       1,
-      \\"#fff000\\",
+      "#fff000",
       10,
-      \\"#fff000\\"
+      "#fff000"
     ],
-    \\"#312E81\\"
+    "#312E81"
   ]
 }",
   },
   {
     "name": "Mapbox GL Style: Fill",
     "value": "{
-  \\"fill-opacity\\": 0.3,
-  \\"fill-color\\": [
-    \\"match\\",
+  "fill-opacity": 0.3,
+  "fill-color": [
+    "match",
     [
-      \\"typeof\\",
+      "typeof",
       [
-        \\"get\\",
-        \\"foo\\"
+        "get",
+        "foo"
       ]
     ],
-    \\"number\\",
+    "number",
     [
-      \\"interpolate-lab\\",
+      "interpolate-lab",
       [
-        \\"linear\\"
+        "linear"
       ],
       [
-        \\"get\\",
-        \\"foo\\"
+        "get",
+        "foo"
       ],
       1,
-      \\"#fff000\\",
+      "#fff000",
       10,
-      \\"#fff000\\"
+      "#fff000"
     ],
-    \\"#312E81\\"
+    "#312E81"
   ]
 }",
   },
   {
     "name": "Mapbox GL Style: Circle",
     "value": "{
-  \\"circle-stroke-color\\": [
-    \\"match\\",
+  "circle-stroke-color": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
-    \\"#D6409F\\",
-    \\"white\\"
+    "selected",
+    "#D6409F",
+    "white"
   ],
-  \\"circle-stroke-width\\": 1,
-  \\"circle-radius\\": [
-    \\"match\\",
+  "circle-stroke-width": 1,
+  "circle-radius": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
+    "selected",
     6,
     4
   ],
-  \\"circle-opacity\\": 1,
-  \\"circle-color\\": [
-    \\"match\\",
+  "circle-opacity": 1,
+  "circle-color": [
+    "match",
     [
-      \\"feature-state\\",
-      \\"state\\"
+      "feature-state",
+      "state"
     ],
-    \\"selected\\",
-    \\"white\\",
+    "selected",
+    "white",
     [
-      \\"match\\",
+      "match",
       [
-        \\"typeof\\",
+        "typeof",
         [
-          \\"get\\",
-          \\"foo\\"
+          "get",
+          "foo"
         ]
       ],
-      \\"number\\",
+      "number",
       [
-        \\"interpolate-lab\\",
+        "interpolate-lab",
         [
-          \\"linear\\"
+          "linear"
         ],
         [
-          \\"get\\",
-          \\"foo\\"
+          "get",
+          "foo"
         ],
         1,
-        \\"#fff000\\",
+        "#fff000",
         10,
-        \\"#fff000\\"
+        "#fff000"
       ],
-      \\"#312E81\\"
+      "#312E81"
     ]
   ]
 }",
@@ -1455,45 +1455,45 @@ exports[`makeLayers > ramp 2`] = `
   {
     "name": "Mapbox GL Expression",
     "value": "[
-  \\"match\\",
+  "match",
   [
-    \\"typeof\\",
+    "typeof",
     [
-      \\"get\\",
-      \\"foo\\"
+      "get",
+      "foo"
     ]
   ],
-  \\"number\\",
+  "number",
   [
-    \\"interpolate-lab\\",
+    "interpolate-lab",
     [
-      \\"linear\\"
+      "linear"
     ],
     [
-      \\"get\\",
-      \\"foo\\"
+      "get",
+      "foo"
     ],
     1,
-    \\"#fff000\\",
+    "#fff000",
     10,
-    \\"#fff000\\"
+    "#fff000"
   ],
-  \\"#312E81\\"
+  "#312E81"
 ]",
   },
   {
     "name": "Leaflet",
     "value": "function style(feature) {
   const properties = feature.properties || {};
-  const fallback = \\"#312E81\\";
-  const property = \\"foo\\";
+  const fallback = "#312E81";
+  const property = "foo";
   const drivenValue = properties[property];
 
   const ramp = [
   1,
-  \\"#fff000\\",
+  "#fff000",
   10,
-  \\"#fff000\\"
+  "#fff000"
 ];
 
   let color = fallback;
@@ -1504,10 +1504,10 @@ exports[`makeLayers > ramp 2`] = `
   }
   
   return {
-    color: color || \\"#312E81\\",
+    color: color || "#312E81",
     weight: 2,
     opacity: 1,
-    fillColor: color || \\"#312E81\\",
+    fillColor: color || "#312E81",
     fillOpacity: 0.5,
   }
 }",
