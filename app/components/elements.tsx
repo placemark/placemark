@@ -145,7 +145,7 @@ type ErrorBoundaryState = {
 	error: ErrorData | null;
 };
 
-class ErrorBoundary extends React.Component<
+export class ErrorBoundary extends React.Component<
 	ErrorBoundaryProps,
 	ErrorBoundaryState
 > {
