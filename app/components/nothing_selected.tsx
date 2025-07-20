@@ -4,7 +4,7 @@ import {
   PlusIcon,
   DownloadIcon,
 } from "@radix-ui/react-icons";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import Line from "app/components/icons/line";
 import { useOpenFiles } from "app/hooks/use_open_files";
 import { useSetAtom } from "jotai";
@@ -59,7 +59,7 @@ export const NothingSelected = memo(function NothingSelected() {
           <Button
             type="button"
             onClick={() => {
-              openFiles().catch((e) => Sentry.captureException(e));
+              openFiles().catch((e) => captureException(e));
             }}
           >
             <PlusIcon />

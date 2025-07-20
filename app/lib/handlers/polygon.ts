@@ -2,7 +2,7 @@ import { USelection } from "state";
 import type { HandlerContext, IFeature, Polygon } from "types";
 import { modeAtom, Mode, selectionAtom, cursorStyleAtom } from "state/jotai";
 import * as utils from "app/lib/map_component_utils";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import replaceCoordinates from "app/lib/replace_coordinates";
 import { decodeId } from "app/lib/id";
 import { useSetAtom } from "jotai";
@@ -63,7 +63,7 @@ export function usePolygonHandlers({
           .then(() => {
             setSelection(USelection.single(id));
           })
-          .catch((e) => Sentry.captureException(e));
+          .catch((e) => captureException(e));
         return;
       }
 
@@ -112,7 +112,7 @@ export function usePolygonHandlers({
           .then(() => {
             setMode({ mode: Mode.NONE });
           })
-          .catch((e) => Sentry.captureException(e));
+          .catch((e) => captureException(e));
         return;
       }
 
@@ -142,7 +142,7 @@ export function usePolygonHandlers({
           },
         ],
         note: "Added a vertex to a polygon",
-      }).catch((e) => Sentry.captureException(e));
+      }).catch((e) => captureException(e));
       return;
     },
 
@@ -192,7 +192,7 @@ export function usePolygonHandlers({
           },
         ],
         quiet: true,
-      }).catch((e) => Sentry.captureException(e));
+      }).catch((e) => captureException(e));
     },
     down: (e) => {
       if (e.type === "mousedown") {
@@ -256,7 +256,7 @@ export function usePolygonHandlers({
           },
         ],
         quiet: true,
-      }).catch((e) => Sentry.captureException(e));
+      }).catch((e) => captureException(e));
     },
     enter() {
       if (selection.type !== "single") return;
@@ -271,7 +271,7 @@ export function usePolygonHandlers({
           },
         ],
         note: "Finished drawing a polygon",
-      }).catch((e) => Sentry.captureException(e));
+      }).catch((e) => captureException(e));
       setMode({ mode: Mode.NONE });
     },
   };

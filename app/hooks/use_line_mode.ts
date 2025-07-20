@@ -1,5 +1,5 @@
 import { LineString } from "@turf/helpers";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { useAtomCallback } from "jotai/utils";
 import last from "lodash/last";
 import { useCallback } from "react";
@@ -113,7 +113,7 @@ export function useLineMode() {
                   modeOptions: { reverse: direction === "reverse" },
                 });
               })
-              .catch((e) => Sentry.captureException(e));
+              .catch((e) => captureException(e));
             return;
           } else {
             justSwitch();

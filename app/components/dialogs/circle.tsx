@@ -8,7 +8,7 @@ import {
   StyledLabelSpan,
   styledSelect,
 } from "../elements";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { dialogAtom, DialogStateCircle } from "state/dialog_state";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
 import { UnitOptionsGroups } from "app/components/unit_select";
@@ -78,7 +78,7 @@ export function CircleDialog({
             ],
             track: "create-circle-dialog",
           })
-            .catch((e) => Sentry.captureException(e))
+            .catch((e) => captureException(e))
             .then(() => {
               return zoomTo(USelection.single(id));
             })

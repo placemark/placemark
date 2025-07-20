@@ -4,7 +4,7 @@ import { GeometryEditor } from "app/components/panels/feature_editor/feature_edi
 import { pluralize } from "app/lib/utils";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import Zoom from "app/components/icons/zoom";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { getExtent } from "app/lib/geometry";
 import { MapContext } from "app/context/map_context";
 import cloneDeep from "lodash/cloneDeep";
@@ -81,7 +81,7 @@ export function GeometryCollectionEditor({
                           feature: newFeature,
                         },
                       ],
-                    }).catch((e) => Sentry.captureException(e));
+                    }).catch((e) => captureException(e));
                   }}
                   title="Delete geometry"
                   className="text-red-500 opacity-40 dark:text-white group-hover:opacity-100"

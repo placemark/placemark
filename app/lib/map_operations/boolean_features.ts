@@ -2,7 +2,7 @@ import { union, intersection, difference, Geom } from "polygon-clipping";
 import type { Feature, Position, GeoJsonProperties } from "types";
 import { GeometryError } from "app/lib/errors";
 import { Either, Left, Right } from "purify-ts/Either";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 
 function featureFromAccumulatorAndProperties(
   accumulator: Geom,
@@ -68,7 +68,7 @@ export function booleanFeatures(
 
     return Right(newFeatures);
   } catch (e) {
-    Sentry.captureException(e);
+    captureException(e);
     return Left(new GeometryError("Failed to transform geometries"));
   }
 }

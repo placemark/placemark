@@ -6,7 +6,7 @@ import {
   StyledField,
 } from "app/components/elements";
 import { Popover as P } from "radix-ui";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { Formik, Form } from "formik";
 import { newFeatureId } from "app/lib/id";
 import { useState } from "react";
@@ -49,7 +49,7 @@ export function AddFolder() {
               ],
             })
               .catch((e) => {
-                Sentry.captureException(e);
+                captureException(e);
               })
               .then(() => {
                 setSelection({

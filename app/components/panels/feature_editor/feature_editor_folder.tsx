@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Portal } from "radix-ui";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { useVirtual } from "react-virtual";
 import {
   DndContext,
@@ -403,7 +403,7 @@ export function FeatureEditorFolderInner() {
         at = generateKeyBetween(beforeAt, afterAt);
       } catch (e) {
         // console.error("key generation failed", e);
-        Sentry.captureException(e);
+        captureException(e);
       }
 
       switch (activeTreeItem.kind) {
@@ -428,7 +428,7 @@ export function FeatureEditorFolderInner() {
               });
             } catch (e) {
               // console.error("key generation failed", e);
-              Sentry.captureException(e);
+              captureException(e);
             }
           } else {
             void transact({

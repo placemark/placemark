@@ -1,7 +1,7 @@
 import { USelection } from "state";
 import type { HandlerContext, Point } from "types";
 import { modeAtom, Mode, selectionAtom, cursorStyleAtom } from "state/jotai";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import noop from "lodash/noop";
 import { useSetAtom } from "jotai";
 import { CURSOR_DEFAULT } from "app/lib/constants";
@@ -48,7 +48,7 @@ export function usePointHandlers({
             setSelection(USelection.single(id));
           }
         })
-        .catch((e) => Sentry.captureException(e));
+        .catch((e) => captureException(e));
     },
     move: noop,
     down: noop,

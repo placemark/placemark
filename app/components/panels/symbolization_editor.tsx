@@ -9,7 +9,7 @@ import {
   RampValues,
 } from "types";
 import { usePersistence } from "app/lib/persistence/context";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { Fragment, useMemo, useState } from "react";
 import { match } from "ts-pattern";
 import {
@@ -537,7 +537,7 @@ function RampWizard() {
               toast.error("Failed to generate ramp");
             });
           } catch (e) {
-            Sentry.captureException(e);
+            captureException(e);
           }
         }}
         validate={(values) => {
@@ -788,7 +788,7 @@ function CategoryWizard() {
               toast.error("Failed to generate ramp");
             });
           } catch (e) {
-            Sentry.captureException(e);
+            captureException(e);
           }
         }}
         initialValues={meta.symbolization as ISymbolizationCategorical}
@@ -887,10 +887,10 @@ function NoneSymbolization() {
               })
             ).catch((e) => {
               toast.error("Failed to generate");
-              Sentry.captureException(e);
+              captureException(e);
             });
           } catch (e) {
-            Sentry.captureException(e);
+            captureException(e);
           }
         }}
         initialValues={{
