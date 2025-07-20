@@ -1,1 +1,1 @@
-export function captureException(...args: unknown[]) {}
+export function captureException(..._args: unknown[]) {}
