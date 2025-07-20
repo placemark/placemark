@@ -1,7 +1,7 @@
 import { memo, useState, useEffect } from "react";
 import { useSetAtom } from "jotai";
 import { dialogAtom } from "state/jotai";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { getFilesFromDataTransferItems } from "@placemarkio/flat-drop-files";
 import type { FileWithHandle } from "browser-fs-access";
 import { groupFiles } from "app/lib/group_files";
@@ -60,7 +60,7 @@ export default memo(function Drop() {
     };
 
     const onDropCaught = (event: DragEvent) => {
-      onDrop(event).catch((e) => Sentry.captureException(e));
+      onDrop(event).catch((e) => captureException(e));
     };
 
     document.addEventListener("dragenter", onDragEnter);

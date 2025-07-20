@@ -12,7 +12,7 @@ import { StyledFieldTextareaCode } from "app/components/elements";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
 import { CoordinateStringOptionsForm } from "app/components/coordinate_string_options_form";
 import { DialogStateLoadText } from "state/dialog_state";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import * as Comlink from "comlink";
 import { ImportProgressBar } from "./import/import_progress_bar";
 
@@ -55,7 +55,7 @@ export function ImportTextDialog({
         },
       });
     } catch (e: any) {
-      Sentry.captureException(e);
+      captureException(e);
       helpers.setErrors({
         type: e.message,
       });

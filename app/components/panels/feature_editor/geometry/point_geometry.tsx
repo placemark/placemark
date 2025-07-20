@@ -1,7 +1,7 @@
 import useResettable from "app/hooks/use_resettable";
 import type { IWrappedFeature } from "types";
 import { LongitudeLatitudeInputs } from "app/components/longitude_latitude_inputs";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { usePersistence } from "app/lib/persistence/context";
 import { getCoordinates, setCoordinates } from "app/lib/map_operations";
 import { CVertexId } from "app/lib/id";
@@ -41,7 +41,7 @@ export default function PointGeometry({
               }).feature,
             },
           ],
-        }).catch((e) => Sentry.captureException(e));
+        }).catch((e) => captureException(e));
       }
     },
   });
@@ -64,7 +64,7 @@ export default function PointGeometry({
               }).feature,
             },
           ],
-        }).catch((e) => Sentry.captureException(e));
+        }).catch((e) => captureException(e));
       }
     },
   });

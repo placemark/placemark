@@ -3,7 +3,7 @@ import { useSetAtom } from "jotai";
 import { dialogAtom } from "state/jotai";
 import { groupFiles } from "app/lib/group_files";
 import { useQuery } from "react-query";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 
 export function useOpenFiles() {
   const setDialogState = useSetAtom(dialogAtom);
@@ -24,7 +24,7 @@ export function useOpenFiles() {
         });
       })
       .catch((e) => {
-        Sentry.captureException(e);
+        captureException(e);
       });
   }, [setDialogState, fsAccess]);
 }

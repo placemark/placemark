@@ -7,7 +7,7 @@ import {
 } from "app/lib/geocode";
 import { USelection } from "state";
 import { newFeatureId } from "app/lib/id";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { match } from "ts-pattern";
 import { useAtom } from "jotai";
 import { usePersistence } from "app/lib/persistence/context";
@@ -47,7 +47,7 @@ export function LastSearchResult() {
       .then(() => {
         setSelection(USelection.single(id));
       })
-      .catch((e) => Sentry.captureException(e));
+      .catch((e) => captureException(e));
     setLastSearchResult(null);
     e.stopPropagation();
   };
@@ -71,7 +71,7 @@ export function LastSearchResult() {
       .then(() => {
         setSelection(USelection.single(id));
       })
-      .catch((e) => Sentry.captureException(e));
+      .catch((e) => captureException(e));
     setLastSearchResult(null);
   }
 

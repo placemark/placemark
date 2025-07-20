@@ -4,7 +4,7 @@ import type { IWrappedFeature, Feature } from "types";
 import { EditorState, Transaction } from "@codemirror/state";
 import type { ViewUpdate } from "@codemirror/view";
 import { EditorView, drawSelection, keymap } from "@codemirror/view";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { history, historyKeymap, defaultKeymap } from "@codemirror/commands";
 import { json } from "@codemirror/lang-json";
 import { placemarkTheme } from "app/lib/codemirror_theme";
@@ -65,7 +65,7 @@ export const FeatureText = memo(function FeatureText({
               ],
             });
           })
-          .catch((e) => Sentry.captureException(e));
+          .catch((e) => captureException(e));
       }),
     [at, id, folderId, transact]
   );

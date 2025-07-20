@@ -1,5 +1,5 @@
 import { useFormikContext } from "formik";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import {
   ImportOptions,
   detectType,
@@ -25,7 +25,7 @@ export function AutoDetect({ file }: { file: File }) {
           ...detected.orDefault(defaultOptions),
         }));
       })
-      .catch((e) => Sentry.captureException(e));
+      .catch((e) => captureException(e));
   }, [file, setValues]);
   return null;
 }

@@ -1,7 +1,7 @@
 import type { Options } from "react-hotkeys-hook";
 import { useHotkeys } from "integrations/hotkeys";
 import { dataAtom, selectionAtom } from "state/jotai";
-import * as Sentry from "@sentry/nextjs";
+import { captureException } from "integrations/errors";
 import { usePersistence } from "app/lib/persistence/context";
 import { deleteFeatures } from "app/lib/map_operations/delete_features";
 import { filterLockedFeatures } from "app/lib/folder";
@@ -38,7 +38,7 @@ export function useMapKeybindings() {
     "meta+z, Ctrl+z",
     (e) => {
       e.preventDefault();
-      historyControl("undo").catch((e) => Sentry.captureException(e));
+      historyControl("undo").catch((e) => captureException(e));
       return false;
     },
     [historyControl]
@@ -47,7 +47,7 @@ export function useMapKeybindings() {
   useHotkeys(
     "meta+shift+z, Ctrl+shift+z",
     (_e: KeyboardEvent) => {
-      historyControl("redo").catch((e) => Sentry.captureException(e));
+      historyControl("redo").catch((e) => captureException(e));
     },
     [historyControl]
   );
@@ -134,7 +134,7 @@ export function useMapKeybindings() {
           const { newSelection, moment } = deleteFeatures(data);
           set(selectionAtom, newSelection);
           await transact(moment);
-        })().catch((e) => Sentry.captureException(e));
+        })().catch((e) => captureException(e));
         return false;
       },
       [transact]
