@@ -1,4 +1,3 @@
-import { captureException } from "integrations/errors";
 import { useHotkeys as rawUseHotkeys } from "react-hotkeys-hook";
 
 type Params = Parameters<typeof rawUseHotkeys>;

@@ -3,7 +3,6 @@ import { USelection } from "state";
 import type { HandlerContext, Position, IFeature, Polygon } from "types";
 import { cursorStyleAtom, Mode, modeAtom, selectionAtom } from "state/jotai";
 import { useContext, useState } from "react";
-import { captureException } from "integrations/errors";
 import { toast } from "react-hot-toast";
 import { isRectangleNonzero } from "app/lib/geometry";
 import { MapContext } from "app/context/map_context";
