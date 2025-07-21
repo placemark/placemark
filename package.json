@@ -3,9 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
-		"build": "next build",
-		"start": "next start",
+		"dev": "vite",
+		"build": "vite build",
 		"lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
 		"test": "vitest run",
 		"test:watch": "vitest --watch",
@@ -125,6 +124,7 @@
 		"ts-pattern": "^5.7.1",
 		"type-fest": "^4.41.0",
 		"uuid": "11",
+		"vite": "^7.0.5",
 		"xlsx": "^0.18.5",
 		"xstate": "^4.38.3",
 		"zod": "^3.25.76"
