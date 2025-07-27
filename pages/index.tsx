@@ -3,7 +3,7 @@ import { PersistenceContext } from "app/lib/persistence/context";
 import { MemPersistence } from "app/lib/persistence/memory";
 import { Provider, createStore } from "jotai";
 import { UIDMap } from "app/lib/id_mapper";
-import { Store, layerConfigAtom } from "state/jotai";
+import { layerConfigAtom } from "state/jotai";
 import { newFeatureId } from "app/lib/id";
 import LAYERS from "app/lib/default_layers";
 import { createRoot } from "react-dom/client";
@@ -17,26 +17,10 @@ import { StyleGuide } from "app/components/style_guide";
 
 const queryClient = new QueryClient();
 
-function ScratchpadInner({ store }: { store: Store }) {
-	const idMap = useRef(UIDMap.empty());
-
-	return (
-		<PersistenceContext.Provider
-			value={new MemPersistence(idMap.current, store)}
-		>
-			<>
-				<title>Placemark Play</title>
-				<Suspense fallback={null}>
-					<PlacemarkPlay />
-				</Suspense>
-			</>
-		</PersistenceContext.Provider>
-	);
-}
-
 const Play = () => {
 	const store = createStore();
 	const layerId = newFeatureId();
+	const idMap = useRef(UIDMap.empty());
 
 	store.set(
 		layerConfigAtom,
@@ -58,27 +42,34 @@ const Play = () => {
 
 	return (
 		<Provider key="play" store={store}>
-			<ScratchpadInner store={store} />
+			<PersistenceContext.Provider
+				value={new MemPersistence(idMap.current, store)}
+			>
+				<PlacemarkPlay />
+			</PersistenceContext.Provider>
 		</Provider>
 	);
 };
 
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<T.Provider>
-				<Switch>
-					<Route path="/">
-						<Play />
-					</Route>
-					<Route path="/converter">
-						<Converter />
-					</Route>
-					<Route path="/secret-styleguide">
-						<StyleGuide />
-					</Route>
-				</Switch>
-			</T.Provider>
-		</QueryClientProvider>
-	</StrictMode>,
+	<Suspense fallback={null}>
+		<StrictMode>
+			<QueryClientProvider client={queryClient}>
+				<T.Provider>
+					<Switch>
+						<Route path="/">
+							<Play />
+						</Route>
+						<Route path="/converter">
+							<Converter />
+						</Route>
+						<Route path="/secret-styleguide">
+							<StyleGuide />
+						</Route>
+					</Switch>
+				</T.Provider>
+			</QueryClientProvider>
+		</StrictMode>
+		,
+	</Suspense>,
 );
