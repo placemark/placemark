@@ -76,19 +76,7 @@ export class MemPersistence implements IPersistence {
 			this.putLayerConfigsInner(moment.putLayerConfigs, layerConfigMap),
 			this.deleteLayerConfigsInner(moment.deleteLayerConfigs, layerConfigMap),
 		);
-		console.log({
-			selection: ctx.selection,
-			featureMap: new Map(
-				Array.from(ctx.featureMap).sort((a, b) => {
-					return sortAts(a[1], b[1]);
-				}),
-			),
-			folderMap: new Map(
-				Array.from(ctx.folderMap).sort((a, b) => {
-					return sortAts(a[1], b[1]);
-				}),
-			),
-		});
+
 		this.store.set(dataAtom, {
 			selection: ctx.selection,
 			featureMap: new Map(
@@ -102,6 +90,7 @@ export class MemPersistence implements IPersistence {
 				}),
 			),
 		});
+
 		if (moment.putLayerConfigs?.length || moment.deleteLayerConfigs?.length) {
 			this.store.set(
 				layerConfigAtom,

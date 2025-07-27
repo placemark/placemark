@@ -8,15 +8,15 @@ import { Tooltip as T } from "radix-ui";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { StyleGuide } from "app/components/style_guide";
 import { MemPersistence } from "app/lib/persistence/memory";
-import { createStore } from "jotai";
+import { createStore, Provider } from "jotai";
 import { UIDMap } from "app/lib/id_mapper";
 import { PersistenceContext } from "app/lib/persistence/context";
 
 const queryClient = new QueryClient();
+const store = createStore();
 
 function App() {
 	const idMap = useRef(UIDMap.empty());
-	const store = createStore();
 	return (
 		<Suspense fallback={null}>
 			<StrictMode>
@@ -24,11 +24,13 @@ function App() {
 					<T.Provider>
 						<Switch>
 							<Route path="/">
-								<PersistenceContext.Provider
-									value={new MemPersistence(idMap.current, store)}
-								>
-									<PlacemarkPlay />
-								</PersistenceContext.Provider>
+								<Provider store={store}>
+									<PersistenceContext.Provider
+										value={new MemPersistence(idMap.current, store)}
+									>
+										<PlacemarkPlay />
+									</PersistenceContext.Provider>
+								</Provider>
 							</Route>
 							<Route path="/converter">
 								<Converter />
