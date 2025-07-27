@@ -69,6 +69,7 @@ export const MapComponent = memo(function MapComponent({
 	setMap: (arg0: PMap | null) => void;
 }) {
 	const data = useAtomValue(dataAtom);
+
 	const layerConfigs = useAtomValue(layerConfigAtom);
 	const { featureMap, folderMap } = data;
 	// State

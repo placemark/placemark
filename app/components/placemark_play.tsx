@@ -1,4 +1,3 @@
-"use client";
 import type PMap from "app/lib/pmap";
 import { MapComponent } from "app/components/map_component";
 import { MenuBarPlay } from "app/components/menu_bar";
@@ -8,10 +7,8 @@ import { Dialogs } from "app/components/dialogs";
 import "styles/globals.css";
 import "core-js/features/array/at";
 import { CSS } from "@dnd-kit/utilities";
-import { UIDMap } from "app/lib/id_mapper";
 import ContextActions from "app/components/context_actions";
 import { Tooltip as T } from "radix-ui";
-import { QueryClientProvider, QueryClient } from "react-query";
 import React, {
 	Suspense,
 	useCallback,
@@ -43,7 +40,7 @@ import {
 	ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
 import { Button, StyledTooltipArrow, TContent } from "./elements";
-import { atom, createStore, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { dialogAtom, splitsAtom, tabAtom, TabOption } from "state/jotai";
 import clsx from "clsx";
 import {
@@ -61,8 +58,6 @@ import { useImportFile, useImportString } from "app/hooks/use_import";
 import toast from "react-hot-toast";
 import { DEFAULT_IMPORT_OPTIONS, detectType } from "app/lib/convert";
 import { match } from "ts-pattern";
-import { PersistenceContext } from "app/lib/persistence/context";
-import { MemPersistence } from "app/lib/persistence/memory";
 
 type ResolvedLayout = "HORIZONTAL" | "VERTICAL" | "FLOATING";
 
@@ -185,99 +180,89 @@ export function PlacemarkPlay() {
 		persistentTransformAtom,
 	);
 
-	const queryClient = new QueryClient();
-	const idMap = useRef(UIDMap.empty());
-	const store = createStore();
-
 	return (
 		<main className="h-screen flex flex-col bg-white dark:bg-gray-800">
-			<PersistenceContext.Provider
-				value={new MemPersistence(idMap.current, store)}
-			>
-				<QueryClientProvider client={queryClient}>
-					<T.Provider>
-						<MapContext.Provider value={map}>
-							<ErrorBoundary
-								fallback={(props) => {
-									return (
-										<div className="h-20 flex items-center justify-center px-2 gap-x-2">
-											An error occurred
-											<Button onClick={() => props.resetError()}>
-												<UpdateIcon /> Try again
-											</Button>
-										</div>
-									);
-								}}
-							>
-								<div className="h-24">
-									<MenuBarPlay />
-									<div
-										className="flex flex-row items-center justify-start overflow-x-auto sm:overflow-visible
-          border-t border-gray-200 dark:border-gray-900 pl-2 h-12"
-									>
-										<Modes replaceGeometryForId={null} />
-										<div className="flex-auto" />
-										<ContextActions />
-										<div className="flex-auto" />
-										<div className="flex items-center space-x-2">
-											<Visual />
-										</div>
-									</div>
+			<T.Provider>
+				<MapContext.Provider value={map}>
+					<ErrorBoundary
+						fallback={(props) => {
+							return (
+								<div className="h-20 flex items-center justify-center px-2 gap-x-2">
+									An error occurred
+									<Button onClick={() => props.resetError()}>
+										<UpdateIcon /> Try again
+									</Button>
 								</div>
-							</ErrorBoundary>
+							);
+						}}
+					>
+						<div className="h-24">
+							<MenuBarPlay />
 							<div
-								className={clsx(
-									layout === "VERTICAL" && "flex-col",
-									"flex flex-auto relative border-t border-gray-200 dark:border-gray-900",
-								)}
+								className="flex flex-row items-center justify-start overflow-x-auto sm:overflow-visible
+          border-t border-gray-200 dark:border-gray-900 pl-2 h-12"
 							>
-								{layout === "HORIZONTAL" ? (
-									<FeatureEditorFolder />
-								) : layout === "FLOATING" ? (
-									<FullPanel />
-								) : null}
-								<DndContext
-									sensors={sensor}
-									modifiers={[restrictToWindowEdges]}
-									onDragEnd={(end) => {
-										setPersistentTransform((transform) => {
-											return {
-												x: transform.x + end.delta.x,
-												y: transform.y + end.delta.y,
-											};
-										});
-									}}
-								>
-									<DraggableMap
-										persistentTransform={persistentTransform}
-										setMap={setMap}
-										layout={layout}
-									/>
-								</DndContext>
-								{layout === "HORIZONTAL" ? (
-									<>
-										<SidePanel />
-										<Resizer side="left" />
-										<Resizer side="right" />
-									</>
-								) : layout === "VERTICAL" ? (
-									<>
-										<BottomPanel />
-										<BottomResizer />
-									</>
-								) : null}
+								<Modes replaceGeometryForId={null} />
+								<div className="flex-auto" />
+								<ContextActions />
+								<div className="flex-auto" />
+								<div className="flex items-center space-x-2">
+									<Visual />
+								</div>
 							</div>
-							<Drop />
-							<UrlAPI />
-							<Dialogs />
-							<Suspense fallback={null}>
-								<Keybindings />
-							</Suspense>
-							<Notifications />
-						</MapContext.Provider>
-					</T.Provider>
-				</QueryClientProvider>
-			</PersistenceContext.Provider>
+						</div>
+					</ErrorBoundary>
+					<div
+						className={clsx(
+							layout === "VERTICAL" && "flex-col",
+							"flex flex-auto relative border-t border-gray-200 dark:border-gray-900",
+						)}
+					>
+						{layout === "HORIZONTAL" ? (
+							<FeatureEditorFolder />
+						) : layout === "FLOATING" ? (
+							<FullPanel />
+						) : null}
+						<DndContext
+							sensors={sensor}
+							modifiers={[restrictToWindowEdges]}
+							onDragEnd={(end) => {
+								setPersistentTransform((transform) => {
+									return {
+										x: transform.x + end.delta.x,
+										y: transform.y + end.delta.y,
+									};
+								});
+							}}
+						>
+							<DraggableMap
+								persistentTransform={persistentTransform}
+								setMap={setMap}
+								layout={layout}
+							/>
+						</DndContext>
+						{layout === "HORIZONTAL" ? (
+							<>
+								<SidePanel />
+								<Resizer side="left" />
+								<Resizer side="right" />
+							</>
+						) : layout === "VERTICAL" ? (
+							<>
+								<BottomPanel />
+								<BottomResizer />
+							</>
+						) : null}
+					</div>
+					<Drop />
+					<UrlAPI />
+					<Dialogs />
+					<Suspense fallback={null}>
+						<Keybindings />
+					</Suspense>
+					<Notifications />
+				</MapContext.Provider>
+			</T.Provider>
 		</main>
 	);
 }

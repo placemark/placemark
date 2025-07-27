@@ -3,12 +3,12 @@ import { atomWithStorage, selectAtom } from "jotai/utils";
 import type { FileSystemHandle } from "browser-fs-access";
 import type { SetOptional } from "type-fest";
 import {
-  FeatureMap,
-  FolderMap,
-  IFolder,
-  IPresence,
-  LayerConfigMap,
-  SYMBOLIZATION_NONE,
+	FeatureMap,
+	FolderMap,
+	IFolder,
+	IPresence,
+	LayerConfigMap,
+	SYMBOLIZATION_NONE,
 } from "types";
 import type { MomentLog } from "app/lib/persistence/moment";
 import { CMomentLog } from "app/lib/persistence/moment";
@@ -22,6 +22,8 @@ import { createMachine } from "xstate";
 import { QItemAddable } from "app/lib/geocode";
 import { PersistenceMetadataMemory } from "app/lib/persistence/ipersistence";
 import { ScaleUnit } from "app/lib/constants";
+import LAYERS from "app/lib/default_layers";
+import { NIL } from "uuid";
 
 export type Store = ReturnType<typeof createStore>;
 
@@ -29,11 +31,9 @@ export type Store = ReturnType<typeof createStore>;
 type MapboxLayer = any;
 
 interface FileInfo {
-  handle: FileSystemHandle | FileSystemFileHandle;
-  options: ExportOptions;
+	handle: FileSystemHandle | FileSystemFileHandle;
+	options: ExportOptions;
 }
-
-
 
 export type PreviewProperty = PersistenceMetadataMemory["label"];
 
@@ -43,51 +43,68 @@ export type PreviewProperty = PersistenceMetadataMemory["label"];
  * Core data
  */
 export interface Data {
-  folderMap: FolderMap;
-  featureMap: FeatureMap;
-  selection: Sel;
+	folderMap: FolderMap;
+	featureMap: FeatureMap;
+	selection: Sel;
 }
 
 /**
  * Derived list of folders
  */
 export const dataAtom = atom<Data>({
-  featureMap: new Map(),
-  folderMap: new Map(),
-  selection: {
-    type: "none",
-  },
+	featureMap: new Map(),
+	folderMap: new Map(),
+	selection: {
+		type: "none",
+	},
 });
 
-export const layerConfigAtom = atom<LayerConfigMap>(new Map());
+const layerId = NIL;
+
+export const layerConfigAtom = atom<LayerConfigMap>(
+	new Map([
+		[
+			layerId,
+			{
+				...LAYERS.MONOCHROME,
+				at: "a0",
+				opacity: 1,
+				tms: false,
+				visibility: true,
+				labelVisibility: true,
+				id: layerId,
+			},
+		],
+	]),
+);
 
 export const selectedFeaturesAtom = selectAtom(
-  dataAtom,
-  (data) => {
-    return USelection.getSelectedFeatures(data);
-  },
-  shallowArrayEqual
+	dataAtom,
+	(data) => {
+		return USelection.getSelectedFeatures(data);
+	},
+	shallowArrayEqual,
 );
 
 export const selectionAtom = focusAtom(dataAtom, (optic) =>
-  optic.prop("selection")
+	optic.prop("selection"),
 );
 
 /**
  * User presences, keyed by user id
  */
 export const presencesAtom = atom<{
-  presences: Map<number, IPresence>;
+	presences: Map<number, IPresence>;
 }>({
-  get presences() {
-    return new Map();
-  },
+	get presences() {
+		return new Map();
+	},
 });
 
 export const memoryMetaAtom = atom<Omit<PersistenceMetadataMemory, "type">>({
-  symbolization: SYMBOLIZATION_NONE,
-  label: null,
-  layer: null,
+	symbolization: SYMBOLIZATION_NONE,
+	label: null,
+	layer: null,
 });
 
 export const searchHistoryAtom = atom<string[]>([]);
@@ -99,8 +116,8 @@ export const searchHistoryAtom = atom<string[]>([]);
 export type Side = "left" | "right";
 
 export const OTHER_SIDE: Record<Side, Side> = {
-  left: "right",
-  right: "left",
+	left: "right",
+	right: "left",
 };
 
 /**
@@ -108,28 +125,28 @@ export const OTHER_SIDE: Record<Side, Side> = {
  * be controlled by dragging the resizer
  */
 export const MIN_SPLITS = {
-  left: 100,
-  right: 200,
+	left: 100,
+	right: 200,
 } as const;
 
 export interface Splits {
-  layout: PanelLayout;
-  bottom: number;
-  rightOpen: boolean;
-  right: number;
-  leftOpen: boolean;
-  left: number;
+	layout: PanelLayout;
+	bottom: number;
+	rightOpen: boolean;
+	right: number;
+	leftOpen: boolean;
+	left: number;
 }
 
 type PanelLayout = "AUTO" | "FLOATING" | "VERTICAL";
 
 export const splitsAtom = atom<Splits>({
-  layout: "AUTO",
-  bottom: 500,
-  rightOpen: true,
-  right: 320,
-  leftOpen: true,
-  left: 200,
+	layout: "AUTO",
+	bottom: 500,
+	rightOpen: true,
+	right: 320,
+	leftOpen: true,
+	left: 200,
 });
 
 export const showPanelBottomAtom = atom<boolean>(true);
@@ -143,24 +160,22 @@ export const panelNullOpen = atomWithStorage("panelNullOpen", true);
 export const panelCircleOpen = atomWithStorage("panelCircleOpen", true);
 export const panelStyleOpen = atomWithStorage("panelStyleOpen", false);
 export const panelSymbolizationExportOpen = atomWithStorage(
-  "panelSymbolizationExportOpen",
-  true
+	"panelSymbolizationExportOpen",
+	true,
 );
 export type PanelAtom = typeof panelIdOpen;
 
 export const hideHintsAtom = atomWithStorage<Mode[]>("hideHints", []);
 
 export const scaleUnitAtom = atomWithStorage<ScaleUnit>(
-  "scaleUnit",
-  "imperial"
+	"scaleUnit",
+	"imperial",
 );
-
 
 export const addMetadataWithGeocoderAtom = atomWithStorage(
-  "addMetadataWithGeocoder",
-  false
+	"addMetadataWithGeocoder",
+	false,
 );
-
 
 // ----------------------------------------------------------------------------
 /**
@@ -168,8 +183,8 @@ export const addMetadataWithGeocoderAtom = atomWithStorage(
  */
 export { dialogAtom as dialogAtom } from "state/dialog_state";
 export type {
-  DialogStateImport as ModalStateImport,
-  DialogStateCastProperty as ModalStateCastProperty,
+	DialogStateImport as ModalStateImport,
+	DialogStateCastProperty as ModalStateCastProperty,
 } from "state/dialog_state";
 
 /**
@@ -194,29 +209,29 @@ export const momentLogAtom = atom<MomentLog>(new CMomentLog());
  * A selection of a single folder.
  */
 export interface SelFolder {
-  type: "folder";
-  /**
-   * The folder's id
-   */
-  id: StringId;
+	type: "folder";
+	/**
+	 * The folder's id
+	 */
+	id: StringId;
 }
 
 /**
  * A selection of a single feature.
  */
 export interface SelSingle {
-  type: "single";
-  /**
-   * The feature's id
-   */
-  id: StringId;
-  parts: readonly VertexId[];
+	type: "single";
+	/**
+	 * The feature's id
+	 */
+	id: StringId;
+	parts: readonly VertexId[];
 }
 
 export interface SelMulti {
-  type: "multi";
-  ids: readonly StringId[];
-  previousIds?: readonly StringId[];
+	type: "multi";
+	ids: readonly StringId[];
+	previousIds?: readonly StringId[];
 }
 
 /**
@@ -226,15 +241,15 @@ export interface SelMulti {
  * import the type.
  */
 export type Sel =
-  | SelMulti
-  | SelFolder
-  | {
-      type: "none";
-    }
-  | SelSingle;
+	| SelMulti
+	| SelFolder
+	| {
+			type: "none";
+	  }
+	| SelSingle;
 
 export const SELECTION_NONE: Sel = {
-  type: "none",
+	type: "none",
 };
 
 // ----------------------------------------------------------------------------
@@ -242,15 +257,15 @@ export const SELECTION_NONE: Sel = {
  * Ephemeral editing state
  */
 export interface EphemeralEditingStateLasso {
-  type: "lasso";
-  box: [Pos2, Pos2];
+	type: "lasso";
+	box: [Pos2, Pos2];
 }
 
 export const cursorStyleAtom = atom<React.CSSProperties["cursor"]>("default");
 
 export type EphemeralEditingState =
-  | EphemeralEditingStateLasso
-  | { type: "none" };
+	| EphemeralEditingStateLasso
+	| { type: "none" };
 
 export const ephemeralStateAtom = atom<EphemeralEditingState>({ type: "none" });
 
@@ -264,35 +279,32 @@ export const lastSearchResultAtom = atom<QItemAddable | null>(null);
 export const fileInfoAtom = atom<FileInfo | null>(null);
 
 const fileInfoMachine = createMachine({
-  predictableActionArguments: true,
-  id: "fileInfo",
-  initial: "idle",
-  states: {
-    idle: {
-      on: {
-        show: "visible",
-      },
-    },
-    visible: {
-      after: {
-        2000: {
-          target: "idle",
-        },
-      },
-    },
-  },
+	predictableActionArguments: true,
+	id: "fileInfo",
+	initial: "idle",
+	states: {
+		idle: {
+			on: {
+				show: "visible",
+			},
+		},
+		visible: {
+			after: {
+				2000: {
+					target: "idle",
+				},
+			},
+		},
+	},
 });
 
 export const fileInfoMachineAtom = atomWithMachine(() => fileInfoMachine);
 
-
-
-
 export enum TabOption {
-  Feature = "Feature",
-  Table = "Table",
-  List = "List",
-  Symbolization = "Symbolization",
+	Feature = "Feature",
+	Table = "Table",
+	List = "List",
+	Symbolization = "Symbolization",
 }
 
 export const tabAtom = atom<TabOption>(TabOption.Feature);
@@ -301,27 +313,26 @@ export type VirtualColumns = string[];
 export const virtualColumnsAtom = atom<VirtualColumns>([]);
 
 export interface FilterOptions {
-  column: string | null;
-  search: string | null;
-  isCaseSensitive: boolean;
-  geometryType: string | null;
-  folderId: IFolder["id"] | null;
-  exact: boolean;
+	column: string | null;
+	search: string | null;
+	isCaseSensitive: boolean;
+	geometryType: string | null;
+	folderId: IFolder["id"] | null;
+	exact: boolean;
 }
 
 export const initialFilterValues: FilterOptions = {
-  column: "",
-  search: "",
-  isCaseSensitive: false,
-  geometryType: null,
-  folderId: null,
-  exact: false,
+	column: "",
+	search: "",
+	isCaseSensitive: false,
+	geometryType: null,
+	folderId: null,
+	exact: false,
 };
 
 export const tableFilterAtom = atom<FilterOptions>(initialFilterValues);
 
-
 export const circleTypeAtom = atomWithStorage<CIRCLE_TYPE>(
-  "circleType",
-  CIRCLE_TYPE.MERCATOR
+	"circleType",
+	CIRCLE_TYPE.MERCATOR,
 );
