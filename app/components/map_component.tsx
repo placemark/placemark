@@ -47,7 +47,7 @@ import { fMoment } from "app/lib/persistence/moment";
 import { newFeatureId } from "app/lib/id";
 import toast from "react-hot-toast";
 import { DECK_SYNTHETIC_ID } from "app/lib/constants";
-mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_TOKEN;
+mapboxgl.accessToken = env.MAPBOX_TOKEN;
 
 mapboxgl.setRTLTextPlugin(
 	"https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js",
@@ -69,6 +69,7 @@ export const MapComponent = memo(function MapComponent({
 	setMap: (arg0: PMap | null) => void;
 }) {
 	const data = useAtomValue(dataAtom);
+
 	const layerConfigs = useAtomValue(layerConfigAtom);
 	const { featureMap, folderMap } = data;
 	// State

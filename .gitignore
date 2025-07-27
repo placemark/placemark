@@ -60,3 +60,4 @@ lib-cov
 .vscode-test
 
 .nova
+dist

@@ -1,10 +1,11 @@
-"use client";
 import type PMap from "app/lib/pmap";
 import { MapComponent } from "app/components/map_component";
 import { MenuBarPlay } from "app/components/menu_bar";
 import Drop from "app/components/drop";
 import Modes from "app/components/modes";
 import { Dialogs } from "app/components/dialogs";
+import "styles/globals.css";
+import "core-js/features/array/at";
 import { CSS } from "@dnd-kit/utilities";
 import ContextActions from "app/components/context_actions";
 import { Tooltip as T } from "radix-ui";
@@ -52,7 +53,7 @@ import {
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import debounce from "lodash/debounce";
 import { useAtomCallback } from "jotai/utils";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "wouter";
 import { useImportFile, useImportString } from "app/hooks/use_import";
 import toast from "react-hot-toast";
 import { DEFAULT_IMPORT_OPTIONS, detectType } from "app/lib/convert";
@@ -74,7 +75,7 @@ function UrlAPI() {
 	const doImportString = useImportString();
 	const setDialogState = useSetAtom(dialogAtom);
 	const doImportFile = useImportFile();
-	const searchParams = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const load = searchParams?.get("load");
 	const done = useRef<boolean>(false);
 
@@ -181,85 +182,87 @@ export function PlacemarkPlay() {
 
 	return (
 		<main className="h-screen flex flex-col bg-white dark:bg-gray-800">
-			<MapContext.Provider value={map}>
-				<ErrorBoundary
-					fallback={(props) => {
-						return (
-							<div className="h-20 flex items-center justify-center px-2 gap-x-2">
-								An error occurred
-								<Button onClick={() => props.resetError()}>
-									<UpdateIcon /> Try again
-								</Button>
-							</div>
-						);
-					}}
-				>
-					<div className="h-24">
-						<MenuBarPlay />
-						<div
-							className="flex flex-row items-center justify-start overflow-x-auto sm:overflow-visible
-          border-t border-gray-200 dark:border-gray-900 pl-2 h-12"
-						>
-							<Modes replaceGeometryForId={null} />
-							<div className="flex-auto" />
-							<ContextActions />
-							<div className="flex-auto" />
-							<div className="flex items-center space-x-2">
-								<Visual />
-							</div>
-						</div>
-					</div>
-				</ErrorBoundary>
-				<div
-					className={clsx(
-						layout === "VERTICAL" && "flex-col",
-						"flex flex-auto relative border-t border-gray-200 dark:border-gray-900",
-					)}
-				>
-					{layout === "HORIZONTAL" ? (
-						<FeatureEditorFolder />
-					) : layout === "FLOATING" ? (
-						<FullPanel />
-					) : null}
-					<DndContext
-						sensors={sensor}
-						modifiers={[restrictToWindowEdges]}
-						onDragEnd={(end) => {
-							setPersistentTransform((transform) => {
-								return {
-									x: transform.x + end.delta.x,
-									y: transform.y + end.delta.y,
-								};
-							});
+			<T.Provider>
+				<MapContext.Provider value={map}>
+					<ErrorBoundary
+						fallback={(props) => {
+							return (
+								<div className="h-20 flex items-center justify-center px-2 gap-x-2">
+									An error occurred
+									<Button onClick={() => props.resetError()}>
+										<UpdateIcon /> Try again
+									</Button>
+								</div>
+							);
 						}}
 					>
-						<DraggableMap
-							persistentTransform={persistentTransform}
-							setMap={setMap}
-							layout={layout}
-						/>
-					</DndContext>
-					{layout === "HORIZONTAL" ? (
-						<>
-							<SidePanel />
-							<Resizer side="left" />
-							<Resizer side="right" />
-						</>
-					) : layout === "VERTICAL" ? (
-						<>
-							<BottomPanel />
-							<BottomResizer />
-						</>
-					) : null}
-				</div>
-				<Drop />
-				<UrlAPI />
-				<Dialogs />
-				<Suspense fallback={null}>
-					<Keybindings />
-				</Suspense>
-				<Notifications />
-			</MapContext.Provider>
+						<div className="h-24">
+							<MenuBarPlay />
+							<div
+								className="flex flex-row items-center justify-start overflow-x-auto sm:overflow-visible
+          border-t border-gray-200 dark:border-gray-900 pl-2 h-12"
+							>
+								<Modes replaceGeometryForId={null} />
+								<div className="flex-auto" />
+								<ContextActions />
+								<div className="flex-auto" />
+								<div className="flex items-center space-x-2">
+									<Visual />
+								</div>
+							</div>
+						</div>
+					</ErrorBoundary>
+					<div
+						className={clsx(
+							layout === "VERTICAL" && "flex-col",
+							"flex flex-auto relative border-t border-gray-200 dark:border-gray-900",
+						)}
+					>
+						{layout === "HORIZONTAL" ? (
+							<FeatureEditorFolder />
+						) : layout === "FLOATING" ? (
+							<FullPanel />
+						) : null}
+						<DndContext
+							sensors={sensor}
+							modifiers={[restrictToWindowEdges]}
+							onDragEnd={(end) => {
+								setPersistentTransform((transform) => {
+									return {
+										x: transform.x + end.delta.x,
+										y: transform.y + end.delta.y,
+									};
+								});
+							}}
+						>
+							<DraggableMap
+								persistentTransform={persistentTransform}
+								setMap={setMap}
+								layout={layout}
+							/>
+						</DndContext>
+						{layout === "HORIZONTAL" ? (
+							<>
+								<SidePanel />
+								<Resizer side="left" />
+								<Resizer side="right" />
+							</>
+						) : layout === "VERTICAL" ? (
+							<>
+								<BottomPanel />
+								<BottomResizer />
+							</>
+						) : null}
+					</div>
+					<Drop />
+					<UrlAPI />
+					<Dialogs />
+					<Suspense fallback={null}>
+						<Keybindings />
+					</Suspense>
+					<Notifications />
+				</MapContext.Provider>
+			</T.Provider>
 		</main>
 	);
 }

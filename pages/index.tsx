@@ -1,67 +1,51 @@
-import Head from "next/head";
-import { Suspense, useRef } from "react";
-import { PersistenceContext } from "app/lib/persistence/context";
+import { StrictMode, Suspense, useRef } from "react";
+import { createRoot } from "react-dom/client";
+import { PlacemarkPlay } from "app/components/placemark_play";
+import Converter from "./converter";
+import { Route, Switch } from "wouter";
+import "../styles/globals.css";
+import { Tooltip as T } from "radix-ui";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { StyleGuide } from "app/components/style_guide";
 import { MemPersistence } from "app/lib/persistence/memory";
-import { Provider, createStore } from "jotai";
+import { createStore, Provider } from "jotai";
 import { UIDMap } from "app/lib/id_mapper";
-import { Store, layerConfigAtom } from "state/jotai";
-import { newFeatureId } from "app/lib/id";
-import LAYERS from "app/lib/default_layers";
-import dynamic from "next/dynamic";
+import { PersistenceContext } from "app/lib/persistence/context";
 
-const PlacemarkPlay = dynamic(
-  () => import("app/components/placemark_play").then((m) => m.PlacemarkPlay),
-  {
-    ssr: false,
-  }
-);
+const queryClient = new QueryClient();
+const store = createStore();
 
-function ScratchpadInner({ store }: { store: Store }) {
-  const idMap = useRef(UIDMap.empty());
-
-  return (
-    <PersistenceContext.Provider
-      value={new MemPersistence(idMap.current, store)}
-    >
-      <>
-        <Head>
-          <title>Placemark Play</title>
-        </Head>
-        <Suspense fallback={null}>
-          <PlacemarkPlay />
-        </Suspense>
-      </>
-    </PersistenceContext.Provider>
-  );
+function App() {
+	const idMap = useRef(UIDMap.empty());
+	return (
+		<Suspense fallback={null}>
+			<StrictMode>
+				<QueryClientProvider client={queryClient}>
+					<T.Provider>
+						<Switch>
+							<Route path="/">
+								<Provider store={store}>
+									<PersistenceContext.Provider
+										value={new MemPersistence(idMap.current, store)}
+									>
+										<title>Placemark Play</title>
+										<PlacemarkPlay />
+									</PersistenceContext.Provider>
+								</Provider>
+							</Route>
+							<Route path="/converter">
+								<title>Converter</title>
+								<Converter />
+							</Route>
+							<Route path="/secret-styleguide">
+								<StyleGuide />
+							</Route>
+						</Switch>
+					</T.Provider>
+				</QueryClientProvider>
+			</StrictMode>
+		</Suspense>
+	);
 }
 
-const Play = () => {
-  const store = createStore();
-  const layerId = newFeatureId();
-
-  store.set(
-    layerConfigAtom,
-    new Map([
-      [
-        layerId,
-        {
-          ...LAYERS.MONOCHROME,
-          at: "a0",
-          opacity: 1,
-          tms: false,
-          visibility: true,
-          labelVisibility: true,
-          id: layerId,
-        },
-      ],
-    ])
-  );
-
-  return (
-    <Provider key="play" store={store}>
-      <ScratchpadInner store={store} />
-    </Provider>
-  );
-};
-
-export default Play;
+createRoot(document.getElementById("root")!).render(<App />);
