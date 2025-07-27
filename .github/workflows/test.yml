@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: test
-      NEXT_PUBLIC_MAPBOX_TOKEN: pk.eyJ1IjoidG1jdyIsImEiOiJja2twd25qdWowMXBuMnVxdDZodXJzaDZoIn0.UL4e2OtC7xrGr9hohU1odg
+      VITE_PUBLIC_MAPBOX_TOKEN: pk.eyJ1IjoidG1jdyIsImEiOiJja2twd25qdWowMXBuMnVxdDZodXJzaDZoIn0.UL4e2OtC7xrGr9hohU1odg
+      VITE_PUBLIC_GEOCODE_EARTH_TOKEN: xxx
       WFC_QUOTA: 10
       WFC_QUOTA_ENTERPRISE: 100
       TEAM_EMAIL: foo@bar.com
