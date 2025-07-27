@@ -7,159 +7,24 @@ import {
 	B3Size,
 	StyledDialogOverlay,
 	StyledDialogContent,
-	Loading,
 	DefaultErrorBoundary,
+	Loading,
 } from "./elements";
-import * as dialogState from "state/dialog_state";
-import dynamic from "@loadable/component";
-
-const CircleDialog = dynamic<{
-	modal: dialogState.DialogStateCircle;
-	onClose: () => void;
-}>(() => import("app/components/dialogs/circle").then((r) => r.CircleDialog), {
-	fallback: <Loading />,
-});
-
-const ExportSVGDialog = dynamic<{
-	modal: dialogState.DialogStateExportSVG;
-	onClose: () => void;
-}>(
-	() =>
-		import("app/components/dialogs/export_svg").then((r) => r.ExportSVGDialog),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const ImportDialog = dynamic<{
-	modal: dialogState.DialogStateImport;
-	onClose: () => void;
-}>(() => import("app/components/dialogs/import").then((r) => r.ImportDialog), {
-	fallback: <Loading />,
-});
-
-const ExportDialog = dynamic<{
-	onClose: () => void;
-}>(() => import("app/components/dialogs/export").then((r) => r.ExportDialog), {
-	fallback: <Loading />,
-});
-
-const ImportURLDialog = dynamic<{
-	onClose: () => void;
-}>(
-	() =>
-		import("app/components/dialogs/import_url").then((r) => r.ImportURLDialog),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const ImportExampleDialog = dynamic<{
-	onClose: () => void;
-}>(
-	() =>
-		import("app/components/dialogs/import_example").then(
-			(r) => r.ImportExampleDialog,
-		),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const ImportTextDialog = dynamic<{
-	onClose: () => void;
-	modal: dialogState.DialogStateLoadText;
-}>(
-	() =>
-		import("app/components/dialogs/import_text").then(
-			(r) => r.ImportTextDialog,
-		),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const CircleTypesDialog = dynamic<Record<string, never>>(
-	() =>
-		import("app/components/dialogs/circle_types").then(
-			(r) => r.CircleTypesDialog,
-		),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const CheatsheetDialog = dynamic<Record<string, never>>(
-	() =>
-		import("app/components/dialogs/cheatsheet").then((r) => r.CheatsheetDialog),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const QuickswitcherDialog = dynamic<{
-	onClose: () => void;
-}>(
-	() =>
-		import("app/components/dialogs/quickswitcher").then(
-			(r) => r.QuickswitcherDialog,
-		),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const CastPropertyDialog = dynamic<{
-	onClose: () => void;
-	modal: dialogState.DialogStateCastProperty;
-}>(
-	() =>
-		import("app/components/dialogs/cast_property").then(
-			(r) => r.CastPropertyDialog,
-		),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const ExportCodeDialog = dynamic<{
-	onClose: () => void;
-}>(
-	() =>
-		import("app/components/dialogs/export_code").then(
-			(r) => r.ExportCodeDialog,
-		),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const ImportNotesDialog = dynamic<{
-	onClose: () => void;
-	modal: dialogState.DialogStateImportNotes;
-}>(
-	() =>
-		import("app/components/dialogs/import_notes").then(
-			(r) => r.ImportNotesDialog,
-		),
-	{
-		fallback: <Loading />,
-	},
-);
-
-const Simplify = dynamic<{
-	onClose: () => void;
-	modal: dialogState.DialogStateSimplify;
-}>(() => import("app/components/dialogs/simplify"), {
-	fallback: <Loading />,
-});
-
-const BufferDialog = dynamic<{
-	onClose: () => void;
-	modal: dialogState.DialogStateBuffer;
-}>(() => import("app/components/dialogs/buffer"), {
-	fallback: <Loading />,
-});
+import { CircleDialog } from "app/components/dialogs/circle";
+import { ExportSVGDialog } from "app/components/dialogs/export_svg";
+import { ImportDialog } from "app/components/dialogs/import";
+import { ExportDialog } from "app/components/dialogs/export";
+import { ImportURLDialog } from "app/components/dialogs/import_url";
+import { ImportExampleDialog } from "app/components/dialogs/import_example";
+import { ImportTextDialog } from "app/components/dialogs/import_text";
+import { CircleTypesDialog } from "app/components/dialogs/circle_types";
+import { CheatsheetDialog } from "app/components/dialogs/cheatsheet";
+import { QuickswitcherDialog } from "app/components/dialogs/quickswitcher";
+import { CastPropertyDialog } from "app/components/dialogs/cast_property";
+import { ExportCodeDialog } from "app/components/dialogs/export_code";
+import { ImportNotesDialog } from "app/components/dialogs/import_notes";
+import SimplifyDialog from "app/components/dialogs/simplify";
+import BufferDialog from "app/components/dialogs/buffer";
 
 export const Dialogs = memo(function Dialogs() {
 	const [dialog, setDialogState] = useAtom(dialogAtom);
@@ -196,14 +61,12 @@ export const Dialogs = memo(function Dialogs() {
 			<CircleDialog modal={modal} onClose={onClose} />
 		))
 		.with({ type: "simplify" }, (modal) => (
-			<Simplify onClose={onClose} modal={modal} />
+			<SimplifyDialog onClose={onClose} modal={modal} />
 		))
 		.with({ type: "buffer" }, (modal) => (
 			<BufferDialog onClose={onClose} modal={modal} />
 		))
-		.with({ type: "export-svg" }, (modal) => (
-			<ExportSVGDialog onClose={onClose} modal={modal} />
-		))
+		.with({ type: "export-svg" }, () => <ExportSVGDialog />)
 		.with({ type: "from_url" }, () => <ImportURLDialog onClose={onClose} />)
 		.with({ type: "import_example" }, () => (
 			<ImportExampleDialog onClose={onClose} />

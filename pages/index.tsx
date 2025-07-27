@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { StrictMode, Suspense, useRef } from "react";
 import { PersistenceContext } from "app/lib/persistence/context";
 import { MemPersistence } from "app/lib/persistence/memory";
@@ -9,12 +8,14 @@ import { newFeatureId } from "app/lib/id";
 import LAYERS from "app/lib/default_layers";
 import { createRoot } from "react-dom/client";
 import { PlacemarkPlay } from "app/components/placemark_play";
+import Converter from "./converter";
+import { Route, Switch } from "wouter";
+import "../styles/globals.css";
+import { Tooltip as T } from "radix-ui";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { StyleGuide } from "app/components/style_guide";
 
-createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<PlacemarkPlay />
-	</StrictMode>,
-);
+const queryClient = new QueryClient();
 
 function ScratchpadInner({ store }: { store: Store }) {
 	const idMap = useRef(UIDMap.empty());
@@ -24,9 +25,7 @@ function ScratchpadInner({ store }: { store: Store }) {
 			value={new MemPersistence(idMap.current, store)}
 		>
 			<>
-				<Head>
-					<title>Placemark Play</title>
-				</Head>
+				<title>Placemark Play</title>
 				<Suspense fallback={null}>
 					<PlacemarkPlay />
 				</Suspense>
@@ -64,4 +63,22 @@ const Play = () => {
 	);
 };
 
-export default Play;
+createRoot(document.getElementById("root")!).render(
+	<StrictMode>
+		<QueryClientProvider client={queryClient}>
+			<T.Provider>
+				<Switch>
+					<Route path="/">
+						<Play />
+					</Route>
+					<Route path="/converter">
+						<Converter />
+					</Route>
+					<Route path="/secret-styleguide">
+						<StyleGuide />
+					</Route>
+				</Switch>
+			</T.Provider>
+		</QueryClientProvider>
+	</StrictMode>,
+);

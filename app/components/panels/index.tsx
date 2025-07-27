@@ -8,17 +8,12 @@ import {
 import { useAtom, useAtomValue } from "jotai";
 import { useHotkeys } from "integrations/hotkeys";
 import clsx from "clsx";
-import loadable from "@loadable/component";
 
-const FeatureTable = loadable(
-	() => import("app/components/panels/feature_table"),
-);
+import FeatureTable from "app/components/panels/feature_table";
 import FeatureEditor from "app/components/panels/feature_editor";
 import { DefaultErrorBoundary } from "app/components/elements";
 import { FeatureEditorFolderInner } from "./feature_editor/feature_editor_folder";
-const SymbolizationEditor = loadable(
-	() => import("app/components/panels/symbolization_editor"),
-);
+import SymbolizationEditor from "app/components/panels/symbolization_editor";
 import { EyeOpenIcon } from "@radix-ui/react-icons";
 
 const TAB_ORDER_RIGHT = [TabOption.Feature, TabOption.Table];

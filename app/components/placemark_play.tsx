@@ -56,7 +56,7 @@ import {
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import debounce from "lodash/debounce";
 import { useAtomCallback } from "jotai/utils";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "wouter";
 import { useImportFile, useImportString } from "app/hooks/use_import";
 import toast from "react-hot-toast";
 import { DEFAULT_IMPORT_OPTIONS, detectType } from "app/lib/convert";
@@ -80,7 +80,7 @@ function UrlAPI() {
 	const doImportString = useImportString();
 	const setDialogState = useSetAtom(dialogAtom);
 	const doImportFile = useImportFile();
-	const searchParams = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const load = searchParams?.get("load");
 	const done = useRef<boolean>(false);
 

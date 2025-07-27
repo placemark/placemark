@@ -36,8 +36,6 @@
 		"@dnd-kit/utilities": "^3.2.2",
 		"@headlessui/react": "^1.7.19",
 		"@lezer/highlight": "^1.2.1",
-		"@loadable/component": "^5.16.7",
-		"@next/env": "^14.2.30",
 		"@placemarkio/check-geojson": "0.1.12",
 		"@placemarkio/flat-drop-files": "^1.0.2",
 		"@placemarkio/geojson-rewind": "^1.0.2",
@@ -102,7 +100,6 @@
 		"mapbox-gl": "3.4.0",
 		"memoize-one": "^6.0.0",
 		"nanoid": "^5.1.5",
-		"next": "^14.2.30",
 		"optics-ts": "^2.4.1",
 		"polygon-clipping": "^0.15.7",
 		"polylabel": "^2.0.1",
@@ -162,11 +159,6 @@
 		"typescript": "^5.8.3",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.2.4"
-	},
-	"nextBundleAnalysis": {
-		"budget": null,
-		"budgetPercentIncreaseRed": 20,
-		"showDetails": true
 	},
 	"engines": {
 		"node": ">=20.19.4",
