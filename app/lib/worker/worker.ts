@@ -6,11 +6,11 @@ import { bufferFeature } from "app/lib/buffer";
 import { booleanFeatures } from "app/lib/map_operations/boolean_features";
 
 const lib = {
-  getIssues,
-  bufferFeature,
-  booleanFeatures,
-  fileToGeoJSON,
-  fromGeoJSON,
+	getIssues,
+	bufferFeature,
+	booleanFeatures,
+	fileToGeoJSON,
+	fromGeoJSON,
 };
 
 export type Lib = typeof lib;

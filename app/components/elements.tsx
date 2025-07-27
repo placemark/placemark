@@ -169,7 +169,7 @@ export class ErrorBoundary extends React.Component<
 			//   in App
 			info.componentStack,
 			// Warning: `captureOwnerStack` is not available in production.
-			React.captureOwnerStack(),
+			// React.captureOwnerStack(),
 		);
 	}
 
