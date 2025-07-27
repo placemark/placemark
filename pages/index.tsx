@@ -28,11 +28,13 @@ function App() {
 									<PersistenceContext.Provider
 										value={new MemPersistence(idMap.current, store)}
 									>
+										<title>Placemark Play</title>
 										<PlacemarkPlay />
 									</PersistenceContext.Provider>
 								</Provider>
 							</Route>
 							<Route path="/converter">
+								<title>Converter</title>
 								<Converter />
 							</Route>
 							<Route path="/secret-styleguide">
