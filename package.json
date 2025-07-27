@@ -34,7 +34,7 @@
 		"@dnd-kit/modifiers": "^6.0.1",
 		"@dnd-kit/sortable": "^7.0.2",
 		"@dnd-kit/utilities": "^3.2.2",
-		"@headlessui/react": "^1.7.19",
+		"@headlessui/react": "^2.2.6",
 		"@lezer/highlight": "^1.2.1",
 		"@placemarkio/check-geojson": "0.1.12",
 		"@placemarkio/flat-drop-files": "^1.0.2",
