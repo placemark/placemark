@@ -130,7 +130,7 @@
 		"zod": "^3.25.76"
 	},
 	"devDependencies": {
-		"@mapbox/mapbox-gl-style-spec": "^13.28.0",
+		"@mapbox/mapbox-gl-style-spec": "^14.14.0",
 		"@testing-library/react": "^14.3.1",
 		"@testing-library/react-hooks": "^8.0.1",
 		"@types/d3-dsv": "^3.0.7",
