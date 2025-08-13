@@ -131,7 +131,7 @@
 	},
 	"devDependencies": {
 		"@mapbox/mapbox-gl-style-spec": "^13.28.0",
-		"@testing-library/react": "^14.3.1",
+		"@testing-library/react": "^16.3.0",
 		"@testing-library/react-hooks": "^8.0.1",
 		"@types/d3-dsv": "^3.0.7",
 		"@types/deep-freeze": "^0.1.5",
@@ -153,7 +153,7 @@
 		"fastestsmallesttextencoderdecoder": "^1.0.22",
 		"jest-diff": "^30.0.5",
 		"jest-matcher-utils": "^30.0.5",
-		"jsdom": "^20.0.3",
+		"jsdom": "^26.1.0",
 		"knip": "^5.62.0",
 		"random-js": "^2.1.0",
 		"typescript": "^5.8.3",
