@@ -204,8 +204,8 @@ importers:
         specifier: ^4.4.1
         version: 4.4.1
       flatgeobuf:
-        specifier: ^3.38.0
-        version: 3.38.0
+        specifier: ^4.1.1
+        version: 4.1.1
       formik:
         specifier: ^2.4.6
         version: 2.4.6(@types/react@18.3.23)(react@18.3.1)
@@ -3064,8 +3064,8 @@ packages:
   flatbush@4.4.1:
     resolution: {integrity: sha512-g3eA6ZF0viCV0UslH/mdUzCLcT7aGj0Fjk9MBxxNkbADSXqSHDZhthFBDFgo2umc6SVmSItNefTjWnfyo7DunA==}
 
-  flatgeobuf@3.38.0:
-    resolution: {integrity: sha512-2BLAF81ZT19t3cVRxiNAU2LUrwfMUo4ASBvRtguPUAUJjmyPpnlkBDCrSyswYBg5MrC+ByhdE9SvZIPAgYhwgA==}
+  flatgeobuf@4.1.1:
+    resolution: {integrity: sha512-+AvIwR8jBwIB7fBZIlU1wtzkRT8N7jlUM+zGkhXERGL7V4hKbU2vjcldj0QvMv/yRirqPFiMv9WMTzhUMO6P8g==}
 
   flatqueue@2.0.3:
     resolution: {integrity: sha512-RZCWZNkmxzUOh8jqEcEGZCycb3B8KAfpPwg3H//cURasunYxsg1eIvE+QDSjX+ZPHTIVfINfK1aLTrVKKO0i4g==}
@@ -7865,7 +7865,7 @@ snapshots:
     dependencies:
       flatqueue: 2.0.3
 
-  flatgeobuf@3.38.0:
+  flatgeobuf@4.1.1:
     dependencies:
       '@repeaterjs/repeater': 3.0.6
       flatbuffers: 24.12.23
