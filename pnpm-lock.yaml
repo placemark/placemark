@@ -228,8 +228,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(jotai@2.12.5(@types/react@18.3.23)(react@18.3.1))(optics-ts@2.4.1)
       jotai-xstate:
-        specifier: ^0.3.0
-        version: 0.3.0(jotai@2.12.5(@types/react@18.3.23)(react@18.3.1))(xstate@4.38.3)
+        specifier: ^0.6.1
+        version: 0.6.1(jotai@2.12.5(@types/react@18.3.23)(react@18.3.1))(xstate@4.38.3)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -3127,7 +3127,7 @@ packages:
 
   geographiclib@1.48.0:
     resolution: {integrity: sha512-WIpDKKj2Gu+E4jkF3f3fg7OPF6T1/35tQXKc4jLLQrwjNiTZ5KrrYF5Gp0dQ/YbJIoCjb9vs2/abWTRsCEoi2w==}
-    deprecated: This package has been split into geographic-geodesic + geographiclib-dms; use one or both of these instead of geographiclib.
+    deprecated: 'This package has been split into geographic-geodesic + geographiclib-dms; use one or both of these instead of geographiclib.  WARNING: there''s a potential buffer overrun on this package.  SWITCH TO THE NEW PACKAGES NOW.'
 
   geojson-rbush@3.2.0:
     resolution: {integrity: sha512-oVltQTXolxvsz1sZnutlSuLDEcQAKYC/uXt9zDzJJ6bu0W+baTI8LZBaTup5afzibEH4N3jlq2p+a152wlBJ7w==}
@@ -3467,11 +3467,11 @@ packages:
       jotai: '>=2.0.0'
       optics-ts: '>=2.0.0'
 
-  jotai-xstate@0.3.0:
-    resolution: {integrity: sha512-ImMTwkT8e2Ld3KBUtisjtzTgtg4jgeAoFzwVZgDCoDkYsYgmE8NatEwBoz63BTmpg+EKOYkDxd6QmrAT9a2TBw==}
+  jotai-xstate@0.6.1:
+    resolution: {integrity: sha512-graSDsorui1a4Zt4jCJ40GuOzOkfOY317XcazYnNx0EHS+D/rOr4aLzZRy0NLaPQZsypfcGSMbNCwksfhwkixA==}
     peerDependencies:
-      jotai: '>=1.11.0'
-      xstate: '*'
+      jotai: '>=2.0.0'
+      xstate: '>=5.0.0'
 
   jotai@2.12.5:
     resolution: {integrity: sha512-G8m32HW3lSmcz/4mbqx0hgJIQ0ekndKWiYP7kWVKi0p6saLXdSoye+FZiOFyonnd7Q482LCzm8sMDl7Ar1NWDw==}
@@ -8273,7 +8273,7 @@ snapshots:
       jotai: 2.12.5(@types/react@18.3.23)(react@18.3.1)
       optics-ts: 2.4.1
 
-  jotai-xstate@0.3.0(jotai@2.12.5(@types/react@18.3.23)(react@18.3.1))(xstate@4.38.3):
+  jotai-xstate@0.6.1(jotai@2.12.5(@types/react@18.3.23)(react@18.3.1))(xstate@4.38.3):
     dependencies:
       jotai: 2.12.5(@types/react@18.3.23)(react@18.3.1)
       xstate: 4.38.3
