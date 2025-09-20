@@ -5,8 +5,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-	plugins: [react(), tsconfigPaths(), nodePolyfills()],
+export default defineConfig((env) => ({
+	plugins:
+		env.mode === "test"
+			? [react(), tsconfigPaths()]
+			: [react(), tsconfigPaths(), nodePolyfills()],
 	worker: {
 		format: "es",
 		plugins: () => [tsconfigPaths()],
@@ -22,4 +25,4 @@ export default defineConfig({
 			reporter: ["text", "json", "html"],
 		},
 	},
-});
+}));
