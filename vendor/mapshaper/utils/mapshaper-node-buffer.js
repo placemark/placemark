@@ -1,1 +1,1 @@
-export var Buffer = require("buffer").Buffer; // works with browserify
+export { Buffer } from "buffer"; // works with browserify
