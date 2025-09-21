@@ -27,9 +27,9 @@
 		"@codemirror/lint": "^6.8.5",
 		"@codemirror/state": "^6.5.2",
 		"@codemirror/view": "^6.38.1",
-		"@deck.gl/core": "^8.9.36",
-		"@deck.gl/layers": "^8.9.36",
-		"@deck.gl/mapbox": "^8.9.36",
+		"@deck.gl/core": "^9.1.14",
+		"@deck.gl/layers": "^9.1.14",
+		"@deck.gl/mapbox": "^9.1.14",
 		"@dnd-kit/core": "^6.3.1",
 		"@dnd-kit/modifiers": "^6.0.1",
 		"@dnd-kit/sortable": "^7.0.2",
@@ -131,7 +131,7 @@
 		"zod": "^3.25.76"
 	},
 	"devDependencies": {
-		"@mapbox/mapbox-gl-style-spec": "^13.28.0",
+		"@mapbox/mapbox-gl-style-spec": "^14.15.0",
 		"@testing-library/react": "^16.3.0",
 		"@testing-library/react-hooks": "^8.0.1",
 		"@types/d3-dsv": "^3.0.7",
