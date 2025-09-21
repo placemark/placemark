@@ -311,7 +311,7 @@ export const MapComponent = memo(function MapComponent({
     onMoveEnd() {},
     onMove: throttle((e: mapboxgl.MapboxEvent) => {
       const center = e.target.getCenter().toArray();
-      const bounds = e.target.getBounds().toArray();
+      const bounds = e.target.getBounds()?.toArray();
       return {
         center,
         bounds,
