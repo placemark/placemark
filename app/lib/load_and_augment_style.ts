@@ -324,7 +324,7 @@ function LABEL_PAINT(
 
 function LABEL_LAYOUT(
   previewProperty: PreviewProperty,
-  placement: mapboxgl.SymbolLayout["symbol-placement"],
+  placement: NonNullable<mapboxgl.SymbolLayout>["symbol-placement"],
 ): mapboxgl.SymbolLayout {
   const paint: mapboxgl.SymbolLayout = {
     "text-field": ["get", previewProperty],
