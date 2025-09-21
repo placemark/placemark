@@ -1,6 +1,6 @@
+import { copyRecord, findFieldNames } from "../datatable/mapshaper-data-utils";
 import { error } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
-import { copyRecord, findFieldNames } from "../datatable/mapshaper-data-utils";
 
 export function DataTable(obj) {
   var records;
@@ -18,12 +18,10 @@ export function DataTable(obj) {
     }
   }
 
-  this.getRecords = function () {
-    return records;
-  };
+  this.getRecords = () => records;
 
   // Same-name method in ShapefileTable doesn't require parsing the entire DBF file
-  this.getReadOnlyRecordAt = function (i) {
+  this.getReadOnlyRecordAt = (i) => {
     return copyRecord(records[i]); // deep-copies plain objects but not other constructed objects
   };
 }
@@ -45,18 +43,18 @@ DataTable.prototype = {
     var useFunction = utils.isFunction(init);
     if (!utils.isNumber(init) && !utils.isString(init) && !useFunction) {
       error(
-        "DataTable#addField() requires a string, number or function for initialization"
+        "DataTable#addField() requires a string, number or function for initialization",
       );
     }
     if (this.fieldExists(name))
       error(
         "DataTable#addField() tried to add a field that already exists:",
-        name
+        name,
       );
     // var dataFieldRxp = /^[a-zA-Z_][a-zA-Z_0-9]*$/;
     // if (!dataFieldRxp.test(name)) error("DataTable#addField() invalid field name:", name);
 
-    this.getRecords().forEach(function (obj, i) {
+    this.getRecords().forEach((obj, i) => {
       obj[name] = useFunction ? init(obj, i) : init;
     });
   },
@@ -66,13 +64,11 @@ DataTable.prototype = {
   },
 
   addIdField: function () {
-    this.addField("FID", function (obj, i) {
-      return i;
-    });
+    this.addField("FID", (obj, i) => i);
   },
 
   deleteField: function (f) {
-    this.getRecords().forEach(function (o) {
+    this.getRecords().forEach((o) => {
       delete o[f];
     });
   },

@@ -1,6 +1,5 @@
-import { expect, test } from "vitest";
-
 import { fcMultiPoint, wrap, wrapMap } from "test/helpers";
+import { expect, test } from "vitest";
 import { getColumns, getFn } from "./search_utils";
 
 test("getFn", () => {
@@ -14,6 +13,6 @@ test("getColumns", () => {
       featureMap: wrapMap(fcMultiPoint),
       folderId: null,
       virtualColumns: [],
-    })
+    }),
   ).toEqual(["x"]);
 });

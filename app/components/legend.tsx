@@ -1,5 +1,12 @@
+import { GearIcon, Pencil2Icon } from "@radix-ui/react-icons";
+import { MapContext } from "app/context/map_context";
+import { linearGradient } from "app/lib/color";
+import { SCALE_UNITS, type ScaleUnit, zScaleUnit } from "app/lib/constants";
 import { usePersistence } from "app/lib/persistence/context";
-import type { ISymbolizationRamp, ISymbolizationCategorical } from "types";
+import { useAtom, useSetAtom } from "jotai";
+import last from "lodash/last";
+import throttle from "lodash/throttle";
+import { Popover as P } from "radix-ui";
 import {
   Fragment,
   useContext,
@@ -7,10 +14,9 @@ import {
   useState,
   useTransition,
 } from "react";
-import { linearGradient } from "app/lib/color";
-import last from "lodash/last";
-import { scaleUnitAtom, tabAtom, TabOption } from "state/jotai";
-import { GearIcon, Pencil2Icon } from "@radix-ui/react-icons";
+import { scaleUnitAtom, TabOption, tabAtom } from "state/jotai";
+import { match } from "ts-pattern";
+import type { ISymbolizationCategorical, ISymbolizationRamp } from "types";
 import {
   Button,
   StyledLabelSpan,
@@ -18,12 +24,6 @@ import {
   StyledPopoverContent,
   styledSelect,
 } from "./elements";
-import { match } from "ts-pattern";
-import { MapContext } from "app/context/map_context";
-import { Popover as P } from "radix-ui";
-import { SCALE_UNITS, ScaleUnit, zScaleUnit } from "app/lib/constants";
-import { useAtom, useSetAtom } from "jotai";
-import throttle from "lodash/throttle";
 
 interface ScaleMeasurement {
   unit: string;
@@ -125,7 +125,7 @@ function getScale(
   map: mapboxgl.Map,
   options: {
     unit: ScaleUnit;
-  }
+  },
 ): {
   maxDistance: number;
   unit: string;
@@ -164,26 +164,26 @@ function getScale(
 }
 
 function getDecimalRoundNum(d: number) {
-  const multiplier = Math.pow(10, Math.ceil(-Math.log(d) / Math.LN10));
+  const multiplier = 10 ** Math.ceil(-Math.log(d) / Math.LN10);
   return Math.round(d * multiplier) / multiplier;
 }
 
 function getRoundNum(num: number) {
-  const pow10 = Math.pow(10, `${Math.floor(num)}`.length - 1);
+  const pow10 = 10 ** (`${Math.floor(num)}`.length - 1);
   let d = num / pow10;
 
   d =
     d >= 10
       ? 10
       : d >= 5
-      ? 5
-      : d >= 3
-      ? 3
-      : d >= 2
-      ? 2
-      : d >= 1
-      ? 1
-      : getDecimalRoundNum(d);
+        ? 5
+        : d >= 3
+          ? 3
+          : d >= 2
+            ? 2
+            : d >= 1
+              ? 1
+              : getDecimalRoundNum(d);
 
   return pow10 * d;
 }
@@ -206,7 +206,7 @@ function ScaleControl() {
           setMeasurement(
             getScale(e.target, {
               unit: scaleUnit,
-            })
+            }),
           );
         });
       }, 50);
@@ -214,7 +214,7 @@ function ScaleControl() {
       setMeasurement(
         getScale(map.map, {
           unit: scaleUnit,
-        })
+        }),
       );
       return () => {
         if (map) {
@@ -222,7 +222,7 @@ function ScaleControl() {
         }
       };
     }
-  }, [map, scaleUnit, startTransition]);
+  }, [map, scaleUnit]);
 
   const distance = getRoundNum(maxDistance);
   const ratio = distance / maxDistance;

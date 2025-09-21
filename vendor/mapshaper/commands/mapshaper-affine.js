@@ -1,20 +1,19 @@
-import { mergeArcs } from "../dataset/mapshaper-merging";
-import { forEachArcId } from "../paths/mapshaper-path-utils";
-import { getDatasetBounds } from "../dataset/mapshaper-dataset-utils";
-import { forEachPoint } from "../points/mapshaper-point-utils";
-import { countArcsInShapes } from "../paths/mapshaper-path-utils";
-import { compileValueExpression } from "../expressions/mapshaper-expressions";
-import { layerHasGeometry } from "../dataset/mapshaper-layer-utils";
 import { getDatasetCRS } from "../crs/mapshaper-projections";
+import { getDatasetBounds } from "../dataset/mapshaper-dataset-utils";
+import { layerHasGeometry } from "../dataset/mapshaper-layer-utils";
+import { mergeArcs } from "../dataset/mapshaper-merging";
+import { compileValueExpression } from "../expressions/mapshaper-expressions";
 import { convertIntervalPair } from "../geom/mapshaper-units";
-import { ArcCollection } from "../paths/mapshaper-arcs";
-import utils from "../utils/mapshaper-utils";
 import cmd from "../mapshaper-cmd";
 import { absArcId } from "../paths/mapshaper-arc-utils";
+import { ArcCollection } from "../paths/mapshaper-arcs";
+import { countArcsInShapes, forEachArcId } from "../paths/mapshaper-path-utils";
+import { forEachPoint } from "../points/mapshaper-point-utils";
+import utils from "../utils/mapshaper-utils";
 
 // Apply rotation, scale and/or shift to some or all of the features in a dataset
 //
-cmd.affine = function (targetLayers, dataset, opts) {
+cmd.affine = (targetLayers, dataset, opts) => {
   // Need to separate the targeted shapes from any other shapes that share
   // the same topology. So we duplicate any arcs that are shared by the targeted
   // shapes and their topological neighbors and remap arc references in the
@@ -32,7 +31,7 @@ cmd.affine = function (targetLayers, dataset, opts) {
   var otherShapes = [];
   var targetPoints = [];
   var targetFlags, otherFlags, transform, transformOpts;
-  dataset.layers.filter(layerHasGeometry).forEach(function (lyr) {
+  dataset.layers.filter(layerHasGeometry).forEach((lyr) => {
     var hits = [],
       misses = [],
       test;
@@ -40,7 +39,7 @@ cmd.affine = function (targetLayers, dataset, opts) {
       misses = lyr.shapes;
     } else if (opts.where) {
       test = compileValueExpression(opts.where, lyr, dataset.arcs);
-      lyr.shapes.forEach(function (shp, i) {
+      lyr.shapes.forEach((shp, i) => {
         (test(i) ? hits : misses).push(shp);
       });
     } else {
@@ -64,7 +63,7 @@ cmd.affine = function (targetLayers, dataset, opts) {
         { geometry_type: "polyline", shapes: targetShapes },
       ],
     },
-    opts
+    opts,
   );
   transform = getAffineTransform(rotateArg, scaleArg, shiftArg, anchorArg);
   if (targetShapes.length > 0) {
@@ -76,13 +75,13 @@ cmd.affine = function (targetLayers, dataset, opts) {
       applyArrayMask(otherFlags, targetFlags);
       dataset.arcs = duplicateSelectedArcs(otherShapes, arcs, otherFlags);
     }
-    dataset.arcs.transformPoints(function (x, y, arcId) {
+    dataset.arcs.transformPoints((x, y, arcId) => {
       if (arcId < targetFlags.length && targetFlags[arcId] > 0) {
         return transform(x, y);
       }
     });
   }
-  forEachPoint(targetPoints, function (p) {
+  forEachPoint(targetPoints, (p) => {
     var p2 = transform(p[0], p[1]);
     p[0] = p2[0];
     p[1] = p2[1];
@@ -109,7 +108,7 @@ export function getAffineTransform(rotation, scale, shift, anchor) {
   var angle = (rotation * Math.PI) / 180;
   var a = scale * Math.cos(angle);
   var b = -scale * Math.sin(angle);
-  return function (x, y) {
+  return (x, y) => {
     var x2 = a * (x - anchor[0]) - b * (y - anchor[1]) + shift[0] + anchor[0];
     var y2 = b * (x - anchor[0]) + a * (y - anchor[1]) + shift[1] + anchor[1];
     return [x2, y2];
@@ -142,7 +141,7 @@ function duplicateSelectedArcs(shapes, arcs, flags) {
       arcCount++;
     }
   }
-  forEachArcId(shapes, function (id) {
+  forEachArcId(shapes, (id) => {
     var absId = absArcId(id);
     if (flags[absId] > 0) {
       return id < 0 ? ~map[absId] : map[absId];

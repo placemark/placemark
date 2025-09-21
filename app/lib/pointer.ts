@@ -1,4 +1,4 @@
-import { JsonValue } from "type-fest";
+import type { JsonValue } from "type-fest";
 
 const hasExcape = /~/;
 const escapeMatcher = /~[01]/g;
@@ -12,7 +12,7 @@ function escapeReplacer(m: string) {
     case "~0":
       return "~";
   }
-  throw new Error("Invalid tilde escape: " + m);
+  throw new Error(`Invalid tilde escape: ${m}`);
 }
 
 function untilde(str: string) {

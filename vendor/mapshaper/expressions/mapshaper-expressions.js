@@ -1,10 +1,10 @@
+import { initDataTable } from "../dataset/mapshaper-layer-utils";
 import { addUtils } from "../expressions/mapshaper-expression-utils";
 import { initFeatureProxy } from "../expressions/mapshaper-feature-proxy";
 import { addLayerGetters } from "../expressions/mapshaper-layer-proxy";
-import { initDataTable } from "../dataset/mapshaper-layer-utils";
-import utils from "../utils/mapshaper-utils";
-import { message, stop } from "../utils/mapshaper-logging";
 import { getStateVar } from "../mapshaper-state";
+import { message, stop } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // Compiled expression returns a value
 export function compileValueExpression(exp, lyr, arcs, opts) {
@@ -21,7 +21,7 @@ function cleanExpression(exp) {
 
 export function compileFeaturePairFilterExpression(exp, lyr, arcs) {
   var func = compileFeaturePairExpression(exp, lyr, arcs);
-  return function (idA, idB) {
+  return (idA, idB) => {
     var val = func(idA, idB);
     if (val !== true && val !== false) {
       stop("where expression must return true or false");
@@ -56,7 +56,7 @@ export function compileFeaturePairExpression(rawExp, lyr, arcs) {
     var getFeatureById = initFeatureProxy(lyr, arcs);
     function Proxy() {}
 
-    return function (id) {
+    return (id) => {
       var proxy;
       if (id == -1) return null;
       Proxy.prototype = records[id] || {};
@@ -69,7 +69,7 @@ export function compileFeaturePairExpression(rawExp, lyr, arcs) {
   // idA - id of a record
   // idB - id of a record, or -1
   // rec - optional data record
-  return function (idA, idB, rec) {
+  return (idA, idB, rec) => {
     var val;
     ctx.A = getA(idA);
     ctx.B = getB(idB);
@@ -108,7 +108,7 @@ export function compileFeatureExpression(rawExp, lyr, arcs, opts_) {
   func = getExpressionFunction(exp, lyr, arcs, opts);
 
   // @destRec (optional) substitute for records[recId] (used by -calc)
-  return function (recId, destRec) {
+  return (recId, destRec) => {
     var record;
     if (destRec) {
       record = destRec;
@@ -129,7 +129,7 @@ export function compileFeatureExpression(rawExp, lyr, arcs, opts_) {
 function getAssignedVars(exp, hasDot) {
   var rxp = /[a-z_$][.a-z0-9_$]*(?= *=[^>=])/gi; // ignore arrow functions and comparisons
   var matches = exp.match(rxp) || [];
-  var f = function (s) {
+  var f = (s) => {
     var i = s.indexOf(".");
     return hasDot ? i > -1 : i == -1;
   };
@@ -142,7 +142,7 @@ function getAssignedVars(exp, hasDot) {
 function getAssignmentObjects(exp) {
   var matches = getAssignedVars(exp, true),
     names = [];
-  matches.forEach(function (s) {
+  matches.forEach((s) => {
     var match = /^([^.]+)\.[^.]+$/.exec(s);
     var name = match ? match[1] : null;
     if (name && name != "this") {
@@ -174,7 +174,7 @@ function getExpressionFunction(exp, lyr, arcs, opts) {
   var layerOnlyProxy = addLayerGetters({}, lyr, arcs);
   var ctx = getExpressionContext(lyr, opts.context, opts);
   var func = compileExpressionToFunction(exp, opts);
-  return function (rec, i) {
+  return (rec, i) => {
     var val;
     // Assigning feature/layer proxy to '$' -- maybe this should be removed,
     // since it is also exposed as "this".
@@ -217,7 +217,7 @@ function getExpressionContext(lyr, mixins, opts) {
   mixins = utils.defaults(mixins || {}, defs);
   // also add defs as 'global' object
   env.global = defs;
-  Object.keys(mixins).forEach(function (key) {
+  Object.keys(mixins).forEach((key) => {
     // Catch name collisions between data fields and user-defined functions
     var d = Object.getOwnPropertyDescriptor(mixins, key);
     if (d.get) {
@@ -229,7 +229,7 @@ function getExpressionContext(lyr, mixins, opts) {
     }
   });
   // make context properties non-writable, so they can't be replaced by an expression
-  return Object.keys(env).reduce(function (memo, key) {
+  return Object.keys(env).reduce((memo, key) => {
     if (key in memo) {
       // property has already been set (probably by a mixin, above): skip
       // "no_warn" option used in calc= expressions
@@ -238,7 +238,7 @@ function getExpressionContext(lyr, mixins, opts) {
           message(
             "Warning: " +
               key +
-              "() function is hiding a data field with the same name"
+              "() function is hiding a data field with the same name",
           );
         } else {
           message('Warning: "' + key + '" has multiple definitions');

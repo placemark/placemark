@@ -1,4 +1,4 @@
-import { IWrappedFeature } from "types";
+import type { IWrappedFeature } from "types";
 
 /**
  * A two-way map between string UUIDs

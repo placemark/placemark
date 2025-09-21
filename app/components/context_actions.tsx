@@ -1,18 +1,18 @@
 import {
   CaretDownIcon,
-  RulerHorizontalIcon,
   Cross1Icon,
+  RulerHorizontalIcon,
 } from "@radix-ui/react-icons";
-import { Popover as P, DropdownMenu as DD, Tooltip as T } from "radix-ui";
 import * as E from "app/components/elements";
+import { pluralize } from "app/lib/utils";
 import { useAtomValue } from "jotai";
+import { DropdownMenu as DD, Popover as P, Tooltip as T } from "radix-ui";
+import type React from "react";
 import { selectedFeaturesAtom } from "state/jotai";
-import React from "react";
-import { FeatureEditorGeometry } from "./panels/feature_editor/feature_editor_geometry";
 import { GeometryActions } from "./context_actions/geometry_actions";
 import { MultiActions } from "./context_actions/multi_actions";
 import { ShapeUnite16 } from "./icons";
-import { pluralize } from "app/lib/utils";
+import { FeatureEditorGeometry } from "./panels/feature_editor/feature_editor_geometry";
 
 export function ToolbarTrigger({
   children,

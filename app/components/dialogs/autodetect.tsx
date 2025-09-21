@@ -1,10 +1,10 @@
+import {
+  DEFAULT_IMPORT_OPTIONS,
+  detectType,
+  type ImportOptions,
+} from "app/lib/convert";
 import { useFormikContext } from "formik";
 import { captureException } from "integrations/errors";
-import {
-  ImportOptions,
-  detectType,
-  DEFAULT_IMPORT_OPTIONS,
-} from "app/lib/convert";
 import { useEffect } from "react";
 
 const defaultOptions = {

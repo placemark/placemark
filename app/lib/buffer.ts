@@ -1,9 +1,9 @@
-import center from "@turf/center";
 import { BufferOp, GeoJSONReader, GeoJSONWriter } from "@placemarkio/turf-jsts";
-import { CoordinateHavers, IFeature, Position, Geometry } from "types";
+import center from "@turf/center";
 import type { AllGeoJSON, Units } from "@turf/helpers";
-import { geoAzimuthalEquidistant, GeoProjection } from "d3-geo";
-import { radiansToLength, lengthToRadians, earthRadius } from "@turf/helpers";
+import { earthRadius, lengthToRadians, radiansToLength } from "@turf/helpers";
+import { type GeoProjection, geoAzimuthalEquidistant } from "d3-geo";
+import type { CoordinateHavers, Geometry, IFeature, Position } from "types";
 
 /* eslint @typescript-eslint/no-unsafe-argument: 0 */
 /* eslint @typescript-eslint/no-unsafe-call: 0 */
@@ -19,7 +19,7 @@ export interface BufferOptions {
 
 export function bufferFeature(
   feature: IFeature<Geometry | null>,
-  options: BufferOptions
+  options: BufferOptions,
 ) {
   return {
     ...feature,
@@ -31,7 +31,7 @@ export function bufferFeature(
 
 function bufferGeometry(
   geometry: Geometry,
-  options: BufferOptions
+  options: BufferOptions,
 ): Geometry | null {
   if (geometry.type === "GeometryCollection") {
     const geometries: Geometry[] = [];
@@ -57,7 +57,7 @@ function bufferGeometry(
   const geom = reader.read(projected);
   const distance = radiansToLength(
     lengthToRadians(options.radius, options.units),
-    "meters"
+    "meters",
   );
   let buffered = BufferOp.bufferOp(geom, distance, options.quadrantSegments);
   const writer = new GeoJSONWriter();
@@ -75,22 +75,18 @@ type Coords = CoordinateHavers["coordinates"];
 
 function coordsIsNaN(coords: Coords): boolean {
   if (Array.isArray(coords[0])) return coordsIsNaN(coords[0]);
-  return isNaN(coords[0]);
+  return Number.isNaN(coords[0]);
 }
 
 function projectCoords(coords: Coords, proj: GeoProjection): Coords {
   if (typeof coords[0] !== "object") return proj(coords as any) as Position;
-  return coords.map(function (coord) {
-    return projectCoords(coord as any, proj);
-  }) as Coords;
+  return coords.map((coord) => projectCoords(coord as any, proj)) as Coords;
 }
 
 function unprojectCoords(coords: Coords, proj: GeoProjection): Coords {
   if (typeof coords[0] !== "object")
     return proj.invert!(coords as any) as Position;
-  return coords.map(function (coord) {
-    return unprojectCoords(coord as any, proj);
-  }) as Coords;
+  return coords.map((coord) => unprojectCoords(coord as any, proj)) as Coords;
 }
 
 function defineProjection(geojson: Geometry): GeoProjection {

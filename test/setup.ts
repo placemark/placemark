@@ -1,13 +1,14 @@
 // This is the vi.'setupFilesAfterEnv' setup file
 // It's a good place to set globals, add global before/after hooks, etc
 //
+
+import { TextDecoder, TextEncoder } from "fastestsmallesttextencoderdecoder";
 import Fs from "fs";
-import Path from "path";
-import { TextEncoder, TextDecoder } from "fastestsmallesttextencoderdecoder";
-import type { Either } from "purify-ts/Either";
-import { matcherHint } from "jest-matcher-utils";
 import { diff } from "jest-diff";
-import { Maybe } from "purify-ts/Maybe";
+import { matcherHint } from "jest-matcher-utils";
+import Path from "path";
+import type { Either } from "purify-ts/Either";
+import type { Maybe } from "purify-ts/Maybe";
 import { expect } from "vitest";
 
 const passMessage = (expect: "Left" | "Right") => () =>
@@ -90,7 +91,7 @@ expect.extend({
                   "toEqualLeft",
                   undefined,
                   undefined,
-                  options
+                  options,
                 ) +
                 "\n\n" +
                 (diffString && diffString.includes("- Expect")
@@ -138,7 +139,7 @@ expect.extend({
                   "toEqualRight",
                   undefined,
                   undefined,
-                  options
+                  options,
                 ) +
                 "\n\n" +
                 (diffString && diffString.includes("- Expect")
@@ -209,12 +210,10 @@ if (
           JSON.parse(
             Fs.readFileSync(
               Path.join(__dirname, "../public/zip-lookup.json"),
-              "utf8"
-            )
-          )
+              "utf8",
+            ),
+          ),
         ),
     });
   };
 }
-
-export {}; // so TS doesn't complain

@@ -1,6 +1,7 @@
-import type { IFeatureCollection, GeoJSON, Geometry } from "types";
-import { z } from "zod";
 import { hexToArray } from "app/lib/color";
+import type { GeoJSON, Geometry, IFeatureCollection } from "types";
+import { z } from "zod";
+
 type GeoJSONTypeList = GeoJSON["type"][];
 type GeometryTypeList = Geometry["type"][];
 
@@ -232,7 +233,7 @@ export const MULTI_TO_SINGULAR: GeometryMap = {
 export const GEOJSON_TYPES: Set<string> = new Set(geojsonTypes);
 
 export const GEOJSON_MULTI_GEOMETRY_TYPES: Set<string> = new Set(
-  multiGeometryTypes
+  multiGeometryTypes,
 );
 
 export const emptyFeatureCollection: IFeatureCollection = {

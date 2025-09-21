@@ -1,16 +1,16 @@
-import type { DialogStateSimplify } from "state/dialog_state";
-import { FieldCheckbox, StyledLabelSpan } from "app/components/elements";
+import { DialogHeader } from "app/components/dialog";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
-import { Field, Form, Formik } from "formik";
+import { FieldCheckbox, StyledLabelSpan } from "app/components/elements";
+import Line from "app/components/icons/line";
+import { getExtent } from "app/lib/geometry";
 import { simplify } from "app/lib/map_operations/simplify";
 import { usePersistence } from "app/lib/persistence/context";
-import Line from "app/components/icons/line";
+import { Field, Form, Formik } from "formik";
 import { captureException } from "integrations/errors";
-import { DialogHeader } from "app/components/dialog";
-import { getExtent } from "app/lib/geometry";
 import { useAtom } from "jotai";
-import { selectionAtom } from "state/jotai";
 import { USelection } from "state";
+import type { DialogStateSimplify } from "state/dialog_state";
+import { selectionAtom } from "state/jotai";
 
 export default function SimplifyDialog({
   modal,
@@ -31,7 +31,7 @@ export default function SimplifyDialog({
       return (
         Math.max(
           Math.abs(extent[0] - extent[2]),
-          Math.abs(extent[1] - extent[3])
+          Math.abs(extent[1] - extent[3]),
         ) / 8
       );
     })

@@ -1,11 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "schedule": [
-    "on the first day of the month"
-  ],
+  "extends": ["config:recommended"],
+  "schedule": ["on the first day of the month"],
   "timezone": "America/New_York",
   "packageRules": [
     {
@@ -60,7 +56,12 @@
     },
     {
       "description": "Group React packages",
-      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
       "groupName": "React"
     },
     {
@@ -70,7 +71,12 @@
     },
     {
       "description": "Group Testing packages",
-      "matchPackagePatterns": ["^@testing-library/", "^vitest", "^jest-", "jsdom"],
+      "matchPackagePatterns": [
+        "^@testing-library/",
+        "^vitest",
+        "^jest-",
+        "jsdom"
+      ],
       "groupName": "Testing"
     },
     {

@@ -1,8 +1,8 @@
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { DialogHeader } from "app/components/dialog";
-import type { DialogStateImportNotes } from "state/dialog_state";
-import { pluralize } from "app/lib/utils";
 import { Button } from "app/components/elements";
+import { pluralize } from "app/lib/utils";
+import type { DialogStateImportNotes } from "state/dialog_state";
 
 export function ImportNotesDialog({
   modal,

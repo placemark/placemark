@@ -1,13 +1,13 @@
-import { PLACEMARK_FOLDER_PROP, PLACEMARK_ID_PROP } from "app/lib/constants";
-import { e6feature, addBbox } from "app/lib/geometry";
 import { rewindFeature } from "@placemarkio/geojson-rewind";
+import { PLACEMARK_FOLDER_PROP, PLACEMARK_ID_PROP } from "app/lib/constants";
+import { addBbox, e6feature } from "app/lib/geometry";
 import cloneDeep from "lodash/cloneDeep";
-import { FeatureCollection, FeatureMap, IWrappedFeature } from "types";
-import { ExportOptions } from "..";
+import type { FeatureCollection, FeatureMap, IWrappedFeature } from "types";
+import type { ExportOptions } from "..";
 
 function wrappedFeatureToExportable(
   wrappedFeature: IWrappedFeature,
-  options: ExportOptions["geojsonOptions"]
+  options: ExportOptions["geojsonOptions"],
 ) {
   let feature = cloneDeep(wrappedFeature.feature);
   const { id, folderId } = wrappedFeature;
@@ -33,14 +33,14 @@ function wrappedFeatureToExportable(
 
 export function geojsonToString(
   featureMap: FeatureMap,
-  options: ExportOptions["geojsonOptions"]
+  options: ExportOptions["geojsonOptions"],
 ) {
   const featureCollection: FeatureCollection = {
     type: "FeatureCollection",
     features: Array.from(featureMap.values(), (wrappedFeature) => {
       return rewindFeature(
         wrappedFeatureToExportable(wrappedFeature, options),
-        options?.winding
+        options?.winding,
       );
     }),
   };

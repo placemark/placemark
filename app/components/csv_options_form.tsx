@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useQuery } from "react-query";
-import { dsvFormat } from "d3-dsv";
-import { Field, FormikContextType, useFormikContext } from "formik";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { SelectHeader } from "app/components/csv_options_form/select_header";
+import { MAX_GEOCODER_ROWS } from "app/lib/constants";
 import type { ImportOptions } from "app/lib/convert";
 import { CSV_DELIMITERS, CSV_KINDS } from "app/lib/convert";
-import { SelectHeader } from "app/components/csv_options_form/select_header";
+import { detectColumns } from "app/lib/convert/local/csv_to_geojson";
+import { extractPropertyKeys } from "app/lib/multi_properties";
+import { dsvFormat } from "d3-dsv";
+import { Field, type FormikContextType, useFormikContext } from "formik";
+import { captureException } from "integrations/errors";
+import { useAtomValue } from "jotai";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { dataAtom } from "state/jotai";
+import type { JsonObject } from "type-fest";
+import type { WorkBook } from "xlsx";
 import {
   FieldCheckbox,
-  styledInlineA,
   StyledLabelSpan,
+  styledInlineA,
   styledRadio,
   styledSelect,
   TextWell,
 } from "./elements";
-import { captureException } from "integrations/errors";
-import type { WorkBook } from "xlsx";
-import { detectColumns } from "app/lib/convert/local/csv_to_geojson";
 import { InlineError } from "./inline_error";
-import { JsonObject } from "type-fest";
-import { MAX_GEOCODER_ROWS } from "app/lib/constants";
-import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import { useAtomValue } from "jotai";
-import { dataAtom } from "state/jotai";
-import { extractPropertyKeys } from "app/lib/multi_properties";
 
 function KindSelector({ geocoder }: { geocoder: boolean }) {
   return (
@@ -56,7 +56,7 @@ function KindSelector({ geocoder }: { geocoder: boolean }) {
  */
 function setAutodetectedFields(
   setFieldValue: FormikContextType<ImportOptions>["setFieldValue"],
-  detected: ReturnType<typeof detectColumns>
+  detected: ReturnType<typeof detectColumns>,
 ) {
   if (detected.kind) {
     setFieldValue("csvOptions.kind", detected.kind);
@@ -73,24 +73,24 @@ function setAutodetectedFields(
   // Single column
   setFieldValue(
     "csvOptions.geocodingHeaders.text",
-    detected.geocodingHeaders.text
+    detected.geocodingHeaders.text,
   );
   // Structured
   setFieldValue(
     "csvOptions.geocodingHeaders.address",
-    detected.geocodingHeaders.address
+    detected.geocodingHeaders.address,
   );
   setFieldValue(
     "csvOptions.geocodingHeaders.postalcode",
-    detected.geocodingHeaders.postalcode
+    detected.geocodingHeaders.postalcode,
   );
   setFieldValue(
     "csvOptions.geocodingHeaders.country",
-    detected.geocodingHeaders.country
+    detected.geocodingHeaders.country,
   );
   setFieldValue(
     "csvOptions.geocodingHeaders.locality",
-    detected.geocodingHeaders.locality
+    detected.geocodingHeaders.locality,
   );
 }
 
@@ -471,7 +471,7 @@ function XlsOptionsFormInner({
   useEffect(() => {
     if (noop || !doc) return;
     const output = xlsx.utils.sheet_to_json(
-      doc.Sheets[sheet]
+      doc.Sheets[sheet],
     ) as unknown as JsonObject[];
     if (!output[0]) {
       // console.error(output, sheet);

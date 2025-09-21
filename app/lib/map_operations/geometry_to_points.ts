@@ -1,9 +1,9 @@
-import type { Feature, Position, IFeature, Point, MultiPoint } from "types";
+import type { AllGeoJSON } from "@turf/helpers";
 import { coordEach } from "@turf/meta";
-import { AllGeoJSON } from "@turf/helpers";
+import type { Feature, IFeature, MultiPoint, Point, Position } from "types";
 
 export const geometryToPoints = (
-  feature: Feature
+  feature: Feature,
 ): IFeature<Point | MultiPoint> | null => {
   const { geometry } = feature;
 
@@ -16,7 +16,7 @@ export const geometryToPoints = (
     (coord) => {
       coordinates.push(coord);
     },
-    true
+    true,
   );
 
   if (coordinates.length === 0) return null;

@@ -1,7 +1,7 @@
 import { absArcId } from "../paths/mapshaper-arc-utils";
 import { forEachArcId } from "../paths/mapshaper-path-utils";
-import { forEachShapePart } from "../paths/mapshaper-shape-utils";
 import { getRightmostArc } from "../paths/mapshaper-pathfinder-utils";
+import { forEachShapePart } from "../paths/mapshaper-shape-utils";
 import { debug } from "../utils/mapshaper-logging";
 
 // Functions for redrawing polygons for clipping / erasing / flattening / division
@@ -65,9 +65,9 @@ export function openArcRoutes(
   fwd,
   rev,
   dissolve,
-  orBits
+  orBits,
 ) {
-  forEachArcId(paths, function (arcId) {
+  forEachArcId(paths, (arcId) => {
     var isInv = arcId < 0,
       idx = isInv ? ~arcId : arcId,
       currBits = routesArr[idx],
@@ -106,7 +106,7 @@ export function openArcRoutes(
 }
 
 export function closeArcRoutes(arcIds, arcs, routesArr, fwd, rev, hide) {
-  forEachArcId(arcIds, function (arcId) {
+  forEachArcId(arcIds, (arcId) => {
     var isInv = arcId < 0,
       idx = isInv ? ~arcId : arcId,
       currBits = routesArr[idx],
@@ -139,7 +139,7 @@ export function closeArcRoutes(arcIds, arcs, routesArr, fwd, rev, hide) {
 export function getPathFinder(nodes, useRoute, routeIsUsable) {
   var testArc = null;
   if (routeIsUsable) {
-    testArc = function (arcId) {
+    testArc = (arcId) => {
       return routeIsUsable(~arcId); // outward path must be traversable
     };
   }
@@ -149,7 +149,7 @@ export function getPathFinder(nodes, useRoute, routeIsUsable) {
     return ~getRightmostArc(prevId, nodes, testArc);
   }
 
-  return function (startId) {
+  return (startId) => {
     var path = [],
       nextId,
       msg,
@@ -183,7 +183,7 @@ export function getRingIntersector(nodes, flagsArr) {
   flagsArr = flagsArr || new Uint8Array(arcs.size());
 
   // types: "dissolve" "flatten"
-  return function (rings, type) {
+  return (rings, type) => {
     var dissolve = type == "dissolve",
       openFwd = true,
       openRev = type == "flatten",
@@ -192,7 +192,7 @@ export function getRingIntersector(nodes, flagsArr) {
     if (rings.length > 0) {
       output = [];
       openArcRoutes(rings, arcs, flagsArr, openFwd, openRev, dissolve);
-      forEachShapePart(rings, function (ids) {
+      forEachShapePart(rings, (ids) => {
         var path;
         for (var i = 0, n = ids.length; i < n; i++) {
           path = findPath(ids[i]);

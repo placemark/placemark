@@ -1,20 +1,20 @@
-import { useCallback, useEffect } from "react";
+import { flattenResult } from "app/components/dialogs/import_utils";
 import { useImportString } from "app/hooks/use_import";
 import { DEFAULT_IMPORT_OPTIONS } from "app/lib/convert";
-import { dataAtom, selectedFeaturesAtom, selectionAtom } from "state/jotai";
-import { IWrappedFeature, UWrappedFeature } from "types";
-import { allowNativeCopy, allowNativePaste } from "app/lib/utils";
-import toast from "react-hot-toast";
-import { useAtomCallback } from "jotai/utils";
-import * as Comlink from "comlink";
-import { usePersistence } from "app/lib/persistence/context";
-import { deleteFeatures } from "app/lib/map_operations/delete_features";
-import { useZoomTo } from "./use_zoom_to";
 import { getExtent } from "app/lib/geometry";
-import { flattenResult } from "app/components/dialogs/import_utils";
+import { deleteFeatures } from "app/lib/map_operations/delete_features";
+import { usePersistence } from "app/lib/persistence/context";
+import { allowNativeCopy, allowNativePaste } from "app/lib/utils";
+import * as Comlink from "comlink";
+import { useAtomCallback } from "jotai/utils";
 import { Maybe } from "purify-ts/Maybe";
-import { match } from "ts-pattern";
+import { useCallback, useEffect } from "react";
+import toast from "react-hot-toast";
 import { USelection } from "state";
+import { dataAtom, selectedFeaturesAtom, selectionAtom } from "state/jotai";
+import { match } from "ts-pattern";
+import { type IWrappedFeature, UWrappedFeature } from "types";
+import { useZoomTo } from "./use_zoom_to";
 
 export function stringifyFeatures(selectedFeatures: IWrappedFeature[]): Maybe<{
   data: string;
@@ -33,7 +33,7 @@ export function stringifyFeatures(selectedFeatures: IWrappedFeature[]): Maybe<{
     default: {
       return Maybe.of({
         data: JSON.stringify(
-          UWrappedFeature.toFeatureCollection(selectedFeatures)
+          UWrappedFeature.toFeatureCollection(selectedFeatures),
         ),
         message: "Copied features as GeoJSON",
       });
@@ -58,8 +58,8 @@ export function useClipboard() {
           e.clipboardData.setData(
             "text/plain",
             JSON.stringify(
-              UWrappedFeature.toFeatureCollection(selectedFeatures)
-            )
+              UWrappedFeature.toFeatureCollection(selectedFeatures),
+            ),
           );
           const { newSelection, moment } = deleteFeatures(get(dataAtom));
           set(selectionAtom, newSelection);
@@ -73,13 +73,13 @@ export function useClipboard() {
               loading: "Cutting features…",
               error: "Failed to cut features",
               success: "Cut features",
-            }
+            },
           );
           return;
         }
       },
-      [transact]
-    )
+      [transact],
+    ),
   );
 
   const onCopy = useAtomCallback(
@@ -94,7 +94,7 @@ export function useClipboard() {
         clipboardData.setData("text/plain", data);
         toast.success(message);
       });
-    }, [])
+    }, []),
   );
 
   const onPaste = useAtomCallback(
@@ -130,12 +130,12 @@ export function useClipboard() {
           },
           Comlink.proxy(() => {}),
           "Imported text",
-          existingFolderId
+          existingFolderId,
         ).then((result) => {
           return result.caseOf({
             Left(err) {
               toast.error(
-                `Tried to import pasted GeoJSON, but: ${err.message}`
+                `Tried to import pasted GeoJSON, but: ${err.message}`,
               );
               return Promise.resolve();
             },
@@ -147,8 +147,8 @@ export function useClipboard() {
           });
         });
       },
-      [importString, zoomTo]
-    )
+      [importString, zoomTo],
+    ),
   );
 
   useEffect(() => {

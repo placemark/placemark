@@ -1,20 +1,20 @@
-import { importContent } from "../io/mapshaper-import";
+import cli from "../cli/mapshaper-cli-utils";
+import { importFiles } from "../cli/mapshaper-merge-files";
 import {
-  isSupportedBinaryInputType,
   guessInputContentType,
   guessInputFileType,
+  isSupportedBinaryInputType,
 } from "../io/mapshaper-file-types";
-import { importFiles } from "../cli/mapshaper-merge-files";
+import { importContent } from "../io/mapshaper-import";
 import cmd from "../mapshaper-cmd";
-import cli from "../cli/mapshaper-cli-utils";
-import utils from "../utils/mapshaper-utils";
-import { message, verbose, stop } from "../utils/mapshaper-logging";
 import {
   getFileExtension,
   replaceFileExtension,
 } from "../utils/mapshaper-filename-utils";
+import { message, stop, verbose } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
-cmd.importFiles = function (opts) {
+cmd.importFiles = (opts) => {
   var files = opts.files || [],
     dataset;
 
@@ -51,7 +51,7 @@ export function importFile(path, opts) {
   return _importFile(path, opts);
 }
 
-var _importFile = function (path, opts) {
+var _importFile = (path, opts) => {
   var fileType = guessInputFileType(path),
     input = {},
     encoding = (opts && opts.encoding) || null,
@@ -100,8 +100,8 @@ var _importFile = function (path, opts) {
     message(
       utils.format(
         "[%s] .dbf file is missing - shapes imported without attribute data.",
-        path
-      )
+        path,
+      ),
     );
   }
   return importContent(input, opts);

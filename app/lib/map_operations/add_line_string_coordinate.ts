@@ -1,5 +1,5 @@
-import type { IFeature, Position, LineString, Feature } from "types";
 import replaceCoordinates from "app/lib/replace_coordinates";
+import type { Feature, IFeature, LineString, Position } from "types";
 
 export function addLineStringCoordinate(
   feature: Feature,
@@ -9,7 +9,7 @@ export function addLineStringCoordinate(
   }: {
     position: Position;
     reverse: boolean;
-  }
+  },
 ): Feature {
   const { geometry } = feature;
   if (geometry?.type !== "LineString") return feature;
@@ -17,6 +17,6 @@ export function addLineStringCoordinate(
     feature as IFeature<LineString>,
     reverse
       ? [position].concat(geometry.coordinates)
-      : geometry.coordinates.concat([position])
+      : geometry.coordinates.concat([position]),
   );
 }

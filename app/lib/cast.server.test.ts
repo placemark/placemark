@@ -1,14 +1,15 @@
-import { expect, describe, it, test } from "vitest";
+import { describe, expect, it, test } from "vitest";
 
 import {
-  recommendCast,
-  cast,
   Cast,
-  ExplicitCast,
+  cast,
   castExplicit,
+  ExplicitCast,
   recast,
+  recommendCast,
   validJSON,
 } from "./cast";
+
 test("validJSON", () => {
   expect(validJSON("{}")).toBeTruthy();
   expect(validJSON("{")).toBeFalsy();

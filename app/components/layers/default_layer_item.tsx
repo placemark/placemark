@@ -3,10 +3,10 @@ import {
   menuItemLike,
   StyledTooltipArrow,
 } from "app/components/elements";
-import { Tooltip } from "radix-ui";
+import type { LayerConfigTemplate } from "app/lib/default_layers";
 import clsx from "clsx";
+import { Tooltip } from "radix-ui";
 import { Thumbnail } from "./thumbnail";
-import { LayerConfigTemplate } from "app/lib/default_layers";
 
 type T = LayerConfigTemplate;
 
@@ -25,6 +25,7 @@ export function DefaultLayerItem({
     <Tooltip.Root delayDuration={0}>
       <Tooltip.Trigger asChild>
         <button
+          type="button"
           onClick={() => {
             onSelect(mapboxLayer);
           }}

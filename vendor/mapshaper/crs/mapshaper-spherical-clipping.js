@@ -1,16 +1,16 @@
-import { isLatLngCRS, getDatasetCRS } from "../crs/mapshaper-projections";
 import { clipLayersInPlace } from "../commands/mapshaper-clip-erase";
+import { convertBboxToGeoJSON } from "../commands/mapshaper-rectangle";
 import {
-  getClippingDataset,
   getClampBBox,
+  getClippingDataset,
 } from "../crs/mapshaper-proj-extents";
 import { isRotatedNormalProjection } from "../crs/mapshaper-proj-info";
-import { layerHasPaths } from "../dataset/mapshaper-layer-utils";
-import { getAntimeridian } from "../geom/mapshaper-latlon";
-import { importGeoJSON } from "../geojson/geojson-import";
-import { convertBboxToGeoJSON } from "../commands/mapshaper-rectangle";
-import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
+import { getDatasetCRS, isLatLngCRS } from "../crs/mapshaper-projections";
 import { transformPoints } from "../dataset/mapshaper-dataset-utils";
+import { layerHasPaths } from "../dataset/mapshaper-layer-utils";
+import { importGeoJSON } from "../geojson/geojson-import";
+import { getAntimeridian } from "../geom/mapshaper-latlon";
+import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
 import utils from "../utils/mapshaper-utils";
 
 export function preProjectionClip(dataset, src, dest, opts) {
@@ -56,14 +56,15 @@ function insertPreProjectionCuts(dataset, src, dest) {
 }
 
 function clampDataset(dataset, bbox) {
-  transformPoints(dataset, function (x, y) {
-    return [utils.clamp(x, bbox[0], bbox[2]), utils.clamp(y, bbox[1], bbox[3])];
-  });
+  transformPoints(dataset, (x, y) => [
+    utils.clamp(x, bbox[0], bbox[2]),
+    utils.clamp(y, bbox[1], bbox[3]),
+  ]);
 }
 
 function datasetCrossesLon(dataset, lon) {
   var crosses = 0;
-  dataset.arcs.forEachSegment(function (i, j, xx, yy) {
+  dataset.arcs.forEachSegment((i, j, xx, yy) => {
     var ax = xx[i],
       bx = xx[j];
     if ((ax <= lon && bx >= lon) || (ax >= lon && bx <= lon)) crosses++;

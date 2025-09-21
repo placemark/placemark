@@ -110,7 +110,7 @@ class CUMoment {
       dst.deleteFolders = dst.deleteFolders.concat(moment.deleteFolders);
       dst.putFolders = dst.putFolders.concat(moment.putFolders);
       dst.deleteLayerConfigs = dst.deleteLayerConfigs.concat(
-        moment.deleteLayerConfigs
+        moment.deleteLayerConfigs,
       );
       dst.putLayerConfigs = dst.putLayerConfigs.concat(moment.putLayerConfigs);
     }
@@ -163,7 +163,7 @@ class CUMomentLog {
 
   startSnapshot(
     oldLog: Readonly<MomentLog>,
-    before: IWrappedFeature | IWrappedFeature[]
+    before: IWrappedFeature | IWrappedFeature[],
   ) {
     const momentLog = this.shallowCopy(oldLog);
     momentLog.paused = true;

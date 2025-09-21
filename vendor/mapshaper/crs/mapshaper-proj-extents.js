@@ -1,23 +1,23 @@
+import { getCircleGeoJSON } from "../buffer/mapshaper-point-buffer";
+import { polygonsToLines } from "../commands/mapshaper-lines";
+import { projectDataset } from "../commands/mapshaper-proj";
 import { convertBboxToGeoJSON } from "../commands/mapshaper-rectangle";
-import { getGeodeticSegmentFunction } from "../geom/mapshaper-geodesic";
+import { rotateDataset } from "../commands/mapshaper-rotate";
 import {
-  inList,
   getCrsSlug,
+  inList,
   isAxisAligned,
   isMeridianBounded,
 } from "../crs/mapshaper-proj-info";
 import {
-  getSemiMinorAxis,
   getCircleRadiusFromAngle,
+  getSemiMinorAxis,
 } from "../crs/mapshaper-proj-utils";
-import { Bounds } from "../geom/mapshaper-bounds";
-import { getCircleGeoJSON } from "../buffer/mapshaper-point-buffer";
-import { importGeoJSON } from "../geojson/geojson-import";
-import { verbose, error, message } from "../utils/mapshaper-logging";
 import { getDatasetBounds } from "../dataset/mapshaper-dataset-utils";
-import { rotateDataset } from "../commands/mapshaper-rotate";
-import { projectDataset } from "../commands/mapshaper-proj";
-import { polygonsToLines } from "../commands/mapshaper-lines";
+import { importGeoJSON } from "../geojson/geojson-import";
+import { Bounds } from "../geom/mapshaper-bounds";
+import { getGeodeticSegmentFunction } from "../geom/mapshaper-geodesic";
+import { error, message, verbose } from "../utils/mapshaper-logging";
 
 export function getClippingDataset(src, dest, opts) {
   return getUnprojectedBoundingPolygon(src, dest, opts);
@@ -143,7 +143,7 @@ function getDefaultClipAngle(P) {
   if (slug == "nsper") return getPerspectiveClipAngle(P);
   if (slug == "tpers") {
     message(
-      "Automatic clipping is not supported for the Tilted Perspective projection"
+      "Automatic clipping is not supported for the Tilted Perspective projection",
     );
     return 0;
   }

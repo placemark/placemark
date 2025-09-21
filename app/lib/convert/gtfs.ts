@@ -1,8 +1,8 @@
-import readAsText from "app/lib/read_as_text";
-import type { FileType } from ".";
-import { ConvertResult, okResult } from "./utils";
-import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
+import readAsText from "app/lib/read_as_text";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import type { FileType } from ".";
+import { type ConvertResult, okResult } from "./utils";
 
 class CGTFS implements FileType {
   id = "gtfs" as const;
@@ -21,7 +21,7 @@ class CGTFS implements FileType {
         const gtfs = await import("vendor/gtfs");
         const geojson = gtfs.GTFSLinesToGeoJSON(text);
         return okResult(geojson);
-      }
+      },
     );
   }
 }

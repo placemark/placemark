@@ -1,5 +1,5 @@
-import { error, debug } from "../utils/mapshaper-logging";
 import geom from "../geom/mapshaper-geom";
+import { debug, error } from "../utils/mapshaper-logging";
 
 // Return id of rightmost connected arc in relation to @arcId
 // Return @arcId if no arcs can be found
@@ -50,7 +50,7 @@ function getRighmostArc2(fromId, ids, arcs) {
       xx[ito],
       yy[ito],
       xx[icand],
-      yy[icand]
+      yy[icand],
     );
     // code = internal.chooseRighthandPath(0, 0, nodeX - fromX, nodeY - fromY, xx[ito] - fromX, yy[ito] - fromY, xx[icand] - fromX, yy[icand] - fromY);
     if (code == 2) {
@@ -105,13 +105,13 @@ function chooseRighthandPath(fromX, fromY, nodeX, nodeY, ax, ay, bx, by) {
       ax - nodeX,
       ay - nodeY,
       bx - nodeX,
-      by - nodeY
+      by - nodeY,
     );
     debug(
       "[chooseRighthandPath()] equal angles:",
       angleA,
       "fallback test:",
-      code
+      code,
     );
   }
   return code;

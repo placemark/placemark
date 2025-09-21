@@ -1,24 +1,23 @@
-import { test, expect, describe, it } from "vitest";
-
+import { Blob } from "node:buffer";
+import Fs from "node:fs";
+import Path from "node:path";
+import { fcLineString, twoPoints } from "test/helpers";
+import type { IFeature, Polygon } from "types";
+import { describe, expect, it, test } from "vitest";
 import { DEFAULT_IMPORT_OPTIONS } from ".";
-import { GeoJSON } from "./geojson";
-import { IFeature, Polygon } from "types";
-import { twoPoints, fcLineString } from "test/helpers";
-import { Polyline } from "./polyline";
-import { KML } from "./kml";
-import { CSV } from "./csv";
-import { WKT } from "./wkt";
-import { EXIF } from "./exif";
-import { TCX } from "./tcx";
-import { Shapefile } from "./shapefile";
 import { BBOX } from "./bbox";
-import { Blob } from "buffer";
-import Fs from "fs";
-import Path from "path";
-import { getExtension } from "./utils";
-import { FlatGeobuf, adjustForFgb } from "./flatgeobuf";
-import { TopoJSON } from "./topojson";
 import { CoordinateString } from "./coordinate_string";
+import { CSV } from "./csv";
+import { EXIF } from "./exif";
+import { adjustForFgb, FlatGeobuf } from "./flatgeobuf";
+import { GeoJSON } from "./geojson";
+import { KML } from "./kml";
+import { Polyline } from "./polyline";
+import { Shapefile } from "./shapefile";
+import { TCX } from "./tcx";
+import { TopoJSON } from "./topojson";
+import { getExtension } from "./utils";
+import { WKT } from "./wkt";
 
 describe("convert", () => {
   describe("Shapefile", () => {
@@ -29,7 +28,7 @@ describe("convert", () => {
           {
             type: Shapefile.id,
             folderId: null,
-          }
+          },
         )
       ).unsafeCoerce();
       expect(res).toHaveProperty("name", "shapefile.zip");
@@ -83,14 +82,14 @@ describe("convert", () => {
     };
     it("forwardString", async () => {
       expect(
-        (await BBOX.forwardString("0 1 2 3")).unsafeCoerce()
+        (await BBOX.forwardString("0 1 2 3")).unsafeCoerce(),
       ).toHaveProperty("geojson", res);
     });
     it("featureToString", async () => {
       expect(
         (
           await BBOX.featureToString(res.features[0] as IFeature<Polygon>)
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toEqual("0,1,2,3");
     });
   });
@@ -111,7 +110,7 @@ describe("convert", () => {
             },
             type: "coordinate-string",
           })
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty("geojson", {
         type: "FeatureCollection",
         features: [
@@ -135,7 +134,7 @@ describe("convert", () => {
             type: "Point",
             coordinates: [1, 2],
           },
-        })
+        }),
       ).resolves.toEqualRight("1,2");
 
       await expect(
@@ -149,7 +148,7 @@ describe("convert", () => {
               [3, 4],
             ],
           },
-        })
+        }),
       ).resolves.toBeLeft();
     });
   });
@@ -159,7 +158,7 @@ describe("convert", () => {
         TopoJSON.forwardString("{}", {
           ...DEFAULT_IMPORT_OPTIONS,
           type: TopoJSON.id,
-        })
+        }),
       ).resolves.toBeLeft();
     });
   });
@@ -180,7 +179,7 @@ describe("convert", () => {
             properties: null,
           },
         ],
-      })
+      }),
     ).toMatchInlineSnapshot(`
     {
       "features": [],
@@ -206,7 +205,7 @@ describe("convert", () => {
             },
           },
         ],
-      })
+      }),
     ).toMatchInlineSnapshot(`
       {
         "features": [
@@ -247,7 +246,7 @@ describe("convert", () => {
             ...DEFAULT_IMPORT_OPTIONS,
             type: EXIF.id,
           })
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty(["geojson", "features", "0", "geometry"], {
         coordinates: [-121.78388888888888, 36.802775],
         type: "Point",
@@ -260,7 +259,7 @@ describe("convert", () => {
   describe("WKT", () => {
     it("forwardString", async () => {
       expect(
-        (await WKT.forwardString("POINT (1 2)")).unsafeCoerce()
+        (await WKT.forwardString("POINT (1 2)")).unsafeCoerce(),
       ).toHaveProperty("geojson", {
         type: "FeatureCollection",
         features: [
@@ -284,7 +283,7 @@ describe("convert", () => {
             type: "Point",
             coordinates: [1, 2],
           },
-        })
+        }),
       ).resolves.toEqualRight("POINT (1 2)");
     });
   });
@@ -298,9 +297,9 @@ describe("convert", () => {
             {
               type: "csv",
               folderId: null,
-            }
+            },
           )
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty("name", "features.csv");
     });
   });
@@ -314,9 +313,9 @@ describe("convert", () => {
             {
               type: "csv",
               folderId: null,
-            }
+            },
           )
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty("name", "features.kml");
     });
   });
@@ -329,8 +328,8 @@ describe("convert", () => {
           {
             type: "polyline",
             folderId: null,
-          }
-        )
+          },
+        ),
       ).toBeLeft();
     });
     it("can translate lines", async () => {
@@ -341,9 +340,9 @@ describe("convert", () => {
             {
               type: "polyline",
               folderId: null,
-            }
+            },
           )
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty("name", "line.poly");
     });
   });
@@ -365,7 +364,7 @@ describe("convert", () => {
       expect(
         (
           await GeoJSON.forwardString(JSON.stringify(point), OPTIONS)
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty("geojson", {
         type: "FeatureCollection",
         features: [
@@ -390,12 +389,12 @@ describe("convert", () => {
       expect(
         (
           await GeoJSON.forwardString(JSON.stringify(pointFeature), OPTIONS)
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty("geojson", featureOut);
       expect(
         (
           await GeoJSON.forwardString(JSON.stringify(featureOut), OPTIONS)
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty("geojson", featureOut);
     });
     it("back", async () => {
@@ -415,9 +414,9 @@ describe("convert", () => {
                 includeId: false,
                 indent: true,
               },
-            }
+            },
           )
-        ).unsafeCoerce()
+        ).unsafeCoerce(),
       ).toHaveProperty("name", "features.geojson");
     });
   });

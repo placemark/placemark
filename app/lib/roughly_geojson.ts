@@ -1,23 +1,23 @@
-import type { JsonValue, JsonObject, JsonArray, SetOptional } from "type-fest";
-import type {
-  FeatureCollection,
-  Feature,
-  Geometry,
-  Position,
-  Point,
-  MultiPoint,
-  LineString,
-  Polygon,
-  MultiLineString,
-  MultiPolygon,
-  GeometryCollection,
-} from "types";
 import isPlainObject from "lodash/isPlainObject";
-import { geometryTypes } from "./constants";
 import type { Either } from "purify-ts/Either";
 import { Left, Right } from "purify-ts/Either";
-import { ConvertError } from "./errors";
+import type { JsonArray, JsonObject, JsonValue, SetOptional } from "type-fest";
+import type {
+  Feature,
+  FeatureCollection,
+  Geometry,
+  GeometryCollection,
+  LineString,
+  MultiLineString,
+  MultiPoint,
+  MultiPolygon,
+  Point,
+  Polygon,
+  Position,
+} from "types";
+import { geometryTypes } from "./constants";
 import type { GeoJSONResult } from "./convert/utils";
+import { ConvertError } from "./errors";
 
 type RoughResultTmp = SetOptional<GeoJSONResult, "geojson"> & {
   _state: {
@@ -78,7 +78,7 @@ const DEFAULT_ROUGH_OPTIONS = {
  */
 export function rough(
   root: any,
-  roughOptions: RoughOptions = DEFAULT_ROUGH_OPTIONS
+  roughOptions: RoughOptions = DEFAULT_ROUGH_OPTIONS,
 ): Either<ConvertError, GeoJSONResult> {
   const ctx = getInitialCtx(roughOptions);
 
@@ -104,7 +104,7 @@ export function rough(
     });
   } else {
     return Left(
-      new ConvertError("No features were importable in this GeoJSON file")
+      new ConvertError("No features were importable in this GeoJSON file"),
     );
   }
 }
@@ -144,7 +144,7 @@ function roughObject(ctx: RoughResultTmp, root: JsonObject) {
 
 function asFeatureCollection(
   ctx: RoughResultTmp,
-  root: JsonObject
+  root: JsonObject,
 ): FeatureCollection | null {
   const { features, ...other } = root;
 
@@ -157,7 +157,7 @@ function asFeatureCollection(
 
 function asFeatures(
   ctx: RoughResultTmp,
-  root: JsonValue | undefined
+  root: JsonValue | undefined,
 ): Feature[] {
   if (!Array.isArray(root)) {
     ctx.notes.push(`Expected an array of features, another type was found`);
@@ -168,7 +168,7 @@ function asFeatures(
     ctx._state.featureIndex = i;
     if (!isObject(item)) {
       ctx.notes.push(
-        `Rejected invalid feature #${ctx._state.featureIndex}: not an object`
+        `Rejected invalid feature #${ctx._state.featureIndex}: not an object`,
       );
       return [];
     }
@@ -180,7 +180,7 @@ function asFeatures(
 function asFeature(ctx: RoughResultTmp, root: JsonObject): Feature | null {
   if (!(root.type === "Feature" || root.geometry || root.properties)) {
     ctx.notes.push(
-      `Rejected invalid feature #${ctx._state.featureIndex}: does not appear to be a feature`
+      `Rejected invalid feature #${ctx._state.featureIndex}: does not appear to be a feature`,
     );
     return null;
   }
@@ -215,7 +215,7 @@ function asCoordinate(coord: JsonValue | undefined): Position | null {
 
 function rejectGeometryForCoordinates(ctx: RoughResultTmp) {
   ctx.notes.push(
-    `Feature #${ctx._state.featureIndex}'s invalid geometry removed`
+    `Feature #${ctx._state.featureIndex}'s invalid geometry removed`,
   );
   return null;
 }
@@ -225,7 +225,7 @@ function rejectGeometryForCoordinates(ctx: RoughResultTmp) {
  */
 function asPoint(
   ctx: RoughResultTmp,
-  inputCoordinates: JsonArray
+  inputCoordinates: JsonArray,
 ): Point | null {
   const coordinates = asCoordinate(inputCoordinates);
   if (coordinates === null) return rejectGeometryForCoordinates(ctx);
@@ -237,7 +237,7 @@ function asPoint(
 
 function asMultiPoint(
   ctx: RoughResultTmp,
-  inputCoordinates: JsonArray
+  inputCoordinates: JsonArray,
 ): MultiPoint | null {
   const coordinates = inputCoordinates.flatMap((coord) => {
     const ret = asCoordinate(coord);
@@ -252,14 +252,14 @@ function asMultiPoint(
 
 function asLineString(
   ctx: RoughResultTmp,
-  inputCoordinates: JsonArray
+  inputCoordinates: JsonArray,
 ): LineString | null {
   const coordinates = removeCoincidents(
     ctx,
     inputCoordinates.flatMap((coord) => {
       const ret = asCoordinate(coord);
       return ret ? [ret] : [];
-    })
+    }),
   );
   if (coordinates.length < 2) return rejectGeometryForCoordinates(ctx);
   return {
@@ -270,7 +270,7 @@ function asLineString(
 
 function asMultiLineString(
   ctx: RoughResultTmp,
-  inputCoordinates: JsonArray
+  inputCoordinates: JsonArray,
 ): MultiLineString | null {
   const coordinates = inputCoordinates.flatMap((ring) => {
     if (!Array.isArray(ring)) return [];
@@ -279,7 +279,7 @@ function asMultiLineString(
       ring.flatMap((coord) => {
         const ret = asCoordinate(coord);
         return ret ? [ret] : [];
-      })
+      }),
     );
     return ret.length ? [ret] : [];
   });
@@ -292,7 +292,7 @@ function asMultiLineString(
 
 function asPolygon(
   ctx: RoughResultTmp,
-  inputCoordinates: JsonArray
+  inputCoordinates: JsonArray,
 ): Polygon | null {
   const coordinates = inputCoordinates.flatMap((ring) => {
     if (!Array.isArray(ring)) return [];
@@ -301,7 +301,7 @@ function asPolygon(
       ring.flatMap((coord) => {
         const ret = asCoordinate(coord);
         return ret ? [ret] : [];
-      })
+      }),
     );
     return validRing.length > 2 ? [validRing] : [];
   });
@@ -314,7 +314,7 @@ function asPolygon(
 
 function asMultiPolygon(
   ctx: RoughResultTmp,
-  inputCoordinates: JsonArray
+  inputCoordinates: JsonArray,
 ): MultiPolygon | null {
   const coordinates = inputCoordinates.flatMap((polygon) => {
     if (!Array.isArray(polygon)) return [];
@@ -325,7 +325,7 @@ function asMultiPolygon(
         ring.flatMap((coord) => {
           const ret = asCoordinate(coord);
           return ret ? [ret] : [];
-        })
+        }),
       );
       return validRing.length > 2 ? [validRing] : [];
     });
@@ -340,7 +340,7 @@ function asMultiPolygon(
 
 function asGeometryCollection(
   ctx: RoughResultTmp,
-  root: JsonObject
+  root: JsonObject,
 ): GeometryCollection | null {
   if (!Array.isArray(root.geometries)) return rejectGeometryForCoordinates(ctx);
 
@@ -361,7 +361,7 @@ function asGeometry(ctx: RoughResultTmp, root: JsonObject): Geometry | null {
 
   if (!isGeometryType(type)) {
     ctx.notes.push(
-      `Feature #${ctx._state.featureIndex}'s geometry type was not valid`
+      `Feature #${ctx._state.featureIndex}'s geometry type was not valid`,
     );
     return null;
   }
@@ -397,12 +397,12 @@ function asGeometry(ctx: RoughResultTmp, root: JsonObject): Geometry | null {
  */
 function asProperties(
   ctx: RoughResultTmp,
-  root: JsonValue | undefined
+  root: JsonValue | undefined,
 ): Feature["properties"] {
   if (root === undefined || root === null) return {};
   if (isObject(root)) return root;
   ctx.notes.push(
-    `Feature #${ctx._state.featureIndex}'s properties were not an object: transformed into one`
+    `Feature #${ctx._state.featureIndex}'s properties were not an object: transformed into one`,
   );
   return { value: root };
 }

@@ -1,7 +1,7 @@
-import { atomWithReset } from "jotai/utils";
 import type { ConvertResult } from "app/lib/convert/utils";
 import type { FileGroups } from "app/lib/group_files";
 import type { SimplifySupportedGeometry } from "app/lib/map_operations/simplify";
+import { atomWithReset } from "jotai/utils";
 import type { IFeature, IWrappedFeature } from "types";
 
 /**

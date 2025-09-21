@@ -1,14 +1,14 @@
-import type { FeatureCollection } from "types";
-import { csvFormat } from "d3-dsv";
-import { ExportOptions } from "..";
-import { geoJSONToWkt } from "betterknown";
-import { Maybe } from "purify-ts/Maybe";
 import { geoJSONToPolyline } from "@placemarkio/polyline";
+import { geoJSONToWkt } from "betterknown";
+import { csvFormat } from "d3-dsv";
+import { Maybe } from "purify-ts/Maybe";
+import type { FeatureCollection } from "types";
+import type { ExportOptions } from "..";
 
 // TODO: what if the feature has latitude & longitude properties?
 export function geojsonToCSV(
   geojson: FeatureCollection,
-  options: ExportOptions
+  options: ExportOptions,
 ) {
   const rows = [];
 

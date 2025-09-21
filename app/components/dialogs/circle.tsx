@@ -1,26 +1,26 @@
 import { CircleIcon } from "@radix-ui/react-icons";
+import { convertLength, type Units } from "@turf/helpers";
 import { DialogHeader } from "app/components/dialog";
+import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
+import { UnitOptionsGroups } from "app/components/unit_select";
+import { useZoomTo } from "app/hooks/use_zoom_to";
+import { type ICircleProp, makeCircleNative } from "app/lib/circle";
+import { GROUPED_UNIT_OPTIONS } from "app/lib/constants";
+import { newFeatureId } from "app/lib/id";
 import { usePersistence } from "app/lib/persistence/context";
+import { Field, Form, Formik } from "formik";
+import { captureException } from "integrations/errors";
+import { useSetAtom } from "jotai";
+import { USelection } from "state";
+import { type DialogStateCircle, dialogAtom } from "state/dialog_state";
+import { CIRCLE_TYPE } from "state/mode";
 import {
   Hint,
   StyledField,
-  styledInlineA,
   StyledLabelSpan,
+  styledInlineA,
   styledSelect,
 } from "../elements";
-import { captureException } from "integrations/errors";
-import { dialogAtom, DialogStateCircle } from "state/dialog_state";
-import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
-import { UnitOptionsGroups } from "app/components/unit_select";
-import { GROUPED_UNIT_OPTIONS } from "app/lib/constants";
-import { Formik, Form, Field } from "formik";
-import { CIRCLE_TYPE } from "state/mode";
-import { ICircleProp, makeCircleNative } from "app/lib/circle";
-import { newFeatureId } from "app/lib/id";
-import { useZoomTo } from "app/hooks/use_zoom_to";
-import { USelection } from "state";
-import { convertLength, Units } from "@turf/helpers";
-import { useSetAtom } from "jotai";
 
 export function CircleDialog({
   modal,
@@ -114,7 +114,7 @@ export function CircleDialog({
                   <Field
                     as="select"
                     name="type"
-                    className={styledSelect({ size: "sm" }) + " w-full"}
+                    className={`${styledSelect({ size: "sm" })} w-full`}
                   >
                     {Object.values(CIRCLE_TYPE).map((type) => {
                       return (
@@ -144,7 +144,7 @@ export function CircleDialog({
                     <Field
                       as="select"
                       name="units"
-                      className={styledSelect({ size: "sm" }) + " w-full"}
+                      className={`${styledSelect({ size: "sm" })} w-full`}
                     >
                       <UnitOptionsGroups groups={GROUPED_UNIT_OPTIONS.length} />
                     </Field>

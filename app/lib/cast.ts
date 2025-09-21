@@ -77,7 +77,7 @@ const literalValues: { [key: string]: JsonValue } = {
  * used as identifiers.
  */
 function isNumberLike(value: string) {
-  return !isNaN(+value) && !value.match(/^0\d+$/);
+  return !Number.isNaN(+value) && !value.match(/^0\d+$/);
 }
 
 /**
@@ -94,7 +94,7 @@ export function cast(value: string) {
   return value;
 }
 
-function toString(value: JsonValue | undefined): string {
+function anythingToString(value: JsonValue | undefined): string {
   const html = asHTML(value);
   if (html.isJust()) {
     return html.extract().value;
@@ -107,7 +107,7 @@ function toString(value: JsonValue | undefined): string {
   if (typeof value === "object" || Array.isArray(value)) {
     try {
       return JSON.stringify(value);
-    } catch (e) {
+    } catch (_e) {
       return String(value);
     }
   }
@@ -122,13 +122,13 @@ const EXPLICIT_CASTERS: Record<
   [ExplicitCast.Number]: (value) => {
     if (value === undefined) return 0;
     const numVal = value === null ? 0 : +value;
-    return isNaN(numVal) ? value : numVal;
+    return Number.isNaN(numVal) ? value : numVal;
   },
   [ExplicitCast.Boolean]: (value) => {
     if (value === "false") return false;
     return !!value;
   },
-  [ExplicitCast.String]: toString,
+  [ExplicitCast.String]: anythingToString,
   [ExplicitCast.JSON]: (value) => {
     if (value === undefined) return "";
     if (typeof value !== "string") return value;
@@ -138,7 +138,7 @@ const EXPLICIT_CASTERS: Record<
     return asHTML(value).orDefaultLazy(() => {
       return {
         "@type": "html",
-        value: toString(value),
+        value: anythingToString(value),
       };
     });
   },
@@ -150,7 +150,7 @@ const EXPLICIT_CASTERS: Record<
  */
 export function castExplicit(
   value: JsonValue | undefined,
-  target: ExplicitCast
+  target: ExplicitCast,
 ) {
   return EXPLICIT_CASTERS[target](value);
 }

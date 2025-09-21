@@ -1,12 +1,18 @@
-import { memo, useEffect, useRef } from "react";
-import { Tooltip as T } from "radix-ui";
-import { useSetAtom, useAtom } from "jotai";
-import { Side, splitsAtom, Splits, MIN_SPLITS, OTHER_SIDE } from "state/jotai";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { useMove } from "@react-aria/interactions";
 import { TContent } from "app/components/elements";
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
+import { useAtom, useSetAtom } from "jotai";
+import { Tooltip as T } from "radix-ui";
+import { memo, useEffect, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
+import {
+  MIN_SPLITS,
+  OTHER_SIDE,
+  type Side,
+  type Splits,
+  splitsAtom,
+} from "state/jotai";
 
 const MIN_MAP_WIDTH = 80;
 
@@ -63,11 +69,7 @@ export function useBigScreen() {
   return useMediaQuery({ minWidth: 640 });
 }
 
-function solveSplits(
-  splits: Splits,
-  side: Side,
-  newValue: number
-): Splits {
+function solveSplits(splits: Splits, side: Side, newValue: number): Splits {
   const otherSide = OTHER_SIDE[side];
   const windowWidth = window.innerWidth;
   const newSplits = { ...splits };
@@ -161,7 +163,7 @@ export const Resizer = memo(function ResizerInner({ side }: { side: Side }) {
         role="separator"
         aria-orientation="vertical"
         aria-label="Resize panel"
-        tabIndex={1}
+        tabIndex={0}
         style={{
           cursor: "col-resize",
           [side]: showPanel ? splits[side] : 0,
@@ -226,7 +228,7 @@ function PanelToggle({ side }: { side: Side }) {
           bg-white hover:bg-purple-100 border-gray-300
           dark:bg-gray-900 dark:text-white dark:hover:bg-purple-700 dark:border-white
           rounded
-        `
+        `,
         )}
       >
         {side === "right" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -250,7 +252,7 @@ export const BottomResizer = memo(function BottomResizerInner() {
       role="separator"
       aria-orientation="vertical"
       aria-label="Resize panel"
-      tabIndex={1}
+      tabIndex={0}
       style={{
         cursor: "row-resize",
         bottom: splits.bottom,

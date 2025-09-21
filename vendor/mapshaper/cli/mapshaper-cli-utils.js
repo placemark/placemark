@@ -1,16 +1,19 @@
-import { preserveContext } from "../mapshaper-state";
-import { trimBOM, decodeString } from "../text/mapshaper-encodings";
-import { stop, error, message } from "../utils/mapshaper-logging";
+import {
+  getStateVar,
+  preserveContext,
+  runningInBrowser,
+} from "../mapshaper-state";
+import { decodeString, trimBOM } from "../text/mapshaper-encodings";
+import { parseLocalPath } from "../utils/mapshaper-filename-utils";
+import { error, message, stop } from "../utils/mapshaper-logging";
 import { Buffer } from "../utils/mapshaper-node-buffer";
 import utils from "../utils/mapshaper-utils";
-import { getStateVar, runningInBrowser } from "../mapshaper-state";
-import { parseLocalPath } from "../utils/mapshaper-filename-utils";
 
 var cli = {};
 
 export default cli;
 
-cli.isFile = function (path, cache) {
+cli.isFile = (path, cache) => {
   if (cache && path in cache) return true;
   if (runningInBrowser()) return false;
   var ss = cli.statSync(path);
@@ -22,14 +25,14 @@ cli.isFile = function (path, cache) {
 //   return ss && ss.size || 0;
 // };
 
-cli.isDirectory = function (path) {
+cli.isDirectory = (path) => {
   if (runningInBrowser()) return false;
   var ss = cli.statSync(path);
   return (ss && ss.isDirectory()) || false;
 };
 
 // @encoding (optional) e.g. 'utf8'
-cli.readFile = function (fname, encoding, cache) {
+cli.readFile = (fname, encoding, cache) => {
   var content;
   if (cache && fname in cache) {
     content = cache[fname];
@@ -46,7 +49,7 @@ cli.readFile = function (fname, encoding, cache) {
   return content;
 };
 
-cli.createDirIfNeeded = function (fname) {
+cli.createDirIfNeeded = (fname) => {
   var odir = parseLocalPath(fname).directory;
   if (!odir || cli.isDirectory(odir) || fname == "/dev/stdout") return;
   try {
@@ -69,7 +72,7 @@ cli.createDirIfNeeded = function (fname) {
 // };
 
 // Returns Node Buffer
-cli.convertArrayBuffer = function (buf) {
+cli.convertArrayBuffer = (buf) => {
   var src = new Uint8Array(buf),
     dest = utils.createBuffer(src.length);
   for (var i = 0, n = src.length; i < n; i++) {
@@ -80,7 +83,7 @@ cli.convertArrayBuffer = function (buf) {
 
 // Expand any "*" wild cards in file name
 // (For the Windows command line; unix shells do this automatically)
-cli.expandFileName = function (name) {
+cli.expandFileName = (name) => {
   var info = parseLocalPath(name),
     rxp = utils.wildcardToRegExp(info.filename),
     dir = info.directory || ".",
@@ -104,8 +107,8 @@ cli.expandFileName = function (name) {
 };
 
 // Expand any wildcards.
-cli.expandInputFiles = function (files) {
-  return files.reduce(function (memo, name) {
+cli.expandInputFiles = (files) =>
+  files.reduce((memo, name) => {
     if (name.indexOf("*") > -1) {
       memo = memo.concat(cli.expandFileName(name));
     } else {
@@ -113,9 +116,8 @@ cli.expandInputFiles = function (files) {
     }
     return memo;
   }, []);
-};
 
-cli.validateOutputDir = function (name) {
+cli.validateOutputDir = (name) => {
   if (!cli.isDirectory(name) && !runningInBrowser()) {
     error("Output directory not found:", name);
   }
@@ -123,13 +125,13 @@ cli.validateOutputDir = function (name) {
 
 // TODO: rename and improve
 // Want to test if a path is something readable (e.g. file or stdin)
-cli.checkFileExists = function (path, cache) {
+cli.checkFileExists = (path, cache) => {
   if (!cli.isFile(path, cache) && path != "/dev/stdin") {
     stop("File not found (" + path + ")");
   }
 };
 
-cli.statSync = function (fpath) {
+cli.statSync = (fpath) => {
   var obj = null;
   try {
     // obj = require("fs").statSync(fpath);

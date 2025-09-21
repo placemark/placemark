@@ -1,10 +1,10 @@
-import { dataAtom, fileInfoAtom, fileInfoMachineAtom } from "state/jotai";
 import { fromGeoJSON } from "app/lib/convert";
-import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
-import { useAtomCallback } from "jotai/utils";
-import { useCallback } from "react";
 import { useSetAtom } from "jotai";
+import { useAtomCallback } from "jotai/utils";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import { useCallback } from "react";
+import { dataAtom, fileInfoAtom, fileInfoMachineAtom } from "state/jotai";
 
 export default function useFileSave() {
   const send = useSetAtom(fileInfoMachineAtom);
@@ -26,7 +26,7 @@ export default function useFileSave() {
                     description: "Save file",
                   },
                   fileInfo.handle as unknown as FileSystemFileHandle,
-                  true
+                  true,
                 );
                 send("show");
                 if (newHandle) {
@@ -36,12 +36,12 @@ export default function useFileSave() {
                   });
                 }
                 return true;
-              })
+              }),
             );
-          }
+          },
         );
       },
-      [send]
-    )
+      [send],
+    ),
   );
 }

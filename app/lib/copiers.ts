@@ -1,10 +1,10 @@
-import type { IFeature } from "types";
-import { ConvertError } from "./errors";
-import type { PlacemarkError } from "./errors";
 import type { Either } from "purify-ts/Either";
 import { Right } from "purify-ts/Either";
 import { EitherAsync } from "purify-ts/EitherAsync";
+import type { IFeature } from "types";
 import { CoordinateString } from "./convert/coordinate_string";
+import type { PlacemarkError } from "./errors";
+import { ConvertError } from "./errors";
 
 /**
  * This powers the "Copy" UI for single features.
@@ -25,7 +25,7 @@ export const COPIERS: Record<
       const geometry = feature.geometry;
       if (geometry.type !== "Point") {
         return throwE(
-          new ConvertError("Only Point features can be copied as geohash")
+          new ConvertError("Only Point features can be copied as geohash"),
         );
       }
       const geohash = await import("vendor/geohash");

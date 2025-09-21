@@ -1,10 +1,10 @@
-import { memo, useState, useEffect } from "react";
-import { useSetAtom } from "jotai";
-import { dialogAtom } from "state/jotai";
-import { captureException } from "integrations/errors";
 import { getFilesFromDataTransferItems } from "@placemarkio/flat-drop-files";
-import type { FileWithHandle } from "browser-fs-access";
 import { groupFiles } from "app/lib/group_files";
+import type { FileWithHandle } from "browser-fs-access";
+import { captureException } from "integrations/errors";
+import { useSetAtom } from "jotai";
+import { memo, useEffect, useState } from "react";
+import { dialogAtom } from "state/jotai";
 import { StyledDropOverlay } from "./elements";
 
 /**
@@ -76,7 +76,7 @@ export default memo(function Drop() {
       window.removeEventListener("dragover", stopWindowDrag);
       window.removeEventListener("drop", stopWindowDrag);
     };
-  }, [setDragging, setDialogState]);
+  }, [setDialogState]);
 
   return dragging ? (
     <StyledDropOverlay>Drop files to add to the map</StyledDropOverlay>

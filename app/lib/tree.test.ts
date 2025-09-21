@@ -1,4 +1,4 @@
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { buildTree, pullNode } from "./tree";
 
 interface Leaf {
@@ -33,7 +33,7 @@ describe("buildTree", () => {
         containerParentMember: "parentId",
         leafs,
         leafParentMember: "parentId",
-      })
+      }),
     ).toMatchInlineSnapshot(`
       {
         "children": [

@@ -3,7 +3,7 @@ import { PathIndex } from "../paths/mapshaper-path-index";
 export function clipPoints(points, clipShapes, arcs, type) {
   var index = new PathIndex(clipShapes, arcs);
 
-  var points2 = points.reduce(function (memo, feat) {
+  var points2 = points.reduce((memo, feat) => {
     var n = feat ? feat.length : 0,
       feat2 = [],
       enclosed;

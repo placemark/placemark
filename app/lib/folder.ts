@@ -1,4 +1,4 @@
-import { FeatureMap, FolderMap, IFolder, IWrappedFeature } from "types";
+import type { FeatureMap, FolderMap, IFolder, IWrappedFeature } from "types";
 
 type FolderByFolderMap = Map<string | null, IFolder[]>;
 
@@ -10,7 +10,7 @@ type FolderByFolderMap = Map<string | null, IFolder[]>;
 export function collectDescendents(
   folderId: string,
   idMap: FolderByFolderMap,
-  exclude: Set<string>
+  exclude: Set<string>,
 ) {
   for (const child of idMap.get(folderId) ?? []) {
     exclude.add(child.id);
@@ -72,7 +72,7 @@ export const generateLockedSet = (folderMap: FolderMap): Set<string> => {
  */
 export function getFoldersInTree(
   folderMap: FolderMap,
-  folderId: string
+  folderId: string,
 ): Set<string> {
   const set = new Set<string>([folderId]);
   const idMap = collectFoldersByFolder(folderMap);
@@ -87,7 +87,7 @@ export function getFoldersInTree(
  */
 export function isFeatureLocked(
   feature: IWrappedFeature,
-  folderMap: FolderMap
+  folderMap: FolderMap,
 ): boolean {
   if (!feature.folderId) return false;
 

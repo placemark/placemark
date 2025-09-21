@@ -1,10 +1,12 @@
+import {
+  copyLayerShapes,
+  layerHasPaths,
+} from "../dataset/mapshaper-layer-utils";
 import { mergeDatasets } from "../dataset/mapshaper-merging";
-import { copyLayerShapes } from "../dataset/mapshaper-layer-utils";
-import { layerHasPaths } from "../dataset/mapshaper-layer-utils";
-import { stop } from "../utils/mapshaper-logging";
-import { buildTopology } from "../topology/mapshaper-topology";
-import utils from "../utils/mapshaper-utils";
 import { ArcCollection } from "../paths/mapshaper-arcs";
+import { buildTopology } from "../topology/mapshaper-topology";
+import { stop } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // Create a merged dataset by appending the overlay layer to the target dataset
 // so it is last in the layers array.
@@ -13,7 +15,7 @@ export function mergeLayersForOverlay(
   targetLayers,
   targetDataset,
   clipSrc,
-  opts
+  opts,
 ) {
   var usingPathClip = utils.some(targetLayers, layerHasPaths);
   var bbox = opts.bbox || opts.bbox2;
@@ -48,9 +50,7 @@ export function mergeLayersForOverlay(
   } else {
     // overlay layer belongs to the same dataset as target layers... move it to the end
     mergedDataset = utils.extend({}, targetDataset);
-    mergedDataset.layers = targetDataset.layers.filter(function (lyr) {
-      return lyr != clipLyr;
-    });
+    mergedDataset.layers = targetDataset.layers.filter((lyr) => lyr != clipLyr);
     mergedDataset.layers.push(clipLyr);
   }
   return mergedDataset;

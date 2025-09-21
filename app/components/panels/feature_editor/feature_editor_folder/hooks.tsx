@@ -10,6 +10,6 @@ export function useCustomSensors() {
       activationConstraint: {
         distance: 8,
       },
-    })
+    }),
   );
 }

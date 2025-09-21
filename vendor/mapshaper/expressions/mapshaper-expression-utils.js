@@ -1,9 +1,9 @@
-import utils from "../utils/mapshaper-utils";
 import { blend } from "../color/blending";
+import utils from "../utils/mapshaper-utils";
 
 export function addUtils(env) {
   Object.assign(env, {
-    round: function (val, dig) {
+    round: (val, dig) => {
       var k = 1;
       if (!val && val !== 0) return val; // don't coerce null to 0
       dig = dig | 0;
@@ -40,7 +40,7 @@ function interpolated_median(counts, breaks) {
 }
 
 export function addGetters(obj, getters) {
-  Object.keys(getters).forEach(function (name) {
+  Object.keys(getters).forEach((name) => {
     var val = getters[name];
     var o =
       typeof val == "function" ? { get: val } : { value: val, writable: false };

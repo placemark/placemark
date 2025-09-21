@@ -12,7 +12,7 @@ function getThresholdFunction(arcs) {
   // utils.quicksort(sortedThresholds, false); // descending
   utils.quicksort(sortedThresholds, true); // ascending
 
-  return function (pct) {
+  return (pct) => {
     var n = sortedThresholds.length;
     var rank = retainedPctToRank(pct, sortedThresholds.length);
     if (rank < 1) return 0;

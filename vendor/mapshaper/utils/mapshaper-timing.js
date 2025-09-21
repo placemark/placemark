@@ -1,12 +1,10 @@
 // Support for timing using T.start() and T.stop()
 export var T = {
   stack: [],
-  start: function () {
+  start: () => {
     T.stack.push(Date.now());
   },
-  stop: function () {
-    return Date.now() - T.stack.pop() + "ms";
-  },
+  stop: () => Date.now() - T.stack.pop() + "ms",
 };
 
 function tick(msg) {

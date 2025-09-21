@@ -1,7 +1,7 @@
-import { debug } from "../utils/mapshaper-logging";
-import { absArcId } from "../paths/mapshaper-arc-utils";
 import { IdTestIndex } from "../indexing/mapshaper-id-test-index";
+import { absArcId } from "../paths/mapshaper-arc-utils";
 import { getHoleDivider } from "../polygons/mapshaper-polygon-holes";
+import { debug } from "../utils/mapshaper-logging";
 
 // Associate mosaic tiles with shapes (i.e. identify the groups of tiles that
 //   belong to each shape)
@@ -19,7 +19,7 @@ export function PolygonTiler(mosaic, arcTileIndex, nodes, opts) {
   var holeIndex = new IdTestIndex(arcs.size(), true);
 
   // return ids of tiles in shape
-  this.getTilesInShape = function (shp, shapeId) {
+  this.getTilesInShape = (shp, shapeId) => {
     var cw = [],
       ccw = [],
       retn;

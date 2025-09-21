@@ -1,28 +1,27 @@
-import { expect, describe, test } from "vitest";
-
-import { generateSyntheticPoints } from "./generate_synthetic_points";
 import { decodeId, idToJSONPointers } from "app/lib/id";
-import type {
-  IFeature,
-  Feature,
-  LineString,
-  Polygon,
-  GeometryCollection,
-  Geometry,
-} from "types";
 import * as jsonpointer from "app/lib/pointer";
 import {
-  fcPoly,
+  fcGeometryCollection,
   fcLineString,
+  fcMultiLineString,
   fcMultiPoint,
   fcMultiPoly,
-  fcMultiLineString,
-  fcGeometryCollection,
+  fcPoly,
 } from "test/helpers";
+import type {
+  Feature,
+  Geometry,
+  GeometryCollection,
+  IFeature,
+  LineString,
+  Polygon,
+} from "types";
+import { describe, expect, test } from "vitest";
+import { generateSyntheticPoints } from "./generate_synthetic_points";
 
 function checkReverse(f: Feature) {
   const ids = generateSyntheticPoints(f, 0).map(({ id }) =>
-    idToJSONPointers(decodeId(id as RawId) as VertexId | MidpointId, f)
+    idToJSONPointers(decodeId(id as RawId) as VertexId | MidpointId, f),
   );
   return {
     ids,
@@ -50,7 +49,7 @@ describe("generateSyntheticPoints", () => {
     expect(generated).toMatchSnapshot();
 
     expect(
-      generated.filter((f) => decodeId(f.id as RawId).type === "midpoint")
+      generated.filter((f) => decodeId(f.id as RawId).type === "midpoint"),
     ).toHaveLength(f.geometry.coordinates.length - 1);
 
     expect(checkReverse(f)).toMatchSnapshot();
@@ -61,7 +60,7 @@ describe("generateSyntheticPoints", () => {
     const generated = generateSyntheticPoints(f, 0);
 
     expect(
-      generated.filter((f) => decodeId(f.id as RawId).type === "midpoint")
+      generated.filter((f) => decodeId(f.id as RawId).type === "midpoint"),
     ).toHaveLength(f.geometry.coordinates[0].length - 1);
 
     expect(generated).toMatchSnapshot();

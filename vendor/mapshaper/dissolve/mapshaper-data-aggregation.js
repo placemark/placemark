@@ -1,22 +1,19 @@
-import { getJoinCalc } from "../join/mapshaper-join-calc";
 import { requireDataField } from "../dataset/mapshaper-layer-utils";
 import { DataTable } from "../datatable/mapshaper-data-table";
+import { getJoinCalc } from "../join/mapshaper-join-calc";
 
 // Return a function to convert indexes of original features into indexes of grouped features
 // Uses categorical classification (a different id for each unique combination of values)
 export function getCategoryClassifier(fields, data) {
-  if (!fields || fields.length === 0)
-    return function () {
-      return 0;
-    };
-  fields.forEach(function (f) {
+  if (!fields || fields.length === 0) return () => 0;
+  fields.forEach((f) => {
     requireDataField(data, f);
   });
   var index = {},
     count = 0,
     records = data.getRecords(),
     getKey = getMultiFieldKeyFunction(fields);
-  return function (i) {
+  return (i) => {
     var key = getKey(records[i]);
     if (key in index === false) {
       index[key] = count++;
@@ -26,16 +23,10 @@ export function getCategoryClassifier(fields, data) {
 }
 
 function getMultiFieldKeyFunction(fields) {
-  return fields.reduce(function (partial, field) {
+  return fields.reduce((partial, field) => {
     // TODO: consider using JSON.stringify for fields that contain objects
-    var strval = function (rec) {
-      return String(rec[field]);
-    };
-    return partial
-      ? function (rec) {
-          return partial(rec) + "~~" + strval(rec);
-        }
-      : strval;
+    var strval = (rec) => String(rec[field]);
+    return partial ? (rec) => partial(rec) + "~~" + strval(rec) : strval;
   }, null);
 }
 
@@ -86,7 +77,7 @@ function aggregateDataRecords2(records, groups, opts) {
     return tot;
   }
 
-  return groups.map(function (group) {
+  return groups.map((group) => {
     var rec = {},
       j,
       first;

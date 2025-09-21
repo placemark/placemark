@@ -1,5 +1,7 @@
+import type { ConvertError } from "app/lib/errors";
 import readAsText from "app/lib/read_as_text";
-import type { FeatureCollection, Feature } from "types";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import type { Feature, FeatureCollection } from "types";
 import type {
   ExportOptions,
   ExportResult,
@@ -7,9 +9,7 @@ import type {
   ImportOptions,
   ProgressCb,
 } from ".";
-import { stringToBlob, ConvertResult, okResult } from "./utils";
-import { EitherAsync } from "purify-ts/EitherAsync";
-import type { ConvertError } from "app/lib/errors";
+import { type ConvertResult, okResult, stringToBlob } from "./utils";
 
 class CCSV implements FileType {
   id = "csv" as const;
@@ -20,7 +20,7 @@ class CCSV implements FileType {
   forwardBinary(
     file: ArrayBuffer,
     options: ImportOptions,
-    progress: ProgressCb
+    progress: ProgressCb,
   ) {
     return readAsText(file).chain((text) => {
       return CSV.forwardString(text, options, progress);
@@ -34,7 +34,7 @@ class CCSV implements FileType {
         );
         const geojson = await csvToGeoJSON(text, options.csvOptions, progress);
         return okResult(geojson);
-      }
+      },
     );
   }
   back({ geojson }: { geojson: FeatureCollection }, options: ExportOptions) {
@@ -59,9 +59,9 @@ class CCSV implements FileType {
             type: "FeatureCollection",
             features: [feature],
           },
-          options
+          options,
         );
-      }
+      },
     );
   }
 }

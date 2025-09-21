@@ -1,11 +1,11 @@
-import type { ExportResult, FileType, ImportOptions } from ".";
-import { stringToBlob, RootResult, ConvertResult } from "./utils";
-import readAsText from "app/lib/read_as_text";
-import type { FeatureCollection } from "types";
-import { ConvertError, parseOrError } from "app/lib/errors";
-import type { PlacemarkError } from "app/lib/errors";
-import { EitherAsync } from "purify-ts/EitherAsync";
 import type { Folder } from "@tmcw/togeojson";
+import type { PlacemarkError } from "app/lib/errors";
+import { ConvertError, parseOrError } from "app/lib/errors";
+import readAsText from "app/lib/read_as_text";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import type { FeatureCollection } from "types";
+import type { ExportResult, FileType, ImportOptions } from ".";
+import { type ConvertResult, type RootResult, stringToBlob } from "./utils";
 
 class CTopoJSON implements FileType {
   id = "topojson" as const;
@@ -55,10 +55,10 @@ class CTopoJSON implements FileType {
             }
           }
           return root;
-        } catch (e) {
+        } catch (_e) {
           return throwE(new ConvertError("Could not read TopoJSON file"));
         }
-      }
+      },
     );
   }
   back({ geojson }: { geojson: FeatureCollection }) {
@@ -70,12 +70,12 @@ class CTopoJSON implements FileType {
             blob: stringToBlob(JSON.stringify(topology({ objects: geojson }))),
             name: "features.json",
           };
-        } catch (e) {
+        } catch (_e) {
           return throwE(
-            new ConvertError("Could not convert GeoJSON to TopoJSON")
+            new ConvertError("Could not convert GeoJSON to TopoJSON"),
           );
         }
-      }
+      },
     );
   }
 }

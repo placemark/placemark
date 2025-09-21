@@ -7,24 +7,6 @@ import {
   QuestionMarkCircledIcon,
   SquareIcon,
 } from "@radix-ui/react-icons";
-import Line from "app/components/icons/line";
-import Polygon from "app/components/icons/polygon";
-import CircleIcon from "app/components/icons/circle";
-import {
-  modeAtom,
-  Mode,
-  MODE_INFO,
-  ephemeralStateAtom,
-  dataAtom,
-  circleTypeAtom,
-  dialogAtom,
-} from "state/jotai";
-import MenuAction from "app/components/menu_action";
-import { memo } from "react";
-import { useSetAtom, useAtom, useAtomValue } from "jotai";
-import { useLineMode } from "app/hooks/use_line_mode";
-import { USelection } from "state";
-import { IWrappedFeature } from "types";
 import {
   Button,
   DDContent,
@@ -32,8 +14,26 @@ import {
   DDSeparator,
   StyledItem,
 } from "app/components/elements";
+import CircleIcon from "app/components/icons/circle";
+import Line from "app/components/icons/line";
+import Polygon from "app/components/icons/polygon";
+import MenuAction from "app/components/menu_action";
+import { useLineMode } from "app/hooks/use_line_mode";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DropdownMenu as DD } from "radix-ui";
+import { memo } from "react";
+import { USelection } from "state";
+import {
+  circleTypeAtom,
+  dataAtom,
+  dialogAtom,
+  ephemeralStateAtom,
+  MODE_INFO,
+  Mode,
+  modeAtom,
+} from "state/jotai";
 import { CIRCLE_TYPE } from "state/mode";
+import type { IWrappedFeature } from "types";
 
 function CircleMenu() {
   const [circleType, setCircleType] = useAtom(circleTypeAtom);

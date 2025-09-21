@@ -1,10 +1,10 @@
-import { memo, Suspense } from "react";
 import { LayersIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useSetAtom } from "jotai";
-import { dialogAtom } from "state/jotai";
-import { Tooltip as T, Popover } from "radix-ui";
 import * as E from "app/components/elements";
 import { getIsMac, localizeKeybinding } from "app/lib/utils";
+import { useSetAtom } from "jotai";
+import { Popover, Tooltip as T } from "radix-ui";
+import { memo, Suspense } from "react";
+import { dialogAtom } from "state/jotai";
 import { SEARCH_KEYBINDING } from "./dialogs/cheatsheet";
 import { LayersPopover } from "./layers/popover";
 

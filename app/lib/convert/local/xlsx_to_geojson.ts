@@ -1,9 +1,9 @@
-import type { FeatureCollection, Feature } from "types";
 import type { ImportOptions } from "app/lib/convert";
+import { getZipDB, type ZipDB } from "app/lib/get_zip_db";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { JsonObject } from "type-fest";
+import type { Feature, FeatureCollection } from "types";
 import { read, utils } from "xlsx";
-import { getZipDB, ZipDB } from "app/lib/get_zip_db";
 import {
   castRowGeocode,
   castRowGeoJSON,
@@ -18,7 +18,7 @@ import {
 
 export async function xlsxToGeoJSON(
   file: ArrayBuffer,
-  options: ImportOptions["csvOptions"]
+  options: ImportOptions["csvOptions"],
 ): Promise<FeatureCollection> {
   if (!options) throw new Error("Options should not be undefined");
   const { kind, sheet } = options;
@@ -38,7 +38,7 @@ export async function xlsxToGeoJSON(
       case "lonlat": {
         const feature = castRowLonLat(
           row,
-          EnforcedLonLatOptions.parse(options)
+          EnforcedLonLatOptions.parse(options),
         );
         if (feature) {
           features.push(feature);
@@ -49,7 +49,7 @@ export async function xlsxToGeoJSON(
         const feature = castRowZip(
           row,
           zipDb!,
-          EnforcedZipOptions.parse(options)
+          EnforcedZipOptions.parse(options),
         );
         if (feature) {
           features.push(feature);
@@ -76,7 +76,7 @@ export async function xlsxToGeoJSON(
         const castRow = row;
         const feature = castRowGeoJSON(
           castRow,
-          EnforcedWKTOptions.parse(options)
+          EnforcedWKTOptions.parse(options),
         );
         if (feature) {
           features.push(feature);
@@ -87,7 +87,7 @@ export async function xlsxToGeoJSON(
         const castRow = row;
         const feature = castRowPolyline(
           castRow,
-          EnforcedWKTOptions.parse(options)
+          EnforcedWKTOptions.parse(options),
         );
         if (feature) {
           features.push(feature);

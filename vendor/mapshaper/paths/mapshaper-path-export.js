@@ -1,6 +1,6 @@
+import { Bounds } from "../geom/mapshaper-bounds";
 import geom from "../geom/mapshaper-geom";
 import { verbose } from "../utils/mapshaper-logging";
-import { Bounds } from "../geom/mapshaper-bounds";
 
 function exportPointData(points) {
   var data, path;
@@ -32,7 +32,7 @@ export function exportPathData(shape, arcs, type) {
     paths = [];
 
   if (shape && (type == "polyline" || type == "polygon")) {
-    shape.forEach(function (arcIds, i) {
+    shape.forEach((arcIds, i) => {
       var iter = arcs.getShapeIter(arcIds),
         path = exportPathCoords(iter),
         valid = true;

@@ -1,12 +1,12 @@
-import type { Feature } from "types";
-import { parseBBOX, bboxToPolygon, getExtent, e6bbox } from "app/lib/geometry";
-import type { FileType, ImportOptions } from ".";
-import { okResult } from "./utils";
-import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
+import { bboxToPolygon, e6bbox, getExtent, parseBBOX } from "app/lib/geometry";
 import readAsText from "app/lib/read_as_text";
 import { eitherToAsync } from "app/lib/utils";
+import { EitherAsync } from "purify-ts/EitherAsync";
 import { Maybe } from "purify-ts/Maybe";
+import type { Feature } from "types";
+import type { FileType, ImportOptions } from ".";
+import { okResult } from "./utils";
 
 class CBBOX implements FileType {
   id = "bbox" as const;
@@ -27,7 +27,7 @@ class CBBOX implements FileType {
             },
           ],
         });
-      })
+      }),
     );
   }
   featureToString(feature: Feature) {

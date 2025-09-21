@@ -1,6 +1,6 @@
-import type { Feature } from "types";
 import { cast, recast } from "app/lib/cast";
 import type { JsonObject, JsonValue } from "type-fest";
+import type { Feature } from "types";
 
 /**
  * Note: this tries to maintain object key order
@@ -13,7 +13,7 @@ export function updatePropertyValue(
   }: {
     key: string;
     value: JsonValue;
-  }
+  },
 ) {
   const { properties: oldProperties } = feature;
   const properties = { ...oldProperties } as JsonObject;

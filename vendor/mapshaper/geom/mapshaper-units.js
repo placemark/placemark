@@ -1,4 +1,4 @@
-import { stop, error } from "../utils/mapshaper-logging";
+import { error, stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
 
 var UNITS_LOOKUP = {
@@ -144,7 +144,7 @@ export function convertFourSides(opt, crs, bounds) {
   } else if (arr.length != 4) {
     stop("Expected a distance parameter or a list of four params");
   }
-  return arr.map(function (param, i) {
+  return arr.map((param, i) => {
     var tmp;
     if (param.indexOf("%") > 0) {
       tmp = parseFloat(param) / 100 || 0;

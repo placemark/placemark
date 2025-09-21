@@ -1,18 +1,18 @@
-import type { ModalStateImport } from "state/jotai";
-import type { ConvertResult } from "app/lib/convert/utils";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
-import { DialogHeader } from "app/components/dialog";
-import { useContext, useState } from "react";
-import { truncate } from "app/lib/utils";
-import { Maybe, Nothing } from "purify-ts/Maybe";
-import { extendExtent, getExtent } from "app/lib/geometry";
-import { BBox } from "types";
-import { MapContext } from "app/context/map_context";
-import { LngLatBoundsLike } from "mapbox-gl";
 import addedFeaturesToast from "app/components/added_features_toast";
-import { flattenResult } from "./import_utils";
+import { DialogHeader } from "app/components/dialog";
+import { MapContext } from "app/context/map_context";
+import type { ConvertResult } from "app/lib/convert/utils";
+import { extendExtent, getExtent } from "app/lib/geometry";
+import { truncate } from "app/lib/utils";
+import type { LngLatBoundsLike } from "mapbox-gl";
+import { type Maybe, Nothing } from "purify-ts/Maybe";
+import { useContext, useState } from "react";
+import type { ModalStateImport } from "state/jotai";
+import type { BBox } from "types";
 import { ImportFileGroup } from "./import/import_file_group";
 import { ImportShapefile } from "./import/import_shapefile";
+import { flattenResult } from "./import_utils";
 
 export type OnNext = (arg0: ConvertResult | null) => void;
 
@@ -72,7 +72,7 @@ export function ImportDialog({
     <>
       <DialogHeader
         title={`Import ${truncate(
-          file.type === "file" ? file.file.name : "Shapefile"
+          file.type === "file" ? file.file.name : "Shapefile",
         )} ${progress}`}
         titleIcon={PlusCircledIcon}
       />

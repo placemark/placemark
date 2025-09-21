@@ -1,6 +1,6 @@
+import { absArcId } from "../paths/mapshaper-arc-utils";
 import { traversePaths } from "../paths/mapshaper-path-utils";
 import { NodeCollection } from "../topology/mapshaper-nodes";
-import { absArcId } from "../paths/mapshaper-arc-utils";
 
 // Dissolve polyline features
 export function dissolvePolylineGeometry(lyr, getGroupId, arcs, opts) {
@@ -12,7 +12,7 @@ export function dissolvePolylineGeometry(lyr, getGroupId, arcs, opts) {
 // Create one array of arc ids for each group
 function getPolylineDissolveGroups(shapes, getGroupId) {
   var groups = [];
-  traversePaths(shapes, function (o) {
+  traversePaths(shapes, (o) => {
     var groupId = getGroupId(o.shapeId);
     if (groupId in groups === false) {
       groups[groupId] = [];
@@ -24,22 +24,20 @@ function getPolylineDissolveGroups(shapes, getGroupId) {
 
 function getPolylineDissolver(arcs) {
   var flags = new Uint8Array(arcs.size());
-  var testArc = function (id) {
-    return flags[absArcId(id)] > 0;
-  };
-  var useArc = function (id) {
+  var testArc = (id) => flags[absArcId(id)] > 0;
+  var useArc = (id) => {
     flags[absArcId(id)] = 0;
   };
   var nodes = new NodeCollection(arcs);
-  return function (ids) {
-    ids.forEach(function (id) {
+  return (ids) => {
+    ids.forEach((id) => {
       flags[absArcId(id)] = 1;
     });
     var ends = findPolylineEnds(ids, nodes, testArc);
     var straightParts = collectPolylineArcs(ends, nodes, testArc, useArc);
     var ringParts = collectPolylineArcs(ids, nodes, testArc, useArc);
     var allParts = straightParts.concat(ringParts);
-    ids.forEach(function (id) {
+    ids.forEach((id) => {
       flags[absArcId(id)] = 0;
     }); // may not be necessary
     return allParts;
@@ -55,7 +53,7 @@ function getPolylineDissolver(arcs) {
 // TODO: use polygon pathfinder shared code
 function collectPolylineArcs(ids, nodes, testArc, useArc) {
   var parts = [];
-  ids.forEach(function (startId) {
+  ids.forEach((startId) => {
     var part = [];
     var nextId = startId;
     var nextIds;
@@ -77,7 +75,7 @@ function collectPolylineArcs(ids, nodes, testArc, useArc) {
 // Return array of dead-end arcs for a dissolved group.
 function findPolylineEnds(ids, nodes, filter) {
   var ends = [];
-  ids.forEach(function (arcId) {
+  ids.forEach((arcId) => {
     if (nodes.getConnectedArcs(arcId, filter).length === 0) {
       ends.push(~arcId); // arc points away from terminus
     }

@@ -1,28 +1,28 @@
+import { DECK_SYNTHETIC_ID } from "app/lib/constants";
+import { bufferPoint } from "app/lib/geometry";
+import { decodeId } from "app/lib/id";
+import { CLICKABLE_LAYERS } from "app/lib/load_and_augment_style";
+import type PMap from "app/lib/pmap";
+import sortBy from "lodash/sortBy";
+import type { Map as MapboxMap } from "mapbox-gl";
+import type { EphemeralEditingStateLasso } from "state/jotai";
 import type {
-  IWrappedFeature,
-  Polygon,
-  LineString,
   FeatureMap,
   FolderMap,
+  IWrappedFeature,
+  LineString,
+  Polygon,
 } from "types";
-import type { Map as MapboxMap } from "mapbox-gl";
-import { CLICKABLE_LAYERS } from "app/lib/load_and_augment_style";
-import { bufferPoint } from "app/lib/geometry";
-import type { EphemeralEditingStateLasso } from "state/jotai";
-import { decodeId } from "app/lib/id";
-import sortBy from "lodash/sortBy";
 import { isFeatureLocked } from "./folder";
-import { IDMap, UIDMap } from "./id_mapper";
 import { getMapCoord } from "./handlers/utils";
-import PMap from "app/lib/pmap";
-import { DECK_SYNTHETIC_ID } from "app/lib/constants";
+import { type IDMap, UIDMap } from "./id_mapper";
 
 type MouseOrTouchEvent = mapboxgl.MapMouseEvent | mapboxgl.MapTouchEvent;
 
 export function wrappedFeaturesFromMapFeatures(
   clickedFeatures: mapboxgl.MapboxGeoJSONFeature[],
   featureMap: FeatureMap,
-  idMap: IDMap
+  idMap: IDMap,
 ) {
   const set = new Set<IWrappedFeature>();
   const ids: { id: Id; wrappedFeature: IWrappedFeature }[] = [];
@@ -61,7 +61,7 @@ export function newPolygonFromClickEvent(e: MouseOrTouchEvent): Polygon {
 
 export function isLassoTiny(
   ephemeralState: EphemeralEditingStateLasso,
-  map: mapboxgl.Map
+  map: mapboxgl.Map,
 ) {
   const tl = map.project(ephemeralState.box[0]);
   const br = map.project(ephemeralState.box[1]);
@@ -90,7 +90,7 @@ export function fuzzyClick(
     featureMap: FeatureMap;
     folderMap: FolderMap;
     pmap: PMap;
-  }
+  },
 ) {
   const map = e.target;
 

@@ -1,15 +1,15 @@
-import { trimBOM, decodeString } from "../text/mapshaper-encodings";
 import {
-  getBaseContext,
   compileExpressionToFunction,
+  getBaseContext,
 } from "../expressions/mapshaper-expressions";
-import utils from "../utils/mapshaper-utils";
-import { stop } from "../utils/mapshaper-logging";
 import { Reader2 } from "../io/mapshaper-file-reader";
+import { decodeString, trimBOM } from "../text/mapshaper-encodings";
 import {
   readFixedWidthRecords,
   readFixedWidthRecordsFromString,
 } from "../text/mapshaper-fixed-width";
+import { stop } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // Read and parse a DSV file
 // This version performs field filtering before fields are extracted (faster)
@@ -23,7 +23,7 @@ export function readDelimRecords(reader, delim, optsArg) {
     headerStr = readLinesAsString(
       reader2,
       getDelimHeaderLines(opts),
-      opts.encoding
+      opts.encoding,
     ),
     header = parseDelimHeaderSection(headerStr, delim, opts),
     convertRowArr = getRowConverter(header.import_fields),
@@ -39,7 +39,7 @@ export function readDelimRecords(reader, delim, optsArg) {
       delim,
       convertRowArr,
       header.column_filter || false,
-      header.row_filter || false
+      header.row_filter || false,
     );
     records.push.apply(records, batch);
     if (opts.csv_lines && records.length >= opts.csv_lines) {
@@ -62,7 +62,7 @@ export function readDelimRecordsFromString(str, delim, opts) {
     delim,
     convert,
     header.column_filter,
-    header.row_filter
+    header.row_filter,
   );
   if (opts.csv_lines > 0) {
     // TODO: don't parse unneeded rows
@@ -97,11 +97,9 @@ function getRowConverter(fields) {
     "arr",
     "return {" +
       fields
-        .map(function (name, i) {
-          return JSON.stringify(name) + ": arr[" + i + '] || ""';
-        })
+        .map((name, i) => JSON.stringify(name) + ": arr[" + i + '] || ""')
         .join(",") +
-      "}"
+      "}",
   );
 }
 
@@ -131,9 +129,9 @@ function parseDelimHeaderSection(str, delim, opts) {
   }
   if (opts.csv_fields) {
     retn.column_filter = getDelimFieldFilter(retn.headers, opts.csv_fields);
-    retn.import_fields = retn.headers.filter(function (name, i) {
-      return retn.column_filter(i);
-    });
+    retn.import_fields = retn.headers.filter((name, i) =>
+      retn.column_filter(i),
+    );
   } else {
     retn.import_fields = retn.headers;
   }
@@ -146,7 +144,7 @@ function parseDelimHeaderSection(str, delim, opts) {
 function getDelimRecordFilterFunction(expression) {
   var rowFilter = compileExpressionToFunction(expression, { returns: true });
   var ctx = getBaseContext();
-  return function (rec) {
+  return (rec) => {
     var val;
     try {
       val = rowFilter.call(null, rec, ctx);
@@ -164,9 +162,7 @@ function getDelimRecordFilterFunction(expression) {
 // The function returns true for retained fields and false for excluded fields
 function getDelimFieldFilter(header, fieldsToKeep) {
   var index = utils.arrayToIndex(fieldsToKeep);
-  var map = header.map(function (name) {
-    return name in index;
-  });
+  var map = header.map((name) => name in index);
   var missing = utils.difference(fieldsToKeep, header);
   if (missing.length > 0) {
     var foundStr = [""].concat(header).join("\n  ");
@@ -177,12 +173,10 @@ function getDelimFieldFilter(header, fieldsToKeep) {
       "not found in the file\nFields:",
       foundStr,
       "\nMissing:",
-      missingStr
+      missingStr,
     );
   }
-  return function (colIdx) {
-    return map[colIdx];
-  };
+  return (colIdx) => map[colIdx];
 }
 
 // May be useful in the future to implement reading a range of CSV records
@@ -263,10 +257,7 @@ function parseDelimText(text, delim, convert, colFilter, rowFilter) {
     len,
     record;
 
-  if (!convert)
-    convert = function (d) {
-      return d;
-    };
+  if (!convert) convert = (d) => d;
 
   function endLine() {
     var rec = convert ? convert(record) : record;

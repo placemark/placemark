@@ -1,38 +1,38 @@
-import cmd from "../mapshaper-cmd";
+import { cleanProjectedLayers } from "../commands/mapshaper-proj";
 import {
-  rotateDatasetCoords,
+  densifyAntimeridianSegment,
+  densifyDataset,
+  densifyPathByInterval,
+  getIntervalInterpolator,
+} from "../crs/mapshaper-densify";
+import { getDatasetCRS, isLatLngCRS } from "../crs/mapshaper-projections";
+import {
   getRotationFunction2,
+  rotateDatasetCoords,
 } from "../crs/mapshaper-spherical-rotation";
+import { DatasetEditor } from "../dataset/mapshaper-dataset-editor";
 import {
+  removeCutSegments,
   removePolygonCrosses,
   removePolylineCrosses,
   segmentCrossesAntimeridian,
-  removeCutSegments,
 } from "../geom/mapshaper-antimeridian-cuts";
-import { DatasetEditor } from "../dataset/mapshaper-dataset-editor";
-import { getDatasetCRS, isLatLngCRS } from "../crs/mapshaper-projections";
 import {
   getPlanarPathArea,
   getSphericalPathArea,
 } from "../geom/mapshaper-polygon-geom";
+import cmd from "../mapshaper-cmd";
 import {
-  densifyDataset,
-  densifyPathByInterval,
-  densifyAntimeridianSegment,
-  getIntervalInterpolator,
-} from "../crs/mapshaper-densify";
-import { cleanProjectedLayers } from "../commands/mapshaper-proj";
-import { stop, error, debug } from "../utils/mapshaper-logging";
-import { buildTopology } from "../topology/mapshaper-topology";
-import {
-  samePoint,
-  snapToEdge,
+  isClosedPath,
   isEdgeSegment,
   isWholeWorld,
-  onPole,
-  isClosedPath,
   lastEl,
+  onPole,
+  samePoint,
+  snapToEdge,
 } from "../paths/mapshaper-coordinate-utils";
+import { buildTopology } from "../topology/mapshaper-topology";
+import { debug, error, stop } from "../utils/mapshaper-logging";
 
 cmd.rotate = rotateDataset;
 
@@ -49,7 +49,7 @@ export function rotateDataset(dataset, opts) {
     dataset.arcs.flatten();
   }
 
-  dataset.layers.forEach(function (lyr) {
+  dataset.layers.forEach((lyr) => {
     var type = lyr.geometry_type;
     editor.editLayer(lyr, getGeometryRotator(type, rotatePoint, opts));
   });
@@ -63,20 +63,20 @@ export function rotateDataset(dataset, opts) {
 function getGeometryRotator(layerType, rotatePoint, opts) {
   var rings;
   if (layerType == "point") {
-    return function (coords) {
+    return (coords) => {
       coords.forEach(rotatePoint);
       return coords;
     };
   }
   if (layerType == "polyline") {
-    return function (coords) {
+    return (coords) => {
       coords = densifyPathByInterval(coords, 0.5);
       coords.forEach(rotatePoint);
       return removePolylineCrosses(coords);
     };
   }
   if (layerType == "polygon") {
-    return function (coords, i, shape) {
+    return (coords, i, shape) => {
       if (isWholeWorld(coords)) {
         coords = densifyPathByInterval(coords, 0.5);
       } else {
@@ -109,7 +109,7 @@ function getGeometryRotator(layerType, rotatePoint, opts) {
 
 function getInterpolator(interval) {
   var interpolate = getIntervalInterpolator(interval);
-  return function (a, b) {
+  return (a, b) => {
     var points;
     if (onPole(a) || onPole(b)) {
       points = [];

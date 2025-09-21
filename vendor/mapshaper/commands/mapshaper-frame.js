@@ -1,24 +1,24 @@
 /* require mapshaper-rectangle, mapshaper-furniture */
 
 import {
-  furnitureRenderers,
-  getFurnitureLayerType,
-  getFurnitureLayerData,
-} from "../furniture/mapshaper-furniture";
-import { DataTable } from "../datatable/mapshaper-data-table";
-import { message, stop } from "../utils/mapshaper-logging";
-import { probablyDecimalDegreeBounds } from "../geom/mapshaper-latlon";
-import { Bounds } from "../geom/mapshaper-bounds";
-import {
   getDatasetCRS,
   getScaleFactorAtXY,
 } from "../crs/mapshaper-projections";
 import { getDatasetBounds } from "../dataset/mapshaper-dataset-utils";
-import { importPolygon } from "../svg/geojson-to-svg";
+import { DataTable } from "../datatable/mapshaper-data-table";
+import {
+  furnitureRenderers,
+  getFurnitureLayerData,
+  getFurnitureLayerType,
+} from "../furniture/mapshaper-furniture";
+import { Bounds } from "../geom/mapshaper-bounds";
+import { probablyDecimalDegreeBounds } from "../geom/mapshaper-latlon";
 import cmd from "../mapshaper-cmd";
+import { importPolygon } from "../svg/geojson-to-svg";
+import { message, stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
 
-cmd.frame = function (catalog, source, opts) {
+cmd.frame = (catalog, source, opts) => {
   var size, bounds, tmp, dataset;
   if (+opts.width > 0 === false && +opts.pixels > 0 === false) {
     stop("Missing a width or area");
@@ -38,7 +38,7 @@ cmd.frame = function (catalog, source, opts) {
     stop("Frames require projected, not geographical coordinates");
   } else if (!getDatasetCRS(tmp)) {
     message(
-      "Warning: missing projection data. Assuming coordinates are meters and k (scale factor) is 1"
+      "Warning: missing projection data. Assuming coordinates are meters and k (scale factor) is 1",
     );
   }
   size = getFrameSize(bounds, opts);
@@ -73,7 +73,7 @@ function getAspectRatioArg(widthArg, heightArg) {
   // comma-sep. pair of numbers (range);
   return heightArg
     .split(",")
-    .map(function (opt) {
+    .map((opt) => {
       var height = Number(opt),
         width = Number(widthArg);
       if (!opt) return "";
@@ -110,22 +110,16 @@ function isFrameLayer(lyr) {
 }
 
 export function findFrameLayerInDataset(dataset) {
-  return utils.find(dataset.layers, function (lyr) {
-    return isFrameLayer(lyr);
-  });
+  return utils.find(dataset.layers, (lyr) => isFrameLayer(lyr));
 }
 
 function findFrameDataset(catalog) {
-  var target = utils.find(catalog.getLayers(), function (o) {
-    return isFrameLayer(o.layer);
-  });
+  var target = utils.find(catalog.getLayers(), (o) => isFrameLayer(o.layer));
   return target ? target.dataset : null;
 }
 
 function findFrameLayer(catalog) {
-  var target = utils.find(catalog.getLayers(), function (o) {
-    return isFrameLayer(o.layer);
-  });
+  var target = utils.find(catalog.getLayers(), (o) => isFrameLayer(o.layer));
   return (target && target.layer) || null;
 }
 
@@ -153,7 +147,7 @@ function getMapFrameMetersPerPixel(data) {
   return metersPerPixel;
 }
 
-furnitureRenderers.frame = function (d) {
+furnitureRenderers.frame = (d) => {
   var lineWidth = 1,
     // inset stroke by half of line width
     off = lineWidth / 2,

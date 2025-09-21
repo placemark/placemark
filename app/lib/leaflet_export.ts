@@ -1,11 +1,11 @@
-import {
+import type {
   ISymbolization,
   ISymbolizationCategorical,
   ISymbolizationRamp,
 } from "types";
 
 function sharedDataDrivenPreamble(
-  symbolization: ISymbolizationRamp | ISymbolizationCategorical
+  symbolization: ISymbolizationRamp | ISymbolizationCategorical,
 ) {
   return `const properties = feature.properties || {};
   const fallback = ${JSON.stringify(symbolization.defaultColor)};
@@ -53,10 +53,10 @@ export function leaflet(symbolization: ISymbolization) {
   // Data-driven styles
   const ramp = ${JSON.stringify(
     Object.fromEntries(
-      symbolization.stops.map((stop) => [stop.input, stop.output])
+      symbolization.stops.map((stop) => [stop.input, stop.output]),
     ),
     null,
-    2
+    2,
   )};
   const color = ramp[drivenValue] || fallback;
   ${dataReturn({ symbolization, color: true })}
@@ -70,7 +70,7 @@ export function leaflet(symbolization: ISymbolization) {
   const ramp = ${JSON.stringify(
     symbolization.stops.flatMap((stop) => [stop.input, stop.output]),
     null,
-    2
+    2,
   )};
 
   let color = fallback;

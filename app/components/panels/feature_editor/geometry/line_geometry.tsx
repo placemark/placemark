@@ -1,13 +1,13 @@
 import measureLength from "@turf/length";
+import { Input, StyledLabelSpan } from "app/components/elements";
+import { UnitSelect } from "app/components/unit_select";
+import { useUpdateMaybeUser } from "app/hooks/update_user";
 import type {
   IFeature,
   IWrappedFeature,
   LineString,
   MultiLineString,
 } from "types";
-import { UnitSelect } from "app/components/unit_select";
-import { Input, StyledLabelSpan } from "app/components/elements";
-import { useUpdateMaybeUser } from "app/hooks/update_user";
 
 export function LineGeometry({
   geometry,
@@ -19,7 +19,7 @@ export function LineGeometry({
     geometry as unknown as IFeature<LineString | MultiLineString>,
     {
       units: user.lengthUnits,
-    }
+    },
   );
 
   return <LengthDisplay label="Length in" length={length} />;
@@ -48,7 +48,7 @@ export function LineGeometryMulti({
         },
         {
           units: user.lengthUnits,
-        }
+        },
       );
     }
   }

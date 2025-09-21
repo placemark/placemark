@@ -1,30 +1,31 @@
-import TopoJSON from "../topojson/topojson-common";
-import GeoJSON from "../geojson/geojson-export";
-import utils from "../utils/mapshaper-utils";
-import cmd from "../mapshaper-cmd";
-import { getPresimplifyFunction } from "../topojson/topojson-presimplify";
-import { Bounds } from "../geom/mapshaper-bounds";
-import { exportMetadata } from "../dataset/mapshaper-metadata";
 import { explodePolygon } from "../commands/mapshaper-explode";
-import { filterEmptyArcs, getAvgSegment2 } from "../paths/mapshaper-path-utils";
-import {
-  getFeatureCount,
-  transformPointsInLayer,
-  layerHasPoints,
-} from "../dataset/mapshaper-layer-utils";
-import { exportIds } from "../geojson/geojson-export";
-import { exportProperties } from "../geojson/geojson-export";
-import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
-import { setCoordinatePrecision } from "../geom/mapshaper-rounding";
-import { transformDatasetToPixels } from "../geom/mapshaper-pixel-transform";
-import { getFormattedStringify } from "../geojson/mapshaper-stringify";
 import {
   copyDatasetForExport,
   datasetHasPaths,
-  splitDataset,
   getDatasetBounds,
+  splitDataset,
 } from "../dataset/mapshaper-dataset-utils";
+import {
+  getFeatureCount,
+  layerHasPoints,
+  transformPointsInLayer,
+} from "../dataset/mapshaper-layer-utils";
+import { exportMetadata } from "../dataset/mapshaper-metadata";
+import GeoJSON, {
+  exportIds,
+  exportProperties,
+} from "../geojson/geojson-export";
+import { getFormattedStringify } from "../geojson/mapshaper-stringify";
+import { Bounds } from "../geom/mapshaper-bounds";
+import { transformDatasetToPixels } from "../geom/mapshaper-pixel-transform";
+import { setCoordinatePrecision } from "../geom/mapshaper-rounding";
+import cmd from "../mapshaper-cmd";
+import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
+import { filterEmptyArcs, getAvgSegment2 } from "../paths/mapshaper-path-utils";
+import TopoJSON from "../topojson/topojson-common";
+import { getPresimplifyFunction } from "../topojson/topojson-presimplify";
 import { getOutputFileBase } from "../utils/mapshaper-filename-utils";
+import utils from "../utils/mapshaper-utils";
 
 TopoJSON.getPresimplifyFunction = getPresimplifyFunction;
 
@@ -41,7 +42,7 @@ export function exportTopoJSON(dataset, opts) {
 
   if (opts.prettify) {
     stringify = getFormattedStringify(
-      "coordinates,arcs,bbox,translate,scale".split(",")
+      "coordinates,arcs,bbox,translate,scale".split(","),
     );
   }
 
@@ -57,12 +58,10 @@ export function exportTopoJSON(dataset, opts) {
   }
 
   if (opts.singles) {
-    return splitDataset(dataset).map(function (dataset) {
-      return {
-        content: stringify(TopoJSON.exportTopology(dataset, opts)),
-        filename: (dataset.layers[0].name || "output") + extension,
-      };
-    });
+    return splitDataset(dataset).map((dataset) => ({
+      content: stringify(TopoJSON.exportTopology(dataset, opts)),
+      filename: (dataset.layers[0].name || "output") + extension,
+    }));
   } else {
     return [
       {
@@ -75,7 +74,7 @@ export function exportTopoJSON(dataset, opts) {
 
 // Convert a dataset object to a TopoJSON topology object
 // Careful -- arcs must be a copy if further processing will occur.
-TopoJSON.exportTopology = function (dataset, opts) {
+TopoJSON.exportTopology = (dataset, opts) => {
   var topology = { type: "Topology", arcs: [] },
     hasPaths = datasetHasPaths(dataset),
     bounds = getDatasetBounds(dataset);
@@ -101,7 +100,7 @@ TopoJSON.exportTopology = function (dataset, opts) {
   }
 
   // export layers as TopoJSON named objects
-  topology.objects = dataset.layers.reduce(function (objects, lyr, i) {
+  topology.objects = dataset.layers.reduce((objects, lyr, i) => {
     var name = lyr.name || "layer" + (i + 1);
     objects[name] = TopoJSON.exportLayer(lyr, dataset.arcs, opts);
     return objects;
@@ -113,7 +112,7 @@ TopoJSON.exportTopology = function (dataset, opts) {
   return topology;
 };
 
-TopoJSON.transformDataset = function (dataset, bounds, opts) {
+TopoJSON.transformDataset = (dataset, bounds, opts) => {
   var bounds2 = TopoJSON.calcExportBounds(bounds, dataset.arcs, opts),
     fw = bounds.getTransform(bounds2),
     inv = fw.invert();
@@ -128,7 +127,7 @@ TopoJSON.transformDataset = function (dataset, bounds, opts) {
   }
   // support non-standard format with quantized arcs and non-quantized points
   if (!opts.no_point_quantization) {
-    dataset.layers.filter(layerHasPoints).forEach(function (lyr) {
+    dataset.layers.filter(layerHasPoints).forEach((lyr) => {
       transformPointsInLayer(lyr, transform);
     });
   }
@@ -142,13 +141,13 @@ TopoJSON.transformDataset = function (dataset, bounds, opts) {
 };
 
 // Export arcs as arrays of [x, y] and possibly [z] coordinates
-TopoJSON.exportArcs = function (arcs, bounds, opts) {
+TopoJSON.exportArcs = (arcs, bounds, opts) => {
   var fromZ = null,
     output = [];
   if (opts.presimplify) {
     fromZ = getPresimplifyFunction(bounds.width());
   }
-  arcs.forEach2(function (i, n, xx, yy, zz) {
+  arcs.forEach2((i, n, xx, yy, zz) => {
     var arc = [],
       p;
     for (var j = i + n; i < j; i++) {
@@ -164,8 +163,8 @@ TopoJSON.exportArcs = function (arcs, bounds, opts) {
 };
 
 // Apply delta encoding in-place to an array of topojson arcs
-TopoJSON.deltaEncodeArcs = function (arcs) {
-  arcs.forEach(function (arr) {
+TopoJSON.deltaEncodeArcs = (arcs) => {
+  arcs.forEach((arr) => {
     var ax, ay, bx, by, p;
     for (var i = 0, n = arr.length; i < n; i++) {
       p = arr[i];
@@ -183,7 +182,7 @@ TopoJSON.deltaEncodeArcs = function (arcs) {
 
 // Calculate the x, y extents that map to an integer unit in topojson output
 // as a fraction of the x- and y- extents of the average segment.
-TopoJSON.calcExportResolution = function (arcs, k) {
+TopoJSON.calcExportResolution = (arcs, k) => {
   // TODO: think about the effect of long lines, e.g. from polar cuts.
   var xy = getAvgSegment2(arcs);
   return [xy[0] * k, xy[1] * k];
@@ -191,7 +190,7 @@ TopoJSON.calcExportResolution = function (arcs, k) {
 
 // Calculate the bounding box of quantized topojson coordinates using one
 // of several methods.
-TopoJSON.calcExportBounds = function (bounds, arcs, opts) {
+TopoJSON.calcExportBounds = (bounds, arcs, opts) => {
   var unitXY, xmax, ymax;
   if (opts.topojson_precision > 0) {
     unitXY = TopoJSON.calcExportResolution(arcs, opts.topojson_precision);
@@ -211,10 +210,10 @@ TopoJSON.calcExportBounds = function (bounds, arcs, opts) {
   return new Bounds(0, 0, xmax, ymax);
 };
 
-TopoJSON.exportProperties = function (geometries, table, opts) {
+TopoJSON.exportProperties = (geometries, table, opts) => {
   var properties = exportProperties(table, opts),
     ids = exportIds(table, opts);
-  geometries.forEach(function (geom, i) {
+  geometries.forEach((geom, i) => {
     if (properties) {
       geom.properties = properties[i];
     }
@@ -225,7 +224,7 @@ TopoJSON.exportProperties = function (geometries, table, opts) {
 };
 
 // Export a mapshaper layer as a TopoJSON GeometryCollection
-TopoJSON.exportLayer = function (lyr, arcs, opts) {
+TopoJSON.exportLayer = (lyr, arcs, opts) => {
   var n = getFeatureCount(lyr),
     geometries = [],
     exporter = TopoJSON.exporters[lyr.geometry_type] || null,
@@ -247,7 +246,7 @@ TopoJSON.exportLayer = function (lyr, arcs, opts) {
   };
 };
 
-TopoJSON.exportPolygonGeom = function (shape, coords, opts) {
+TopoJSON.exportPolygonGeom = (shape, coords, opts) => {
   var geom = {};
   shape = filterEmptyArcs(shape, coords);
   if (!shape || shape.length === 0) {
@@ -267,7 +266,7 @@ TopoJSON.exportPolygonGeom = function (shape, coords, opts) {
   return geom;
 };
 
-TopoJSON.exportLineGeom = function (shape, coords) {
+TopoJSON.exportLineGeom = (shape, coords) => {
   var geom = {};
   shape = filterEmptyArcs(shape, coords);
   if (!shape || shape.length === 0) {

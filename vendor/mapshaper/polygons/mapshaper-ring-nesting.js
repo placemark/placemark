@@ -1,7 +1,7 @@
-import { reversePath, getPathMetadata } from "../paths/mapshaper-path-utils";
 import { getBoundsSearchFunction } from "../geom/mapshaper-bounds-search";
-import { PathIndex } from "../paths/mapshaper-path-index";
 import geom from "../geom/mapshaper-geom";
+import { PathIndex } from "../paths/mapshaper-path-index";
+import { getPathMetadata, reversePath } from "../paths/mapshaper-path-utils";
 import { debug } from "../utils/mapshaper-logging";
 
 // Delete rings that are nested directly inside an enclosing ring with the same winding direction
@@ -13,9 +13,7 @@ export function fixNestingErrors(rings, arcs) {
   if (rings.length <= 1) return rings;
   var ringData = getPathMetadata(rings, arcs, "polygon");
   // convert rings to shapes for PathIndex
-  var shapes = rings.map(function (ids) {
-    return [ids];
-  });
+  var shapes = rings.map((ids) => [ids]);
   var index = new PathIndex(shapes, arcs);
   return rings.filter(ringIsValid);
 
@@ -38,7 +36,7 @@ export function fixNestingErrors(rings, arcs) {
 // Set winding order of polygon rings so that outer rings are CW, first-order
 // nested rings are CCW, etc.
 export function rewindPolygons(lyr, arcs) {
-  lyr.shapes = lyr.shapes.map(function (shp) {
+  lyr.shapes = lyr.shapes.map((shp) => {
     if (!shp) return null;
     return rewindPolygon(shp, arcs);
   });
@@ -50,13 +48,11 @@ function rewindPolygon(rings, arcs) {
   var ringData = getPathMetadata(rings, arcs, "polygon");
 
   // Sort rings by area, from large to small
-  ringData.sort(function (a, b) {
-    return Math.abs(b.area) - Math.abs(a.area);
-  });
+  ringData.sort((a, b) => Math.abs(b.area) - Math.abs(a.area));
   // If a ring is contained by one or more rings, set it to the opposite
   //   direction as its immediate parent
   // If a ring is not contained, make it CW.
-  ringData.forEach(function (ring, i) {
+  ringData.forEach((ring, i) => {
     var shouldBeCW = true;
     var j = i;
     var largerRing;
@@ -70,9 +66,7 @@ function rewindPolygon(rings, arcs) {
     }
     setRingWinding(ring, shouldBeCW);
   });
-  return ringData.map(function (data) {
-    return data.ids;
-  });
+  return ringData.map((data) => data.ids);
 }
 
 // data: a ring data object
@@ -102,7 +96,7 @@ export function groupPolygonRings(paths, arcs, reverseWinding) {
     sign = reverseWinding ? -1 : 1,
     boundsQuery;
 
-  (paths || []).forEach(function (path) {
+  (paths || []).forEach((path) => {
     if (path.area * sign > 0) {
       groups.push([path]);
     } else if (path.area * sign < 0) {
@@ -120,16 +114,14 @@ export function groupPolygonRings(paths, arcs, reverseWinding) {
   // contains many holes and space-filling rings.
   // (Thanks to @simonepri for providing an example implementation in PR #248)
   boundsQuery = getBoundsSearchFunction(
-    groups.map(function (group, i) {
-      return {
-        bounds: group[0].bounds,
-        idx: i,
-      };
-    })
+    groups.map((group, i) => ({
+      bounds: group[0].bounds,
+      idx: i,
+    })),
   );
 
   // Group each hole with its containing ring
-  holes.forEach(function (hole) {
+  holes.forEach((hole) => {
     var containerId = -1,
       containerArea = 0,
       holeArea = hole.area * -sign,
@@ -168,7 +160,7 @@ export function groupPolygonRings(paths, arcs, reverseWinding) {
     }
     if (containerId == -1) {
       debug(
-        "[groupPolygonRings()] polygon hole is missing a containing ring, dropping."
+        "[groupPolygonRings()] polygon hole is missing a containing ring, dropping.",
       );
     } else {
       groups[containerId].push(hole);

@@ -1,5 +1,5 @@
-import { Buffer } from "../utils/mapshaper-node-buffer";
 import { error, stop } from "../utils/mapshaper-logging";
+import { Buffer } from "../utils/mapshaper-node-buffer";
 
 // Export all the functions in this module as the default export
 // So other modules can do: 'import utils from '../mapshaper-utils''
@@ -128,16 +128,14 @@ var entityMap = {
   "/": "&#x2F;",
 };
 function htmlEscape(s) {
-  return String(s).replace(/[&<>"'\/]/g, function (s) {
-    return entityMap[s];
-  });
+  return String(s).replace(/[&<>"'/]/g, (s) => entityMap[s]);
 }
 
 export function defaults(dest) {
   for (var i = 1, n = arguments.length; i < n; i++) {
     var src = arguments[i] || {};
     for (var key in src) {
-      if (key in dest === false && src.hasOwnProperty(key)) {
+      if (key in dest === false && Object.hasOwn(src, key)) {
         dest[key] = src[key];
       }
     }
@@ -154,7 +152,7 @@ export function extend(o) {
   for (i = 1; i < n; i++) {
     src = arguments[i] || {};
     for (key in src) {
-      if (src.hasOwnProperty(key)) {
+      if (Object.hasOwn(src, key)) {
         dest[key] = src[key];
       }
     }
@@ -208,7 +206,7 @@ function reduceAsync(arr, memo, iter, done) {
     if (err) {
       return done(err, null);
     }
-    call(function () {
+    call(() => {
       if (i < arr.length === false) {
         done(null, memo);
       } else {
@@ -233,16 +231,12 @@ export function merge(dest, src) {
 // (similar to underscore diff)
 export function difference(arr, other) {
   var index = arrayToIndex(other);
-  return arr.filter(function (el) {
-    return !Object.prototype.hasOwnProperty.call(index, el);
-  });
+  return arr.filter((el) => !Object.hasOwn(index, el));
 }
 
 // Return the intersection of two arrays
 function intersection(a, b) {
-  return a.filter(function (el) {
-    return b.includes(el);
-  });
+  return a.filter((el) => b.includes(el));
 }
 
 function indexOf(arr, item) {
@@ -265,15 +259,13 @@ export function contains(container, item) {
 }
 
 export function some(arr, test) {
-  return arr.reduce(function (val, item) {
+  return arr.reduce((val, item) => {
     return val || test(item); // TODO: short-circuit?
   }, false);
 }
 
 function every(arr, test) {
-  return arr.reduce(function (val, item) {
-    return val && test(item);
-  }, true);
+  return arr.reduce((val, item) => val && test(item), true);
 }
 
 export function find(arr, test, ctx) {
@@ -371,27 +363,25 @@ export function uniq(src) {
 }
 
 export function pluck(arr, key) {
-  return arr.map(function (obj) {
-    return obj[key];
-  });
+  return arr.map((obj) => obj[key]);
 }
 
 function countValues(arr) {
-  return arr.reduce(function (memo, val) {
+  return arr.reduce((memo, val) => {
     memo[val] = val in memo ? memo[val] + 1 : 1;
     return memo;
   }, {});
 }
 
 function indexOn(arr, k) {
-  return arr.reduce(function (index, o) {
+  return arr.reduce((index, o) => {
     index[o[k]] = o;
     return index;
   }, {});
 }
 
 function groupBy(arr, k) {
-  return arr.reduce(function (index, o) {
+  return arr.reduce((index, o) => {
     var keyval = o[k];
     if (keyval in index) {
       index[keyval].push(o);
@@ -404,7 +394,7 @@ function groupBy(arr, k) {
 
 export function arrayToIndex(arr, val) {
   var init = arguments.length > 1;
-  return arr.reduce(function (index, key) {
+  return arr.reduce((index, key) => {
     index[key] = init ? val : true;
     return index;
   }, {});
@@ -421,7 +411,7 @@ export function forEach(arr, func, ctx) {
 }
 
 function forEachProperty(o, func, ctx) {
-  Object.keys(o).forEach(function (key) {
+  Object.keys(o).forEach((key) => {
     func.call(ctx, o[key], key);
   });
 }
@@ -543,7 +533,7 @@ export function sortOn(arr) {
   for (var i = 1; i < arguments.length; i += 2) {
     comparators.push(getKeyComparator(arguments[i], arguments[i + 1]));
   }
-  arr.sort(function (a, b) {
+  arr.sort((a, b) => {
     var cmp = 0,
       i = 0,
       n = comparators.length;
@@ -574,7 +564,7 @@ function getSortedIds(arr, asc) {
 
 function sortArrayIndex(ids, arr, asc) {
   var compare = getGenericComparator(asc);
-  ids.sort(function (i, j) {
+  ids.sort((i, j) => {
     // added i, j comparison to guarantee that sort is stable
     var cmp = compare(arr[i], arr[j]);
     return cmp > 0 || (cmp === 0 && i > j) ? 1 : -1;
@@ -594,14 +584,12 @@ function reorderArray(arr, idxs) {
 
 function getKeyComparator(key, asc) {
   var compare = getGenericComparator(asc);
-  return function (a, b) {
-    return compare(a[key], b[key]);
-  };
+  return (a, b) => compare(a[key], b[key]);
 }
 
 function getGenericComparator(asc) {
   asc = asc !== false;
-  return function (a, b) {
+  return (a, b) => {
     var retn = 0;
     if (b == null) {
       retn = a == null ? 0 : -1;
@@ -833,7 +821,7 @@ function formatValue(val, matches) {
 
 // Get a function for interpolating formatted values into a string.
 function formatter(fmt) {
-  var codeRxp = /%([\',+0]*)([1-9]?)((?:\.[1-9])?)([sdifxX%])/g;
+  var codeRxp = /%([',+0]*)([1-9]?)((?:\.[1-9])?)([sdifxX%])/g;
   var literals = [],
     formatCodes = [],
     startIdx = 0,
@@ -855,7 +843,7 @@ function formatter(fmt) {
   }
   literals.push(prefix + fmt.substr(startIdx));
 
-  return function () {
+  return () => {
     var str = literals[0],
       n = arguments.length;
     if (n != formatCodes.length) {
@@ -863,7 +851,7 @@ function formatter(fmt) {
         "[format()] Data does not match format string; format:",
         fmt,
         "data:",
-        arguments
+        arguments,
       );
     }
     for (var i = 0; i < n; i++) {
@@ -876,9 +864,7 @@ function formatter(fmt) {
 export function wildcardToRegExp(name) {
   var rxp = name
     .split("*")
-    .map(function (str) {
-      return regexEscape(str);
-    })
+    .map((str) => regexEscape(str))
     .join(".*");
   return new RegExp("^" + rxp + "$");
 }
@@ -898,7 +884,7 @@ function expandoBuffer(constructor, rate) {
   var capacity = 0,
     k = rate >= 1 ? rate : 1.2,
     buf;
-  return function (size) {
+  return (size) => {
     if (size > capacity) {
       capacity = Math.ceil(size * k);
       buf = constructor ? new constructor(capacity) : createBuffer(capacity);
@@ -972,7 +958,7 @@ export function uniqifyNames(names, formatter) {
     format = formatter || formatVersionedName,
     names2 = [];
 
-  names.forEach(function (name) {
+  names.forEach((name) => {
     var i = 0,
       candidate = name,
       versionedName;

@@ -1,15 +1,15 @@
-import { stop, debug, error } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
+import { D2R, R2D } from "../geom/mapshaper-basic-geom";
 import { getStateVar } from "../mapshaper-state";
-import { R2D, D2R } from "../geom/mapshaper-basic-geom";
 import {
-  samePoint,
-  lastEl,
   isClosedPath,
   isEdgePoint,
   isEdgeSegment,
+  lastEl,
+  samePoint,
   touchesEdge,
 } from "../paths/mapshaper-coordinate-utils";
+import { debug, error, stop } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // Remove segments that belong solely to cut points
 // TODO: verify that antimeridian crosses have matching y coords
@@ -90,7 +90,7 @@ function reconnectSplitParts(parts) {
   var rings = [];
   var usedParts = [];
   var errors = 0;
-  parts.forEach(function (part, i) {
+  parts.forEach((part, i) => {
     if (usedParts[i]) return;
     if (!isValidSplitPart(part)) {
       error("Geometry error");
@@ -241,9 +241,7 @@ export function segmentCrossesAntimeridian(a, b) {
 }
 
 function getSortedIntersections(parts) {
-  var values = parts.map(function (p) {
-    return p[0][1];
-  });
+  var values = parts.map((p) => p[0][1]);
   return utils.genericSort(values, true);
 }
 
@@ -290,7 +288,7 @@ function sphericalIntercept(p1, p2) {
     phi =
       Math.atan(
         (Math.sin(phi1) * cosPhi2 * Math.sin(lam2) - Math.sin(phi2) * cosPhi1) *
-          Math.sin(lam1)
+          Math.sin(lam1),
       ) /
       (cosPhi1 * cosPhi2 * sinLam1Lam2);
   } else {

@@ -1,5 +1,3 @@
-import { expect, test } from "vitest";
-
 import { collapseGeoJSON } from "app/lib/collapse_geojson";
 import {
   fcLineString,
@@ -9,6 +7,7 @@ import {
   fcTwoPoly,
   twoPoints,
 } from "test/helpers";
+import { expect, test } from "vitest";
 
 test("collapseGeoJSON", () => {
   expect(collapseGeoJSON(twoPoints)).toEqual({

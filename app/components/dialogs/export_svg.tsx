@@ -1,29 +1,34 @@
-import { DownloadIcon } from "@radix-ui/react-icons";
-import { DialogHeader } from "app/components/dialog";
 import { expression } from "@mapbox/mapbox-gl-style-spec";
+import { rewindGeometry } from "@placemarkio/geojson-rewind";
+import { DownloadIcon } from "@radix-ui/react-icons";
+import type { Root } from "@tmcw/togeojson";
+import { DialogHeader } from "app/components/dialog";
 import {
-  TextWell,
   Button,
   inputClass,
-  StyledLabelSpan,
   StyledField,
+  StyledLabelSpan,
   styledCheckbox,
+  TextWell,
 } from "app/components/elements";
-import { renderToStaticMarkup } from "react-dom/server";
-import { rewindGeometry } from "@placemarkio/geojson-rewind";
-import * as geo from "d3-geo";
-import { SVGAttributes, useContext, useMemo, useState } from "react";
-import { useAtomValue } from "jotai";
-import { dataAtom } from "state/jotai";
-import { FeatureCollection, IFeature, ISymbolization, LineString } from "types";
-import { Field, Form, Formik } from "formik";
 import { useRootItems } from "app/components/panels/feature_editor/feature_editor_folder/math";
-import { Root } from "@tmcw/togeojson";
-import { usePersistence } from "app/lib/persistence/context";
-import { asColorExpression } from "app/lib/load_and_augment_style";
-import memoizeOne from "memoize-one";
-import { purple900 } from "app/lib/constants";
 import { MapContext } from "app/context/map_context";
+import { purple900 } from "app/lib/constants";
+import { asColorExpression } from "app/lib/load_and_augment_style";
+import { usePersistence } from "app/lib/persistence/context";
+import * as geo from "d3-geo";
+import { Field, Form, Formik } from "formik";
+import { useAtomValue } from "jotai";
+import memoizeOne from "memoize-one";
+import { type SVGAttributes, useContext, useMemo, useState } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { dataAtom } from "state/jotai";
+import type {
+  FeatureCollection,
+  IFeature,
+  ISymbolization,
+  LineString,
+} from "types";
 
 const getExpr = memoizeOne((symbolization: ISymbolization) => {
   const expressionDefinition = asColorExpression({
@@ -44,7 +49,7 @@ const getExpr = memoizeOne((symbolization: ISymbolization) => {
 function getColor(symbolization: ISymbolization, feature: IFeature) {
   try {
     return getExpr(symbolization)(feature);
-  } catch (e) {
+  } catch (_e) {
     return purple900;
   }
 }
@@ -138,11 +143,18 @@ function SvgChild({
 
       const color = getColor(symbolization, child as IFeature) || "black";
 
-      if (geometry.type === "LineString" || "MultiLineString") {
+      if (
+        geometry.type === "LineString" ||
+        geometry.type === "MultiLineString"
+      ) {
         attrs.stroke = color;
       }
 
-      if (geometry.type === "Polygon" || "MultiPolygon" || "Point") {
+      if (
+        geometry.type === "Polygon" ||
+        geometry.type === "MultiPolygon" ||
+        geometry.type === "Point"
+      ) {
         attrs.fill = color;
         attrs.fillOpacity = 0.2;
       }
@@ -241,7 +253,7 @@ export function ExportSVGDialog() {
     }
 
     const projection = PROJECTIONS.find(
-      (proj) => proj.id === config.projection
+      (proj) => proj.id === config.projection,
     );
 
     if (!projection) {
@@ -259,16 +271,16 @@ export function ExportSVGDialog() {
       config.extent === "Features"
         ? fc
         : config.extent === "World"
-        ? {
-            type: "Sphere",
-          }
-        : mapExtent
+          ? {
+              type: "Sphere",
+            }
+          : mapExtent,
     );
 
     const path = geo.geoPath(proj).pointRadius(config.pointRadius);
 
     return path;
-  }, [featureMap, featureMap.version, config, mapExtent]);
+  }, [featureMap, config, mapExtent]);
 
   async function onExport() {
     const { fileSave } = await import("browser-fs-access");
@@ -278,7 +290,7 @@ export function ExportSVGDialog() {
         path={path}
         config={config}
         symbolization={meta.symbolization}
-      />
+      />,
     );
     const svgStr = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -324,7 +336,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="chartWidth"
                 />
                 <StyledLabelSpan>Width</StyledLabelSpan>
@@ -332,7 +344,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="chartHeight"
                 />
                 <StyledLabelSpan>Height</StyledLabelSpan>
@@ -340,7 +352,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="padding"
                 />
                 <StyledLabelSpan>Padding</StyledLabelSpan>
@@ -348,7 +360,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="pointRadius"
                 />
                 <StyledLabelSpan>Point radius</StyledLabelSpan>
@@ -364,7 +376,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <Field
                   as="select"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="extent"
                 >
                   {EXTENTS.map((extent) => {
@@ -380,7 +392,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <Field
                   as="select"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="projection"
                 >
                   {PROJECTIONS.map((proj) => {

@@ -3,20 +3,20 @@ import {
   CsvOptionsForm,
   XlsOptionsForm,
 } from "app/components/csv_options_form";
-import { SelectFileType } from "app/components/fields";
 import * as E from "app/components/elements";
-import { Collapsible as C } from "radix-ui";
-import { Formik, FormikHelpers, Form } from "formik";
+import { SelectFileType } from "app/components/fields";
 import { useImportFile } from "app/hooks/use_import";
 import {
-  Progress,
-  ImportOptions,
   DEFAULT_IMPORT_OPTIONS,
+  type ImportOptions,
+  type Progress,
 } from "app/lib/convert";
-import { FileGroup } from "app/lib/group_files";
+import type { FileGroup } from "app/lib/group_files";
+import { Form, Formik, type FormikHelpers } from "formik";
+import { Collapsible as C } from "radix-ui";
 import { useState } from "react";
-import { OnNext } from "../import";
 import { AutoDetect } from "../autodetect";
+import type { OnNext } from "../import";
 import SimpleDialogActions from "../simple_dialog_actions";
 import { FileWarning } from "./file_warning";
 import { ImportProgressBar } from "./import_progress_bar";
@@ -69,7 +69,7 @@ export function ImportFileGroup({
     <Formik
       onSubmit={async function onSubmit(
         options: ImportOptions,
-        helpers: FormikHelpers<ImportOptions>
+        helpers: FormikHelpers<ImportOptions>,
       ) {
         try {
           // Don't show a toast if we're going to import

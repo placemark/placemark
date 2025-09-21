@@ -1,9 +1,9 @@
-import type { PropsWithoutRef } from "react";
-import React, { forwardRef } from "react";
-import { useField, useFormikContext, ErrorMessage } from "formik";
-import { InlineError } from "app/components/inline_error";
 import type { B3Size } from "app/components/elements";
 import { Input, StyledLabelSpan } from "app/components/elements";
+import { InlineError } from "app/components/inline_error";
+import { ErrorMessage, useField, useFormikContext } from "formik";
+import type { PropsWithoutRef } from "react";
+import { forwardRef } from "react";
 
 interface LabeledTextFieldProps
   extends PropsWithoutRef<JSX.IntrinsicElements["input"]> {
@@ -20,7 +20,7 @@ export const LabeledTextField = forwardRef<
 >(
   (
     { name, label, _size = "sm", outerProps, ...props }: LabeledTextFieldProps,
-    ref
+    ref,
   ) => {
     const [input] = useField(name);
     const { isSubmitting } = useFormikContext();
@@ -45,5 +45,5 @@ export const LabeledTextField = forwardRef<
         <ErrorMessage name={name} component={InlineError} />
       </div>
     );
-  }
+  },
 );

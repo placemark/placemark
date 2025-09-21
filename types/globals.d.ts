@@ -37,7 +37,7 @@ type LayerScopedEvent = mapboxgl.MapMouseEvent & {
 } & mapboxgl.EventData;
 
 type BothHandler = (
-  arg0: mapboxgl.MapMouseEvent | mapboxgl.MapTouchEvent
+  arg0: mapboxgl.MapMouseEvent | mapboxgl.MapTouchEvent,
 ) => Promisable<void>;
 
 type TouchHandler = (arg0: mapboxgl.MapTouchEvent) => Promisable<void>;

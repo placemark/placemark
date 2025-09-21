@@ -1,9 +1,8 @@
-import { expect, describe, it } from "vitest";
-
 import { UIDMap } from "app/lib/id_mapper";
 import { USelection } from "state";
 import { SELECTION_NONE } from "state/jotai";
 import { fcLineString, NIL_PREVIEW, wrapMapAndId } from "test/helpers";
+import { describe, expect, it } from "vitest";
 import { splitFeatureGroups } from "./split_feature_groups";
 
 describe("splitFeatureGroups", () => {
@@ -18,7 +17,7 @@ describe("splitFeatureGroups", () => {
         previewProperty: NIL_PREVIEW,
         lastSymbolization: null,
         idMap: UIDMap.empty(),
-      })
+      }),
     ).toMatchInlineSnapshot(`
       {
         "ephemeral": [],
@@ -42,7 +41,7 @@ describe("splitFeatureGroups", () => {
         previewProperty: NIL_PREVIEW,
         lastSymbolization: null,
         idMap,
-      })
+      }),
     ).toMatchInlineSnapshot(`
       {
         "ephemeral": [],
@@ -89,7 +88,7 @@ describe("splitFeatureGroups", () => {
         previewProperty: NIL_PREVIEW,
         lastSymbolization: null,
         idMap,
-      })
+      }),
     ).toMatchInlineSnapshot(`
       {
         "ephemeral": [

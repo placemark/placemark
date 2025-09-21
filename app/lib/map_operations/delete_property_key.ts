@@ -3,7 +3,7 @@ import type { Feature } from "types";
 
 export function deletePropertyKey(
   feature: Feature,
-  { key }: { key: string }
+  { key }: { key: string },
 ): Feature {
   return {
     ...feature,

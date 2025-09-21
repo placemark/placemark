@@ -1,12 +1,12 @@
-import type { Feature } from "types";
+import { idToJSONPointers } from "app/lib/id";
+import * as jsonpointer from "app/lib/pointer";
 import type { Operation } from "fast-json-patch";
 import { applyPatch } from "fast-json-patch";
-import * as jsonpointer from "app/lib/pointer";
-import { idToJSONPointers } from "app/lib/id";
+import type { Feature } from "types";
 
 function offsetPointer(pointer: string) {
   return pointer.replace(/(\d+)$/, (index) => {
-    return (parseInt(index) + 1).toString();
+    return (parseInt(index, 10) + 1).toString();
   });
 }
 

@@ -1,8 +1,8 @@
-import type { Data, Sel, SelFolder, SelSingle } from "state/jotai";
-import type { IFolder, IWrappedFeature } from "types";
-import { toggle } from "app/lib/utils";
 import { EMPTY_ARRAY } from "app/lib/constants";
 import { getFoldersInTree } from "app/lib/folder";
+import { toggle } from "app/lib/utils";
+import type { Data, Sel, SelFolder, SelSingle } from "state/jotai";
+import type { IFolder, IWrappedFeature } from "types";
 
 export const USelection = {
   /**
@@ -11,7 +11,7 @@ export const USelection = {
    * we can place a feature in that.
    */
   selectionToFolder(
-    data: Pick<Data, "selection" | "featureMap" | "folderMap">
+    data: Pick<Data, "selection" | "featureMap" | "folderMap">,
   ): Sel {
     const { selection } = data;
 
@@ -81,11 +81,11 @@ export const USelection = {
     return ids.length === 0
       ? { type: "none" }
       : ids.length === 1
-      ? this.single(ids[0])
-      : {
-          type: "multi",
-          ids,
-        };
+        ? this.single(ids[0])
+        : {
+            type: "multi",
+            ids,
+          };
   },
   /**
    * Get selected features of a single or multi selection.

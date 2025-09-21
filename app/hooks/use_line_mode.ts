@@ -1,33 +1,33 @@
-import { LineString } from "@turf/helpers";
+import type { LineString } from "@turf/helpers";
+import { usePersistence } from "app/lib/persistence/context";
+import replaceCoordinates from "app/lib/replace_coordinates";
 import { captureException } from "integrations/errors";
 import { useAtomCallback } from "jotai/utils";
 import last from "lodash/last";
 import { useCallback } from "react";
-import { selectionAtom, ephemeralStateAtom, dataAtom } from "state/jotai";
-import { modeAtom, Mode } from "state/mode";
-import { Feature, IFeature, IWrappedFeature } from "types";
-import { usePersistence } from "app/lib/persistence/context";
-import replaceCoordinates from "app/lib/replace_coordinates";
 import { USelection } from "state";
+import { dataAtom, ephemeralStateAtom, selectionAtom } from "state/jotai";
+import { Mode, modeAtom } from "state/mode";
+import type { Feature, IFeature, IWrappedFeature } from "types";
 
 export function getContinuationDirection(
   id: Id,
-  feature: Feature
+  feature: Feature,
 ): "forward" | "reverse" | null {
   if (id.type !== "vertex" || feature.geometry?.type !== "LineString")
     return null;
   return id.vertex === feature.geometry.coordinates.length - 1
     ? "forward"
     : id.vertex === 0
-    ? "reverse"
-    : null;
+      ? "reverse"
+      : null;
 }
 
 type Direction = NonNullable<ReturnType<typeof getContinuationDirection>>;
 
 export function continueFeature(
   feature: IFeature<LineString>,
-  direction: Direction
+  direction: Direction,
 ) {
   return replaceCoordinates(
     feature,
@@ -35,7 +35,7 @@ export function continueFeature(
       ? feature.geometry.coordinates.concat([
           last(feature.geometry.coordinates)!,
         ])
-      : [feature.geometry.coordinates[0]].concat(feature.geometry.coordinates)
+      : [feature.geometry.coordinates[0]].concat(feature.geometry.coordinates),
   );
 }
 
@@ -58,7 +58,7 @@ export function useLineMode() {
         }: {
           event: Pick<React.MouseEvent, "shiftKey"> | undefined;
           replaceGeometryForId?: IWrappedFeature["id"] | null;
-        }
+        },
       ) => {
         const { featureMap, selection } = get(dataAtom);
 
@@ -95,7 +95,7 @@ export function useLineMode() {
           if (direction) {
             const newFeature = continueFeature(
               feature as IFeature<LineString>,
-              direction
+              direction,
             );
             transact({
               note: "Continued a line",
@@ -120,7 +120,7 @@ export function useLineMode() {
           }
         }
       },
-      [transact]
-    )
+      [transact],
+    ),
   );
 }

@@ -1,11 +1,11 @@
+import useFileSave from "app/hooks/use_file_save";
 import { useMapKeybindings } from "app/hooks/use_map_keybindings";
 import { useOpenFiles } from "app/hooks/use_open_files";
-import { useHotkeys } from "integrations/hotkeys";
-import useFileSave from "app/hooks/use_file_save";
-import { useSetAtom } from "jotai";
 import { captureException } from "integrations/errors";
-import { dialogAtom } from "state/jotai";
+import { useHotkeys } from "integrations/hotkeys";
+import { useSetAtom } from "jotai";
 import toast from "react-hot-toast";
+import { dialogAtom } from "state/jotai";
 
 export function Keybindings() {
   const setDialogState = useSetAtom(dialogAtom);
@@ -20,7 +20,7 @@ export function Keybindings() {
       e.preventDefault();
       setDialogState({ type: "quickswitcher" });
     },
-    [setDialogState]
+    [setDialogState],
   );
 
   useHotkeys(
@@ -29,7 +29,7 @@ export function Keybindings() {
       e.preventDefault();
       setDialogState({ type: "quickswitcher" });
     },
-    [setDialogState]
+    [setDialogState],
   );
 
   useHotkeys(
@@ -41,7 +41,7 @@ export function Keybindings() {
         type: "export",
       });
     },
-    [setDialogState]
+    [setDialogState],
   );
 
   useHotkeys(
@@ -56,7 +56,7 @@ export function Keybindings() {
         };
       });
     },
-    [setDialogState]
+    [setDialogState],
   );
 
   useHotkeys(
@@ -75,7 +75,7 @@ export function Keybindings() {
           });
       })().catch((e) => captureException(e));
     },
-    [setDialogState, saveNative]
+    [setDialogState, saveNative],
   );
 
   useHotkeys(
@@ -84,7 +84,7 @@ export function Keybindings() {
       e.preventDefault();
       openFiles().catch((e) => captureException(e));
     },
-    [openFiles]
+    [openFiles],
   );
 
   return null;

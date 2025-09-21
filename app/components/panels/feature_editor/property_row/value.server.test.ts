@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { asSymbol, guessTab, EditorTab } from "./value";
+import { asSymbol, EditorTab, guessTab } from "./value";
 
 test("asSymbol", () => {
   expect(asSymbol("foo")).toEqual("String");

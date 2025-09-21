@@ -1,17 +1,17 @@
+import type { UniqueIdentifier } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { sortByAt } from "app/lib/parse_stored";
-import { useMemo } from "react";
-import {
-  IFolder,
-  Feature,
-  IWrappedFeature,
-  FeatureMap,
-  FolderMap,
-} from "types";
 import type { Root, Folder as TFolder } from "@tmcw/togeojson";
 import { collectFoldersByFolder } from "app/lib/folder";
-import { Data, SelSingle } from "state/jotai";
-import { UniqueIdentifier } from "@dnd-kit/core";
+import { sortByAt } from "app/lib/parse_stored";
+import { useMemo } from "react";
+import type { Data, SelSingle } from "state/jotai";
+import type {
+  Feature,
+  FeatureMap,
+  FolderMap,
+  IFolder,
+  IWrappedFeature,
+} from "types";
 
 export const indentationWidth = 16;
 
@@ -51,7 +51,7 @@ function folderToFlat(folder: IFolder, depth: number): FlattenedFolder {
 
 function featureToFlat(
   feature: IWrappedFeature,
-  depth: number
+  depth: number,
 ): FlattenedFeature {
   return {
     at: feature.at,
@@ -77,7 +77,7 @@ function collectFeaturesByFolder(featureMap: FeatureMap) {
 
 export function solveRootItems(
   featureMap: FeatureMap,
-  folderMap: FolderMap
+  folderMap: FolderMap,
 ): Root {
   const featuresByFolder = collectFeaturesByFolder(featureMap);
   const foldersByFolder = collectFoldersByFolder(folderMap);
@@ -90,13 +90,13 @@ export function solveRootItems(
           at: wrappedFeature.at,
           data: wrappedFeature.feature,
         };
-      }
+      },
     );
     const folders = (foldersByFolder.get(folderId) ?? []).map(
       (folder): Sortable => {
         const children = getChildren(folder.id);
         const count = children.filter(
-          (child) => child.type === "Feature"
+          (child) => child.type === "Feature",
         ).length;
         return {
           at: folder.at,
@@ -111,7 +111,7 @@ export function solveRootItems(
             children,
           },
         };
-      }
+      },
     );
 
     const items = sortByAt([...features, ...folders]).map((item) => item.data);
@@ -150,7 +150,7 @@ function getLevel(
   depth: number,
   featuresByFolder: ReturnType<typeof collectFeaturesByFolder>,
   foldersByFolder: ReturnType<typeof collectFoldersByFolder>,
-  activeId: UniqueIdentifier | null
+  activeId: UniqueIdentifier | null,
 ) {
   let items: FlattenedItem[] = [];
   const folders = foldersByFolder.get(folderId) ?? [];
@@ -210,7 +210,7 @@ function getLevel(
         depth + 1,
         featuresByFolder,
         foldersByFolder,
-        activeId
+        activeId,
       );
       if (children.length) {
         // This previously used splice. This is sort of just
@@ -264,7 +264,7 @@ export function useFolderSummary({
       {
         type: "folder",
         children: Array.from(featureMap.values()).map(
-          (wrappedFeature) => wrappedFeature.feature
+          (wrappedFeature) => wrappedFeature.feature,
         ),
         meta: {
           count: featureMap.size,
@@ -280,7 +280,7 @@ export function useFolderSummary({
           break;
         case "folder": {
           const features = child.children.filter(
-            (child) => child.type === "Feature"
+            (child) => child.type === "Feature",
           );
           items.push({
             ...child,
@@ -432,7 +432,7 @@ type Expansions = IFolder[];
  */
 export function getRequiredExpansionsFeature(
   selection: SelSingle,
-  data: Data
+  data: Data,
 ): Expansions {
   const expansions: Expansions = [];
   const feature = data.featureMap.get(selection.id);

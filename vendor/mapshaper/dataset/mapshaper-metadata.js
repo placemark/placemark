@@ -1,6 +1,6 @@
 import {
-  getCRS,
   crsToProj4,
+  getCRS,
   getDatasetCRS,
 } from "../crs/mapshaper-projections";
 

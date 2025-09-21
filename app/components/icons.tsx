@@ -12,7 +12,6 @@ const standardProps = {
 export function SendToBack16() {
   return (
     <svg
-      id="icon"
       xmlns="http://www.w3.org/2000/svg"
       width="16"
       height="16"
@@ -44,7 +43,7 @@ export function FolderAdd16() {
         d="M28,8H16l-3.4-3.4C12.2,4.2,11.7,4,11.2,4H4C2.9,4,2,4.9,2,6v20c0,1.1,0.9,2,2,2h14v-2H4V6h7.2l3.4,3.4l0.6,0.6H28v8h2v-8
 	C30,8.9,29.1,8,28,8z"
       />
-      <rect id="_Transparent_Rectangle_" fill="none" width="32" height="32" />
+      <rect fill="none" width="32" height="32" />
     </svg>
   );
 }
@@ -54,7 +53,6 @@ export function Folder16(attrs: React.SVGAttributes<SVGSVGElement>) {
     <svg
       width="16"
       height="16"
-      id="icon"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 32 32"
       {...attrs}
@@ -70,7 +68,6 @@ export function Folder16(attrs: React.SVGAttributes<SVGSVGElement>) {
 export function ShapeIntersect16() {
   return (
     <svg
-      id="icon"
       xmlns="http://www.w3.org/2000/svg"
       width="16"
       height="16"
@@ -85,7 +82,6 @@ export function ShapeIntersect16() {
 export function ShapeUnite16() {
   return (
     <svg
-      id="icon"
       xmlns="http://www.w3.org/2000/svg"
       width="16"
       height="16"
@@ -150,6 +146,7 @@ export const ConvexIcon = memo(function ConvexIcon(props: IconProps) {
         strokeWidth="0.5"
         strokeLinejoin="round"
       />
+      {/** biome-ignore lint/correctness/useUniqueElementIds: needs to be referenced */}
       <mask id="path-2-inside-1" fill="white">
         <path
           fillRule="evenodd"

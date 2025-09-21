@@ -1,45 +1,45 @@
 import {
-  DotFilledIcon,
-  BoxModelIcon,
-  BorderSolidIcon,
-  CornersIcon,
   BorderDashedIcon,
+  BorderSolidIcon,
+  BoxModelIcon,
+  CornersIcon,
+  DotFilledIcon,
   ValueNoneIcon,
 } from "@radix-ui/react-icons";
-import { captureException } from "integrations/errors";
-import { useAtom, useSetAtom } from "jotai";
 import { bboxToPolygon, getExtent } from "app/lib/geometry";
+import { newFeatureId } from "app/lib/id";
 import {
+  geometryToPoints,
   makeConvexHull,
   polygonToLine,
-  geometryToPoints,
   splitLine,
 } from "app/lib/map_operations";
 import {
   isFeatureSimplifiable,
-  SimplifySupportedGeometry,
+  type SimplifySupportedGeometry,
 } from "app/lib/map_operations/simplify";
 import { usePersistence } from "app/lib/persistence/context";
-import { newFeatureId } from "app/lib/id";
+import { captureException } from "integrations/errors";
+import { useAtom, useSetAtom } from "jotai";
 import toast from "react-hot-toast";
 import { USelection } from "state";
-import { selectionAtom } from "state/jotai";
 import { dialogAtom } from "state/dialog_state";
+import { selectionAtom } from "state/jotai";
 import type {
-  Polygon,
-  Point,
-  MultiPoint,
   Geometry,
-  LineString,
   IFeature,
   IWrappedFeature,
+  LineString,
+  MultiPoint,
+  Point,
+  Polygon,
 } from "types";
-import { ActionItem } from "./context_actions/action_item";
 import type { Action, ActionProps } from "./context_actions/action_item";
+import { ActionItem } from "./context_actions/action_item";
 import { ConvexIcon } from "./icons";
 
 export function useSingleActions(
-  selectedWrappedFeatures: IWrappedFeature[]
+  selectedWrappedFeatures: IWrappedFeature[],
 ): Action[] {
   const rep = usePersistence();
   const transact = rep.useTransact();
@@ -76,7 +76,7 @@ export function useSingleActions(
   const simplifiableFeatures = selectedWrappedFeatures.filter(
     (wrappedFeature) => {
       return isFeatureSimplifiable(wrappedFeature);
-    }
+    },
   ) as IWrappedFeature<IFeature<SimplifySupportedGeometry>>[];
   const simplifyAction = {
     label: "Simplify",
@@ -101,7 +101,7 @@ export function useSingleActions(
     icon: <ConvexIcon />,
     onSelect: async function doConvexHull() {
       await makeConvexHull(
-        selectedWrappedFeatures.map((f) => f.feature)
+        selectedWrappedFeatures.map((f) => f.feature),
       ).caseOf({
         Left(error) {
           toast.error(error.message);
@@ -243,11 +243,9 @@ export function SingleActions({
   const goodActions = actions.filter((action) => action.applicable);
 
   return goodActions.length ? (
-    <>
-      {goodActions.map((action, i) => (
-        <ActionItem key={i} as={as} action={action} />
-      ))}
-    </>
+    goodActions.map((action, i) => (
+      <ActionItem key={i} as={as} action={action} />
+    ))
   ) : as !== "context-item" ? (
     // Don't show "No actions available" when this is a
     // context item, because that means there are other multi-actions

@@ -1,19 +1,18 @@
-import React from "react";
-import type { MultiPair } from "app/lib/multi_properties";
-import { ExplicitCast } from "app/lib/cast";
 import { styledTd } from "app/components/elements";
-import type { JsonValue } from "type-fest";
+import { MultiValueEditor } from "app/components/shared/multi_value_editor";
+import type { ExplicitCast } from "app/lib/cast";
+import type { MultiPair } from "app/lib/multi_properties";
 import { Popover as P } from "radix-ui";
+import type { JsonValue } from "type-fest";
 import { PropertyRowKey, PropertyRowKeyReadonly } from "./property_row/key";
 import { PropertyRowValue } from "./property_row/value";
-import { MultiValueEditor } from "app/components/shared/multi_value_editor";
 
 export type OnChangeValue = (key: string, value: JsonValue) => void;
 export type OnDeleteKey = (key: string) => void;
 export type OnCast = (
   key: string,
   value: string,
-  castType: ExplicitCast
+  castType: ExplicitCast,
 ) => void;
 export type OnChangeKey = (key: string, newKey: string) => void;
 export type PropertyPair = [string, JsonValue | undefined];

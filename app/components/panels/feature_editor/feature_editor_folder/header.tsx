@@ -1,3 +1,4 @@
+import { CaretDownIcon } from "@radix-ui/react-icons";
 import {
   Button,
   StyledLabelSpan,
@@ -6,12 +7,11 @@ import {
   styledSelect,
   TextWell,
 } from "app/components/elements";
-import { Popover as P } from "radix-ui";
 import { extractPropertyKeys } from "app/lib/multi_properties";
-import { FeatureMap } from "types";
-import { AddFolder } from "./add_folder";
-import { CaretDownIcon } from "@radix-ui/react-icons";
 import { usePersistence } from "app/lib/persistence/context";
+import { Popover as P } from "radix-ui";
+import type { FeatureMap } from "types";
+import { AddFolder } from "./add_folder";
 
 function PreviewProperty({ featureMap }: { featureMap: FeatureMap }) {
   const rep = usePersistence();
@@ -21,7 +21,7 @@ function PreviewProperty({ featureMap }: { featureMap: FeatureMap }) {
     <div className="space-y-2">
       <StyledLabelSpan>Label property</StyledLabelSpan>
       <select
-        className={styledSelect({ size: "sm" }) + " w-full"}
+        className={`${styledSelect({ size: "sm" })} w-full`}
         onChange={(e) => {
           void setMeta({ label: e.target.value });
         }}

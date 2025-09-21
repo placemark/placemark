@@ -1,9 +1,9 @@
-import { useCallback } from "react";
-import { useSetAtom } from "jotai";
-import { dialogAtom } from "state/jotai";
 import { groupFiles } from "app/lib/group_files";
-import { useQuery } from "react-query";
 import { captureException } from "integrations/errors";
+import { useSetAtom } from "jotai";
+import { useCallback } from "react";
+import { useQuery } from "react-query";
+import { dialogAtom } from "state/jotai";
 
 export function useOpenFiles() {
   const setDialogState = useSetAtom(dialogAtom);

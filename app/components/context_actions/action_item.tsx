@@ -1,12 +1,12 @@
-import { Tooltip } from "radix-ui";
 import {
+  type B3Variant,
+  Button,
   CMItem,
   StyledItem,
-  TContent,
   StyledTooltipArrow,
-  Button,
-  B3Variant,
+  TContent,
 } from "app/components/elements";
+import { Tooltip } from "radix-ui";
 
 export interface Action {
   onSelect: (event?: Event) => Promise<void>;

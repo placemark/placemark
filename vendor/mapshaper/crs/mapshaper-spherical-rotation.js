@@ -1,6 +1,6 @@
-import { projectPointLayer, projectArcs } from "../commands/mapshaper-proj";
+import { projectArcs, projectPointLayer } from "../commands/mapshaper-proj";
 import { layerHasPoints } from "../dataset/mapshaper-layer-utils";
-import { R2D, D2R } from "../geom/mapshaper-basic-geom";
+import { D2R, R2D } from "../geom/mapshaper-basic-geom";
 
 // based on d3 implementation of Euler-angle rotation
 // https://github.com/d3/d3-geo/blob/master/src/rotation.js
@@ -8,7 +8,7 @@ import { R2D, D2R } from "../geom/mapshaper-basic-geom";
 
 export function rotateDatasetCoords(dataset, rotation, inv) {
   var proj = getRotationFunction(rotation, inv);
-  dataset.layers.filter(layerHasPoints).forEach(function (lyr) {
+  dataset.layers.filter(layerHasPoints).forEach((lyr) => {
     projectPointLayer(lyr, proj);
   });
   if (dataset.arcs) {
@@ -18,16 +18,14 @@ export function rotateDatasetCoords(dataset, rotation, inv) {
 
 function getRotationFunction(rotation, inv) {
   var f = getRotationFunction2(rotation, inv);
-  return function (lng, lat) {
-    return f([lng, lat]);
-  };
+  return (lng, lat) => f([lng, lat]);
 }
 
 export function getRotationFunction2(rotation, inv) {
   var a = (rotation[0] || 0) * D2R,
     b = (rotation[1] || 0) * D2R,
     c = (rotation[2] || 0) * D2R;
-  return function (p) {
+  return (p) => {
     p[0] *= D2R;
     p[1] *= D2R;
     var rotate = inv ? rotatePointInv : rotatePoint;
@@ -75,14 +73,14 @@ function rotatePhiGamma(p, deltaPhi, deltaGam, inv) {
     k = z * cosDeltaGam - y * sinDeltaGam;
     p[0] = Math.atan2(
       y * cosDeltaGam + z * sinDeltaGam,
-      x * cosDeltaPhi + k * sinDeltaPhi
+      x * cosDeltaPhi + k * sinDeltaPhi,
     );
     p[1] = Math.asin(k * cosDeltaPhi - x * sinDeltaPhi);
   } else {
     k = z * cosDeltaPhi + x * sinDeltaPhi;
     p[0] = Math.atan2(
       y * cosDeltaGam - k * sinDeltaGam,
-      x * cosDeltaPhi - z * sinDeltaPhi
+      x * cosDeltaPhi - z * sinDeltaPhi,
     );
     p[1] = Math.asin(k * cosDeltaGam + y * sinDeltaGam);
   }

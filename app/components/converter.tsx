@@ -1,33 +1,3 @@
-import {
-  Button,
-  DefaultErrorBoundary,
-  Loading,
-  StyledFieldTextareaCode,
-  StyledLabelSpan,
-  TextWell,
-} from "./elements";
-import { captureException } from "integrations/errors";
-import { Formik, FormikHelpers, Form, ErrorMessage } from "formik";
-import {
-  ImportOptions,
-  DEFAULT_IMPORT_OPTIONS,
-  ExportOptions,
-  DEFAULT_EXPORT_GEOJSON_OPTIONS,
-  fromGeoJSON,
-  stringToGeoJSON,
-  ExportedData,
-  FILE_TYPES,
-} from "app/lib/convert";
-import { ConvertResult } from "app/lib/convert/utils";
-import * as Comlink from "comlink";
-import { transfer } from "comlink";
-import { CoordinateStringOptionsForm } from "./coordinate_string_options_form";
-import { CsvOptionsForm, XlsOptionsForm } from "./csv_options_form";
-import { SelectFileTypeField } from "./fields";
-import { useAtom } from "jotai";
-import { atomWithMachine } from "jotai-xstate";
-import { assign, createMachine } from "xstate";
-import { Fragment, Suspense, useEffect } from "react";
 import { getFilesFromDataTransferItems } from "@placemarkio/flat-drop-files";
 import {
   DownloadIcon,
@@ -36,14 +6,44 @@ import {
   ResetIcon,
   ShuffleIcon,
 } from "@radix-ui/react-icons";
-import { lib } from "app/lib/worker";
-import { GeoJSONOptions } from "./dialogs/export";
-import { EitherAsync } from "purify-ts/EitherAsync";
-import { Data } from "state/jotai";
-import { newFeatureId } from "app/lib/id";
 import { flattenRoot } from "app/hooks/use_import";
+import {
+  DEFAULT_EXPORT_GEOJSON_OPTIONS,
+  DEFAULT_IMPORT_OPTIONS,
+  type ExportedData,
+  type ExportOptions,
+  FILE_TYPES,
+  fromGeoJSON,
+  type ImportOptions,
+  stringToGeoJSON,
+} from "app/lib/convert";
+import type { ConvertResult } from "app/lib/convert/utils";
+import { newFeatureId } from "app/lib/id";
+import { lib } from "app/lib/worker";
 import { fileOpen, fileSave } from "browser-fs-access";
+import * as Comlink from "comlink";
+import { transfer } from "comlink";
+import { ErrorMessage, Form, Formik, type FormikHelpers } from "formik";
+import { captureException } from "integrations/errors";
+import { useAtom } from "jotai";
+import { atomWithMachine } from "jotai-xstate";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import { Fragment, Suspense, useEffect } from "react";
+import type { Data } from "state/jotai";
+import { assign, createMachine } from "xstate";
+import { CoordinateStringOptionsForm } from "./coordinate_string_options_form";
+import { CsvOptionsForm, XlsOptionsForm } from "./csv_options_form";
 import { AutoDetect } from "./dialogs/autodetect";
+import { GeoJSONOptions } from "./dialogs/export";
+import {
+  Button,
+  DefaultErrorBoundary,
+  Loading,
+  StyledFieldTextareaCode,
+  StyledLabelSpan,
+  TextWell,
+} from "./elements";
+import { SelectFileTypeField } from "./fields";
 
 type InputData =
   | {
@@ -55,19 +55,19 @@ type InputData =
     };
 
 async function getAndGroupFiles(
-  event: React.SyntheticEvent
+  event: React.SyntheticEvent,
 ): Promise<InputData> {
   const files =
     event.nativeEvent instanceof DragEvent &&
     event.nativeEvent.dataTransfer?.items
       ? await getFilesFromDataTransferItems(
-          event.nativeEvent.dataTransfer.items
+          event.nativeEvent.dataTransfer.items,
         )
       : null;
 
   if (!files?.length) {
     throw new Error(
-      `No files were found in that upload. Maybe it was an empty folder?`
+      `No files were found in that upload. Maybe it was an empty folder?`,
     );
   }
 
@@ -225,7 +225,7 @@ const createEditableMachine = () =>
           }
         },
       },
-    }
+    },
   );
 
 const editableMachineAtom = atomWithMachine((_get) => createEditableMachine());
@@ -237,7 +237,7 @@ type FormOptions = ImportOptions &
   };
 
 function convertResultToExportInput(
-  result: ConvertResult
+  result: ConvertResult,
 ): Pick<Data, "featureMap" | "folderMap"> {
   const featureMap: Data["featureMap"] = new Map();
   const folderMap: Data["folderMap"] = new Map();
@@ -298,8 +298,8 @@ function convert({
           await lib.fileToGeoJSON(
             transfer(arrayBuffer, [arrayBuffer]),
             values,
-            Comlink.proxy(() => {})
-          )
+            Comlink.proxy(() => {}),
+          ),
         );
         break;
       }
@@ -308,8 +308,8 @@ function convert({
           await stringToGeoJSON(
             values.text,
             values,
-            Comlink.proxy(() => {})
-          )
+            Comlink.proxy(() => {}),
+          ),
         );
       }
     }
@@ -320,7 +320,7 @@ function convert({
       await fromGeoJSON(toExport, {
         ...values,
         type: values.exportType,
-      })
+      }),
     );
 
     return exported;
@@ -352,7 +352,7 @@ function ConvertFile() {
     <Formik
       onSubmit={async function onSubmit(
         values: FormOptions,
-        helpers: FormikHelpers<FormOptions>
+        helpers: FormikHelpers<FormOptions>,
       ) {
         await convert({ inputData, values })
           .ifLeft((e) => {
@@ -473,6 +473,7 @@ function Download() {
         <div className="border-t border-gray-200 -mx-10 mt-8" />
         <div className="pt-8 text-center">
           <button
+            type="button"
             className="inline inherit text-purple-500 underline"
             onClick={() => send("cancel")}
           >
@@ -544,7 +545,7 @@ function ErrorState({ error }: { error: Error | null }) {
           justify-stretch`}
       >
         <div className="text-md pb-4">Sorry, we encountered an error.</div>
-        {error && error.message ? (
+        {error?.message ? (
           <div className="text-center font-monospace">{error.message}</div>
         ) : null}
       </div>

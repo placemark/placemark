@@ -2,7 +2,7 @@ import type { Feature } from "types";
 
 export function popLineStringCoordinate(
   feature: Feature,
-  { reverse }: { reverse: boolean }
+  { reverse }: { reverse: boolean },
 ): Feature {
   const { geometry } = feature;
   if (geometry?.type !== "LineString") return feature;

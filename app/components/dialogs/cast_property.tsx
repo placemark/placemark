@@ -1,13 +1,13 @@
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { DialogHeader } from "app/components/dialog";
-import { Formik, Field, Form } from "formik";
-import type { ModalStateCastProperty } from "state/jotai";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
+import { styledSelect } from "app/components/elements";
 import { castExplicit, ExplicitCast } from "app/lib/cast";
 import { usePersistence } from "app/lib/persistence/context";
-import { styledSelect } from "app/components/elements";
-import { JsonObject } from "type-fest";
 import { useFeatureMap } from "app/lib/persistence/shared";
+import { Field, Form, Formik } from "formik";
+import type { ModalStateCastProperty } from "state/jotai";
+import type { JsonObject } from "type-fest";
 
 type CastFormValues = {
   castTarget: ExplicitCast;
@@ -49,7 +49,7 @@ export function CastPropertyDialog({
         const properties = { ...oldProperties } as JsonObject;
         properties[modal.column] = castExplicit(
           properties[modal.column],
-          values.castTarget
+          values.castTarget,
         );
         const newFeature = {
           ...wrappedFeature.feature,
@@ -86,7 +86,7 @@ export function CastPropertyDialog({
             <Field
               as="select"
               name="castTarget"
-              className={styledSelect({ size: "md" }) + " w-full"}
+              className={`${styledSelect({ size: "md" })} w-full`}
             >
               {Object.values(ExplicitCast).map((type) => (
                 <option key={type} value={type}>

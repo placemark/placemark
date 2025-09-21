@@ -1,13 +1,12 @@
-import { expect, describe, it } from "vitest";
-
-import {
-  removeCoincidents,
-  rough,
-  getInitialCtx,
-} from "app/lib/roughly_geojson";
-import { features } from "test/helpers";
 import { getIssues } from "@placemarkio/check-geojson";
 import { geometryTypes } from "app/lib/constants";
+import {
+  getInitialCtx,
+  removeCoincidents,
+  rough,
+} from "app/lib/roughly_geojson";
+import { features } from "test/helpers";
+import { describe, expect, it } from "vitest";
 
 it("removeCoincidents", () => {
   const ctx = getInitialCtx({
@@ -35,7 +34,7 @@ it("removeCoincidents", () => {
       [0, 0],
       [1, 2],
       [1, 2],
-    ])
+    ]),
   ).toEqual(ok);
 
   expect(
@@ -45,7 +44,7 @@ it("removeCoincidents", () => {
       [0, 0],
       [1, 2],
       [1, 2],
-    ])
+    ]),
   ).toEqual(ok);
 
   expect(
@@ -57,7 +56,7 @@ it("removeCoincidents", () => {
       [1, 2],
       [1, 2],
       [1, 2],
-    ])
+    ]),
   ).toEqual(ok);
 
   expect(removeCoincidents(ctx, [])).toEqual([]);
@@ -73,13 +72,13 @@ describe("roughly", () => {
           [0, 0],
           [1, 1],
         ],
-      }).unsafeCoerce()
+      }).unsafeCoerce(),
     ).toHaveProperty(
       ["geojson", "features", "0", "geometry", "coordinates"],
       [
         [0, 0],
         [1, 1],
-      ]
+      ],
     );
 
     expect(
@@ -93,7 +92,7 @@ describe("roughly", () => {
             [0, 0],
           ],
         ],
-      }).unsafeCoerce()
+      }).unsafeCoerce(),
     ).toHaveProperty(
       ["geojson", "features", "0", "geometry", "coordinates"],
       [
@@ -102,7 +101,7 @@ describe("roughly", () => {
           [1, 1],
           [0, 0],
         ],
-      ]
+      ],
     );
   });
   it("pass-throughs valid geometries", () => {
@@ -135,7 +134,7 @@ describe("roughly", () => {
         rough({
           type: "FeatureCollection",
           features: [feature],
-        })
+        }),
       ).toEqualRight({
         geojson: {
           type: "FeatureCollection",
@@ -159,7 +158,7 @@ describe("roughly", () => {
       rough({
         type: "FeatureCollection",
         features,
-      })
+      }),
     ).toEqualRight({
       geojson: {
         type: "FeatureCollection",
@@ -181,7 +180,7 @@ describe("roughly", () => {
       rough({
         type: "FeatureCollection",
         features: [false, features[0], null],
-      })
+      }),
     ).toEqualRight({
       geojson: {
         type: "FeatureCollection",
@@ -199,7 +198,7 @@ describe("roughly", () => {
         rough({
           type: "FeatureCollection",
           features,
-        })
+        }),
       ).toBeLeft();
     }
 
@@ -208,7 +207,7 @@ describe("roughly", () => {
         rough({
           type: "FeatureCollection",
           features,
-        })
+        }),
       ).toBeLeft();
     }
   });
@@ -218,7 +217,7 @@ describe("roughly", () => {
       rough({
         ...features[0],
         properties: 42,
-      })
+      }),
     ).toEqualRight({
       geojson: {
         type: "FeatureCollection",
@@ -239,7 +238,7 @@ describe("roughly", () => {
       rough({
         ...features[0],
         properties: [42],
-      }).unsafeCoerce()
+      }).unsafeCoerce(),
     ).toHaveProperty(["geojson", "features", "0", "properties"], {
       value: [42],
     });
@@ -250,7 +249,7 @@ describe("roughly", () => {
       rough({
         type: "GeometryCollection",
         geometries: [null, 2, features[0].geometry, 3, 4],
-      })
+      }),
     ).toEqualRight({
       geojson: {
         type: "FeatureCollection",
@@ -294,10 +293,10 @@ describe("roughly", () => {
             geometry: null,
           },
         ],
-      }).extract()
+      }).extract(),
     ).toHaveProperty(
       "message",
-      "No features were importable in this GeoJSON file"
+      "No features were importable in this GeoJSON file",
     );
     expect(
       rough({
@@ -309,16 +308,16 @@ describe("roughly", () => {
             properties: {},
           },
         ],
-      }).extract()
+      }).extract(),
     ).toHaveProperty("notes", ["Feature #0's invalid geometry removed"]);
     expect(
       rough({
         type: "Poi",
         coordinates: [1, 2],
-      }).extract()
+      }).extract(),
     ).toHaveProperty(
       "message",
-      "No features were importable in this GeoJSON file"
+      "No features were importable in this GeoJSON file",
     );
     for (const type of geometryTypes) {
       for (const coordinates of [
@@ -335,10 +334,10 @@ describe("roughly", () => {
           rough({
             type,
             coordinates,
-          }).extract()
+          }).extract(),
         ).toHaveProperty(
           "message",
-          "No features were importable in this GeoJSON file"
+          "No features were importable in this GeoJSON file",
         );
       }
     }
@@ -347,10 +346,10 @@ describe("roughly", () => {
       rough({
         type: "GeometryCollection",
         geometries: [null, 2, 3, 4],
-      }).extract()
+      }).extract(),
     ).toHaveProperty(
       "message",
-      "No features were importable in this GeoJSON file"
+      "No features were importable in this GeoJSON file",
     );
 
     expect(
@@ -363,7 +362,7 @@ describe("roughly", () => {
             coordinates: [1, 2],
           },
         ],
-      }).extract()
+      }).extract(),
     ).toMatchInlineSnapshot(`
       {
         "geojson": {

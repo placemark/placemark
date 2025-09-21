@@ -1,13 +1,13 @@
-import { useAtomCallback } from "jotai/utils";
 import * as utils from "app/lib/map_component_utils";
-import noop from "lodash/noop";
-import type { EphemeralEditingStateLasso } from "state/jotai";
-import { modeAtom, ephemeralStateAtom, selectionAtom } from "state/jotai";
-import { USelection } from "state";
-import type { HandlerContext } from "types";
-import { Mode } from "state/mode";
 import { toggle, toggleByValue } from "app/lib/utils";
+import { useAtomCallback } from "jotai/utils";
+import noop from "lodash/noop";
 import { useCallback } from "react";
+import { USelection } from "state";
+import type { EphemeralEditingStateLasso } from "state/jotai";
+import { ephemeralStateAtom, modeAtom, selectionAtom } from "state/jotai";
+import { Mode } from "state/mode";
+import type { HandlerContext } from "types";
 
 export function useLassoHandlers({
   flatbushInstance,
@@ -21,7 +21,7 @@ export function useLassoHandlers({
     click: useAtomCallback(
       useCallback((_get, set) => {
         set(modeAtom, { mode: Mode.NONE });
-      }, [])
+      }, []),
     ),
     move: useAtomCallback(
       useCallback(
@@ -58,8 +58,8 @@ export function useLassoHandlers({
           }
           e.preventDefault();
         },
-        [flatbushInstance]
-      )
+        [flatbushInstance],
+      ),
     ),
     down: noop,
     up: useAtomCallback((get, set, e) => {
@@ -125,7 +125,7 @@ export function useLassoHandlers({
                 : {
                     type: "multi",
                     ids,
-                  }
+                  },
             );
           }
           break;

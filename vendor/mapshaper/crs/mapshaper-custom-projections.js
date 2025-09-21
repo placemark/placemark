@@ -5,7 +5,7 @@ import utils from "../utils/mapshaper-utils";
 export function parseCustomProjection(str) {
   var parts = str.trim().split(/ +/);
   var params = [];
-  var names = parts.filter(function (part) {
+  var names = parts.filter((part) => {
     if (/^\+/.test(part)) {
       params.push(part.substr(1)); // strip '+'
       return false;
@@ -74,7 +74,7 @@ export function AlbersUSA(optsArg) {
 
 function parseCustomParams(arr) {
   var opts = {};
-  arr.forEach(function (str) {
+  arr.forEach((str) => {
     parseCustomParam(str, opts);
   });
   return opts;
@@ -84,7 +84,7 @@ function parseCustomParam(str, opts) {
   var parts = str.split("=");
   var path = parts[0].split(".");
   var key = path.pop();
-  var obj = path.reduce(function (memo, name) {
+  var obj = path.reduce((memo, name) => {
     if (name in memo === false) {
       memo[name] = {};
     } else if (!utils.isObject(memo[name])) {

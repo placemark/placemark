@@ -1,16 +1,15 @@
-import { compileValueExpression } from "../expressions/mapshaper-expressions";
 import { getDatasetCRS } from "../crs/mapshaper-projections";
-import { convertDistanceParam } from "../geom/mapshaper-units";
-import { parseMeasure2 } from "../geom/mapshaper-units";
-import { reversePath } from "../paths/mapshaper-path-utils";
-import { getHoleDivider } from "../polygons/mapshaper-polygon-holes";
-import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
-import { getRingIntersector } from "../paths/mapshaper-pathfinder";
-import { composeMosaicLayer } from "../dissolve/mapshaper-polygon-dissolve2";
-import { addIntersectionCuts } from "../paths/mapshaper-intersection-cuts";
-import { stop } from "../utils/mapshaper-logging";
 import { DataTable } from "../datatable/mapshaper-data-table";
+import { composeMosaicLayer } from "../dissolve/mapshaper-polygon-dissolve2";
+import { compileValueExpression } from "../expressions/mapshaper-expressions";
+import { convertDistanceParam, parseMeasure2 } from "../geom/mapshaper-units";
+import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
+import { addIntersectionCuts } from "../paths/mapshaper-intersection-cuts";
+import { reversePath } from "../paths/mapshaper-path-utils";
+import { getRingIntersector } from "../paths/mapshaper-pathfinder";
 import { MosaicIndex } from "../polygons/mapshaper-mosaic-index";
+import { getHoleDivider } from "../polygons/mapshaper-polygon-holes";
+import { stop } from "../utils/mapshaper-logging";
 
 function dissolveBufferDataset(dataset, optsArg) {
   var opts = optsArg || {};
@@ -31,7 +30,7 @@ function dissolveBufferDataset(dataset, optsArg) {
     return;
   }
   var pathfind = getRingIntersector(mosaicIndex.nodes);
-  var shapes2 = lyr.shapes.map(function (shp, shapeId) {
+  var shapes2 = lyr.shapes.map((shp, shapeId) => {
     var tiles = mosaicIndex.getTilesByShapeIds([shapeId]);
     var rings = [];
     for (var i = 0; i < tiles.length; i++) {
@@ -58,11 +57,11 @@ function debugBufferDivision(lyr, nodes) {
     var cw = [],
       ccw = [];
     divide(shp, cw, ccw);
-    cw.forEach(function (ring) {
+    cw.forEach((ring) => {
       shapes2.push([ring]);
       records.push({ type: "ring" });
     });
-    ccw.forEach(function (hole) {
+    ccw.forEach((hole) => {
       shapes2.push([reversePath(hole)]);
       records.push({ type: "hole" });
     });
@@ -102,7 +101,7 @@ function getBufferToleranceFunction(dataset, opts) {
     ? parseConstantBufferDistance(opts.tolerance, crs)
     : 0;
   var pctOfRadius = 1 / 100;
-  return function (meterDist) {
+  return (meterDist) => {
     if (constTol) return constTol;
     return constTol ? constTol : meterDist * pctOfRadius;
   };
@@ -115,12 +114,9 @@ export function getBufferDistanceFunction(lyr, dataset, opts) {
   var unitStr = opts.units || "";
   var crs = getDatasetCRS(dataset);
   var constDist = parseConstantBufferDistance(opts.radius + unitStr, crs);
-  if (constDist)
-    return function () {
-      return constDist;
-    };
+  if (constDist) return () => constDist;
   var expr = compileValueExpression(opts.radius, lyr, null, {}); // no arcs
-  return function (shpId) {
+  return (shpId) => {
     var val = expr(shpId);
     if (!val) return 0;
     // TODO: optimize common case that expression returns a number

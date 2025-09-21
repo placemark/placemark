@@ -1,11 +1,11 @@
-import type { IWrappedFeature, Feature, ISymbolization } from "types";
 import { SIMPLESTYLE_PROPERTIES } from "app/lib/constants";
-import { IDMap, UIDMap } from "app/lib/id_mapper";
-import { PreviewProperty } from "state/jotai";
+import { type IDMap, UIDMap } from "app/lib/id_mapper";
+import type { PreviewProperty } from "state/jotai";
+import type { Feature, ISymbolization, IWrappedFeature } from "types";
 
 export function pick(
   properties: Feature["properties"],
-  propertyNames: readonly string[]
+  propertyNames: readonly string[],
 ) {
   // Bail if properties is null.
   if (!properties) return properties;
@@ -30,7 +30,7 @@ export function pick(
 const stripFeatureExcept = function stripFeature(
   feature: IWrappedFeature,
   id: number,
-  properties: readonly string[]
+  properties: readonly string[],
 ): Feature {
   return {
     type: "Feature",
@@ -70,7 +70,7 @@ export function getKeepProperties({
   return keepProperties;
 }
 
-export const stripFeature = function ({
+export const stripFeature = ({
   wrappedFeature,
   keepProperties,
   idMap,
@@ -78,10 +78,9 @@ export const stripFeature = function ({
   wrappedFeature: IWrappedFeature;
   keepProperties: ReturnType<typeof getKeepProperties>;
   idMap: IDMap;
-}): Feature {
-  return stripFeatureExcept(
+}): Feature =>
+  stripFeatureExcept(
     wrappedFeature,
     UIDMap.getIntID(idMap, wrappedFeature.id),
-    keepProperties
+    keepProperties,
   );
-};

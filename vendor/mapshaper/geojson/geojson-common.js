@@ -12,18 +12,16 @@ GeoJSON.typeLookup = {
   MultiPoint: "point",
 };
 
-GeoJSON.translateGeoJSONType = function (type) {
-  return GeoJSON.typeLookup[type] || null;
-};
+GeoJSON.translateGeoJSONType = (type) => GeoJSON.typeLookup[type] || null;
 
-GeoJSON.pathIsRing = function (coords) {
+GeoJSON.pathIsRing = (coords) => {
   var first = coords[0],
     last = coords[coords.length - 1];
   // TODO: consider detecting collapsed rings
   return coords.length >= 4 && first[0] == last[0] && first[1] == last[1];
 };
 
-GeoJSON.toFeature = function (obj, properties) {
+GeoJSON.toFeature = (obj, properties) => {
   var type = obj ? obj.type : null;
   var feat;
   if (type == "Feature") {

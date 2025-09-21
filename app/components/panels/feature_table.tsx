@@ -1,49 +1,50 @@
-import type { VirtualItem } from "react-virtual";
-import {
-  selectionAtom,
-  dataAtom,
-  Data,
-  virtualColumnsAtom,
-  splitsAtom,
-  tableFilterAtom,
-  FilterOptions,
-  initialFilterValues,
-} from "state/jotai";
-import type { IFolder, IWrappedFeature } from "types";
-import { Popover as P } from "radix-ui";
-import { Field, Form, Formik } from "formik";
-import React, {
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-  useMemo,
-  ChangeEvent,
-} from "react";
-import { useVirtual } from "react-virtual";
-import { USelection } from "state";
-import { useAtom, useAtomValue } from "jotai";
-import { PropertyColumn } from "app/components/panels/feature_table/property_column";
-import sortBy from "lodash/sortBy";
-import clamp from "lodash/clamp";
-import { useMove } from "@react-aria/interactions";
-import { Header } from "app/components/panels/feature_table/header";
-import RowActions from "app/components/panels/feature_table/row_actions";
-import TableEmptyState from "app/components/panels/feature_table/table_empty_state";
-import AddColumn from "app/components/panels/feature_table/add_column";
-import * as E from "app/components/elements";
 import {
   BarChartIcon,
   Cross2Icon,
   GearIcon,
   MagnifyingGlassIcon,
 } from "@radix-ui/react-icons";
+import { useMove } from "@react-aria/interactions";
+import * as E from "app/components/elements";
+import AddColumn from "app/components/panels/feature_table/add_column";
 import { FeatureTableStats } from "app/components/panels/feature_table/feature_table_stats";
+import { Header } from "app/components/panels/feature_table/header";
+import { PropertyColumn } from "app/components/panels/feature_table/property_column";
+import RowActions from "app/components/panels/feature_table/row_actions";
+import TableEmptyState from "app/components/panels/feature_table/table_empty_state";
 import { onArrow } from "app/lib/arrow_navigation";
-import Fuse from "fuse.js";
 import { geometryTypes } from "app/lib/constants";
-import clsx from "clsx";
 import { getFn, useColumns } from "app/lib/search_utils";
+import clsx from "clsx";
+import { Field, Form, Formik } from "formik";
+import Fuse from "fuse.js";
+import { useAtom, useAtomValue } from "jotai";
+import clamp from "lodash/clamp";
+import sortBy from "lodash/sortBy";
+import { Popover as P } from "radix-ui";
+import type React from "react";
+import {
+  type ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import type { VirtualItem } from "react-virtual";
+import { useVirtual } from "react-virtual";
+import { USelection } from "state";
+import {
+  type Data,
+  dataAtom,
+  type FilterOptions,
+  initialFilterValues,
+  selectionAtom,
+  splitsAtom,
+  tableFilterAtom,
+  virtualColumnsAtom,
+} from "state/jotai";
+import type { IFolder, IWrappedFeature } from "types";
 
 type FolderId = IFolder["id"];
 type ColumnConfig = Map<string, { width: number }>;
@@ -66,13 +67,13 @@ function clampColumnWidth(width: number, auto: boolean) {
   return clamp(
     width,
     NARROW_COLUMN_WIDTH,
-    auto ? AUTO_MAX_COLUMN_WIDTH : MAX_COLUMN_WIDTH
+    auto ? AUTO_MAX_COLUMN_WIDTH : MAX_COLUMN_WIDTH,
   );
 }
 
 function virtualPosition(
   virtualColumn: VirtualItem,
-  virtualRow: VirtualItem
+  virtualRow: VirtualItem,
 ): NonNullable<React.HTMLAttributes<HTMLDivElement>["style"]> {
   return {
     position: "absolute",
@@ -87,7 +88,7 @@ function virtualPosition(
 }
 
 export function virtualPositionTop(
-  virtualColumn: VirtualItem
+  virtualColumn: VirtualItem,
 ): NonNullable<React.HTMLAttributes<HTMLDivElement>["style"]> {
   return {
     width: `${virtualColumn.size}px`,
@@ -275,7 +276,7 @@ function FeatureTableInner({ data }: { data: Data }) {
         return newValue;
       });
     },
-    [data, columns]
+    [data, columns],
   );
 
   // Sort order! Same as in the feature properties pane.
@@ -284,7 +285,7 @@ function FeatureTableInner({ data }: { data: Data }) {
       sortBy(columns, (name) => {
         return localOrder.current.indexOf(name);
       }),
-    [columns]
+    [columns],
   );
 
   const features: IWrappedFeature[] = useMemo(() => {
@@ -310,8 +311,7 @@ function FeatureTableInner({ data }: { data: Data }) {
           );
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [columnWidths]
+    [columnWidths],
   );
 
   /**
@@ -341,7 +341,7 @@ function FeatureTableInner({ data }: { data: Data }) {
         }),
         {
           align: "auto",
-        }
+        },
       );
     }
     lastSelectionId.current = selectionId;
@@ -356,7 +356,7 @@ function FeatureTableInner({ data }: { data: Data }) {
       newValue.set(column, {
         width: clampColumnWidth(
           (newValue.get(column)?.width || NARROW_COLUMN_WIDTH) + delta,
-          false
+          false,
         ),
       });
       return newValue;
@@ -372,7 +372,7 @@ function FeatureTableInner({ data }: { data: Data }) {
         folderId,
       }));
     },
-    [setFilter]
+    [setFilter],
   );
 
   const [statsOpen, setStatsOpen] = useState<boolean>(false);
@@ -390,7 +390,7 @@ function FeatureTableInner({ data }: { data: Data }) {
   const addColumnClass = clsx(
     headerBase,
     headerHoverClass,
-    `px-2 justify-center border-r border-l`
+    `px-2 justify-center border-r border-l`,
   );
   const headerClass = clsx(
     headerBase,
@@ -399,7 +399,7 @@ function FeatureTableInner({ data }: { data: Data }) {
     group justify-between
     gap-x-2
     w-full truncate
-    px-2 border-l`
+    px-2 border-l`,
   );
 
   return (
@@ -499,7 +499,7 @@ function FeatureTableInner({ data }: { data: Data }) {
                         className={E.styledSelect({ size: "xs" })}
                         name="column"
                       >
-                        <option value={""}>Any column</option>;
+                        <option value={""}>Any column</option>:
                         {columns.map((column) => {
                           return (
                             <option key={column} value={column}>
@@ -513,7 +513,7 @@ function FeatureTableInner({ data }: { data: Data }) {
                         className={E.styledSelect({ size: "xs" })}
                         name="geometryType"
                       >
-                        <option value={""}>Any geometry type</option>;
+                        <option value={""}>Any geometry type</option>:
                         {geometryTypes.map((type) => {
                           return (
                             <option key={type} value={type}>
@@ -582,7 +582,7 @@ function FeatureTableInner({ data }: { data: Data }) {
                   onChange={(e) => {
                     if (e.target.checked) {
                       setSelection(
-                        USelection.fromIds(features.map((f) => f.id))
+                        USelection.fromIds(features.map((f) => f.id)),
                       );
                     } else {
                       setSelection(USelection.none());

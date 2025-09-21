@@ -16,7 +16,7 @@ export default class DataView64 {
       combined = left + 2 ** 32 * right;
       if (!Number.isSafeInteger(combined)) {
         throw new Error(
-          `${combined} exceeds MAX_SAFE_INTEGER. Precision may be lost. Please report if you get this message to https://github.com/geotiffjs/geotiff.js/issues`
+          `${combined} exceeds MAX_SAFE_INTEGER. Precision may be lost. Please report if you get this message to https://github.com/geotiffjs/geotiff.js/issues`,
         );
       }
       return combined;
@@ -24,7 +24,7 @@ export default class DataView64 {
     combined = 2 ** 32 * left + right;
     if (!Number.isSafeInteger(combined)) {
       throw new Error(
-        `${combined} exceeds MAX_SAFE_INTEGER. Precision may be lost. Please report if you get this message to https://github.com/geotiffjs/geotiff.js/issues`
+        `${combined} exceeds MAX_SAFE_INTEGER. Precision may be lost. Please report if you get this message to https://github.com/geotiffjs/geotiff.js/issues`,
       );
     }
 

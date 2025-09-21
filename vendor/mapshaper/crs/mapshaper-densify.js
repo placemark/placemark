@@ -1,8 +1,8 @@
+import { DatasetEditor } from "../dataset/mapshaper-dataset-editor";
 import geom from "../geom/mapshaper-geom";
 import { editArcs } from "../paths/mapshaper-arc-editor";
 import { getAvgSegment2 } from "../paths/mapshaper-path-utils";
 import { error } from "../utils/mapshaper-logging";
-import { DatasetEditor } from "../dataset/mapshaper-dataset-editor";
 
 export function densifyDataset(dataset, opts) {
   var interval = opts.interval;
@@ -10,9 +10,9 @@ export function densifyDataset(dataset, opts) {
     error("Expected a valid interval parameter");
   }
   var editor = new DatasetEditor(dataset);
-  dataset.layers.forEach(function (lyr) {
+  dataset.layers.forEach((lyr) => {
     var type = lyr.geometry_type;
-    editor.editLayer(lyr, function (coords, i, shape) {
+    editor.editLayer(lyr, (coords, i, shape) => {
       if (type == "point") return coords;
       return [densifyPathByInterval(coords, interval)];
     });
@@ -41,7 +41,7 @@ export function densifyPathByInterval(coords, interval, interpolate) {
 }
 
 export function getIntervalInterpolator(interval) {
-  return function (a, b) {
+  return (a, b) => {
     var points = [];
     // var rev = a[0] == b[0] ? a[1] > b[1] : a[0] > b[0];
     var dist = geom.distance2D(a[0], a[1], b[0], b[1]);
@@ -123,7 +123,7 @@ export function projectAndDensifyArcs(arcs, proj) {
         p[0],
         p[1],
         proj,
-        interval
+        interval,
       ).forEach(append);
     }
     append(p);
@@ -168,7 +168,7 @@ function densifySegment(
   y2,
   proj,
   interval,
-  points
+  points,
 ) {
   // Find midpoint between two endpoints and project it (assumes longitude does
   // not wrap). TODO Consider bisecting along great circle path -- although this
@@ -199,7 +199,7 @@ function densifySegment(
       p[1],
       proj,
       interval,
-      points
+      points,
     );
     points.push(p);
     densifySegment(
@@ -213,7 +213,7 @@ function densifySegment(
       y2,
       proj,
       interval,
-      points
+      points,
     );
   }
   return points;

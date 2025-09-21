@@ -277,7 +277,7 @@ export function triangleArea3D(ax, ay, az, bx, by, bz, cx, cy, cz) {
     Math.sqrt(
       detSq(ax, ay, bx, by, cx, cy) +
         detSq(ax, az, bx, bz, cx, cz) +
-        detSq(ay, az, by, bz, cy, cz)
+        detSq(ay, az, by, bz, cy, cz),
     );
   return area;
 }

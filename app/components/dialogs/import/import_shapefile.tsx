@@ -1,9 +1,9 @@
 import { InlineError } from "app/components/inline_error";
-import { Formik, FormikHelpers, Form, ErrorMessage } from "formik";
 import { useImportShapefile } from "app/hooks/use_import";
-import { ImportOptions, DEFAULT_IMPORT_OPTIONS } from "app/lib/convert";
-import { ShapefileGroup } from "app/lib/group_files";
-import { OnNext } from "../import";
+import { DEFAULT_IMPORT_OPTIONS, type ImportOptions } from "app/lib/convert";
+import type { ShapefileGroup } from "app/lib/group_files";
+import { ErrorMessage, Form, Formik, type FormikHelpers } from "formik";
+import type { OnNext } from "../import";
 import SimpleDialogActions from "../simple_dialog_actions";
 import { FileWarning } from "./file_warning";
 import { ShapefileWarning } from "./shapefile_warning";
@@ -31,7 +31,7 @@ export function ImportShapefile({
     <Formik
       onSubmit={async function onSubmit(
         options: ImportOptions,
-        helpers: FormikHelpers<ImportOptions>
+        helpers: FormikHelpers<ImportOptions>,
       ) {
         try {
           // Don't show a toast if we're going to import

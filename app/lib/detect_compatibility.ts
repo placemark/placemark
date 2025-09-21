@@ -7,7 +7,7 @@ export const detectCompatibility = once((): boolean => {
     }
     localStorage.getItem("test");
     return true;
-  } catch (e) {
+  } catch (_e) {
     return false;
   }
 });

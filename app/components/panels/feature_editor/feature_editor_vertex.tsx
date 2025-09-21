@@ -1,11 +1,11 @@
-import { setCoordinates } from "app/lib/map_operations";
-import useResettable from "app/hooks/use_resettable";
-import { usePersistence } from "app/lib/persistence/context";
-import { captureException } from "integrations/errors";
 import { LongitudeLatitudeInputs } from "app/components/longitude_latitude_inputs";
 import { PanelDetails } from "app/components/panel_details";
-import type { IWrappedFeature } from "types";
+import useResettable from "app/hooks/use_resettable";
+import { setCoordinates } from "app/lib/map_operations";
 import { getCoordinatesMaybe } from "app/lib/map_operations/get_coordinates";
+import { usePersistence } from "app/lib/persistence/context";
+import { captureException } from "integrations/errors";
+import type { IWrappedFeature } from "types";
 
 export function FeatureEditorVertex({
   wrappedFeature,
@@ -19,7 +19,7 @@ export function FeatureEditorVertex({
 
   const coordinatesMaybe = getCoordinatesMaybe(
     wrappedFeature.feature,
-    vertexId
+    vertexId,
   );
 
   const [longitude, latitude] = coordinatesMaybe.orDefault([0, 0]);
@@ -28,7 +28,7 @@ export function FeatureEditorVertex({
     value: longitude.toString(),
     onCommit(newValue) {
       const num = +newValue;
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         transact({
           putFeatures: [
             {
@@ -49,7 +49,7 @@ export function FeatureEditorVertex({
     value: latitude.toString(),
     onCommit(newValue) {
       const num = +newValue;
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         transact({
           putFeatures: [
             {

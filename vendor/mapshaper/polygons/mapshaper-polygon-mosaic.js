@@ -1,12 +1,12 @@
 import { DataTable } from "../datatable/mapshaper-data-table";
+import geom from "../geom/mapshaper-geom";
+import { absArcId } from "../paths/mapshaper-arc-utils";
 import { addIntersectionCuts } from "../paths/mapshaper-intersection-cuts";
-import { getPathFinder } from "../paths/mapshaper-pathfinder";
-import { reversePath } from "../paths/mapshaper-path-utils";
 import { PathIndex } from "../paths/mapshaper-path-index";
+import { reversePath } from "../paths/mapshaper-path-utils";
+import { getPathFinder } from "../paths/mapshaper-pathfinder";
 import { debug, stop } from "../utils/mapshaper-logging";
 import { T } from "../utils/mapshaper-timing";
-import { absArcId } from "../paths/mapshaper-arc-utils";
-import geom from "../geom/mapshaper-geom";
 import utils from "../utils/mapshaper-utils";
 
 // Create a mosaic layer from a dataset (useful for debugging commands like -clean
@@ -46,7 +46,7 @@ function mosaic(dataset, opts) {
     };
     var arcData = [];
     var pointData = [];
-    lostArcs.forEach(function (arcId) {
+    lostArcs.forEach((arcId) => {
       var first = arcs.getVertex(arcId, 0);
       var last = arcs.getVertex(arcId, -1);
       arcData.push({ ARCID: arcId });
@@ -79,9 +79,7 @@ export function buildPolygonMosaic(nodes) {
   var data = findMosaicRings(nodes);
 
   // Process CW rings: these are indivisible space-enclosing boundaries of mosaic tiles
-  var mosaic = data.cw.map(function (ring) {
-    return [ring];
-  });
+  var mosaic = data.cw.map((ring) => [ring]);
   debug("Find mosaic rings", T.stop());
   T.start();
 
@@ -89,7 +87,7 @@ export function buildPolygonMosaic(nodes) {
   // TODO: optimize -- testing CCW path of every island is costly
   var enclosures = [];
   var index = new PathIndex(mosaic, nodes.arcs); // index CW rings to help identify holes
-  data.ccw.forEach(function (ring) {
+  data.ccw.forEach((ring) => {
     var id = index.findSmallestEnclosingPolygon(ring);
     if (id > -1) {
       // Enclosed CCW rings are holes in the enclosing mosaic tile
@@ -104,9 +102,9 @@ export function buildPolygonMosaic(nodes) {
     utils.format(
       "Detect holes (holes: %d, enclosures: %d)",
       data.ccw.length - enclosures.length,
-      enclosures.length
+      enclosures.length,
     ),
-    T.stop()
+    T.stop(),
   );
 
   return { mosaic: mosaic, enclosures: enclosures, lostArcs: data.lostArcs };

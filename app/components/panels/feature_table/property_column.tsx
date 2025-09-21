@@ -1,11 +1,11 @@
-import { memo } from "react";
-import { updatePropertyValue } from "app/lib/map_operations/update_property_value";
-import { captureException } from "integrations/errors";
-import type { CoordProps, IWrappedFeature } from "types";
-import { usePersistence } from "app/lib/persistence/context";
 import { useZoomTo } from "app/hooks/use_zoom_to";
+import { updatePropertyValue } from "app/lib/map_operations/update_property_value";
+import { usePersistence } from "app/lib/persistence/context";
+import { captureException } from "integrations/errors";
+import { memo } from "react";
+import type { JsonValue } from "type-fest";
+import type { CoordProps, IWrappedFeature } from "types";
 import { PropertyRowValue } from "../feature_editor/property_row/value";
-import { JsonValue } from "type-fest";
 
 export const PropertyColumn = memo(function PropertyColumn({
   feature,

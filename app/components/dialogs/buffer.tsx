@@ -1,20 +1,20 @@
-import type { DialogStateBuffer } from "state/dialog_state";
+import { AllSidesIcon } from "@radix-ui/react-icons";
+import { DialogHeader } from "app/components/dialog";
+import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
 import {
   StyledField,
-  styledSelect,
   StyledLabelSpan,
+  styledSelect,
   TextWell,
 } from "app/components/elements";
-import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
-import { Field, Form, Formik } from "formik";
-import { buffer } from "app/lib/map_operations/buffer";
+import { UnitOptionsGroups } from "app/components/unit_select";
 import type { BufferOptions } from "app/lib/buffer";
 import { GROUPED_UNIT_OPTIONS } from "app/lib/constants";
+import { buffer } from "app/lib/map_operations/buffer";
 import { usePersistence } from "app/lib/persistence/context";
-import { AllSidesIcon } from "@radix-ui/react-icons";
+import { Field, Form, Formik } from "formik";
 import { captureException } from "integrations/errors";
-import { DialogHeader } from "app/components/dialog";
-import { UnitOptionsGroups } from "app/components/unit_select";
+import type { DialogStateBuffer } from "state/dialog_state";
 
 export default function BufferDialog({
   modal,
@@ -43,7 +43,7 @@ export default function BufferDialog({
                 ...wrappedFeature,
                 feature: await buffer(wrappedFeature.feature, options),
               };
-            })
+            }),
           );
           transact({
             note: "Buffered features",
@@ -77,7 +77,7 @@ export default function BufferDialog({
               <Field
                 as="select"
                 name="units"
-                className={styledSelect({ size: "sm" }) + " w-full"}
+                className={`${styledSelect({ size: "sm" })} w-full`}
               >
                 <UnitOptionsGroups groups={GROUPED_UNIT_OPTIONS.length} />
               </Field>

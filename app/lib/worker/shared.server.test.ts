@@ -1,7 +1,6 @@
-import { expect, test } from "vitest";
-
-import { EitherHandler } from "./shared";
 import { Left, Right } from "purify-ts/Either";
+import { expect, test } from "vitest";
+import { EitherHandler } from "./shared";
 
 test("serialize left", () => {
   expect(EitherHandler.canHandle(Left(10))).toBeTruthy();

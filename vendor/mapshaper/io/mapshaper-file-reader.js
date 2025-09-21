@@ -1,9 +1,9 @@
-import { bufferToString } from "../text/mapshaper-encodings";
+import cli from "../cli/mapshaper-cli-utils";
 import { getStateVar } from "../mapshaper-state";
+import { bufferToString } from "../text/mapshaper-encodings";
 import { BinArray } from "../utils/mapshaper-binarray";
 import { error } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
-import cli from "../cli/mapshaper-cli-utils";
 
 export function readFirstChars(reader, n) {
   return bufferToString(reader.readSync(0, Math.min(n || 1000, reader.size())));
@@ -13,23 +13,17 @@ export function readFirstChars(reader, n) {
 export function Reader2(reader) {
   var offs = 0; // read-head position in bytes
 
-  this.position = function () {
-    return offs;
-  };
+  this.position = () => offs;
 
-  this.remaining = function () {
-    return Math.max(reader.size() - offs, 0);
-  };
+  this.remaining = () => Math.max(reader.size() - offs, 0);
 
-  this.advance = function (i) {
+  this.advance = (i) => {
     offs += i;
   };
 
-  this.readSync = function () {
-    return reader.readSync(offs);
-  };
+  this.readSync = () => reader.readSync(offs);
 
-  this.expandBuffer = function () {
+  this.expandBuffer = () => {
     reader.expandBuffer();
   };
 }
@@ -40,18 +34,16 @@ export function BufferReader(src) {
     binArr,
     buf;
 
-  this.readToBinArray = function (start, length) {
+  this.readToBinArray = (start, length) => {
     if (bufSize < start + length) error("Out-of-range error");
     if (!binArr) binArr = new BinArray(src);
     binArr.position(start);
     return binArr;
   };
 
-  this.toString = function (enc) {
-    return bufferToString(buffer(), enc);
-  };
+  this.toString = (enc) => bufferToString(buffer(), enc);
 
-  this.readSync = function (start, length) {
+  this.readSync = (start, length) => {
     // TODO: consider using a default length like FileReader
     return buffer().slice(start, length ? start + length : bufSize);
   };
@@ -67,10 +59,8 @@ export function BufferReader(src) {
   this.expandBuffer = function () {
     return this;
   };
-  this.size = function () {
-    return bufSize;
-  };
-  this.close = function () {};
+  this.size = () => bufSize;
+  this.close = () => {};
 }
 
 /**

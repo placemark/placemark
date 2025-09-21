@@ -1,11 +1,11 @@
-import Flatbush from "flatbush";
-import type { IFeature, IWrappedFeature, Point } from "types";
-import { generateSyntheticPoints } from "app/lib/pmap/generate_synthetic_points";
 import { getExtents } from "app/lib/geometry";
+import { generateSyntheticPoints } from "app/lib/pmap/generate_synthetic_points";
+import Flatbush from "flatbush";
 import uniq from "lodash/uniq";
 import { USelection } from "state";
+import type { Sel } from "state/jotai";
+import type { IFeature, IWrappedFeature, Point } from "types";
 import { decodeId } from "./id";
-import { Sel } from "state/jotai";
 
 export const EmptyIndex = {
   type: "none",
@@ -61,7 +61,7 @@ class FlatbushFeatureIndex {
         allExtents[i],
         allExtents[i + 1],
         allExtents[i + 2],
-        allExtents[i + 3]
+        allExtents[i + 3],
       );
     }
     fb.finish();
@@ -72,7 +72,7 @@ class FlatbushFeatureIndex {
   search(box: Box, selection: Sel): Sel {
     const rawIndexes = uniq(this.index.search(...boxTosearchArgs(box)));
     const found = uniq(
-      rawIndexes.map((rawIndex) => this.features[this.indexes[rawIndex]])
+      rawIndexes.map((rawIndex) => this.features[this.indexes[rawIndex]]),
     );
     if (selection.type === "multi" && selection.previousIds?.length) {
       const ids = selection.previousIds.slice();
@@ -103,7 +103,7 @@ class FlatbushVertexIndex {
   constructor(feature: IWrappedFeature, featureIndex: number) {
     const vertexes = generateSyntheticPoints(
       feature.feature,
-      featureIndex
+      featureIndex,
     ).filter((pt) => decodeId(pt.id as RawId).type === "vertex");
 
     const fb = new Flatbush(vertexes.length);
@@ -121,7 +121,7 @@ class FlatbushVertexIndex {
     if (selection.type !== "single") return selection;
     const ids = this.index.search(...boxTosearchArgs(box));
     const parts = uniq(ids.map((id) => this.vertexes[id])).map(
-      (f) => decodeId(f.id as RawId) as VertexId
+      (f) => decodeId(f.id as RawId) as VertexId,
     );
     return {
       type: "single",
@@ -133,7 +133,7 @@ class FlatbushVertexIndex {
 
 // TODO: this should probably happen in a worker.
 export function generateFeaturesFlatbushInstance(
-  features: IWrappedFeature[]
+  features: IWrappedFeature[],
 ): FlatbushLike {
   if (!features.length) return EmptyIndex;
   return new FlatbushFeatureIndex(features);
@@ -142,7 +142,7 @@ export function generateFeaturesFlatbushInstance(
 // TODO: this should probably happen in a worker.
 export function generateVertexFlatbushInstance(
   feature: IWrappedFeature,
-  index: number
+  index: number,
 ): FlatbushLike {
   return new FlatbushVertexIndex(feature, index);
 }

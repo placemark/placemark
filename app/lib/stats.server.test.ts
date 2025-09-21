@@ -1,10 +1,9 @@
-import { expect, test } from "vitest";
-
 import { fcLineAndPoly, wrap } from "test/helpers";
+import { expect, test } from "vitest";
 import { collectStatistics } from "./stats";
 
 test("collectStatistics", () => {
-  expect(collectStatistics([])).toMatchInlineSnapshot('[]');
+  expect(collectStatistics([])).toMatchInlineSnapshot("[]");
   expect(collectStatistics(wrap(fcLineAndPoly))).toMatchInlineSnapshot(`
     [
       {

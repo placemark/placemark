@@ -1,5 +1,5 @@
-import type { IFeature, Feature, LineString } from "types";
 import type { EphemeralEditingStateLasso } from "state/jotai";
+import type { Feature, IFeature, LineString } from "types";
 
 export function makeRectangle(ephemeralState: EphemeralEditingStateLasso) {
   const [a, b] = ephemeralState.box;

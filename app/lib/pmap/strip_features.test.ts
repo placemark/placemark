@@ -1,8 +1,7 @@
-import { expect, test } from "vitest";
-
 import { SIMPLESTYLE_PROPERTIES } from "app/lib/constants";
 import { fcLineString, wrapMapAndId } from "test/helpers";
-import { stripFeature, pick } from "./strip_features";
+import { expect, test } from "vitest";
+import { pick, stripFeature } from "./strip_features";
 
 test("pick", () => {
   expect(pick({}, [])).toBeNull();
@@ -31,7 +30,7 @@ test("stripFeature", () => {
       wrappedFeature: wrappedFeatures[0],
       idMap,
       keepProperties: [],
-    })
+    }),
   ).toMatchInlineSnapshot(`
     {
       "geometry": {
@@ -62,7 +61,7 @@ test("stripFeature", () => {
       wrappedFeature: wrappedFeatures[0],
       idMap,
       keepProperties: ["x"],
-    })
+    }),
   ).toMatchInlineSnapshot(`
     {
       "geometry": {
@@ -95,7 +94,7 @@ test("stripFeature", () => {
       wrappedFeature: wrappedFeatures[0],
       idMap,
       keepProperties: SIMPLESTYLE_PROPERTIES.slice(),
-    })
+    }),
   ).toMatchInlineSnapshot(`
     {
       "geometry": {

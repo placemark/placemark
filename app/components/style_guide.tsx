@@ -1,30 +1,30 @@
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { ToolbarTrigger } from "app/components/context_actions";
 import { InlineError } from "app/components/inline_error";
 import { Form, Formik } from "formik";
-import { Tooltip, DropdownMenu as DD, Dialog as D } from "radix-ui";
-import { Cross1Icon } from "@radix-ui/react-icons";
-import SimpleDialogActions from "./dialogs/simple_dialog_actions";
-import { ToolbarTrigger } from "app/components/context_actions";
-import MenuAction from "./menu_action";
-import {
-  B3Size,
-  B3Variant,
-  StyledDialogContent,
-  StyledDialogOverlay,
-  styledButton,
-  styledRadio,
-  Button,
-  Input,
-  Loading,
-  CapsLabel,
-  FieldCheckbox,
-  styledSelect,
-  styledInlineA,
-  TContent,
-  StyledTooltipArrow,
-  ErrorFallback,
-} from "./elements";
+import { Dialog as D, DropdownMenu as DD, Tooltip } from "radix-ui";
 import { Fragment } from "react";
 import { DialogHeader } from "./dialog";
+import SimpleDialogActions from "./dialogs/simple_dialog_actions";
+import {
+  type B3Size,
+  type B3Variant,
+  Button,
+  CapsLabel,
+  ErrorFallback,
+  FieldCheckbox,
+  Input,
+  Loading,
+  StyledDialogContent,
+  StyledDialogOverlay,
+  StyledTooltipArrow,
+  styledButton,
+  styledInlineA,
+  styledRadio,
+  styledSelect,
+  TContent,
+} from "./elements";
+import MenuAction from "./menu_action";
 
 function StyleGuideSection({
   title,
@@ -192,6 +192,7 @@ export function StyleGuide() {
             <StyleGuideSection title="Inline link">
               <div>
                 This is text with a{" "}
+                {/** biome-ignore lint/a11y/useValidAnchor: example */}
                 <a href="#" className={styledInlineA}>
                   link in the middle
                 </a>

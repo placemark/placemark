@@ -3,7 +3,6 @@ import { DialogHeader } from "app/components/dialog";
 import { styledInlineA, TextWell } from "app/components/elements";
 import { useImportString } from "app/hooks/use_import";
 import { DEFAULT_IMPORT_OPTIONS } from "app/lib/convert";
-import React from "react";
 import toast from "react-hot-toast";
 import { useQuery as useReactQuery } from "react-query";
 import { z } from "zod";
@@ -33,7 +32,7 @@ export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
         }),
     {
       suspense: true,
-    }
+    },
   );
 
   return (
@@ -49,6 +48,7 @@ export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
             const nice = friendlyName(example);
             return (
               <button
+                type="button"
                 className="text-left text-sm group rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-1"
                 key={example}
                 onClick={async () => {
@@ -63,14 +63,14 @@ export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
                             type: "geojson",
                           },
                           () => {},
-                          nice
+                          nice,
                         );
                       }),
                     {
                       loading: "Loading…",
                       success: "Loaded",
                       error: "Error loading from the data library",
-                    }
+                    },
                   );
                   onClose();
                 }}

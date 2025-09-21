@@ -1,7 +1,6 @@
 import { CircleIcon } from "@radix-ui/react-icons";
 import { DialogHeader } from "app/components/dialog";
 import { styledInlineA } from "app/components/elements";
-import React from "react";
 
 export function CircleTypesDialog() {
   return (

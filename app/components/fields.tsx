@@ -1,8 +1,8 @@
-import { FILE_TYPES } from "app/lib/convert";
-import { Field, ErrorMessage } from "formik";
-import { InlineError } from "./inline_error";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { FILE_TYPES } from "app/lib/convert";
+import { ErrorMessage, Field } from "formik";
 import { styledSelect } from "./elements";
+import { InlineError } from "./inline_error";
 
 interface SelectFileTypeProps {
   exportable?: boolean;
@@ -29,7 +29,7 @@ export function SelectFileTypeField({
       as="select"
       name={name}
       aria-label="File format"
-      className={styledSelect({ size: "md" }) + "w-full"}
+      className={`${styledSelect({ size: "md" })}w-full`}
     >
       {applicableTypes.map((type) =>
         [type.label].flat().map((label, i) => {
@@ -38,7 +38,7 @@ export function SelectFileTypeField({
               {label}
             </option>
           );
-        })
+        }),
       )}
     </Field>
   );
