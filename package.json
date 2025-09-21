@@ -132,7 +132,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.4",
-    "@mapbox/mapbox-gl-style-spec": "^13.28.0",
+    "@mapbox/mapbox-gl-style-spec": "^14.15.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/d3-dsv": "^3.0.7",
