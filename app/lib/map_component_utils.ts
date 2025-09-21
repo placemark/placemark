@@ -69,11 +69,6 @@ export function isLassoTiny(
   return pxArea < 5;
 }
 
-const QRF_OPTIONS: Parameters<MapboxMap["queryRenderedFeatures"]>[1] = {
-  layers: CLICKABLE_LAYERS,
-  filter: ["!has", "lasso"],
-};
-
 /**
  * Select the feature under the cursor, or if there
  * is none, a feature within a fuzzy range of that cursor.
@@ -117,9 +112,15 @@ export function fuzzyClick(
     }
   }
 
-  let mapFeatures = map.queryRenderedFeatures(e.point, QRF_OPTIONS);
+  let mapFeatures = map.queryRenderedFeatures(e.point, {
+    layers: CLICKABLE_LAYERS,
+    filter: ["!has", "lasso"],
+  });
   if (!mapFeatures.length) {
-    mapFeatures = map.queryRenderedFeatures(bufferPoint(e.point), QRF_OPTIONS);
+    mapFeatures = map.queryRenderedFeatures(bufferPoint(e.point), {
+      layers: CLICKABLE_LAYERS,
+      filter: ["!has", "lasso"],
+    });
   }
 
   for (const feature of mapFeatures) {

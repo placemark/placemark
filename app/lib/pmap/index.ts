@@ -1,5 +1,5 @@
-import { PolygonLayer, ScatterplotLayer } from "@deck.gl/layers/typed";
-import { MapboxOverlay } from "@deck.gl/mapbox/typed";
+import { PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
+import { MapboxOverlay } from "@deck.gl/mapbox";
 import { colorFromPresence } from "app/lib/color";
 import {
   CURSOR_DEFAULT,
@@ -56,8 +56,8 @@ const cursorSvg = (color: string) => {
   return div;
 };
 
-type ClickEvent = mapboxgl.MapMouseEvent & mapboxgl.EventData;
-type MoveEvent = mapboxgl.MapboxEvent & mapboxgl.EventData;
+type ClickEvent = mapboxgl.MapMouseEvent;
+type MoveEvent = mapboxgl.MapboxEvent;
 
 export type PMapHandlers = {
   onClick: (e: ClickEvent) => void;
@@ -67,9 +67,9 @@ export type PMapHandlers = {
   onMapTouchMove: (e: mapboxgl.MapTouchEvent) => void;
   onMapMouseDown: (e: mapboxgl.MapMouseEvent) => void;
   onMapTouchStart: (e: mapboxgl.MapTouchEvent) => void;
-  onMoveEnd: (e: mapboxgl.MapboxEvent & mapboxgl.EventData) => void;
+  onMoveEnd: (e: mapboxgl.MapboxEvent) => void;
   onMapTouchEnd: (e: mapboxgl.MapTouchEvent) => void;
-  onMove: (e: mapboxgl.MapboxEvent & mapboxgl.EventData) => void;
+  onMove: (e: mapboxgl.MapboxEvent) => void;
 };
 
 const lastValues = new WeakMap<mapboxgl.GeoJSONSource, Feature[]>();
