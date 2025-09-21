@@ -396,6 +396,7 @@ function XYZLayer({
         if (onDone) {
           onDone();
         }
+        return undefined;
       }}
     >
       <LayerFormHeader isEditing={isEditing}>XYZ</LayerFormHeader>
@@ -649,7 +650,8 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
               <E.TContent>This TileJSON source failed to load</E.TContent>
             </T.Root>
           ) : null}
-          {tilejson?.bounds ? (
+          {/** biome-ignore lint/complexity/useOptionalChain: nope */}
+          {tilejson && tilejson?.bounds ? (
             <button
               type="button"
               title="Zoom to layer"

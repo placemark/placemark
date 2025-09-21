@@ -133,7 +133,6 @@ function ItemFolder({
         )}
       </button>
       <div
-        type="button"
         role="checkbox"
         title="Toggle visibility"
         onClick={handleToggleVisibility}

@@ -311,8 +311,7 @@ function FeatureTableInner({ data }: { data: Data }) {
           );
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [columnWidths, columns.length, columns[index - 1]],
+    [columnWidths],
   );
 
   /**
