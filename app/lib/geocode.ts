@@ -13,7 +13,7 @@ import { IFeature, IFeatureCollection, IWrappedFeature, Point } from "types";
 import { z } from "zod";
 import { truncate } from "./utils";
 import { JsonObject } from "type-fest";
-import Fuse from "fuse.js";
+import Fuse, { FuseResult } from "fuse.js";
 import { Action } from "app/components/context_actions/action_item";
 import { ContainerNode, LeafNode } from "app/lib/tree";
 
@@ -32,7 +32,7 @@ type SearchIndex = Fuse<IWrappedFeature>;
 
 type QItemWrappedFeature = {
 	type: "wrappedFeature";
-	result: Fuse.FuseResult<IWrappedFeature>;
+	result: FuseResult<IWrappedFeature>;
 };
 
 type QItemAction = {
