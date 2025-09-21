@@ -25,6 +25,9 @@ jobs:
       - name: Lint
         run: |
           pnpm lint
+      - name: TSC
+        run: |
+          pnpm tsc
       - name: Run tests with coverage
         run: |
           pnpm test
