@@ -1,16 +1,16 @@
-import React, { memo, useMemo, useRef, useEffect, useState } from "react";
-import isEqual from "lodash/isEqual";
-import type { IWrappedFeature, Feature } from "types";
+import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import { json } from "@codemirror/lang-json";
+import { linter } from "@codemirror/lint";
 import { EditorState, Transaction } from "@codemirror/state";
 import type { ViewUpdate } from "@codemirror/view";
-import { EditorView, drawSelection, keymap } from "@codemirror/view";
-import { captureException } from "integrations/errors";
-import { history, historyKeymap, defaultKeymap } from "@codemirror/commands";
-import { json } from "@codemirror/lang-json";
+import { drawSelection, EditorView, keymap } from "@codemirror/view";
 import { placemarkTheme } from "app/lib/codemirror_theme";
-import { linter } from "@codemirror/lint";
 import { usePersistence } from "app/lib/persistence/context";
 import { lib } from "app/lib/worker";
+import { captureException } from "integrations/errors";
+import isEqual from "lodash/isEqual";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import type { Feature, IWrappedFeature } from "types";
 
 const checker = linter((view) => {
   return lib.getIssues(view.state.doc.toString());
@@ -67,7 +67,7 @@ export const FeatureText = memo(function FeatureText({
           })
           .catch((e) => captureException(e));
       }),
-    [at, id, folderId, transact]
+    [at, id, folderId, transact],
   );
 
   useEffect(() => {

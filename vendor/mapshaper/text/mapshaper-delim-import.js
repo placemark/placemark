@@ -1,22 +1,22 @@
-import {
-  isInvalidFieldName,
-  deleteFields,
-} from "../datatable/mapshaper-data-utils";
-import {
-  readDelimRecordsFromString,
-  readDelimRecords,
-} from "../text/mapshaper-delim-reader";
-import { encodingIsAsciiCompat, trimBOM } from "../text/mapshaper-encodings";
-import { detectEncodingFromBOM } from "../text/mapshaper-encoding-detection";
-import utils from "../utils/mapshaper-utils";
-import { error, message } from "../utils/mapshaper-logging";
 import { DataTable } from "../datatable/mapshaper-data-table";
 import {
-  readFirstChars,
-  FileReader,
+  deleteFields,
+  isInvalidFieldName,
+} from "../datatable/mapshaper-data-utils";
+import {
   BufferReader,
+  FileReader,
+  readFirstChars,
 } from "../io/mapshaper-file-reader";
+import {
+  readDelimRecords,
+  readDelimRecordsFromString,
+} from "../text/mapshaper-delim-reader";
+import { detectEncodingFromBOM } from "../text/mapshaper-encoding-detection";
+import { encodingIsAsciiCompat, trimBOM } from "../text/mapshaper-encodings";
+import { error, message } from "../utils/mapshaper-logging";
 import { Buffer } from "../utils/mapshaper-node-buffer";
+import utils from "../utils/mapshaper-utils";
 
 // Convert a string containing delimited text data into a dataset object
 function importDelim(str, opts) {
@@ -56,7 +56,7 @@ export function importDelim2(data, opts) {
 
   if (reader) {
     encoding = detectEncodingFromBOM(
-      reader.readSync(0, Math.min(reader.size(), 3))
+      reader.readSync(0, Math.min(reader.size(), 3)),
     );
     // Files in some encodings have to be converted to strings before parsing
     // Other encodings are similar enough to ascii that CSV can be parsed
@@ -97,7 +97,7 @@ function isSupportedDelimiter(d) {
 
 function guessDelimiter(content) {
   return (
-    utils.find(supportedDelimiters, function (delim) {
+    utils.find(supportedDelimiters, (delim) => {
       var rxp = getDelimiterRxp(delim);
       return rxp.test(content);
     }) || ","
@@ -116,12 +116,12 @@ function getFieldTypeHints(opts) {
   var hints = {};
   opts = opts || {};
   if (opts.string_fields) {
-    opts.string_fields.forEach(function (f) {
+    opts.string_fields.forEach((f) => {
       hints[f] = "string";
     });
   }
   if (opts.field_types) {
-    opts.field_types.forEach(function (raw) {
+    opts.field_types.forEach((raw) => {
       var parts, name, type;
       if (raw.indexOf(":") != -1) {
         parts = raw.split(":");
@@ -155,7 +155,7 @@ function adjustRecordTypes(records, optsArg) {
       ? utils.parseIntlNumber
       : utils.parseNumber,
     replacements = {};
-  fields.forEach(function (key) {
+  fields.forEach((key) => {
     var typeHint = typeIndex[key];
     var values = null;
     if (typeHint == "number" || singleType == "number") {
@@ -179,8 +179,8 @@ function adjustRecordTypes(records, optsArg) {
       utils.format(
         "Auto-detected number field%s: %s",
         detectedNumFields.length == 1 ? "" : "s",
-        detectedNumFields.join(", ")
-      )
+        detectedNumFields.join(", "),
+      ),
     );
   }
 }
@@ -192,7 +192,7 @@ function updateFieldsInRecords(fields, records, replacements) {
   var convertBody =
     "return {" +
     fields
-      .map(function (name) {
+      .map((name) => {
         var key = JSON.stringify(name);
         return (
           key +
@@ -205,7 +205,7 @@ function updateFieldsInRecords(fields, records, replacements) {
       .join(", ") +
     "}";
   var convert = new Function("rec", "replacements", "i", convertBody);
-  records.forEach(function (rec, i) {
+  records.forEach((rec, i) => {
     records[i] = convert(rec, replacements, i);
   });
 }

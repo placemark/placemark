@@ -1,43 +1,43 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Portal } from "radix-ui";
-import { captureException } from "integrations/errors";
-import { useVirtual } from "react-virtual";
 import {
+  type CollisionDescriptor,
+  type CollisionDetection,
   DndContext,
-  DragEndEvent,
+  type DragEndEvent,
+  type DragMoveEvent,
+  type DragOverEvent,
   DragOverlay,
-  DragStartEvent,
-  DragMoveEvent,
-  DragOverEvent,
-  UniqueIdentifier,
-  CollisionDetection,
-  CollisionDescriptor,
+  type DragStartEvent,
+  type UniqueIdentifier,
 } from "@dnd-kit/core";
+import type { ClientRect, Coordinates } from "@dnd-kit/core/dist/types";
 import {
   arrayMove,
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { LEFT_PANEL_ROW_HEIGHT } from "app/lib/constants";
 import { usePersistence } from "app/lib/persistence/context";
-import { useAtomValue } from "jotai";
-import { dataAtom, Sel, splitsAtom } from "state/jotai";
 import { generateKeyBetween, generateNKeysBetween } from "fractional-indexing";
-import { SortableItem, OverlayItem } from "./feature_editor_folder/items";
-import { useCustomSensors } from "./feature_editor_folder/hooks";
-import { virtualPosition } from "./feature_editor_folder/utils";
+import { captureException } from "integrations/errors";
+import { useAtomValue } from "jotai";
+import isEqual from "lodash/isEqual";
+import { Portal } from "radix-ui";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useVirtual } from "react-virtual";
+import { USelection } from "state";
+import { dataAtom, type Sel, splitsAtom } from "state/jotai";
+import type { FolderMap } from "types";
 import { FeatureEditorFolderHeader } from "./feature_editor_folder/header";
+import { useCustomSensors } from "./feature_editor_folder/hooks";
+import { OverlayItem, SortableItem } from "./feature_editor_folder/items";
 import {
-  FlattenedItem,
+  type FlattenedItem,
   getProjection,
   getRequiredExpansionsFeature,
   indentationWidth,
   useFlattenedItems,
 } from "./feature_editor_folder/math";
-import isEqual from "lodash/isEqual";
-import { USelection } from "state";
-import { Coordinates, ClientRect } from "@dnd-kit/core/dist/types";
-import { LEFT_PANEL_ROW_HEIGHT } from "app/lib/constants";
-import { FolderMap } from "types";
+import { virtualPosition } from "./feature_editor_folder/utils";
 
 /**
  * Returns the coordinates of the center of a given ClientRect
@@ -64,7 +64,7 @@ const closestVerticalCenter: CollisionDetection = ({
 
     if (rect) {
       const distBetween = Math.abs(
-        verticalCenterOfRectangle(rect) - centerRect
+        verticalCenterOfRectangle(rect) - centerRect,
       );
 
       if (!closest || distBetween < closest.data.value) {
@@ -105,7 +105,7 @@ const customPointerWithin = (
     droppableRects,
     pointerCoordinates,
   }: Parameters<CollisionDetection>[0],
-  folderMap: FolderMap
+  folderMap: FolderMap,
 ): CollisionDescriptor[] | null => {
   if (!pointerCoordinates) {
     return null;
@@ -264,7 +264,7 @@ export function FeatureEditorFolderInner() {
       (index: number) => {
         return index === activeItemIndex ? 0 : LEFT_PANEL_ROW_HEIGHT;
       },
-      [activeItemIndex]
+      [activeItemIndex],
     ),
     overscan: 10,
   });
@@ -340,7 +340,7 @@ export function FeatureEditorFolderInner() {
       const closest = closestVerticalCenter(args);
       return closest;
     },
-    [folderMap, folderMap.version]
+    [folderMap, folderMap.version],
   );
 
   function resetState() {
@@ -361,7 +361,7 @@ export function FeatureEditorFolderInner() {
       !!(
         evt?.collisions?.length === 1 &&
         evt?.collisions?.[0].data?.dropIntoFolder
-      )
+      ),
     );
   }
 
@@ -372,7 +372,7 @@ export function FeatureEditorFolderInner() {
       !!(
         evt?.collisions?.length === 1 &&
         evt?.collisions?.[0].data?.dropIntoFolder
-      )
+      ),
     );
   }
 
@@ -414,7 +414,7 @@ export function FeatureEditorFolderInner() {
               const ats = generateNKeysBetween(
                 beforeAt,
                 afterAt,
-                wrappedFeatures.length
+                wrappedFeatures.length,
               );
               void transact({
                 note: "Changed the order of features",

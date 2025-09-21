@@ -178,7 +178,7 @@ function fatal(msg, o) {
 function ProjError(msg, o) {
   var err = new Error(msg);
   err.name = "ProjError";
-  Object.keys(o).forEach(function (k) {
+  Object.keys(o).forEach((k) => {
     err[k] = o[k];
   });
   return err;
@@ -369,10 +369,10 @@ function get_proj_defn(P) {
   // skip geodetic params and some initialization-related params
   var skip =
     "datum,ellps,a,b,es,rf,f,towgs84,nadgrids,R,R_A,R_V,R_a,R_lat_a,R_lat_g,pm,init,no_defs".split(
-      ","
+      ",",
     );
   var defn = "";
-  Object.keys(P.params).forEach(function (name) {
+  Object.keys(P.params).forEach((name) => {
     if (skip.indexOf(name) == -1) {
       defn += get_param(P, name);
     }
@@ -468,16 +468,18 @@ var pj_prime_meridians = [
 ];
 
 function find_prime_meridian(id) {
-  var defn = pj_prime_meridians.reduce(function (memo, arr) {
-    return arr[0] === id ? arr : memo;
-  }, null);
+  var defn = pj_prime_meridians.reduce(
+    (memo, arr) => (arr[0] === id ? arr : memo),
+    null,
+  );
   return defn ? { id: defn[0], definition: defn[1] } : null;
 }
 
 function find_datum(id) {
-  var defn = pj_datums.reduce(function (memo, arr) {
-    return arr[0] === id ? arr : memo;
-  }, null);
+  var defn = pj_datums.reduce(
+    (memo, arr) => (arr[0] === id ? arr : memo),
+    null,
+  );
   return defn
     ? { id: defn[0], defn: defn[1], ellipse_id: defn[2], name: defn[3] }
     : null;
@@ -511,7 +513,7 @@ function pj_datum_set(P) {
     fatal("+catalog is not implemented");
   }
   if ((towgs84 = pj_param(P.params, "stowgs84"))) {
-    towgs84.split(",").forEach(function (s, i) {
+    towgs84.split(",").forEach((s, i) => {
       params[i] = pj_atof(s) || 0;
     });
     if (params[3] != 0 || params[4] != 0 || params[5] != 0 || params[6] != 0) {
@@ -577,9 +579,7 @@ var pj_ellps = [
 ];
 
 function find_ellps(id) {
-  var defn = pj_ellps.reduce(function (memo, arr) {
-    return arr[0] === id ? arr : memo;
-  }, null);
+  var defn = pj_ellps.reduce((memo, arr) => (arr[0] === id ? arr : memo), null);
   return defn
     ? { id: defn[0], major: defn[1], ell: defn[2], name: defn[3] }
     : null;
@@ -693,7 +693,7 @@ var pj_units = [
 ];
 
 function find_units_by_value(val) {
-  return pj_units.reduce(function (memo, defn) {
+  return pj_units.reduce((memo, defn) => {
     if (val == +defn[1]) {
       memo = find_units(defn[0]);
     }
@@ -702,9 +702,10 @@ function find_units_by_value(val) {
 }
 
 function find_units(id) {
-  var arr = pj_units.reduce(function (memo, defn) {
-    return id === defn[0] ? defn : memo;
-  }, null);
+  var arr = pj_units.reduce(
+    (memo, defn) => (id === defn[0] ? defn : memo),
+    null,
+  );
   return arr ? { id: arr[0], to_meter: arr[1], name: arr[2] } : null;
 }
 
@@ -797,9 +798,9 @@ function pj_find_opts(contents, id) {
 
     // if '+' is missing from args, add it
     // kludge: protect spaces in +title= opts
-    opts = opts.replace(/\+title=[^+]*[^ +]/g, function (match) {
-      return match.replace(/ /g, "\t");
-    });
+    opts = opts.replace(/\+title=[^+]*[^ +]/g, (match) =>
+      match.replace(/ /g, "\t"),
+    );
     opts = " " + opts;
     opts = opts.replace(/ (?=[a-z])/gi, " +");
     opts = opts.replace(/\t/g, " ").trim();
@@ -933,14 +934,11 @@ function get_init(params, initStr) {
 // (Slightly different interface from Proj.4 get_opts())
 function get_opt(params, args) {
   var newParams = pj_get_params(args);
-  var geoIsSet = ["datum", "ellps", "a", "b", "rf", "f"].reduce(function (
-    memo,
-    key
-  ) {
-    return memo || key in params;
-  },
-  false);
-  Object.keys(newParams).forEach(function (key) {
+  var geoIsSet = ["datum", "ellps", "a", "b", "rf", "f"].reduce(
+    (memo, key) => memo || key in params,
+    false,
+  );
+  Object.keys(newParams).forEach((key) => {
     // don't override existing params
     if (key in params) return;
     // don't set ellps if earth model info is set
@@ -1715,9 +1713,7 @@ function pj_inv(xy, P) {
 
 function get_rtodms(decimals, fixedWidth, pos, neg) {
   var dtodms = get_dtodms(decimals, fixedWidth, pos, neg);
-  return function (r) {
-    return dtodms(r * RAD_TO_DEG);
-  };
+  return (r) => dtodms(r * RAD_TO_DEG);
 }
 
 // returns function for formatting as DMS
@@ -1735,7 +1731,7 @@ function get_dtodms(decimals, fixedWidth, pos, neg) {
   }
   CONV = 3600 * RES;
 
-  return function (r) {
+  return (r) => {
     var sign = "",
       mstr = "",
       sstr = "",
@@ -1806,7 +1802,7 @@ function proj4js(arg1, arg2, arg3) {
 proj4js.WGS84 = "+proj=longlat +datum=WGS84"; // for compatibility with proj4js tests
 
 // for compatibility with proj4js tests
-proj4js.toPoint = function (array) {
+proj4js.toPoint = (array) => {
   var out = {
     x: array[0],
     y: array[1],
@@ -1821,7 +1817,7 @@ proj4js.toPoint = function (array) {
 };
 
 function get_proj4js_transform(P1, P2) {
-  return function (p) {
+  return (p) => {
     var useArray = Array.isArray(p);
     p = useArray ? p.concat() : [p.x, p.y];
     pj_transform_point(P1, P2, p);
@@ -1931,7 +1927,7 @@ function get_proj_id(P) {
 }
 
 function wkt_name_to_slug(name) {
-  return name.replace(/[-_ \/]+/g, "_").toLowerCase();
+  return name.replace(/[-_ /]+/g, "_").toLowerCase();
 }
 
 function wkt_split_names(names) {
@@ -2103,13 +2099,11 @@ function wkt_simple_projcs_converter(projId, paramIds) {
 }
 
 function wkt_simple_projection_converter(id) {
-  return function () {
-    return "+proj=" + id;
-  };
+  return () => "+proj=" + id;
 }
 
 function wkt_projcs_converter(o) {
-  return function (projcs) {
+  return (projcs) => {
     var projStr = o.PROJECTION(projcs);
     var paramStr = o.PARAMETER(projcs);
     var geogStr = o.GEOGCS
@@ -2117,9 +2111,7 @@ function wkt_projcs_converter(o) {
       : wkt_convert_geogcs(projcs.GEOGCS);
     var unitStr = wkt_convert_unit(projcs);
     return [projStr, paramStr, geogStr, unitStr, "+no_defs"]
-      .filter(function (s) {
-        return !!s;
-      })
+      .filter((s) => !!s)
       .join(" ");
   };
 }
@@ -2216,7 +2208,7 @@ function wkt_simple_projcs_maker(wktProjection, paramIds) {
 }
 
 function wkt_projcs_maker(o) {
-  return function (P) {
+  return (P) => {
     var projcs = {
       // if o.NAME GEOGCS exists and returns falsy value, use default function
       GEOGCS: (o.GEOGCS && o.GEOGCS(P)) || wkt_make_geogcs(P),
@@ -2260,14 +2252,14 @@ function add_simple_wkt_maker(projId, wktProjection, params) {
 
 function get_simple_parser_test(wktNames) {
   var slugs = wkt_split_names(wktNames).map(wkt_name_to_slug);
-  return function (obj) {
+  return (obj) => {
     var wktName = obj.PROJECTION[0]; // TODO: handle unexpected structure
     return slugs.indexOf(wkt_name_to_slug(wktName)) > -1;
   };
 }
 
 function get_simple_maker_test(projId) {
-  return function (P) {
+  return (P) => {
     var id = get_proj_id(P);
     return id && id == projId;
   };
@@ -2331,9 +2323,7 @@ function wkt_to_ups(projcs) {
 function wkt_from_utm(P) {
   return wkt_projcs_maker({
     NAME: wkt_make_utm_name,
-    PROJECTION: function () {
-      return "Transverse_Mercator";
-    },
+    PROJECTION: () => "Transverse_Mercator",
     PARAMETER: wkt_make_utm_params,
   })(P);
 }
@@ -2341,9 +2331,7 @@ function wkt_from_utm(P) {
 function wkt_from_ups(P) {
   return wkt_projcs_maker({
     NAME: wkt_make_ups_name,
-    PROJECTION: function () {
-      return "Polar_Stereographic";
-    },
+    PROJECTION: () => "Polar_Stereographic",
     PARAMETER: wkt_make_ups_params,
   })(P);
 }
@@ -2393,13 +2381,13 @@ function wkt_make_ups_params(P) {
 
 add_wkt_parser(
   get_simple_parser_test(
-    "Mercator_2SP,Mercator_1SP,Mercator,Mercator_Auxiliary_Sphere"
+    "Mercator_2SP,Mercator_1SP,Mercator,Mercator_Auxiliary_Sphere",
   ),
   wkt_projcs_converter({
     GEOGCS: wkt_convert_merc_geogcs,
     PROJECTION: wkt_simple_projection_converter("merc"),
     PARAMETER: wkt_convert_merc_params,
-  })
+  }),
 );
 
 add_wkt_maker(
@@ -2409,7 +2397,7 @@ add_wkt_maker(
     PROJECTION: wkt_make_merc_projection,
     PARAMETER: wkt_make_merc_params,
     NAME: wkt_make_merc_name,
-  })
+  }),
 );
 
 function wkt_make_merc_name(P) {
@@ -2513,9 +2501,7 @@ var wkt_param_aliases = {
 
 // Convert a wkt PARAMETER name to a proj4 param id
 function wkt_convert_param_name_old(wktName, proj) {
-  var defn = wkt_find_param_defn_old(proj, function (defn) {
-    return defn[1] == wktName;
-  });
+  var defn = wkt_find_param_defn_old(proj, (defn) => defn[1] == wktName);
   return defn ? defn[0] : "";
 }
 
@@ -2599,7 +2585,7 @@ function wkt_get_parameter_value(projcs, name) {
 function wkt_get_parameter_rules(ids) {
   var rules = null;
   if (ids) {
-    rules = wkt_split_names(ids).reduce(function (memo, id) {
+    rules = wkt_split_names(ids).reduce((memo, id) => {
       var rule = wkt_param_table[id];
       if (!rule) wkt_error("missing parameter rule: " + id);
       memo.push(rule);
@@ -2610,11 +2596,11 @@ function wkt_get_parameter_rules(ids) {
 }
 
 function wkt_parameter_converter(extraRules) {
-  return function (projcs) {
+  return (projcs) => {
     var parts = [];
     var rules = wkt_get_parameter_rules(extraRules);
     var unitDefn = wkt_get_unit_defn(projcs);
-    (projcs.PARAMETER || []).forEach(function (param) {
+    (projcs.PARAMETER || []).forEach((param) => {
       // handle no params
       var defn = wkt_find_parameter_defn(param[0], 1, rules);
       var proj4;
@@ -2630,12 +2616,12 @@ function wkt_parameter_converter(extraRules) {
 }
 
 function wkt_parameter_maker(extraRules) {
-  return function (P) {
+  return (P) => {
     var params = [];
     var rules = wkt_get_parameter_rules(extraRules);
     // TODO: think about how to add default params omitted from proj4 defn
     // TODO: think about detecting unused params in proj4 defn
-    Object.keys(P.params).forEach(function (key) {
+    Object.keys(P.params).forEach((key) => {
       var defn = wkt_find_parameter_defn(key, 0, rules);
       var sval;
       if (defn && defn[1]) {
@@ -2650,12 +2636,12 @@ function wkt_parameter_maker(extraRules) {
 
 add_wkt_parser(
   get_simple_parser_test(
-    "Lambert_Conformal_Conic,Lambert_Conformal_Conic_1SP,Lambert_Conformal_Conic_2SP"
+    "Lambert_Conformal_Conic,Lambert_Conformal_Conic_1SP,Lambert_Conformal_Conic_2SP",
   ),
   wkt_projcs_converter({
     PROJECTION: wkt_simple_projection_converter("lcc"),
     PARAMETER: wkt_convert_lcc_params,
-  })
+  }),
 );
 
 add_wkt_maker(
@@ -2663,7 +2649,7 @@ add_wkt_maker(
   wkt_projcs_maker({
     PROJECTION: wkt_make_lcc_projection,
     PARAMETER: wkt_make_lcc_params,
-  })
+  }),
 );
 
 function wkt_make_lcc_params(P) {
@@ -2693,43 +2679,42 @@ function wkt_proj4_is_lcc_1sp(P) {
 // Type A
 add_wkt_parser(
   get_simple_parser_test(
-    "Hotine_Oblique_Mercator,Hotine_Oblique_Mercator_Azimuth_Natural_Origin"
+    "Hotine_Oblique_Mercator,Hotine_Oblique_Mercator_Azimuth_Natural_Origin",
   ),
   wkt_projcs_converter({
     PROJECTION: wkt_simple_projection_converter("omerc"),
-    PARAMETER: function (P) {
-      return wkt_parameter_converter("alpha,gamma,lonc")(P) + " +no_uoff";
-    },
-  })
+    PARAMETER: (P) =>
+      wkt_parameter_converter("alpha,gamma,lonc")(P) + " +no_uoff",
+  }),
 );
 add_wkt_maker(
   wkt_proj4_is_omerc_A,
-  wkt_simple_projcs_maker("Hotine_Oblique_Mercator", "alpha,gamma,lonc")
+  wkt_simple_projcs_maker("Hotine_Oblique_Mercator", "alpha,gamma,lonc"),
 );
 
 // Type B
 add_simple_wkt_parser(
   "omerc",
   "Oblique_Mercator,Hotine_Oblique_Mercator_Azimuth_Center",
-  "alpha,gamma,lonc"
+  "alpha,gamma,lonc",
 );
 add_wkt_maker(
   wkt_proj4_is_omerc_B,
-  wkt_simple_projcs_maker("Oblique_Mercator", "alpha,gamma,lonc")
+  wkt_simple_projcs_maker("Oblique_Mercator", "alpha,gamma,lonc"),
 );
 
 // Two-point version
 add_simple_wkt_parser(
   "omerc",
   "Hotine_Oblique_Mercator_Two_Point_Natural_Origin",
-  "lat_1b,lat_2b,lon_1,lon_2"
+  "lat_1b,lat_2b,lon_1,lon_2",
 );
 add_wkt_maker(
   wkt_proj4_is_omerc_2pt,
   wkt_simple_projcs_maker(
     "Hotine_Oblique_Mercator_Two_Point_Natural_Origin",
-    "lat_1b,lat_2b,lon_1,lon_2"
-  )
+    "lat_1b,lat_2b,lon_1,lon_2",
+  ),
 );
 
 function wkt_proj4_is_omerc_2pt(P) {
@@ -2765,12 +2750,12 @@ function wkt_proj4_is_omerc_B(P) {
 
 add_wkt_parser(
   get_simple_parser_test(
-    "Stereographic,Polar_Stereographic,Stereographic_North_Pole,Stereographic_South_Pole"
+    "Stereographic,Polar_Stereographic,Stereographic_North_Pole,Stereographic_South_Pole",
   ),
   wkt_projcs_converter({
     PROJECTION: wkt_simple_projection_converter("stere"),
     PARAMETER: wkt_convert_stere_params,
-  })
+  }),
 );
 
 add_wkt_maker(
@@ -2778,7 +2763,7 @@ add_wkt_maker(
   wkt_projcs_maker({
     PROJECTION: wkt_make_stere_projection,
     PARAMETER: wkt_make_stere_params,
-  })
+  }),
 );
 
 function wkt_convert_stere_params(projcs) {
@@ -2813,12 +2798,12 @@ add_wkt_parser(
   get_simple_parser_test("VanDerGrinten,Van_der_Grinten_I"),
   wkt_projcs_converter({
     PROJECTION: wkt_simple_projection_converter("vandg"),
-    PARAMETER: function (P) {
+    PARAMETER: (P) => {
       var params = wkt_parameter_converter("")(P);
       if (params) params += " ";
       return params + "+R_A";
     },
-  })
+  }),
 );
 
 /*
@@ -2888,7 +2873,7 @@ add_wkt_parser(
   ["wink1", "Winkel_I", "lat_ts"],
   ["wink2", "Winkel_II"],
   ["wintri", "Winkel_Tripel", "lat_1"],
-].forEach(function (arr) {
+].forEach((arr) => {
   var alternateParams = arr[2] || null;
   add_simple_wkt_parser(arr[0], arr[1], alternateParams);
   add_simple_wkt_maker(arr[0], arr[1].split(",")[0], alternateParams);
@@ -2912,9 +2897,7 @@ function wkt_sort_order(key) {
 
 function wkt_keys(o) {
   var keys = Object.keys(o);
-  return keys.sort(function (a, b) {
-    return wkt_sort_order(a) - wkt_sort_order(b);
-  });
+  return keys.sort((a, b) => wkt_sort_order(a) - wkt_sort_order(b));
 }
 
 // Rearrange a generated WKT object for easier string conversion
@@ -2923,14 +2906,14 @@ function wkt_stringify_reorder(o, depth) {
   var arr = [],
     e;
   depth = depth || 0;
-  wkt_keys(o).forEach(function (name) {
+  wkt_keys(o).forEach((name) => {
     var val = o[name];
     if (wkt_is_object(val)) {
       arr.push([name].concat(wkt_stringify_reorder(val, depth + 1)));
     } else if (name == "NAME") {
       arr.push(wkt_is_string(val) ? val : val[0]);
     } else if (name == "PARAMETER" || name == "AXIS") {
-      val.forEach(function (param) {
+      val.forEach((param) => {
         arr.push([name].concat(param));
       });
     } else if (wkt_is_string(val)) {
@@ -2951,7 +2934,7 @@ function wkt_stringify_reorder(o, depth) {
 
 function wkt_parse(str) {
   var obj = {};
-  wkt_unpack(str).forEach(function (part) {
+  wkt_unpack(str).forEach((part) => {
     wkt_parse_reorder(part, obj);
   });
   return obj;
@@ -2988,7 +2971,7 @@ function wkt_unpack(str) {
 // Convert WKT escaped quotes to JSON escaped quotes ("" -> \")
 function convert_wkt_quotes(str) {
   var c = 0;
-  return str.replace(/"+/g, function (s) {
+  return str.replace(/"+/g, (s) => {
     var even = c % 2 == 0;
     c += s.length;
     // ordinary, unescaped quotes
@@ -3114,13 +3097,13 @@ GeographicLib.Constants = {};
 GeographicLib.Math = {};
 GeographicLib.Accumulator = {};
 
-(function (
+((
   /**
    * @exports GeographicLib/Constants
    * @description Define constants defining the version and WGS84 parameters.
    */
-  c
-) {
+  c,
+) => {
   /**
    * @constant
    * @summary WGS84 parameters.
@@ -3143,14 +3126,14 @@ GeographicLib.Accumulator = {};
   c.version_string = "1.48";
 })(GeographicLib.Constants);
 
-(function (
+((
   /**
    * @exports GeographicLib/Math
    * @description Some useful mathematical constants and functions (mainly for
    *   internal use).
    */
-  m
-) {
+  m,
+) => {
   /**
    * @summary The number of digits of precision in floating-point numbers.
    * @constant {number}
@@ -3160,7 +3143,7 @@ GeographicLib.Accumulator = {};
    * @summary The machine epsilon.
    * @constant {number}
    */
-  m.epsilon = Math.pow(0.5, m.digits - 1);
+  m.epsilon = 0.5 ** (m.digits - 1);
   /**
    * @summary The factor to convert degrees to radians.
    * @constant {number}
@@ -3172,9 +3155,7 @@ GeographicLib.Accumulator = {};
    * @param {number} x the number.
    * @returns {number} the square.
    */
-  m.sq = function (x) {
-    return x * x;
-  };
+  m.sq = (x) => x * x;
 
   /**
    * @summary The hypotenuse function.
@@ -3182,7 +3163,7 @@ GeographicLib.Accumulator = {};
    * @param {number} y the second side.
    * @returns {number} the hypotenuse.
    */
-  m.hypot = function (x, y) {
+  m.hypot = (x, y) => {
     var a, b;
     x = Math.abs(x);
     y = Math.abs(y);
@@ -3196,8 +3177,8 @@ GeographicLib.Accumulator = {};
    * @param {number} x the argument.
    * @returns {number} the real cube root.
    */
-  m.cbrt = function (x) {
-    var y = Math.pow(Math.abs(x), 1 / 3);
+  m.cbrt = (x) => {
+    var y = Math.abs(x) ** (1 / 3);
     return x < 0 ? -y : y;
   };
 
@@ -3206,7 +3187,7 @@ GeographicLib.Accumulator = {};
    * @param {number} x the argument.
    * @returns {number} log(1 + x).
    */
-  m.log1p = function (x) {
+  m.log1p = (x) => {
     var y = 1 + x,
       z = y - 1;
     // Here's the explanation for this magic: y = 1 + z, exactly, and z
@@ -3221,7 +3202,7 @@ GeographicLib.Accumulator = {};
    * @param {number} x the argument.
    * @returns {number} tanh<sup>&minus;1</sup> x.
    */
-  m.atanh = function (x) {
+  m.atanh = (x) => {
     var y = Math.abs(x); // Enforce odd parity
     y = m.log1p((2 * y) / (1 - y)) / 2;
     return x < 0 ? -y : y;
@@ -3233,9 +3214,8 @@ GeographicLib.Accumulator = {};
    * @param {number} y gives the sign of the result.
    * @returns {number} value with the magnitude of x and with the sign of y.
    */
-  m.copysign = function (x, y) {
-    return Math.abs(x) * (y < 0 || (y === 0 && 1 / y < 0) ? -1 : 1);
-  };
+  m.copysign = (x, y) =>
+    Math.abs(x) * (y < 0 || (y === 0 && 1 / y < 0) ? -1 : 1);
 
   /**
    * @summary An error-free sum.
@@ -3244,7 +3224,7 @@ GeographicLib.Accumulator = {};
    * @returns {object} sum with sum.s = round(u + v) and sum.t is u + v &minus;
    *   round(u + v)
    */
-  m.sum = function (u, v) {
+  m.sum = (u, v) => {
     var s = u + v,
       up = s - v,
       vpp = s - up,
@@ -3265,7 +3245,7 @@ GeographicLib.Accumulator = {};
    * @param {number} x the variable.
    * @returns {number} the value of the polynomial.
    */
-  m.polyval = function (N, p, s, x) {
+  m.polyval = (N, p, s, x) => {
     var y = N < 0 ? 0 : p[s++];
     while (--N >= 0) y = y * x + p[s++];
     return y;
@@ -3276,7 +3256,7 @@ GeographicLib.Accumulator = {};
    * @param {number} x
    * @returns {number} the coarsened value.
    */
-  m.AngRound = function (x) {
+  m.AngRound = (x) => {
     // The makes the smallest gap in x = 1/16 - nextafter(1/16, 0) = 1/2^57 for
     // reals = 0.7 pm on the earth if x is an angle in degrees.  (This is about
     // 1000 times more resolution than we get with angles around 90 degrees.)
@@ -3297,7 +3277,7 @@ GeographicLib.Accumulator = {};
    * @returns {number} the angle reduced to the range (&minus;180&deg;,
    *   180&deg;].
    */
-  m.AngNormalize = function (x) {
+  m.AngNormalize = (x) => {
     // Place angle in [-180, 180).
     x = x % 360;
     return x <= -180 ? x + 360 : x <= 180 ? x : x - 360;
@@ -3309,7 +3289,7 @@ GeographicLib.Accumulator = {};
    * @returns {number} x if it is in the range [&minus;90&deg;, 90&deg;],
    *   otherwise return NaN.
    */
-  m.LatFix = function (x) {
+  m.LatFix = (x) => {
     // Replace angle with NaN if outside [-90, 90].
     return Math.abs(x) > 90 ? Number.NaN : x;
   };
@@ -3325,7 +3305,7 @@ GeographicLib.Accumulator = {};
    * 180&deg;]; and then sets diff.s = d = round(z) and diff.t = e = z &minus;
    * round(z).  If d = &minus;180, then e &gt; 0; If d = 180, then e &le; 0.
    */
-  m.AngDiff = function (x, y) {
+  m.AngDiff = (x, y) => {
     // Compute y - x and reduce to [-180,180] accurately.
     var r = m.sum(m.AngNormalize(-x), m.AngNormalize(y)),
       d = m.AngNormalize(r.s),
@@ -3424,7 +3404,7 @@ GeographicLib.Accumulator = {};
   };
 })(GeographicLib.Math);
 
-(function (
+((
   /**
    * @exports GeographicLib/Accumulator
    * @description Accurate summation via the
@@ -3432,8 +3412,8 @@ GeographicLib.Accumulator = {};
    *   (mainly for internal use).
    */
   a,
-  m
-) {
+  m,
+) => {
   /**
    * @class
    * @summary Accurate summation of many numbers.
@@ -3558,7 +3538,7 @@ GeographicLib.Geodesic = {};
 GeographicLib.GeodesicLine = {};
 GeographicLib.PolygonArea = {};
 
-(function (
+((
   /**
    * @exports GeographicLib/Geodesic
    * @description Solve geodesic problems via the
@@ -3568,8 +3548,8 @@ GeographicLib.PolygonArea = {};
   l,
   p,
   m,
-  c
-) {
+  c,
+) => {
   var GEOGRAPHICLIB_GEODESIC_ORDER = 6,
     nA1_ = GEOGRAPHICLIB_GEODESIC_ORDER,
     nA2_ = GEOGRAPHICLIB_GEODESIC_ORDER,
@@ -3627,7 +3607,7 @@ GeographicLib.PolygonArea = {};
   g.LONG_UNROLL = 1 << 15;
   g.OUT_MASK = OUT_ALL | g.LONG_UNROLL;
 
-  g.SinCosSeries = function (sinp, sinx, cosx, c) {
+  g.SinCosSeries = (sinp, sinx, cosx, c) => {
     // Evaluate
     // y = sinp ? sum(c[i] * sin( 2*i    * x), i, 1, n) :
     //            sum(c[i] * cos((2*i+1) * x), i, 0, n-1)
@@ -3650,7 +3630,7 @@ GeographicLib.PolygonArea = {};
       : cosx * (y0 - y1); // cos(x) * (y0 - y1)
   };
 
-  astroid = function (x, y) {
+  astroid = (x, y) => {
     // Solve k^4+2*k^3-(x^2+y^2-1)*k^2-2*y^2*k-y^2 = 0 for positive
     // root k.  This solution is adapted from Geocentric::Reverse.
     var k,
@@ -3719,7 +3699,7 @@ GeographicLib.PolygonArea = {};
   ];
 
   // The scale factor A1-1 = mean value of (d/dsigma)I1 - 1
-  g.A1m1f = function (eps) {
+  g.A1m1f = (eps) => {
     var p = Math.floor(nA1_ / 2),
       t = m.polyval(p, A1m1f_coeff, 0, m.sq(eps)) / A1m1f_coeff[p + 1];
     return (t + eps) / (1 - eps);
@@ -3741,7 +3721,7 @@ GeographicLib.PolygonArea = {};
   ];
 
   // The coefficients C1[l] in the Fourier expansion of B1
-  g.C1f = function (eps, c) {
+  g.C1f = (eps, c) => {
     var eps2 = m.sq(eps),
       d = eps,
       o = 0,
@@ -3772,7 +3752,7 @@ GeographicLib.PolygonArea = {};
   ];
 
   // The coefficients C1p[l] in the Fourier expansion of B1p
-  g.C1pf = function (eps, c) {
+  g.C1pf = (eps, c) => {
     var eps2 = m.sq(eps),
       d = eps,
       o = 0,
@@ -3793,7 +3773,7 @@ GeographicLib.PolygonArea = {};
   ];
 
   // The scale factor A2-1 = mean value of (d/dsigma)I2 - 1
-  g.A2m1f = function (eps) {
+  g.A2m1f = (eps) => {
     var p = Math.floor(nA2_ / 2),
       t = m.polyval(p, A2m1f_coeff, 0, m.sq(eps)) / A2m1f_coeff[p + 1];
     return (t - eps) / (1 + eps);
@@ -3815,7 +3795,7 @@ GeographicLib.PolygonArea = {};
   ];
 
   // The coefficients C2[l] in the Fourier expansion of B2
-  g.C2f = function (eps, c) {
+  g.C2f = (eps, c) => {
     var eps2 = m.sq(eps),
       d = eps,
       o = 0,
@@ -3885,7 +3865,7 @@ GeographicLib.PolygonArea = {};
     this._etol2 =
       (0.1 * tol2_) /
       Math.sqrt(
-        (Math.max(0.001, Math.abs(this.f)) * Math.min(1.0, 1 - this.f / 2)) / 2
+        (Math.max(0.001, Math.abs(this.f)) * Math.min(1.0, 1 - this.f / 2)) / 2,
       );
     if (!(isFinite(this.a) && this.a > 0))
       throw new Error("Equatorial radius is not positive");
@@ -4094,7 +4074,7 @@ GeographicLib.PolygonArea = {};
     cbet2,
     outmask,
     C1a,
-    C2a
+    C2a,
   ) {
     // Return m12b = (reduced length)/_b; also calculate s12b =
     // distance/_b, and m0 = coefficient of secular term in
@@ -4170,7 +4150,7 @@ GeographicLib.PolygonArea = {};
     slam12,
     clam12,
     C1a,
-    C2a
+    C2a,
   ) {
     // Return a starting point for Newton's method in salp1 and calp1
     // (function value is -1).  If Newton's method doesn't need to be
@@ -4289,7 +4269,7 @@ GeographicLib.PolygonArea = {};
           cbet2,
           g.REDUCEDLENGTH,
           C1a,
-          C2a
+          C2a,
         );
         m12b = nvals.m12b;
         m0 = nvals.m0;
@@ -4383,7 +4363,7 @@ GeographicLib.PolygonArea = {};
     diffp,
     C1a,
     C2a,
-    C3a
+    C3a,
   ) {
     var vals = {},
       t,
@@ -4434,7 +4414,7 @@ GeographicLib.PolygonArea = {};
             m.sq(calp1 * cbet1) +
               (cbet1 < -sbet1
                 ? (cbet2 - cbet1) * (cbet1 + cbet2)
-                : (sbet1 - sbet2) * (sbet1 + sbet2))
+                : (sbet1 - sbet2) * (sbet1 + sbet2)),
           ) / cbet2
         : Math.abs(calp1);
     // tan(bet2) = tan(sig2) * cos(alp2)
@@ -4451,7 +4431,7 @@ GeographicLib.PolygonArea = {};
     // sig12 = sig2 - sig1, limit to [0, pi]
     vals.sig12 = Math.atan2(
       Math.max(0, vals.csig1 * vals.ssig2 - vals.ssig1 * vals.csig2),
-      vals.csig1 * vals.csig2 + vals.ssig1 * vals.ssig2
+      vals.csig1 * vals.csig2 + vals.ssig1 * vals.ssig2,
     );
 
     // omg12 = omg2 - omg1, limit to [0, pi]
@@ -4460,7 +4440,7 @@ GeographicLib.PolygonArea = {};
     // eta = omg12 - lam120
     eta = Math.atan2(
       somg12 * clam120 - comg12 * slam120,
-      comg12 * clam120 + somg12 * slam120
+      comg12 * clam120 + somg12 * slam120,
     );
     k2 = m.sq(calp0) * this._ep2;
     vals.eps = k2 / (2 * (1 + Math.sqrt(1 + k2)) + k2);
@@ -4486,7 +4466,7 @@ GeographicLib.PolygonArea = {};
           cbet2,
           g.REDUCEDLENGTH,
           C1a,
-          C2a
+          C2a,
         );
         vals.dlam12 = nvals.m12b;
         vals.dlam12 *= this._f1 / (vals.calp2 * cbet2);
@@ -4703,7 +4683,7 @@ GeographicLib.PolygonArea = {};
       // sig12 = sig2 - sig1
       sig12 = Math.atan2(
         Math.max(0, csig1 * ssig2 - ssig1 * csig2),
-        csig1 * csig2 + ssig1 * ssig2
+        csig1 * csig2 + ssig1 * ssig2,
       );
       nvals = this.Lengths(
         this._n,
@@ -4718,7 +4698,7 @@ GeographicLib.PolygonArea = {};
         cbet2,
         outmask | g.DISTANCE | g.REDUCEDLENGTH,
         C1a,
-        C2a
+        C2a,
       );
       s12x = nvals.s12b;
       m12x = nvals.m12b;
@@ -4775,7 +4755,7 @@ GeographicLib.PolygonArea = {};
         slam12,
         clam12,
         C1a,
-        C2a
+        C2a,
       );
       sig12 = nvals.sig12;
       salp1 = nvals.salp1;
@@ -4828,7 +4808,7 @@ GeographicLib.PolygonArea = {};
             numit < maxit1_,
             C1a,
             C2a,
-            C3a
+            C3a,
           );
           v = nvals.lam12;
           salp2 = nvals.salp2;
@@ -4910,7 +4890,7 @@ GeographicLib.PolygonArea = {};
           cbet2,
           lengthmask,
           C1a,
-          C2a
+          C2a,
         );
         s12x = nvals.s12b;
         m12x = nvals.m12b;
@@ -4986,7 +4966,7 @@ GeographicLib.PolygonArea = {};
           2 *
           Math.atan2(
             somg12 * (sbet1 * dbet2 + sbet2 * dbet1),
-            domg12 * (sbet1 * sbet2 + dbet1 * dbet2)
+            domg12 * (sbet1 * sbet2 + dbet1 * dbet2),
           );
       } else {
         // alp12 = alp2 - alp1, used in atan2 so no need to normalize
@@ -5061,7 +5041,7 @@ GeographicLib.PolygonArea = {};
     azi1,
     arcmode,
     s12_a12,
-    outmask
+    outmask,
   ) {
     var line;
     if (!outmask) outmask = g.STANDARD;
@@ -5202,7 +5182,7 @@ GeographicLib.PolygonArea = {};
     azi1,
     arcmode,
     s12_a12,
-    caps
+    caps,
   ) {
     var t;
     if (!caps) caps = g.STANDARD | g.DISTANCE_IN;
@@ -5266,7 +5246,7 @@ GeographicLib.PolygonArea = {};
   GeographicLib.GeodesicLine,
   GeographicLib.PolygonArea,
   GeographicLib.Math,
-  GeographicLib.Constants
+  GeographicLib.Constants,
 );
 
 /*
@@ -5290,7 +5270,7 @@ GeographicLib.PolygonArea = {};
 
 // Load AFTER GeographicLib/Math.js, GeographicLib/Geodesic.js
 
-(function (
+((
   g,
   /**
    * @exports GeographicLib/GeodesicLine
@@ -5299,8 +5279,8 @@ GeographicLib.PolygonArea = {};
    *   class.
    */
   l,
-  m
-) {
+  m,
+) => {
   /**
    * @class
    * @property {number} a the equatorial radius (meters).
@@ -5515,7 +5495,7 @@ GeographicLib.PolygonArea = {};
         true,
         this._stau1 * c + this._ctau1 * s,
         this._ctau1 * c - this._stau1 * s,
-        this._C1pa
+        this._C1pa,
       );
       sig12 = tau12 - (B12 - this._B11);
       ssig12 = Math.sin(sig12);
@@ -5593,7 +5573,7 @@ GeographicLib.PolygonArea = {};
                 Math.atan2(E * this._somg1, this._comg1)))
           : Math.atan2(
               somg2 * this._comg1 - comg2 * this._somg1,
-              comg2 * this._comg1 + somg2 * this._somg1
+              comg2 * this._comg1 + somg2 * this._somg1,
             );
       lam12 =
         omg12 +
@@ -5756,7 +5736,7 @@ GeographicLib.PolygonArea = {};
 
 // Load AFTER GeographicLib/Math.js and GeographicLib/Geodesic.js
 
-(function (
+((
   /**
    * @exports GeographicLib/PolygonArea
    * @description Compute the area of geodesic polygons via the
@@ -5766,10 +5746,10 @@ GeographicLib.PolygonArea = {};
   p,
   g,
   m,
-  a
-) {
+  a,
+) => {
   var transit, transitdirect;
-  transit = function (lon1, lon2) {
+  transit = (lon1, lon2) => {
     // Return 1 or -1 if crossing prime meridian in east or west direction.
     // Otherwise return zero.
     var lon12, cross;
@@ -5781,14 +5761,14 @@ GeographicLib.PolygonArea = {};
       lon1 <= 0 && lon2 > 0 && lon12 > 0
         ? 1
         : lon2 <= 0 && lon1 > 0 && lon12 < 0
-        ? -1
-        : 0;
+          ? -1
+          : 0;
     return cross;
   };
 
   // an alternate version of transit to deal with longitudes in the direct
   // problem.
-  transitdirect = function (lon1, lon2) {
+  transitdirect = (lon1, lon2) => {
     // We want to compute exactly
     //   int(floor(lon2 / 360)) - int(floor(lon1 / 360))
     // Since we only need the parity of the result we can use std::remquo but
@@ -5927,7 +5907,7 @@ GeographicLib.PolygonArea = {};
       this.lon,
       this._lat0,
       this._lon0,
-      this._mask
+      this._mask,
     );
     vals.perimeter = this._perimetersum.Sum(t.s12);
     tempsum = new a.Accumulator(this._areasum);
@@ -5984,14 +5964,14 @@ GeographicLib.PolygonArea = {};
         i === 0 ? this.lon : lon,
         i !== 0 ? this._lat0 : lat,
         i !== 0 ? this._lon0 : lon,
-        this._mask
+        this._mask,
       );
       vals.perimeter += t.s12;
       if (!this.polyline) {
         tempsum += t.S12;
         crossings += transit(
           i === 0 ? this.lon : lon,
-          i !== 0 ? this._lon0 : lon
+          i !== 0 ? this._lon0 : lon,
         );
       }
     }
@@ -6066,7 +6046,7 @@ GeographicLib.PolygonArea = {};
   GeographicLib.PolygonArea,
   GeographicLib.Geodesic,
   GeographicLib.Math,
-  GeographicLib.Accumulator
+  GeographicLib.Accumulator,
 );
 
 function pj_qsfn(sinphi, e, one_es) {
@@ -6092,7 +6072,7 @@ pj_add(
   pj_leac,
   "leac",
   "Lambert Equal Area Conic",
-  "Conic, Sph&Ell\nlat_1= south"
+  "Conic, Sph&Ell\nlat_1= south",
 );
 
 function pj_aea(P) {
@@ -6518,7 +6498,7 @@ function pj_aeqd(P) {
       lp.phi = pj_inv_mlfn(
         M1 + xy.y - x2 * tan(lp.phi) * (t = sqrt(1 - t * t)),
         P.es,
-        en
+        en,
       );
     }
     lp.lam = (xy.x * t) / cos(lp.phi);
@@ -6842,7 +6822,7 @@ function pj_bertin1953(P) {
     z0 = z * cos_delta_phi + x * sin_delta_phi;
     lp.lam = atan2(
       y * cos_delta_gamma - z0 * sin_delta_gamma,
-      x * cos_delta_phi - z * sin_delta_phi
+      x * cos_delta_phi - z * sin_delta_phi,
     );
     z0 = z0 * cos_delta_gamma + y * sin_delta_gamma;
     lp.phi = asin(z0);
@@ -7106,7 +7086,7 @@ pj_add(
   pj_chamb,
   "chamb",
   "Chamberlin Trimetric",
-  "Misc Sph, no inv.\nlat_1= lon_1= lat_2= lon_2= lat_3= lon_3="
+  "Misc Sph, no inv.\nlat_1= lon_1= lat_2= lon_2= lat_3= lon_3=",
 );
 
 function pj_chamb(P) {
@@ -7140,7 +7120,7 @@ function pj_chamb(P) {
       c[i].sinphi,
       c[j].cosphi,
       c[j].sinphi,
-      c[j].lam - c[i].lam
+      c[j].lam - c[i].lam,
     );
 
     if (!c[i].v.r) e_error(-25);
@@ -7170,7 +7150,7 @@ function pj_chamb(P) {
         c[i].sinphi,
         cosphi,
         sinphi,
-        lp.lam - c[i].lam
+        lp.lam - c[i].lam,
       );
       if (!v[i].r) break;
       v[i].Az = adjlon(v[i].Az - c[i].v.Az);
@@ -7318,7 +7298,7 @@ function pj_denoy(P) {
     xy.x = lp.lam;
     xy.x *= cos(
       (C0 + lam * (C1 + lam * lam * C3)) *
-        (lp.phi * (D1 + D5 * lp.phi * lp.phi * lp.phi * lp.phi))
+        (lp.phi * (D1 + D5 * lp.phi * lp.phi * lp.phi * lp.phi)),
     );
   }
 }
@@ -7497,7 +7477,7 @@ pj_add(
   pj_eqc,
   "eqc",
   "Equidistant Cylindrical (Plate Caree)",
-  "Cyl, Sph\nlat_ts=[, lat_0=0]"
+  "Cyl, Sph\nlat_ts=[, lat_0=0]",
 );
 
 function pj_eqc(P) {
@@ -7673,7 +7653,7 @@ pj_add(
   pj_etmerc,
   "etmerc",
   "Extended Transverse Mercator",
-  "Cyl, Sph\nlat_ts=(0)\nlat_0=(0)"
+  "Cyl, Sph\nlat_ts=(0)\nlat_0=(0)",
 );
 
 function pj_etmerc(P) {
@@ -7947,12 +7927,12 @@ function pj_geocent(P) {
   P.x0 = 0;
   P.y0 = 0;
 
-  P.fwd = function (lp, xy) {
+  P.fwd = (lp, xy) => {
     xy.x = lp.lam;
     xy.y = lp.phi;
   };
 
-  P.inv = function (xy, lp) {
+  P.inv = (xy, lp) => {
     lp.phi = xy.y;
     lp.lam = xy.x;
   };
@@ -7964,7 +7944,7 @@ pj_add(
   pj_gilbert,
   "gilbert",
   "Gilbert Two World Perspective",
-  "PCyl., Sph., NoInv.\nlat_1="
+  "PCyl., Sph., NoInv.\nlat_1=",
 );
 
 function pj_gilbert(P) {
@@ -8019,7 +7999,7 @@ pj_add(
   pj_mbtfps,
   "mbtfps",
   "McBryde-Thomas Flat-Polar Sinusoidal",
-  "PCyl, Sph."
+  "PCyl, Sph.",
 );
 
 function pj_gn_sinu(P) {
@@ -8097,8 +8077,8 @@ function pj_sinu_init(P, m, n) {
     lp.phi = m
       ? aasin((m * xy.y + sin(xy.y)) / n)
       : n != 1
-      ? aasin(sin(xy.y) / n)
-      : xy.y;
+        ? aasin(sin(xy.y) / n)
+        : xy.y;
     lp.lam = xy.x / (C_x * (m + cos(xy.y)));
   }
 }
@@ -8288,7 +8268,7 @@ function pj_goode(P) {
   pj_moll(P);
   mollFwd = P.fwd;
   mollInv = P.inv;
-  P.fwd = function (lp, xy) {
+  P.fwd = (lp, xy) => {
     if (fabs(lp.phi) < PHI_LIM) {
       sinuFwd(lp, xy);
     } else {
@@ -8296,7 +8276,7 @@ function pj_goode(P) {
       xy.y -= lp.phi > 0 ? Y_COR : -Y_COR;
     }
   };
-  P.inv = function (xy, lp) {
+  P.inv = (xy, lp) => {
     if (fabs(xy.y) <= PHI_LIM) {
       sinuInv(xy, lp);
     } else {
@@ -8409,7 +8389,7 @@ pj_add(
   pj_rhealpix,
   "rhealpix",
   "rHEALPix",
-  "Sph., Ellps.\nnorth_square= south_square="
+  "Sph., Ellps.\nnorth_square= south_square=",
 );
 
 function pj_rhealpix(P) {
@@ -8950,7 +8930,7 @@ function pj_hill(P) {
               K2 * Bt -
               L * sinTheta +
               (1 + L2 - 2 * L * cosTheta) * Bt_Bt1)) /
-            B
+            B,
       ));
   }
 }
@@ -9001,7 +8981,7 @@ function pj_krovak(P) {
 
     gfi = pow(
       (1 + P.e * sin(lp.phi)) / (1 - P.e * sin(lp.phi)),
-      (alpha * P.e) / 2
+      (alpha * P.e) / 2,
     );
 
     u = 2 * (atan((k * pow(tan(lp.phi / 2 + S45), alpha)) / gfi) - S45);
@@ -9043,7 +9023,7 @@ function pj_krovak(P) {
         (atan(
           pow(k, -1 / alpha) *
             pow(tan(u / 2 + S45), 1 / alpha) *
-            pow((1 + P.e * sin(fi1)) / (1 - P.e * sin(fi1)), P.e / 2)
+            pow((1 + P.e * sin(fi1)) / (1 - P.e * sin(fi1)), P.e / 2),
         ) -
           S45);
       if (fabs(fi1 - lp.phi) < EPS) ok = 1;
@@ -9294,12 +9274,12 @@ function pj_lonlat(P) {
   P.y0 = 0;
   P.is_latlong = true;
 
-  P.fwd = function (lp, xy) {
+  P.fwd = (lp, xy) => {
     xy.x = lp.lam / P.a;
     xy.y = lp.phi / P.a;
   };
 
-  P.inv = function (xy, lp) {
+  P.inv = (xy, lp) => {
     lp.lam = xy.x * P.a;
     lp.phi = xy.y * P.a;
   };
@@ -9317,7 +9297,7 @@ pj_add(
   pj_lcc,
   "lcc",
   "Lambert Conformal Conic",
-  "Conic, Sph&Ell\nlat_1= and lat_2= or lat_0="
+  "Conic, Sph&Ell\nlat_1= and lat_2= or lat_0=",
 );
 
 function pj_lcc(P) {
@@ -9449,7 +9429,7 @@ pj_add(
   pj_mbt_fpp,
   "mbt_fpp",
   "McBride-Thomas Flat-Polar Parabolic",
-  "Cyl., Sph."
+  "Cyl., Sph.",
 );
 
 function pj_mbt_fpp(P) {
@@ -9489,7 +9469,7 @@ pj_add(
   pj_mbt_fpq,
   "mbt_fpq",
   "McBryde-Thomas Flat-Polar Quartic",
-  "Cyl., Sph."
+  "Cyl., Sph.",
 );
 
 function pj_mbt_fpq(P) {
@@ -9546,7 +9526,7 @@ pj_add(
   pj_mbt_fps,
   "mbt_fps",
   "McBryde-Thomas Flat-Pole Sine (No. 2)",
-  "Cyl., Sph."
+  "Cyl., Sph.",
 );
 
 function pj_mbt_fps(P) {
@@ -9856,7 +9836,7 @@ function pj_mod_ster(P, zcoeff) {
       2 *
         atan(
           tan((M_HALFPI + P.phi0) * 0.5) *
-            pow((1 - esphi) / (1 + esphi), P.e * 0.5)
+            pow((1 - esphi) / (1 + esphi), P.e * 0.5),
         ) -
       M_HALFPI;
   } else chio = P.phi0;
@@ -9876,7 +9856,7 @@ function pj_mod_ster(P, zcoeff) {
       2 *
         atan(
           tan((M_HALFPI + lp.phi) * 0.5) *
-            pow((1 - esphi) / (1 + esphi), P.e * 0.5)
+            pow((1 - esphi) / (1 + esphi), P.e * 0.5),
         ) -
       M_HALFPI;
     schi = sin(chi);
@@ -9940,7 +9920,7 @@ function pj_mod_ster(P, zcoeff) {
           2 *
             atan(
               tan((M_HALFPI + chi) * 0.5) *
-                pow((1 + esphi) / (1 - esphi), P.e * 0.5)
+                pow((1 + esphi) / (1 - esphi), P.e * 0.5),
             ) -
           M_HALFPI -
           phi;
@@ -10361,7 +10341,7 @@ pj_add(
     "o_proj= plus parameters for projection\n" +
     "o_lat_p= o_lon_p= (new pole) or\n" +
     "o_alpha= o_lon_c= o_lat_c= or\n" +
-    "o_lon_1= o_lat_1= o_lon_2= o_lat_2="
+    "o_lon_1= o_lat_1= o_lon_2= o_lat_2=",
 );
 
 function pj_ob_tran(P) {
@@ -10378,7 +10358,7 @@ function pj_ob_tran(P) {
   P.es = 0;
   // copy params to second object
   P2 = {};
-  Object.keys(P).forEach(function (key) {
+  Object.keys(P).forEach((key) => {
     // TODO: remove o_ params?
     P2[key] = P[key];
   });
@@ -10419,7 +10399,7 @@ function pj_ob_tran(P) {
       e_error(-33);
     lamp = atan2(
       cos(phi1) * sin(phi2) * cos(lam1) - sin(phi1) * cos(phi2) * cos(lam2),
-      sin(phi1) * cos(phi2) * sin(lam2) - cos(phi1) * sin(phi2) * sin(lam1)
+      sin(phi1) * cos(phi2) * sin(lam2) - cos(phi1) * sin(phi2) * sin(lam1),
     );
     phip = atan(-cos(lamp - lam1) / tan(phi1));
   }
@@ -10442,7 +10422,7 @@ function pj_ob_tran(P) {
     cosphi = cos(lp.phi);
     lp.lam = adjlon(
       aatan2(cosphi * sin(lp.lam), sphip * cosphi * coslam + cphip * sinphi) +
-        lamp
+        lamp,
     );
     lp.phi = aasin(sphip * sinphi - cphip * cosphi * coslam);
     P2.fwd(lp, xy);
@@ -10467,7 +10447,7 @@ function pj_ob_tran(P) {
       lp.phi = aasin(sphip * sinphi + cphip * cosphi * coslam);
       lp.lam = aatan2(
         cosphi * sin(lp.lam),
-        sphip * cosphi * coslam - cphip * sinphi
+        sphip * cosphi * coslam - cphip * sinphi,
       );
     }
   }
@@ -10488,7 +10468,7 @@ pj_add(
   pj_ocea,
   "ocea",
   "Oblique Cylindrical Equal Area",
-  "Cyl, Sph lonc= alpha= or\nlat_1= lat_2= lon_1= lon_2="
+  "Cyl, Sph lonc= alpha= or\nlat_1= lat_2= lon_1= lon_2=",
 );
 
 function pj_ocea(P) {
@@ -10528,7 +10508,7 @@ function pj_ocea(P) {
       cos(phi_1) * sin(phi_2) * cos(lam_1) -
         sin(phi_1) * cos(phi_2) * cos(lam_2),
       sin(phi_1) * cos(phi_2) * sin(lam_2) -
-        cos(phi_1) * sin(phi_2) * sin(lam_1)
+        cos(phi_1) * sin(phi_2) * sin(lam_1),
     );
 
     /* take care of P->lam0 wrap-around when +lam_1=-90*/
@@ -10571,7 +10551,7 @@ pj_add(
   "omerc",
   "Oblique Mercator",
   "Cyl, Sph&Ell no_rot\n" +
-    "alpha= [gamma=] [no_off] lonc= or\nlon_1= lat_1= lon_2= lat_2="
+    "alpha= [gamma=] [no_off] lonc= or\nlon_1= lat_1= lon_2= lat_2=",
 );
 
 function pj_omerc(P) {
@@ -10667,7 +10647,7 @@ function pj_omerc(P) {
     if ((con = lam1 - lam2) < -M_PI) lam2 -= M_TWOPI;
     else if (con > M_PI) lam2 += M_TWOPI;
     P.lam0 = adjlon(
-      0.5 * (lam1 + lam2) - atan((J * tan(0.5 * B * (lam1 - lam2))) / p) / B
+      0.5 * (lam1 + lam2) - atan((J * tan(0.5 * B * (lam1 - lam2))) / p) / B,
     );
     gamma0 = atan((2 * sin(B * adjlon(lam1 - P.lam0))) / (F - 1 / F));
     gamma = alpha_c = asin(D * sin(gamma0));
@@ -10837,8 +10817,8 @@ function pj_ortho(P) {
           ? xy.x == 0
             ? 0
             : xy.x < 0
-            ? -M_HALFPI
-            : M_HALFPI
+              ? -M_HALFPI
+              : M_HALFPI
           : atan2(xy.x, xy.y);
     }
   }
@@ -11335,12 +11315,12 @@ function pj_qsc(P) {
      * For mu, see Eq. (3-21) in [OL76], but note the typos:
      * compare with Eq. (3-14). For nu, see Eq. (3-38). */
     mu = atan(
-      (12.0 / M_PI) * (theta + acos(sin(theta) * cos(M_FORTPI)) - M_HALFPI)
+      (12.0 / M_PI) * (theta + acos(sin(theta) * cos(M_FORTPI)) - M_HALFPI),
     );
     t = sqrt(
       (1.0 - cos(phi)) /
         (cos(mu) * cos(mu)) /
-        (1.0 - cos(atan(1.0 / cos(theta))))
+        (1.0 - cos(atan(1.0 / cos(theta)))),
     );
     /* nu = atan(t);        We don't really need nu, just t, see below. */
 
@@ -11660,9 +11640,7 @@ function pj_robin(P) {
   // convert constants to single-precision floats, for compatibility with
   // Proj.4 tests (PJ_robin.c uses floats instead of doubles)
   function to_float(rows) {
-    return rows.map(function (row) {
-      return new Float32Array(row);
-    });
+    return rows.map((row) => new Float32Array(row));
   }
 }
 
@@ -11670,47 +11648,47 @@ pj_add(
   pj_get_sconic("EULER"),
   "euler",
   "Euler",
-  "Conic, Sph\nlat_1= and lat_2="
+  "Conic, Sph\nlat_1= and lat_2=",
 );
 pj_add(
   pj_get_sconic("MURD1"),
   "murd1",
   "Murdoch I",
-  "Conic, Sph\nlat_1= and lat_2="
+  "Conic, Sph\nlat_1= and lat_2=",
 );
 pj_add(
   pj_get_sconic("MURD2"),
   "murd2",
   "Murdoch II",
-  "Conic, Sph\nlat_1= and lat_2="
+  "Conic, Sph\nlat_1= and lat_2=",
 );
 pj_add(
   pj_get_sconic("MURD3"),
   "murd3",
   "Murdoch III",
-  "Conic, Sph\nlat_1= and lat_2="
+  "Conic, Sph\nlat_1= and lat_2=",
 );
 pj_add(
   pj_get_sconic("PCONIC"),
   "pconic",
   "Perspective Conic",
-  "Conic, Sph\nlat_1= and lat_2="
+  "Conic, Sph\nlat_1= and lat_2=",
 );
 pj_add(
   pj_get_sconic("TISSOT"),
   "tissot",
   "Tissot",
-  "Conic, Sph\nlat_1= and lat_2="
+  "Conic, Sph\nlat_1= and lat_2=",
 );
 pj_add(
   pj_get_sconic("VITK1"),
   "vitk1",
   "Vitkovsky I",
-  "Conic, Sph\nlat_1= and lat_2="
+  "Conic, Sph\nlat_1= and lat_2=",
 );
 
 function pj_get_sconic(type) {
-  return function (P) {
+  return (P) => {
     pj_sconic(P, type);
   };
 }
@@ -11863,8 +11841,8 @@ function pj_somerc(P) {
             c *
               (log(tan(M_FORTPI + 0.5 * lp.phi)) -
                 hlf_e * log((1 + sp) / (1 - sp))) +
-              K
-          )
+              K,
+          ),
         ) -
       M_HALFPI;
     lamp = c * lp.lam;
@@ -12171,7 +12149,7 @@ function pj_gauss(elp, en) {
         atan(
           en.K *
             pow(tan(0.5 * elp.phi + M_FORTPI), en.C) *
-            srat(en.e * sin(elp.phi), en.ratexp)
+            srat(en.e * sin(elp.phi), en.ratexp),
         ) -
       M_HALFPI,
     lam: en.C * elp.lam,
@@ -12198,7 +12176,7 @@ pj_add(
   pj_sterea,
   "sterea",
   "Oblique Stereographic Alternative",
-  "Azimuthal, Sph&Ell"
+  "Azimuthal, Sph&Ell",
 );
 
 function pj_sterea(P) {
@@ -12251,7 +12229,7 @@ pj_add(
   pj_mbt_s,
   "mbt_s",
   "McBryde-Thomas Flat-Polar Sine (No. 1)",
-  "PCyl., Sph."
+  "PCyl., Sph.",
 );
 
 function pj_kav5(P) {
@@ -12330,13 +12308,13 @@ pj_add(pj_times, "times", "Times", "Cyl, Sph");
 
 function pj_times(P) {
   P.es = 0;
-  P.fwd = function (lp, xy) {
+  P.fwd = (lp, xy) => {
     var t = tan(lp.phi / 2);
     var s = sin(M_FORTPI * t);
     xy.x = lp.lam * (0.74482 - 0.34588 * s * s);
     xy.y = 1.70711 * t;
   };
-  P.inv = function (xy, lp) {
+  P.inv = (xy, lp) => {
     var t = xy.y / 1.70711;
     var s = sin(M_FORTPI * t);
     lp.lam = xy.x / (0.74482 - 0.34588 * s * s);
@@ -12349,7 +12327,7 @@ pj_add(
   pj_utm,
   "utm",
   "Universal Transverse Mercator (UTM)",
-  "Cyl, Sph\nzone= south"
+  "Cyl, Sph\nzone= south",
 );
 
 function pj_utm_zone(P) {}
@@ -12394,12 +12372,12 @@ function pj_tmerc_auto(P) {
   var fwd = P.fwd;
   var inv = P.inv;
 
-  P.fwd = function (lp, xy) {
+  P.fwd = (lp, xy) => {
     if (fabs(lp.lam) > 3 * DEG_TO_RAD) etfwd(lp, xy);
     else fwd(lp, xy);
   };
 
-  P.inv = function (xy, lp) {
+  P.inv = (xy, lp) => {
     // See https://github.com/OSGeo/PROJ/blob/master/src/projections/tmerc.cpp
     if (fabs(xy.x) > 0.053 - 0.022 * xy.y * xy.y) etinv(xy, lp);
     else inv(xy, lp);
@@ -12581,7 +12559,7 @@ pj_add(
   pj_tpeqd,
   "tpeqd",
   "Two Point Equidistant",
-  "Misc Sph\nlat_1= lon_1= lat_2= lon_2="
+  "Misc Sph\nlat_1= lon_1= lat_2= lon_2=",
 );
 
 function pj_tpeqd(P) {
@@ -12836,7 +12814,7 @@ function pj_vandg2_init(P, vdg3) {
 
 function pj_vandg4(P) {
   P.es = 0;
-  P.fwd = function (lp, xy) {
+  P.fwd = (lp, xy) => {
     var TOL = 1e-10;
     var x1, t, bt, ct, ft, bt2, ct2, dt, dt2;
     if (fabs(lp.phi) < TOL) {
@@ -12918,7 +12896,7 @@ function pj_wag3(P) {
 
 function pj_wag7(P) {
   P.es = 0;
-  P.fwd = function (lp, xy) {
+  P.fwd = (lp, xy) => {
     var theta, ct, D;
     theta = asin((xy.y = 0.90630778703664996 * sin(lp.phi)));
     xy.x = 2.66723 * (ct = cos(theta)) * sin((lp.lam /= 3));

@@ -1,10 +1,10 @@
-import { Bounds } from "../geom/mapshaper-bounds";
 import {
-  pointSegDistSq2,
-  greatCircleDistance,
   distance2D,
+  greatCircleDistance,
+  pointSegDistSq2,
 } from "../geom/mapshaper-basic-geom";
-import { stop, error } from "../utils/mapshaper-logging";
+import { Bounds } from "../geom/mapshaper-bounds";
+import { error, stop } from "../utils/mapshaper-logging";
 
 export function pathIsClosed(ids, arcs) {
   var firstArc = ids[0];
@@ -54,7 +54,7 @@ export function getPointToPathInfo(px, py, ids, arcs) {
 // Return unsigned distance of a point to the nearest point on a polygon or polyline path
 //
 export function getPointToShapeDistance(x, y, shp, arcs) {
-  var minDist = (shp || []).reduce(function (minDist, ids) {
+  var minDist = (shp || []).reduce((minDist, ids) => {
     var pathDist = getPointToPathDistance(x, y, ids, arcs);
     return Math.min(minDist, pathDist);
   }, Infinity);
@@ -92,7 +92,7 @@ export function getAvgPathXY(ids, arcs) {
 // @arcs ArcCollection
 export function getMaxPath(shp, arcs) {
   var maxArea = 0;
-  return (shp || []).reduce(function (maxPath, path) {
+  return (shp || []).reduce((maxPath, path) => {
     var bbArea = arcs.getSimpleShapeBounds(path).area();
     if (bbArea > maxArea) {
       maxArea = bbArea;
@@ -118,13 +118,13 @@ export function getPathBounds(points) {
 }
 
 export var calcPathLen;
-calcPathLen = (function () {
+calcPathLen = (() => {
   var len, calcLen;
   function addSegLen(i, j, xx, yy) {
     len += calcLen(xx[i], yy[i], xx[j], yy[j]);
   }
   // @spherical (optional bool) calculate great circle length in meters
-  return function (path, arcs, spherical) {
+  return (path, arcs, spherical) => {
     if (spherical && arcs.isPlanar()) {
       error("Expected lat-long coordinates");
     }

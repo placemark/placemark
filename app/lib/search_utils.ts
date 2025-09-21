@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { VirtualColumns } from "state/jotai";
-import { FeatureMap, IFolder, IWrappedFeature } from "types";
+import type { VirtualColumns } from "state/jotai";
+import type { FeatureMap, IFolder, IWrappedFeature } from "types";
 
 export function getFn(obj: IWrappedFeature, path: string | string[]) {
   if (Array.isArray(path)) {

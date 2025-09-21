@@ -1,8 +1,7 @@
-import { expect, describe, it } from "vitest";
-
-import { DEFAULT_IMPORT_OPTIONS } from "..";
-import { csvToGeoJSON, autoType, detectColumns } from "./csv_to_geojson";
 import * as Comlink from "comlink";
+import { describe, expect, it } from "vitest";
+import { DEFAULT_IMPORT_OPTIONS } from "..";
+import { autoType, csvToGeoJSON, detectColumns } from "./csv_to_geojson";
 
 const noop = Comlink.proxy(() => {});
 
@@ -29,8 +28,8 @@ describe("csvToGeoJSON", () => {
           x: "true",
           y: "",
         },
-        DEFAULT_IMPORT_OPTIONS.csvOptions
-      )
+        DEFAULT_IMPORT_OPTIONS.csvOptions,
+      ),
     ).toEqual({
       n: 10,
       x: true,
@@ -52,8 +51,8 @@ Null island,0,0`,
           sheet: "",
           kind: "lonlat",
         },
-        noop
-      )
+        noop,
+      ),
     ).resolves.toEqual(output);
   });
 
@@ -72,8 +71,8 @@ Null island,94110`,
           zipHeader: "zip",
           kind: "zip",
         },
-        noop
-      )
+        noop,
+      ),
     ).resolves.toEqual({
       type: "FeatureCollection",
       features: [
@@ -104,8 +103,8 @@ Null island;0;0`,
           sheet: "",
           kind: "lonlat",
         },
-        noop
-      )
+        noop,
+      ),
     ).resolves.toEqual(output);
   });
 
@@ -123,7 +122,7 @@ Null island;10;true;0;0`,
         sheet: "",
         kind: "lonlat",
       },
-      noop
+      noop,
     );
     expect(geojson).toHaveProperty("features.0.properties.count", 10);
     expect(geojson).toHaveProperty("features.0.properties.n", true);
@@ -162,15 +161,15 @@ describe("detect columns", () => {
     expect(detectColumns(["name", "wkt"])).toHaveProperty(["kind"], "wkt");
     expect(detectColumns(["name", "wkt"])).toHaveProperty(
       ["geometryHeader"],
-      "wkt"
+      "wkt",
     );
     expect(detectColumns(["name", "polyline"])).toHaveProperty(
       ["kind"],
-      "polyline"
+      "polyline",
     );
     expect(detectColumns(["name", "polyline"])).toHaveProperty(
       ["geometryHeader"],
-      "polyline"
+      "polyline",
     );
   });
   it("typos", () => {

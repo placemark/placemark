@@ -1,10 +1,10 @@
-import { USelection } from "state";
-import type { HandlerContext, Point } from "types";
-import { modeAtom, Mode, selectionAtom, cursorStyleAtom } from "state/jotai";
-import { captureException } from "integrations/errors";
-import noop from "lodash/noop";
-import { useSetAtom } from "jotai";
 import { CURSOR_DEFAULT } from "app/lib/constants";
+import { captureException } from "integrations/errors";
+import { useSetAtom } from "jotai";
+import noop from "lodash/noop";
+import { USelection } from "state";
+import { cursorStyleAtom, Mode, modeAtom, selectionAtom } from "state/jotai";
+import type { HandlerContext, Point } from "types";
 import { createOrUpdateFeature, getMapCoord } from "./utils";
 
 export function usePointHandlers({

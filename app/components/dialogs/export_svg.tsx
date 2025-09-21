@@ -1,29 +1,34 @@
-import { DownloadIcon } from "@radix-ui/react-icons";
-import { DialogHeader } from "app/components/dialog";
 import { expression } from "@mapbox/mapbox-gl-style-spec";
+import { rewindGeometry } from "@placemarkio/geojson-rewind";
+import { DownloadIcon } from "@radix-ui/react-icons";
+import type { Root } from "@tmcw/togeojson";
+import { DialogHeader } from "app/components/dialog";
 import {
-  TextWell,
   Button,
   inputClass,
-  StyledLabelSpan,
   StyledField,
+  StyledLabelSpan,
   styledCheckbox,
+  TextWell,
 } from "app/components/elements";
-import { renderToStaticMarkup } from "react-dom/server";
-import { rewindGeometry } from "@placemarkio/geojson-rewind";
-import * as geo from "d3-geo";
-import { SVGAttributes, useContext, useMemo, useState } from "react";
-import { useAtomValue } from "jotai";
-import { dataAtom } from "state/jotai";
-import { FeatureCollection, IFeature, ISymbolization, LineString } from "types";
-import { Field, Form, Formik } from "formik";
 import { useRootItems } from "app/components/panels/feature_editor/feature_editor_folder/math";
-import { Root } from "@tmcw/togeojson";
-import { usePersistence } from "app/lib/persistence/context";
-import { asColorExpression } from "app/lib/load_and_augment_style";
-import memoizeOne from "memoize-one";
-import { purple900 } from "app/lib/constants";
 import { MapContext } from "app/context/map_context";
+import { purple900 } from "app/lib/constants";
+import { asColorExpression } from "app/lib/load_and_augment_style";
+import { usePersistence } from "app/lib/persistence/context";
+import * as geo from "d3-geo";
+import { Field, Form, Formik } from "formik";
+import { useAtomValue } from "jotai";
+import memoizeOne from "memoize-one";
+import { type SVGAttributes, useContext, useMemo, useState } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { dataAtom } from "state/jotai";
+import type {
+  FeatureCollection,
+  IFeature,
+  ISymbolization,
+  LineString,
+} from "types";
 
 const getExpr = memoizeOne((symbolization: ISymbolization) => {
   const expressionDefinition = asColorExpression({
@@ -241,7 +246,7 @@ export function ExportSVGDialog() {
     }
 
     const projection = PROJECTIONS.find(
-      (proj) => proj.id === config.projection
+      (proj) => proj.id === config.projection,
     );
 
     if (!projection) {
@@ -259,10 +264,10 @@ export function ExportSVGDialog() {
       config.extent === "Features"
         ? fc
         : config.extent === "World"
-        ? {
-            type: "Sphere",
-          }
-        : mapExtent
+          ? {
+              type: "Sphere",
+            }
+          : mapExtent,
     );
 
     const path = geo.geoPath(proj).pointRadius(config.pointRadius);
@@ -278,7 +283,7 @@ export function ExportSVGDialog() {
         path={path}
         config={config}
         symbolization={meta.symbolization}
-      />
+      />,
     );
     const svgStr = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">

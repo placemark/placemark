@@ -1,33 +1,33 @@
-import { Data, Sel } from "state/jotai";
-import { MapMouseEvent, MapTouchEvent, PointLike } from "mapbox-gl";
-import nearestPointOnLine from "@turf/nearest-point-on-line";
-import polygonToLine from "@turf/polygon-to-line";
 import distance from "@turf/distance";
-import {
+import type {
   Feature as TurfFeature,
   LineString as TurfLineString,
   MultiLineString as TurfMultiLineString,
 } from "@turf/helpers";
+import nearestPointOnLine from "@turf/nearest-point-on-line";
+import polygonToLine from "@turf/polygon-to-line";
+import { e6position } from "app/lib/geometry";
 import { decodeId, newFeatureId } from "app/lib/id";
-import { MomentInput } from "app/lib/persistence/moment";
-import {
+import type { MomentInput } from "app/lib/persistence/moment";
+import type { MapMouseEvent, MapTouchEvent, PointLike } from "mapbox-gl";
+import { type ModeWithOptions, USelection } from "state";
+import type { Data, Sel } from "state/jotai";
+import type {
+  Feature,
   FeatureMap,
   GeoJsonProperties,
   Geometry,
-  Position,
-  Feature,
   MultiPoint,
+  Position,
 } from "types";
-import { ModeWithOptions, USelection } from "state";
-import { e6position } from "app/lib/geometry";
+import { type IDMap, UIDMap } from "../id_mapper";
 import { CLICKABLE_LAYERS } from "../load_and_augment_style";
-import { IDMap, UIDMap } from "../id_mapper";
-import PMap from "../pmap";
+import type PMap from "../pmap";
 
 type PutFeature = MomentInput["putFeatures"][0];
 
 export function getMapCoord(
-  e: mapboxgl.MapMouseEvent | mapboxgl.MapTouchEvent
+  e: mapboxgl.MapMouseEvent | mapboxgl.MapTouchEvent,
 ) {
   return e6position(e.lngLat.toArray(), 7) as Pos2;
 }
@@ -77,7 +77,7 @@ const getNeighborCandidate = (
   point: mapboxgl.Point,
   pmap: PMap,
   idMap: IDMap,
-  excludeFeatureId?: string
+  excludeFeatureId?: string,
 ): string | null => {
   const { x, y } = point;
   const distance = 12;
@@ -107,7 +107,7 @@ const getNeighborCandidate = (
 
 const getNearestPointFromMultiPoint = (
   multiPoint: MultiPoint,
-  targetCoordinates: Position
+  targetCoordinates: Position,
 ): Position => {
   let nearestPoint = targetCoordinates;
   let shortestDistance = Infinity;
@@ -125,7 +125,7 @@ const getNearestPointFromMultiPoint = (
 
 const calculateSnapPosition = (
   feature: Feature,
-  cursorCoordinates: Position
+  cursorCoordinates: Position,
 ): Position => {
   if (!feature.geometry) return cursorCoordinates;
 
@@ -137,10 +137,11 @@ const calculateSnapPosition = (
       return getNearestPointFromMultiPoint(feature.geometry, cursorCoordinates);
 
     case "LineString":
-    case "MultiLineString":
+    case "MultiLineString": {
       const line = feature.geometry;
       const nearestPoint = nearestPointOnLine(line, cursorCoordinates);
       return nearestPoint.geometry.coordinates;
+    }
 
     case "Polygon":
     case "MultiPolygon": {
@@ -153,7 +154,7 @@ const calculateSnapPosition = (
         polygonLine as unknown as TurfFeature<
           TurfLineString | TurfMultiLineString
         >,
-        cursorCoordinates
+        cursorCoordinates,
       );
 
       return nearestPoint.geometry.coordinates;
@@ -169,14 +170,14 @@ export const getSnappingCoordinates = (
   featureMap: FeatureMap,
   pmap: PMap,
   idMap: IDMap,
-  excludeFeatureId?: string
+  excludeFeatureId?: string,
 ): Position => {
   const cursorCoordinates = getMapCoord(e);
   const featureId = getNeighborCandidate(
     e.point,
     pmap,
     idMap,
-    excludeFeatureId
+    excludeFeatureId,
   );
 
   if (!featureId) return cursorCoordinates;

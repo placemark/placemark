@@ -1,22 +1,22 @@
-import { Geometry, IWrappedFeature } from "types";
-import cloneDeep from "lodash/cloneDeep";
 import center from "@turf/center";
 import {
+  type Line,
   lineRotate,
-  polygonRotate,
+  type Point,
+  type Polygon,
   pointRotate,
-  Point,
-  Line,
-  Polygon,
+  polygonRotate,
 } from "geometric";
+import cloneDeep from "lodash/cloneDeep";
 import type { LngLat } from "mapbox-gl";
+import type { Geometry, IWrappedFeature } from "types";
 
 type LL = Pick<LngLat, "lng" | "lat">;
 
 export function rotateFeatures(
   wrappedFeatures: IWrappedFeature[],
   a: LL | null,
-  b: LL
+  b: LL,
 ) {
   if (!a) return wrappedFeatures;
 
@@ -40,7 +40,7 @@ export function rotateFeatures(
             geometry.coordinates = pointRotate(
               geometry.coordinates as Point,
               angle,
-              centroid
+              centroid,
             );
             break;
           }
@@ -74,7 +74,7 @@ export function rotateFeatures(
             geometry.coordinates = lineRotate(
               geometry.coordinates as unknown as Line,
               angle,
-              centroid
+              centroid,
             );
             break;
           }

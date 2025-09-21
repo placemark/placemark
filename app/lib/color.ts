@@ -1,6 +1,6 @@
+import * as d3 from "d3-color";
 import randomColor from "randomcolor";
 import type { IPresence, RampValues } from "types";
-import * as d3 from "d3-color";
 
 const purple900a: RGBA = [49, 46, 129, 255];
 
@@ -33,7 +33,7 @@ export function linearGradient({
   const steps = colors.map((color, i) =>
     interpolate === "step"
       ? `${color} ${percent * i}%, ${color} ${percent * (i + 1)}%`
-      : `${color} ${percent * i}%`
+      : `${color} ${percent * i}%`,
   );
   return `linear-gradient(90deg, ${steps.join(",")}`;
 }

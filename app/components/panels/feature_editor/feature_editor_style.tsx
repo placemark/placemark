@@ -1,24 +1,24 @@
-import type { GeoJsonProperties, IWrappedFeature } from "types";
-import { panelStyleOpen, tabAtom, TabOption } from "state/jotai";
-import { PanelDetailsCollapsible } from "app/components/panel_details";
+import { ColorPopoverField } from "app/components/color_popover";
 import {
   Button,
   inputClass,
-  styledCheckbox,
   StyledLabelSpan,
+  styledCheckbox,
   TextWell,
 } from "app/components/elements";
-import { Field, Form, Formik, FormikProps } from "formik";
-import { ColorPopoverField } from "app/components/color_popover";
+import { PanelDetailsCollapsible } from "app/components/panel_details";
 import { useAutoSubmit } from "app/hooks/use_auto_submit";
 import { purple900 } from "app/lib/constants";
 import { usePersistence } from "app/lib/persistence/context";
-import { useMemo } from "react";
-import { JsonValue } from "type-fest";
-import cloneDeep from "lodash/cloneDeep";
-import { z } from "zod";
 import * as d3 from "d3-color";
+import { Field, Form, Formik, type FormikProps } from "formik";
 import { useSetAtom } from "jotai";
+import cloneDeep from "lodash/cloneDeep";
+import { useMemo } from "react";
+import { panelStyleOpen, TabOption, tabAtom } from "state/jotai";
+import type { JsonValue } from "type-fest";
+import type { GeoJsonProperties, IWrappedFeature } from "types";
+import { z } from "zod";
 
 interface FormValues {
   enableFill: boolean;
@@ -257,7 +257,7 @@ export function FeatureEditorStyle({
       <Formik<FormValues>
         onSubmit={(values) => {
           const properties: GeoJsonProperties = cloneDeep(
-            wrappedFeature.feature.properties || {}
+            wrappedFeature.feature.properties || {},
           );
 
           if (values.enableFill) {
@@ -380,7 +380,7 @@ export function FeatureEditorStyleMulti({
             track: "feature-update-style-multi",
             putFeatures: wrappedFeatures.map((wrappedFeature) => {
               const properties: GeoJsonProperties = cloneDeep(
-                wrappedFeature.feature.properties || {}
+                wrappedFeature.feature.properties || {},
               );
 
               if (values.enableFill) {

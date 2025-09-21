@@ -1,9 +1,11 @@
-import { isSupportedShapefileType } from "../shapefile/shp-common";
-import { translateShapefileType } from "../shapefile/shp-common";
-import { stop, message } from "../utils/mapshaper-logging";
-import ShpType from "../shapefile/shp-type";
-import { ShpReader } from "../shapefile/shp-reader";
 import { PathImporter } from "../paths/mapshaper-path-import";
+import {
+  isSupportedShapefileType,
+  translateShapefileType,
+} from "../shapefile/shp-common";
+import { ShpReader } from "../shapefile/shp-reader";
+import ShpType from "../shapefile/shp-type";
+import { message, stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
 
 // Read Shapefile data from a file, ArrayBuffer or Buffer
@@ -17,7 +19,7 @@ export function importShp(shp, shx, opts) {
         type: type,
         reserved_points: Math.round(reader.header().byteLength / 16),
       },
-      opts
+      opts,
     ),
     importer = new PathImporter(importOpts);
 
@@ -31,7 +33,7 @@ export function importShp(shp, shx, opts) {
   }
 
   // TODO: test cases: null shape; non-null shape with no valid parts
-  reader.forEachShape(function (shp) {
+  reader.forEachShape((shp) => {
     importer.startShape();
     if (shp.isNull) {
       // skip

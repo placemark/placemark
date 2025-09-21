@@ -1,8 +1,8 @@
-import type { FileType, ImportOptions } from ".";
-import { type ConvertResult, okResult } from "./utils";
+import type { ConvertError } from "app/lib/errors";
 // import { ConvertError } from "lib/errors";
 import { EitherAsync } from "purify-ts/EitherAsync";
-import type { ConvertError } from "app/lib/errors";
+import type { FileType, ImportOptions } from ".";
+import { type ConvertResult, okResult } from "./utils";
 
 // https://github.com/geotiffjs/cog-explorer/blob/master/src/components/mapview.jsx#L202
 class CEXIF implements FileType {

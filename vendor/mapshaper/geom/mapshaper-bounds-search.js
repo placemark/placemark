@@ -7,12 +7,10 @@ export function getBoundsSearchFunction(boxes) {
   var index;
   if (!boxes.length) {
     // Unlike rbush, flatbush doesn't allow size 0 indexes; workaround
-    return function () {
-      return [];
-    };
+    return () => [];
   }
   index = new Flatbush(boxes.length);
-  boxes.forEach(function (ring) {
+  boxes.forEach((ring) => {
     var b = ring.bounds;
     index.add(b.xmin, b.ymin, b.xmax, b.ymax);
   });
@@ -24,7 +22,5 @@ export function getBoundsSearchFunction(boxes) {
 
   // Receives xmin, ymin, xmax, ymax parameters
   // Returns subset of original @bounds array
-  return function (a, b, c, d) {
-    return index.search(a, b, c, d).map(idxToObj);
-  };
+  return (a, b, c, d) => index.search(a, b, c, d).map(idxToObj);
 }

@@ -1,6 +1,6 @@
-import { EditorView } from "@codemirror/view";
-import type { Extension } from "@codemirror/state";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
+import type { Extension } from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
 import { tags as t } from "@lezer/highlight";
 
 const purple = "var(--highlight-purple)",
@@ -106,7 +106,7 @@ const placemarkBaseTheme = EditorView.theme(
       },
     },
   },
-  { dark: true }
+  { dark: true },
 );
 
 /// The highlighting style for code in the One Dark theme.

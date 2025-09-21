@@ -1,19 +1,18 @@
-import { expect, describe, it, test } from "vitest";
-
 import { newFeatureId } from "app/lib/id";
+import { describe, expect, it, test } from "vitest";
 import {
-  zLayerConfigCommon,
-  Symbolization,
   SYMBOLIZATION_NONE,
-  tryUpgrading,
+  Symbolization,
   SymbolizationBaseInternal,
+  tryUpgrading,
+  zLayerConfigCommon,
 } from "./index";
 
 test("SymbolizationBaseInternal", () => {
   expect(
     SymbolizationBaseInternal.parse({
       simplestyle: true,
-    })
+    }),
   ).toMatchInlineSnapshot(`
     {
       "defaultColor": "#312E81",
@@ -26,7 +25,7 @@ test("SymbolizationBaseInternal", () => {
     SymbolizationBaseInternal.parse({
       simplestyle: true,
       defaultOpacity: 10,
-    })
+    }),
   ).toMatchInlineSnapshot(`
     {
       "defaultColor": "#312E81",
@@ -45,7 +44,7 @@ test("zLayerConfigCommon", () => {
       labelVisibility: true,
       at: "a0",
       visibility: true,
-    })
+    }),
   ).toMatchInlineSnapshot(
     {
       id: expect.any(String),
@@ -60,7 +59,7 @@ test("zLayerConfigCommon", () => {
       "tms": false,
       "visibility": true,
     }
-  `
+  `,
   );
 });
 
@@ -69,14 +68,14 @@ describe("tryUpgrading", () => {
     expect(
       tryUpgrading({
         type: "unknown",
-      }).isNothing()
+      }).isNothing(),
     ).toBeTruthy();
   });
   it("simplestyle", () => {
     expect(
       tryUpgrading({
         type: "simplestyle",
-      }).unsafeCoerce()
+      }).unsafeCoerce(),
     ).toMatchInlineSnapshot(`
       {
         "defaultColor": "#312E81",
@@ -99,7 +98,7 @@ describe("tryUpgrading", () => {
           output: "#000",
         },
         property: "foo",
-      }).unsafeCoerce()
+      }).unsafeCoerce(),
     ).toMatchInlineSnapshot(`
       {
         "defaultColor": "#312E81",
@@ -133,7 +132,7 @@ describe("tryUpgrading", () => {
           output: "#000",
         },
         property: "foo",
-      }).unsafeCoerce()
+      }).unsafeCoerce(),
     ).toMatchInlineSnapshot(`
       {
         "defaultColor": "#312E81",
@@ -162,7 +161,7 @@ describe("Symbolization", () => {
   test("valid symbolization", () => {
     expect(Symbolization.safeParse(SYMBOLIZATION_NONE)).toHaveProperty(
       "success",
-      true
+      true,
     );
   });
 
@@ -184,7 +183,7 @@ describe("Symbolization", () => {
               output: "#f00f00",
             },
           ],
-        })
+        }),
       ).toHaveProperty("success", true);
     });
     it("transformation", () => {
@@ -201,7 +200,7 @@ describe("Symbolization", () => {
               output: "#f00f00",
             },
           ],
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "data": {
@@ -241,7 +240,7 @@ describe("Symbolization", () => {
               output: "#f00f00",
             },
           ],
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "data": {
@@ -275,7 +274,7 @@ describe("Symbolization", () => {
               output: "#f00f00",
             },
           ],
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "data": {
@@ -319,7 +318,7 @@ describe("Symbolization", () => {
               output: "#f00f00",
             },
           ],
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "data": {
@@ -357,7 +356,7 @@ describe("Symbolization", () => {
               output: "#f00f00",
             },
           ],
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "data": {

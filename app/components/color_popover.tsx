@@ -1,12 +1,12 @@
+import clsx from "clsx";
+import * as d3 from "d3-color";
+import type { FieldProps } from "formik";
+import { Popover as P } from "radix-ui";
 import {
-  HexColorPicker,
   HexColorInput,
+  type HexColorPicker,
   RgbaStringColorPicker,
 } from "react-colorful";
-import { Popover as P } from "radix-ui";
-import { FieldProps } from "formik";
-import * as d3 from "d3-color";
-import clsx from "clsx";
 import * as E from "./elements";
 
 export function ColorPopoverField({
@@ -67,7 +67,7 @@ export function ColorPopover({
         className={clsx(
           E.sharedOutline("default"),
           E.sharedPadding(_size),
-          "flex items-center w-full gap-x-2 font-mono dark:text-white"
+          "flex items-center w-full gap-x-2 font-mono dark:text-white",
         )}
       >
         <div

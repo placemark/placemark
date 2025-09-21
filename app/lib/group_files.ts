@@ -37,7 +37,7 @@ export function groupFiles(files: readonly File[]): FileGroups {
   const pool = Array.from(files);
 
   const shapefileGroups = remove(pool, (file) => isShp(file)).map((file) =>
-    asShapefileGroup(file)
+    asShapefileGroup(file),
   );
 
   function addGroup(group: ShapefileGroup, ext: keyof ShapefileGroup["files"]) {

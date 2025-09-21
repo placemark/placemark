@@ -150,7 +150,7 @@ const EXPLICIT_CASTERS: Record<
  */
 export function castExplicit(
   value: JsonValue | undefined,
-  target: ExplicitCast
+  target: ExplicitCast,
 ) {
   return EXPLICIT_CASTERS[target](value);
 }

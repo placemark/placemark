@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import { Formik, Form } from "formik";
 import { PlusIcon } from "@radix-ui/react-icons";
-import { Popover as P } from "radix-ui";
 import {
   Button,
   PopoverTitleAndClose,
@@ -9,6 +6,10 @@ import {
   StyledPopoverArrow,
   StyledPopoverContent,
 } from "app/components/elements";
+import { Form, Formik } from "formik";
+import { Popover as P } from "radix-ui";
+import type React from "react";
+import { useState } from "react";
 
 export default function AddColumn({
   onAddColumn,

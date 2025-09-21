@@ -1,15 +1,15 @@
-import { memo } from "react";
-import type { IWrappedFeature } from "types";
-import { panelNullOpen } from "state/jotai";
-import { PanelDetailsCollapsible } from "app/components/panel_details";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import {
   Button,
   StyledPopoverContent,
   TextWell,
 } from "app/components/elements";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { Popover as P } from "radix-ui";
 import Modes from "app/components/modes";
+import { PanelDetailsCollapsible } from "app/components/panel_details";
+import { Popover as P } from "radix-ui";
+import { memo } from "react";
+import { panelNullOpen } from "state/jotai";
+import type { IWrappedFeature } from "types";
 
 export const FeatureEditorNullGeometry = memo(
   function FeatureEditorNullGeometryInner({
@@ -37,5 +37,5 @@ export const FeatureEditorNullGeometry = memo(
         </div>
       </PanelDetailsCollapsible>
     );
-  }
+  },
 );

@@ -1,8 +1,8 @@
 import { centroidFeature } from "app/lib/map_operations/draw_label_points";
-import { EMPTY_MOMENT, MomentInput } from "app/lib/persistence/moment";
+import { EMPTY_MOMENT, type MomentInput } from "app/lib/persistence/moment";
 import { USelection } from "state";
-import { Sel } from "state/jotai";
-import { IWrappedFeature, Position } from "types";
+import type { Sel } from "state/jotai";
+import type { IWrappedFeature, Position } from "types";
 
 type Sums = [number, number, number];
 
@@ -55,7 +55,7 @@ export function drawCentroids(wrappedFeatures: IWrappedFeature[]): {
         }
       }
       return [];
-    }
+    },
   );
 
   return {

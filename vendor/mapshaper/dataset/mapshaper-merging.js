@@ -1,18 +1,19 @@
 import { requireDatasetsHaveCompatibleCRS } from "../crs/mapshaper-projections";
-import { forEachArcId } from "../paths/mapshaper-path-utils";
 import { copyLayerShapes } from "../dataset/mapshaper-layer-utils";
-import utils from "../utils/mapshaper-utils";
-import { verbose, stop, error } from "../utils/mapshaper-logging";
 import { ArcCollection } from "../paths/mapshaper-arcs";
+import { forEachArcId } from "../paths/mapshaper-path-utils";
 import { buildTopology } from "../topology/mapshaper-topology";
+import { error, stop, verbose } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // Merge arcs from one or more source datasets into target dataset
 // return array of layers from the source dataset (instead of adding them to the target dataset)
 export function mergeDatasetsIntoDataset(dataset, datasets) {
   var merged = mergeDatasets([dataset].concat(datasets));
-  var mergedLayers = datasets.reduce(function (memo, dataset) {
-    return memo.concat(dataset.layers);
-  }, []);
+  var mergedLayers = datasets.reduce(
+    (memo, dataset) => memo.concat(dataset.layers),
+    [],
+  );
   dataset.arcs = merged.arcs;
   return mergedLayers;
 }
@@ -20,14 +21,14 @@ export function mergeDatasetsIntoDataset(dataset, datasets) {
 // Don't modify input layers (mergeDatasets() updates arc ids in-place)
 export function mergeDatasetsForExport(arr) {
   // copy layers but not arcs, which get copied in mergeDatasets()
-  var copy = arr.map(function (dataset) {
-    return utils.defaults(
+  var copy = arr.map((dataset) =>
+    utils.defaults(
       {
         layers: dataset.layers.map(copyLayerShapes),
       },
-      dataset
-    );
-  });
+      dataset,
+    ),
+  );
   return mergeDatasets(copy);
 }
 
@@ -37,7 +38,7 @@ function mergeCommandTargets(targets, catalog) {
   var datasetsWithArcs = 0;
   var merged;
 
-  targets.forEach(function (target) {
+  targets.forEach((target) => {
     targetLayers = targetLayers.concat(target.layers);
     targetDatasets = targetDatasets.concat(target.dataset);
     if (target.dataset.arcs && target.dataset.arcs.size() > 0)
@@ -75,18 +76,18 @@ export function mergeDatasets(arr) {
   // Error if incompatible CRS
   requireDatasetsHaveCompatibleCRS(arr);
 
-  arr.forEach(function (dataset) {
+  arr.forEach((dataset) => {
     var n = dataset.arcs ? dataset.arcs.size() : 0;
     if (n > 0) {
       arcSources.push(dataset.arcs);
     }
 
     mergeDatasetInfo(mergedInfo, dataset);
-    dataset.layers.forEach(function (lyr) {
+    dataset.layers.forEach((lyr) => {
       if (lyr.geometry_type == "polygon" || lyr.geometry_type == "polyline") {
-        forEachArcId(lyr.shapes, function (id) {
-          return id < 0 ? id - arcCount : id + arcCount;
-        });
+        forEachArcId(lyr.shapes, (id) =>
+          id < 0 ? id - arcCount : id + arcCount,
+        );
       }
       mergedLayers.push(lyr);
     });
@@ -110,10 +111,10 @@ export function mergeDatasets(arr) {
 function mergeDatasetInfo(merged, dataset) {
   var info = dataset.info || {};
   merged.input_files = utils.uniq(
-    (merged.input_files || []).concat(info.input_files || [])
+    (merged.input_files || []).concat(info.input_files || []),
   );
   merged.input_formats = utils.uniq(
-    (merged.input_formats || []).concat(info.input_formats || [])
+    (merged.input_formats || []).concat(info.input_formats || []),
   );
   // merge other info properties (e.g. input_geojson_crs, input_delimiter, prj, crs)
   utils.defaults(merged, info);
@@ -122,7 +123,7 @@ function mergeDatasetInfo(merged, dataset) {
 export function mergeArcs(arr) {
   // Returning the original causes a test to fail
   // if (arr.length < 2) return arr[0];
-  var dataArr = arr.map(function (arcs) {
+  var dataArr = arr.map((arcs) => {
     if (arcs.getRetainedInterval() > 0) {
       verbose("Baking-in simplification setting.");
       arcs.flatten();
@@ -137,9 +138,7 @@ export function mergeArcs(arr) {
 }
 
 function countElements(arrays) {
-  return arrays.reduce(function (memo, arr) {
-    return memo + (arr.length || 0);
-  }, 0);
+  return arrays.reduce((memo, arr) => memo + (arr.length || 0), 0);
 }
 
 function mergeArrays(arrays, TypedArr) {
@@ -147,7 +146,7 @@ function mergeArrays(arrays, TypedArr) {
     Arr = TypedArr || Array,
     merged = new Arr(size),
     offs = 0;
-  arrays.forEach(function (src) {
+  arrays.forEach((src) => {
     var n = src.length;
     for (var i = 0; i < n; i++) {
       merged[i + offs] = src[i];

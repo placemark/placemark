@@ -1,14 +1,14 @@
-import uniq from "lodash/uniq";
 import difference from "lodash/difference";
+import uniq from "lodash/uniq";
 
 import type {
   Feature,
-  IFeature,
   Geometry,
   GeometryCollection,
-  MultiPolygon,
-  MultiPoint,
+  IFeature,
   MultiLineString,
+  MultiPoint,
+  MultiPolygon,
 } from "types";
 
 function mergeGeometryCollection(features: Feature[]): Feature {
@@ -126,7 +126,7 @@ type MergeableFamilies = "Polygon" | "Point" | "LineString";
 
 function mergeFeatureFamily(
   features: Feature[],
-  family: MergeableFamilies
+  family: MergeableFamilies,
 ): Feature {
   switch (family) {
     case "Polygon":
@@ -140,7 +140,7 @@ function mergeFeatureFamily(
 
 function inFamily(
   geometryTypes: Array<Geometry["type"] | undefined>,
-  search: Array<Geometry["type"]>
+  search: Array<Geometry["type"]>,
 ) {
   return difference(geometryTypes, search).length === 0;
 }
@@ -151,10 +151,10 @@ function getFamily(features: Feature[]): MergeableFamilies | null {
   return inFamily(geometryTypes, ["Polygon", "MultiPolygon"])
     ? "Polygon"
     : inFamily(geometryTypes, ["LineString", "MultiLineString"])
-    ? "LineString"
-    : inFamily(geometryTypes, ["Point", "MultiPoint"])
-    ? "Point"
-    : null;
+      ? "LineString"
+      : inFamily(geometryTypes, ["Point", "MultiPoint"])
+        ? "Point"
+        : null;
 }
 
 export function mergeFeaturesMessage(features: Feature[]): string {

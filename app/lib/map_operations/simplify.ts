@@ -1,12 +1,12 @@
 import { match } from "ts-pattern";
 import type {
-  LineString,
-  MultiLineString,
-  Polygon,
-  MultiPolygon,
-  Position,
   IFeature,
   IWrappedFeature,
+  LineString,
+  MultiLineString,
+  MultiPolygon,
+  Polygon,
+  Position,
 } from "types";
 
 export type SimplifySupportedGeometry =
@@ -31,7 +31,7 @@ export type SimplifySupportedGeometry =
 // for 3D version, see 3d branch (configurability would draw significant performance overhead)
 //
 export function isFeatureSimplifiable(
-  wrappedFeature: IWrappedFeature
+  wrappedFeature: IWrappedFeature,
 ): wrappedFeature is IWrappedFeature<IFeature<SimplifySupportedGeometry>> {
   const {
     feature: { geometry },
@@ -103,7 +103,7 @@ function simplifyDPStep(
   first: number,
   last: number,
   sqTolerance: number,
-  simplified: Position[]
+  simplified: Position[],
 ) {
   let maxSqDist = sqTolerance;
   let index = 0;
@@ -140,7 +140,7 @@ function simplifyDouglasPeucker(points: Position[], sqTolerance: number) {
 // both algorithms combined for awesome performance
 function simplifyJS(
   points: Position[],
-  { tolerance, highQuality }: SimplifyOptions
+  { tolerance, highQuality }: SimplifyOptions,
 ) {
   if (points.length <= 2) return points;
 
@@ -159,7 +159,7 @@ interface SimplifyOptions {
 
 export function simplify(
   feature: IFeature<SimplifySupportedGeometry>,
-  options: SimplifyOptions
+  options: SimplifyOptions,
 ) {
   return {
     ...feature,
@@ -172,7 +172,7 @@ export function simplify(
  */
 function simplifyGeom(
   geometry: SimplifySupportedGeometry,
-  options: SimplifyOptions
+  options: SimplifyOptions,
 ) {
   return match(geometry)
     .with({ type: "LineString" }, (geometry) => ({
@@ -182,7 +182,7 @@ function simplifyGeom(
     .with({ type: "MultiLineString" }, (geometry) => ({
       ...geometry,
       coordinates: geometry.coordinates.map((line) =>
-        simplifyJS(line, options)
+        simplifyJS(line, options),
       ),
     }))
     .with({ type: "Polygon" }, (geometry) => ({
@@ -192,7 +192,7 @@ function simplifyGeom(
     .with({ type: "MultiPolygon" }, (geometry) => ({
       ...geometry,
       coordinates: geometry.coordinates.map((polygon) =>
-        simplifyPolygon(polygon, options)
+        simplifyPolygon(polygon, options),
       ),
     }))
     .exhaustive();
@@ -202,10 +202,10 @@ const MAX_ATTEMPTS = 10;
 
 function simplifyPolygon(
   coordinates: Polygon["coordinates"],
-  options: SimplifyOptions
+  options: SimplifyOptions,
 ) {
   let { tolerance } = options;
-  return coordinates.map(function (ring) {
+  return coordinates.map((ring) => {
     if (ring.length < 4) {
       throw new Error("invalid polygon");
     }
@@ -246,4 +246,3 @@ function checkValidity(ring: Position[]): boolean {
     ring[2][1] === ring[0][1]
   );
 }
-

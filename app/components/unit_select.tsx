@@ -1,6 +1,6 @@
-import { memo } from "react";
-import { GROUPED_UNIT_OPTIONS } from "app/lib/constants";
 import type { Units } from "@turf/helpers";
+import { GROUPED_UNIT_OPTIONS } from "app/lib/constants";
+import { memo } from "react";
 import { styledSelect } from "./elements";
 
 export function UnitOptionsGroups({

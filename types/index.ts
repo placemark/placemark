@@ -1,28 +1,28 @@
-import { z } from "zod";
+import type { CBColors } from "app/lib/colorbrewer";
+import { purple900 } from "app/lib/constants";
+import { getFoldersInTree } from "app/lib/folder";
+import type { FlatbushLike } from "app/lib/generate_flatbush_instance";
+import type { IDMap } from "app/lib/id_mapper";
+import type { IPersistence } from "app/lib/persistence/ipersistence";
+import type PMap from "app/lib/pmap";
+import { safeParseMaybe } from "app/lib/utils";
 import type {
+  Geometry,
   Feature as IFeature,
+  FeatureCollection as IFeatureCollection,
+  LineString,
+  MultiPoint,
   MultiPolygon,
   Point,
   Polygon,
-  MultiPoint,
-  LineString,
-  Geometry,
-  FeatureCollection as IFeatureCollection,
 } from "geojson";
-import type { FlatbushLike } from "app/lib/generate_flatbush_instance";
-import type { ModeWithOptions } from "state/mode";
-import type { Dispatch, SetStateAction } from "react";
-import type { IPersistence } from "app/lib/persistence/ipersistence";
-import type { Sel } from "state/jotai";
-import { JsonValue, SetOptional } from "type-fest";
-import { IDMap } from "app/lib/id_mapper";
-import { getFoldersInTree } from "app/lib/folder";
-import { CBColors } from "app/lib/colorbrewer";
-import { purple900 } from "app/lib/constants";
-import { safeParseMaybe } from "app/lib/utils";
-import { Just, Maybe, Nothing } from "purify-ts/Maybe";
 import clamp from "lodash/clamp";
-import PMap from "app/lib/pmap";
+import { Just, type Maybe, Nothing } from "purify-ts/Maybe";
+import type { Dispatch, SetStateAction } from "react";
+import type { Sel } from "state/jotai";
+import type { ModeWithOptions } from "state/mode";
+import type { JsonValue, SetOptional } from "type-fest";
+import { z } from "zod";
 
 export interface CoordProps {
   x: number;
@@ -36,18 +36,17 @@ export type FeatureCollection = IFeatureCollection<Geometry | null>;
 export type GeoJSON = Geometry | Feature | FeatureCollection;
 
 export type {
-  
   BBox,
+  GeoJsonProperties,
   Geometry,
   GeometryCollection,
-  GeoJsonProperties,
-  Position,
-  Point,
-  MultiPoint,
   LineString,
   MultiLineString,
+  MultiPoint,
   MultiPolygon,
+  Point,
   Polygon,
+  Position,
 } from "geojson";
 
 export const zLayerConfigCommon = z.object({
@@ -134,7 +133,7 @@ export const UWrappedFeature = {
   filterMapByFolder(
     featureMap: FeatureMap,
     folderMap: FolderMap,
-    folderId: string | null
+    folderId: string | null,
   ): {
     filteredFeatures: FeatureMap;
     filteredFolders: FolderMap;
@@ -157,7 +156,7 @@ export const UWrappedFeature = {
     const filteredFolders = new Map(
       Array.from(folderMap.entries()).filter(([id]) => {
         return folderIds.has(id);
-      })
+      }),
     );
 
     filteredFolders.set(folderId, {
@@ -173,7 +172,7 @@ export const UWrappedFeature = {
   mapToFeatureCollection(
     featureMap: FeatureMap,
     folderMap: FolderMap,
-    folderId: string | null
+    folderId: string | null,
   ): FeatureCollection {
     const folderIds = folderId && getFoldersInTree(folderMap, folderId);
     const features: FeatureCollection["features"] = [];
@@ -218,7 +217,7 @@ const SymbolizationCategorical = SymbolizationBaseInternal.extend({
       z.object({
         input: z.union([z.string(), z.number().int()]),
         output: z.string(),
-      })
+      }),
     )
     .min(1)
     .transform((stops) => {
@@ -272,7 +271,7 @@ export function tryUpgrading(symbolization: any): Maybe<ISymbolization> {
               output: p.max.output,
             },
           ],
-        })
+        }),
       );
     }
   }
@@ -316,7 +315,7 @@ const SymbolizationRamp = SymbolizationBaseInternal.extend({
       z.object({
         input: z.number(),
         output: z.string(),
-      })
+      }),
     )
     .transform((stops) => {
       return uniqueStops(stops).sort((a, b) => {

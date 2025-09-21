@@ -1,15 +1,16 @@
 // Menu
-import React, { memo, useCallback } from "react";
+
 import { styledCheckbox } from "app/components/elements";
-import { dataAtom, Sel, selectionAtom } from "state/jotai";
-import { USelection } from "state/uselection";
-import { HEIGHT } from "../feature_table";
-import type { IWrappedFeature } from "types";
-import min from "lodash/min";
-import max from "lodash/max";
-import range from "lodash/range";
 import type { SetStateAction } from "jotai";
 import { useAtomCallback } from "jotai/utils";
+import max from "lodash/max";
+import min from "lodash/min";
+import range from "lodash/range";
+import React, { memo, useCallback } from "react";
+import { dataAtom, type Sel, selectionAtom } from "state/jotai";
+import { USelection } from "state/uselection";
+import type { IWrappedFeature } from "types";
+import { HEIGHT } from "../feature_table";
 
 export default memo(function RowActions({
   feature,
@@ -38,14 +39,14 @@ export default memo(function RowActions({
         const newIds = range(min(allIndexes)!, max(allIndexes)! + 1).map(
           (idx) => {
             return features[idx].id;
-          }
+          },
         );
 
         set(selectionAtom, USelection.fromIds(newIds));
         return;
       },
-      [features]
-    )
+      [features],
+    ),
   );
 
   return (
@@ -71,7 +72,7 @@ export default memo(function RowActions({
             return shiftClick(id);
           } else {
             setSelection((selection) =>
-              USelection.toggleSelectionId(selection, id)
+              USelection.toggleSelectionId(selection, id),
             );
           }
         }}

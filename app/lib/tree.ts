@@ -33,7 +33,7 @@ function makeIndex<X>(items: X[], idMember: keyof X) {
 export function pullNode<Container, Leaf>(
   tree: RootNode<Container, Leaf>,
   idMember: keyof Container,
-  id: string
+  id: string,
 ) {
   type ChildType = LeafNode<Leaf> | ContainerNode<Container, Leaf>;
   type Path = ContainerNode<Container, Leaf>[];
@@ -45,7 +45,7 @@ export function pullNode<Container, Leaf>(
     node: ChildType,
     idMember: keyof Container,
     id: string,
-    _path: Path
+    _path: Path,
   ) {
     if (node.type === "container") {
       _path = _path.concat(node);
@@ -140,7 +140,7 @@ export function buildTree<Container, Leaf>({
           data: container,
           children: getChildren(container),
         };
-      }
+      },
     );
 
     return ([] as ChildType[]).concat(leafNodes).concat(containerNodes);

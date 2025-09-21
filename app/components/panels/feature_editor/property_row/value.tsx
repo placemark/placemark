@@ -1,54 +1,54 @@
-import * as E from "app/components/elements";
-import noop from "lodash/noop";
-import useResettable from "app/hooks/use_resettable";
-import isObject from "lodash/isObject";
-import type {
-  PropertyPair,
-  OnChangeValue,
-  OnCast,
-  OnDeleteKey,
-  Pair,
-} from "../property_row";
-import {
-  TrashIcon,
-  UpdateIcon,
-  SizeIcon,
-  CheckIcon,
-  QuestionMarkIcon,
-} from "@radix-ui/react-icons";
-import { Popover as P, Tooltip as T, DropdownMenu as DD, Tabs } from "radix-ui";
-import { useMemo, useEffect, useRef, useState } from "react";
-import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
-import type { JsonObject, JsonValue } from "type-fest";
-import { asHTML, castExplicit, ExplicitCast } from "app/lib/cast";
-import { HexColorPicker, HexColorInput } from "react-colorful";
-import * as d3 from "d3-color";
-import classed from "classed-components";
-import {
-  useEditor,
-  EditorContent,
-  BubbleMenu,
-  FloatingMenu,
-} from "@tiptap/react";
-import Link from "@tiptap/extension-link";
-import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
+import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import { json } from "@codemirror/lang-json";
 import { EditorState } from "@codemirror/state";
 import {
-  lineNumbers,
-  EditorView,
   drawSelection,
+  EditorView,
   keymap,
+  lineNumbers,
 } from "@codemirror/view";
-import { history, historyKeymap, defaultKeymap } from "@codemirror/commands";
-import { json } from "@codemirror/lang-json";
+import {
+  CheckIcon,
+  QuestionMarkIcon,
+  SizeIcon,
+  TrashIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import {
+  BubbleMenu,
+  EditorContent,
+  FloatingMenu,
+  useEditor,
+} from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import * as E from "app/components/elements";
+import useResettable from "app/hooks/use_resettable";
+import { asHTML, castExplicit, ExplicitCast } from "app/lib/cast";
 import { placemarkTheme } from "app/lib/codemirror_theme";
-import clsx from "clsx";
-import type { CoordProps } from "types";
-import { Field, Form, Formik } from "formik";
 import { parseOrError } from "app/lib/errors";
-import { dataAtom } from "state/jotai";
 import { truncate } from "app/lib/utils";
+import classed from "classed-components";
+import clsx from "clsx";
+import * as d3 from "d3-color";
+import { Field, Form, Formik } from "formik";
+import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
+import isObject from "lodash/isObject";
+import noop from "lodash/noop";
+import { DropdownMenu as DD, Popover as P, Tooltip as T, Tabs } from "radix-ui";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { HexColorInput, HexColorPicker } from "react-colorful";
+import { dataAtom } from "state/jotai";
+import type { JsonObject, JsonValue } from "type-fest";
+import type { CoordProps } from "types";
+import type {
+  OnCast,
+  OnChangeValue,
+  OnDeleteKey,
+  Pair,
+  PropertyPair,
+} from "../property_row";
 
 type Preview =
   | {

@@ -1,19 +1,20 @@
-import React, { memo, useCallback, useState } from "react";
-import type { VirtualItem } from "react-virtual";
-import { DropdownMenu as DD, Popover as P } from "radix-ui";
-import { virtualPositionTop } from "../feature_table";
-import * as E from "app/components/elements";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { useSetAtom } from "jotai";
-import { captureException } from "integrations/errors";
-import { dataAtom, dialogAtom, virtualColumnsAtom } from "state/jotai";
-import { usePersistence } from "app/lib/persistence/context";
+import * as E from "app/components/elements";
 import { deletePropertyKey } from "app/lib/map_operations/delete_property_key";
-import without from "lodash/without";
-import { useAtomCallback } from "jotai/utils";
+import { usePersistence } from "app/lib/persistence/context";
 import { useFeatureMap } from "app/lib/persistence/shared";
 import renameProperty from "app/lib/rename_property";
-import { Formik, Form } from "formik";
+import { Form, Formik } from "formik";
+import { captureException } from "integrations/errors";
+import { useSetAtom } from "jotai";
+import { useAtomCallback } from "jotai/utils";
+import without from "lodash/without";
+import { DropdownMenu as DD, Popover as P } from "radix-ui";
+import type React from "react";
+import { memo, useCallback, useState } from "react";
+import type { VirtualItem } from "react-virtual";
+import { dataAtom, dialogAtom, virtualColumnsAtom } from "state/jotai";
+import { virtualPositionTop } from "../feature_table";
 
 type RenameFormValues = {
   renameTo: string;
@@ -44,7 +45,7 @@ function RenamePropertyDialog({
             properties: renameProperty(
               wrappedFeature.feature.properties,
               column,
-              values.renameTo
+              values.renameTo,
             ),
           },
         };
@@ -104,7 +105,7 @@ export const Header = memo(function Header({
       (get, set) => {
         if (
           !confirm(
-            "Are you sure you want to delete this property across all features?"
+            "Are you sure you want to delete this property across all features?",
           )
         )
           return;
@@ -119,7 +120,7 @@ export const Header = memo(function Header({
                   key: column,
                 }),
               };
-            }
+            },
           ),
         })
           .then(() => {
@@ -128,8 +129,8 @@ export const Header = memo(function Header({
           })
           .catch((e) => captureException(e));
       },
-      [column, localOrder, transact]
-    )
+      [column, localOrder, transact],
+    ),
   );
 
   const [renameOpen, setRenameOpen] = useState<boolean>(false);

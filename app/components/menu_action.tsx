@@ -1,6 +1,6 @@
 import { useHotkeys } from "integrations/hotkeys";
-import { TContent, Keycap, Button } from "./elements";
 import { Tooltip } from "radix-ui";
+import { Button, Keycap, TContent } from "./elements";
 
 export default function MenuAction({
   selected = false,
@@ -36,7 +36,7 @@ export default function MenuAction({
     {
       enabled: !!hotkey && !noShift,
     },
-    [onClick]
+    [onClick],
   );
 
   useHotkeys(
@@ -48,7 +48,7 @@ export default function MenuAction({
     {
       enabled: !!hotkey,
     },
-    [onClick]
+    [onClick],
   );
 
   return (

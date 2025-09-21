@@ -5,20 +5,20 @@ var LOGGING = false;
 var STDOUT = false; // use stdout for status messages
 
 // These three functions can be reset by GUI using setLoggingFunctions();
-var _error = function () {
+var _error = () => {
   var msg = utils.toArray(arguments).join(" ");
   throw new Error(msg);
 };
 
-var _stop = function () {
+var _stop = () => {
   throw new UserError(formatLogArgs(arguments));
 };
 
-var _interrupt = function () {
+var _interrupt = () => {
   throw new NonFatalError(formatLogArgs(arguments));
 };
 
-var _message = function () {
+var _message = () => {
   logArgs(arguments);
 };
 
@@ -111,14 +111,14 @@ function NonFatalError(msg) {
 }
 
 function formatColumns(arr, alignments) {
-  var widths = arr.reduce(function (memo, line) {
-    return line.map(function (str, i) {
-      return memo ? Math.max(memo[i], str.length) : str.length;
-    });
-  }, null);
+  var widths = arr.reduce(
+    (memo, line) =>
+      line.map((str, i) => (memo ? Math.max(memo[i], str.length) : str.length)),
+    null,
+  );
   return arr
-    .map(function (line) {
-      line = line.map(function (str, i) {
+    .map((line) => {
+      line = line.map((str, i) => {
         var rt = alignments && alignments[i] == "right";
         var pad = (rt ? str.padStart : str.padEnd).bind(str);
         return pad(widths[i], " ");
@@ -131,12 +131,10 @@ function formatColumns(arr, alignments) {
 // Format an array of (preferably short) strings in columns for console logging.
 export function formatStringsAsGrid(arr) {
   // TODO: variable column width
-  var longest = arr.reduce(function (len, str) {
-      return Math.max(len, str.length);
-    }, 0),
+  var longest = arr.reduce((len, str) => Math.max(len, str.length), 0),
     colWidth = longest + 2,
     perLine = Math.floor(80 / colWidth) || 1;
-  return arr.reduce(function (memo, name, i) {
+  return arr.reduce((memo, name, i) => {
     var col = i % perLine;
     if (i > 0 && col === 0) memo += "\n";
     if (col < perLine - 1) {

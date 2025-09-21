@@ -1,14 +1,13 @@
-import { expect, describe, it, vi, test } from "vitest";
-
+import { validate } from "@mapbox/mapbox-gl-style-spec";
+import { purple900 } from "app/lib/constants";
+import { exportStyle } from "app/lib/export_style";
+import { NIL_PREVIEW } from "test/helpers";
+import type { ILayerConfig, ISymbolization } from "types";
+import { describe, expect, it, test, vi } from "vitest";
 import loadAndAugmentStyle, {
   addEditingLayers,
   makeLayers,
 } from "./load_and_augment_style";
-import { NIL_PREVIEW } from "test/helpers";
-import { validate } from "@mapbox/mapbox-gl-style-spec";
-import { ILayerConfig, ISymbolization } from "types";
-import { purple900 } from "app/lib/constants";
-import { exportStyle } from "app/lib/export_style";
 
 vi.mock("app/lib/env_client", () => {
   return {
@@ -31,7 +30,7 @@ describe("makeLayers", () => {
       makeLayers({
         symbolization: NONE_NO_SIMPLESTYLE,
         previewProperty: NIL_PREVIEW,
-      })
+      }),
     ).toMatchSnapshot();
   });
   it("with preview property", () => {
@@ -151,6 +150,6 @@ test("loadAndAugmentStyle", async () => {
       ]),
       symbolization: NONE_NO_SIMPLESTYLE,
       previewProperty: NIL_PREVIEW,
-    })
+    }),
   ).resolves.toMatchSnapshot();
 });

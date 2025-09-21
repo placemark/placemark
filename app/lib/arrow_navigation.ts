@@ -1,5 +1,5 @@
-import { KeyboardEventHandler } from "react";
-import { CoordProps } from "types";
+import type { KeyboardEventHandler } from "react";
+import type { CoordProps } from "types";
 
 type FocusCoordinate = CoordProps & {
   inputLocation: "empty" | "start" | "end" | "middle";
@@ -80,7 +80,7 @@ export const onArrow: KeyboardEventHandler = (e) => {
     }
 
     const target = document.querySelector(
-      `[data-focus-x="${xy.x}"][data-focus-y="${xy.y}"]`
+      `[data-focus-x="${xy.x}"][data-focus-y="${xy.y}"]`,
     );
     if (target) {
       (target as HTMLElement).focus();

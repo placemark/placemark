@@ -1,8 +1,8 @@
-import { expect, vi, test } from "vitest";
+import { Formik } from "formik";
 
 import React from "react";
-import { render, screen, fireEvent } from "test/utils";
-import { Formik } from "formik";
+import { fireEvent, render, screen } from "test/utils";
+import { expect, test, vi } from "vitest";
 import SimpleDialogActions from "./simple_dialog_actions";
 
 test.skip("loads and displays simple dialog actions", async () => {
@@ -10,7 +10,7 @@ test.skip("loads and displays simple dialog actions", async () => {
   render(
     <Formik initialValues={{}} onSubmit={() => {}}>
       <SimpleDialogActions action="Yeah" onClose={onClose} />
-    </Formik>
+    </Formik>,
   );
   await screen.findByText("Yeah");
   fireEvent.click(await screen.findByText("Cancel"));

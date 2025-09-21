@@ -1,8 +1,8 @@
 import { FileIcon } from "@radix-ui/react-icons";
-import { fileInfoAtom, fileInfoMachineAtom } from "state/jotai";
-import { useAtom, useAtomValue } from "jotai";
 import { truncate } from "app/lib/utils";
+import { useAtom, useAtomValue } from "jotai";
 import { Popover } from "radix-ui";
+import { fileInfoAtom, fileInfoMachineAtom } from "state/jotai";
 import { StyledPopoverArrow, StyledPopoverContent } from "./elements";
 
 export function FileInfo() {

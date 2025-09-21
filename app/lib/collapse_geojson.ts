@@ -1,10 +1,10 @@
-import {
+import type {
   Feature,
-  Geometry,
-  MultiPolygon,
   FeatureCollection,
-  MultiPoint,
+  Geometry,
   MultiLineString,
+  MultiPoint,
+  MultiPolygon,
 } from "types";
 
 /**
@@ -44,19 +44,19 @@ export function collapseGeoJSON(fc: FeatureCollection): FeatureCollection {
 
       case "MultiPoint": {
         multiPoint.coordinates = multiPoint.coordinates.concat(
-          geometry.coordinates
+          geometry.coordinates,
         );
         break;
       }
       case "MultiPolygon": {
         multiPolygon.coordinates = multiPolygon.coordinates.concat(
-          geometry.coordinates
+          geometry.coordinates,
         );
         break;
       }
       case "MultiLineString": {
         multiLineString.coordinates = multiLineString.coordinates.concat(
-          geometry.coordinates
+          geometry.coordinates,
         );
         break;
       }

@@ -1,29 +1,29 @@
-import type {
-  IWrappedFeature,
-  MultiPolygon,
-  IFeatureCollection,
-  FeatureCollection,
-  MultiPoint,
-  MultiLineString,
-  GeometryCollection,
-  Polygon,
-  Point,
-  IFeature,
-  FeatureMap,
-  IFolder,
-  Feature,
-} from "types";
+import { type IDMap, UIDMap } from "app/lib/id_mapper";
+import deepFreeze from "deep-freeze";
 import Fs from "fs";
 import Path from "path";
-import { IDMap, UIDMap } from "app/lib/id_mapper";
-import { PreviewProperty } from "state/jotai";
-import deepFreeze from "deep-freeze";
+import type { PreviewProperty } from "state/jotai";
+import type {
+  Feature,
+  FeatureCollection,
+  FeatureMap,
+  GeometryCollection,
+  IFeature,
+  IFeatureCollection,
+  IFolder,
+  IWrappedFeature,
+  MultiLineString,
+  MultiPoint,
+  MultiPolygon,
+  Point,
+  Polygon,
+} from "types";
 
 export const NIL_PREVIEW: PreviewProperty = null;
 
 function loadFixture(path: string): FeatureCollection {
   return JSON.parse(
-    Fs.readFileSync(Path.join(__dirname, path), "utf8")
+    Fs.readFileSync(Path.join(__dirname, path), "utf8"),
   ) as FeatureCollection;
 }
 
@@ -47,7 +47,7 @@ export function wrap(fc: FeatureCollection): IWrappedFeature[] {
         folderId: null,
         feature: feature,
       };
-    })
+    }),
   ) as unknown as IWrappedFeature[];
 }
 
@@ -64,7 +64,7 @@ export function wrapMap(fc: FeatureCollection): FeatureMap {
           feature: feature,
         }),
       ];
-    })
+    }),
   ) as FeatureMap;
 }
 
@@ -84,7 +84,7 @@ export function wrapMapAndId(fc: FeatureCollection) {
       });
       wrappedFeatures.push(wrappedFeature);
       return [id, wrappedFeature];
-    })
+    }),
   );
   return { wrappedFeatures, idMap, featureMap };
 }
@@ -98,7 +98,7 @@ function f(features: IFeature | IFeature[]): IFeatureCollection {
           ...feature,
           properties: Object.freeze(feature.properties),
         };
-      }
+      },
     ),
   }) as IFeatureCollection;
 }
@@ -324,7 +324,7 @@ export const fcGeometryCollection = f([
     geometry: {
       type: "GeometryCollection",
       geometries: twoPoints.features.map(
-        (feature) => feature.geometry as Point
+        (feature) => feature.geometry as Point,
       ),
     },
   },

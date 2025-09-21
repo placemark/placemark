@@ -1,9 +1,9 @@
-import type { Feature } from "types";
+import { getCircleProp, makeCircle } from "app/lib/circle";
 import { idToJSONPointers } from "app/lib/id";
+import { deletePropertyKey } from "app/lib/map_operations/delete_property_key";
 import * as jsonpointer from "app/lib/pointer";
 import cloneDeep from "lodash/cloneDeep";
-import { getCircleProp, makeCircle } from "app/lib/circle";
-import { deletePropertyKey } from "app/lib/map_operations/delete_property_key";
+import type { Feature } from "types";
 
 export function setCoordinates({
   feature: featureInput,
@@ -112,7 +112,7 @@ function moveAsRectangle({
 function lockDirection(
   targetCoord: Pos2 | undefined,
   reference: Pos2,
-  position: Pos2
+  position: Pos2,
 ) {
   if (!targetCoord) {
     return;

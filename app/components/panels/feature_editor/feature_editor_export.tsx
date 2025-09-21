@@ -1,13 +1,13 @@
+import { CopyIcon } from "@radix-ui/react-icons";
+import { Button, styledSelect } from "app/components/elements";
+import { PanelDetailsCollapsible } from "app/components/panel_details";
+import { COPIERS } from "app/lib/copiers";
+import { writeToClipboard } from "app/lib/utils";
+import { Field, Form, Formik } from "formik";
 import { memo, useCallback, useRef } from "react";
 import { toast } from "react-hot-toast";
-import { CopyIcon } from "@radix-ui/react-icons";
-import { Formik, Form, Field } from "formik";
-import { COPIERS } from "app/lib/copiers";
-import { PanelDetailsCollapsible } from "app/components/panel_details";
-import type { Geometry, IFeature, IWrappedFeature } from "types";
-import { Button, styledSelect } from "app/components/elements";
-import { writeToClipboard } from "app/lib/utils";
 import { panelExportOpen } from "state/jotai";
+import type { Geometry, IFeature, IWrappedFeature } from "types";
 
 type CopyForm = {
   format: keyof typeof COPIERS;
@@ -25,7 +25,7 @@ export const FeatureEditorExport = memo(function FeatureEditorExport({
     async function onCopy(values: CopyForm) {
       if (lastFeature.current.feature.geometry === null) {
         return toast.error(
-          "Could not copy, because this feature has no geometry"
+          "Could not copy, because this feature has no geometry",
         );
       }
       await toast.promise(
@@ -33,17 +33,17 @@ export const FeatureEditorExport = memo(function FeatureEditorExport({
           COPIERS[values.format](lastFeature.current.feature as IFeature).then(
             (either) => {
               return either.unsafeCoerce();
-            }
-          )
+            },
+          ),
         ),
         {
           loading: "Copying…",
           success: "Copied",
           error: "Failed to copy. Try again?",
-        }
+        },
       );
     },
-    [lastFeature]
+    [lastFeature],
   );
 
   if (wrappedFeature.feature.geometry === null) return null;

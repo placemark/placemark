@@ -1,13 +1,13 @@
-import type { Options } from "react-hotkeys-hook";
-import { useHotkeys } from "integrations/hotkeys";
-import { dataAtom, selectionAtom } from "state/jotai";
-import { captureException } from "integrations/errors";
-import { usePersistence } from "app/lib/persistence/context";
-import { deleteFeatures } from "app/lib/map_operations/delete_features";
 import { filterLockedFeatures } from "app/lib/folder";
-import { USelection } from "state";
-import { useCallback } from "react";
+import { deleteFeatures } from "app/lib/map_operations/delete_features";
+import { usePersistence } from "app/lib/persistence/context";
+import { captureException } from "integrations/errors";
+import { useHotkeys } from "integrations/hotkeys";
 import { useAtomCallback } from "jotai/utils";
+import { useCallback } from "react";
+import type { Options } from "react-hotkeys-hook";
+import { USelection } from "state";
+import { dataAtom, selectionAtom } from "state/jotai";
 
 const IGNORE_ROLES = new Set(["menuitem"]);
 
@@ -41,7 +41,7 @@ export function useMapKeybindings() {
       historyControl("undo").catch((e) => captureException(e));
       return false;
     },
-    [historyControl]
+    [historyControl],
   );
 
   useHotkeys(
@@ -49,7 +49,7 @@ export function useMapKeybindings() {
     (_e: KeyboardEvent) => {
       historyControl("redo").catch((e) => captureException(e));
     },
-    [historyControl]
+    [historyControl],
   );
 
   const maybeToggleFolder = useAtomCallback(
@@ -77,8 +77,8 @@ export function useMapKeybindings() {
           set(selectionAtom, USelection.selectionToFolder(data));
         }
       },
-      [transact]
-    )
+      [transact],
+    ),
   );
 
   useHotkeys(
@@ -90,7 +90,7 @@ export function useMapKeybindings() {
       }
     },
     keybindingOptions,
-    [maybeToggleFolder]
+    [maybeToggleFolder],
   );
 
   useHotkeys(
@@ -102,7 +102,7 @@ export function useMapKeybindings() {
       }
     },
     keybindingOptions,
-    [maybeToggleFolder]
+    [maybeToggleFolder],
   );
 
   const onSelectAll = useAtomCallback(
@@ -112,7 +112,7 @@ export function useMapKeybindings() {
         type: "multi",
         ids: filterLockedFeatures(data).map((f) => f.id),
       });
-    }, [])
+    }, []),
   );
 
   useHotkeys(
@@ -122,7 +122,7 @@ export function useMapKeybindings() {
       void onSelectAll();
     },
     keybindingOptions,
-    [onSelectAll]
+    [onSelectAll],
   );
 
   const onDelete = useAtomCallback(
@@ -137,8 +137,8 @@ export function useMapKeybindings() {
         })().catch((e) => captureException(e));
         return false;
       },
-      [transact]
-    )
+      [transact],
+    ),
   );
 
   useHotkeys(
@@ -148,6 +148,6 @@ export function useMapKeybindings() {
       void onDelete();
     },
     keybindingOptions,
-    [onDelete]
+    [onDelete],
   );
 }

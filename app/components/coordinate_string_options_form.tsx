@@ -1,6 +1,6 @@
 import type { ImportOptions } from "app/lib/convert";
-import { Field, useFormikContext } from "formik";
 import { COORDINATE_STRING_ORDERS } from "app/lib/convert";
+import { Field, useFormikContext } from "formik";
 import { StyledLabelSpan, styledRadio } from "./elements";
 
 export function CoordinateStringOptionsForm() {

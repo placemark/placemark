@@ -1,26 +1,26 @@
-import { Button, styledCheckbox } from "./elements";
 import { GroupIcon, PlusIcon } from "@radix-ui/react-icons";
 import {
   getQItemNamePreview,
   qItemToFeature,
   qItemToPolygon,
 } from "app/lib/geocode";
-import { USelection } from "state";
 import { newFeatureId } from "app/lib/id";
-import { captureException } from "integrations/errors";
-import { match } from "ts-pattern";
-import { useAtom } from "jotai";
 import { usePersistence } from "app/lib/persistence/context";
+import { captureException } from "integrations/errors";
+import { useAtom } from "jotai";
+import { USelection } from "state";
 import {
   addMetadataWithGeocoderAtom,
   lastSearchResultAtom,
   selectionAtom,
 } from "state/jotai";
-import { Feature } from "types";
+import { match } from "ts-pattern";
+import type { Feature } from "types";
+import { Button, styledCheckbox } from "./elements";
 
 export function LastSearchResult() {
   const [addMetadataWithGeocoder, setAddMetadataWithGeocoder] = useAtom(
-    addMetadataWithGeocoderAtom
+    addMetadataWithGeocoderAtom,
   );
   const rep = usePersistence();
   const transact = rep.useTransact();

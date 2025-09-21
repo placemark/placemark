@@ -1,27 +1,27 @@
-import { ContextMenu as CM } from "radix-ui";
-import React, { memo } from "react";
-import { useSetAtom } from "jotai";
-import { USelection } from "state";
-import { dialogAtom, Mode, modeAtom, selectionAtom } from "state/jotai";
 import {
   ArrowRightIcon,
   CircleIcon,
   ClipboardCopyIcon,
   CommitIcon,
 } from "@radix-ui/react-icons";
-import type { ContextInfo } from "app/components/map_component";
-import type { IFeature, IWrappedFeature, LineString } from "types";
 import { GeometryActions } from "app/components/context_actions/geometry_actions";
-import { CMContent, CMSubContent, CMItem, CMSubTriggerItem } from "./elements";
+import type { ContextInfo } from "app/components/map_component";
+import { stringifyFeatures } from "app/hooks/use_clipboard";
 import {
   continueFeature,
   getContinuationDirection,
 } from "app/hooks/use_line_mode";
-import { captureException } from "integrations/errors";
 import { usePersistence } from "app/lib/persistence/context";
 import { writeToClipboard } from "app/lib/utils";
-import { stringifyFeatures } from "app/hooks/use_clipboard";
+import { captureException } from "integrations/errors";
+import { useSetAtom } from "jotai";
+import { ContextMenu as CM } from "radix-ui";
+import React, { memo } from "react";
 import toast from "react-hot-toast";
+import { USelection } from "state";
+import { dialogAtom, Mode, modeAtom, selectionAtom } from "state/jotai";
+import type { IFeature, IWrappedFeature, LineString } from "types";
+import { CMContent, CMItem, CMSubContent, CMSubTriggerItem } from "./elements";
 
 function FeatureItem({ feature }: { feature: IWrappedFeature }) {
   const setSelection = useSetAtom(selectionAtom);
@@ -142,7 +142,7 @@ export const MapContextMenu = memo(function MapContextMenu({
                           .catch((e) => {
                             captureException(e);
                           });
-                      }
+                      },
                     );
                   }}
                 >

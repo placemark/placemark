@@ -1,19 +1,19 @@
 import {
   Button,
-  StyledPopoverContent,
-  StyledPopoverArrow,
   PopoverTitleAndClose,
   StyledField,
+  StyledPopoverArrow,
+  StyledPopoverContent,
 } from "app/components/elements";
-import { Popover as P } from "radix-ui";
-import { captureException } from "integrations/errors";
-import { Formik, Form } from "formik";
-import { newFeatureId } from "app/lib/id";
-import { useState } from "react";
 import { FolderAdd16 } from "app/components/icons";
+import { newFeatureId } from "app/lib/id";
 import { usePersistence } from "app/lib/persistence/context";
-import { selectionAtom } from "state/jotai";
+import { Form, Formik } from "formik";
+import { captureException } from "integrations/errors";
 import { useSetAtom } from "jotai";
+import { Popover as P } from "radix-ui";
+import { useState } from "react";
+import { selectionAtom } from "state/jotai";
 
 export function AddFolder() {
   const rep = usePersistence();

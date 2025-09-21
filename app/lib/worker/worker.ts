@@ -1,16 +1,16 @@
 import { getIssues } from "@placemarkio/check-geojson";
-import { fromGeoJSON, fileToGeoJSON } from "app/lib/convert";
+import { bufferFeature } from "app/lib/buffer";
+import { fileToGeoJSON, fromGeoJSON } from "app/lib/convert";
+import { booleanFeatures } from "app/lib/map_operations/boolean_features";
 import * as Comlink from "comlink";
 import { EitherHandler } from "./shared";
-import { bufferFeature } from "app/lib/buffer";
-import { booleanFeatures } from "app/lib/map_operations/boolean_features";
 
 const lib = {
-	getIssues,
-	bufferFeature,
-	booleanFeatures,
-	fileToGeoJSON,
-	fromGeoJSON,
+  getIssues,
+  bufferFeature,
+  booleanFeatures,
+  fileToGeoJSON,
+  fromGeoJSON,
 };
 
 export type Lib = typeof lib;

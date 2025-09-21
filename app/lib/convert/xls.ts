@@ -1,7 +1,7 @@
-import type { FileType, ImportOptions } from ".";
-import { ConvertResult, okResult } from "./utils";
-import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import type { FileType, ImportOptions } from ".";
+import { type ConvertResult, okResult } from "./utils";
 
 class CXLS implements FileType {
   id = "xls" as const;
@@ -17,7 +17,7 @@ class CXLS implements FileType {
         );
         const geojson = await xlsxToGeoJSON(file, options.csvOptions);
         return okResult(geojson);
-      }
+      },
     );
   }
 }

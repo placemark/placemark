@@ -1,12 +1,12 @@
-import { Feature } from "types";
-import cloneDeep from "lodash/cloneDeep";
+import type { AllGeoJSON } from "@turf/helpers";
 import { coordEach } from "@turf/meta";
-import { AllGeoJSON } from "@turf/helpers";
 import {
   getCircleProp,
   getCircleRadius,
   makeCircleNative,
 } from "app/lib/circle";
+import cloneDeep from "lodash/cloneDeep";
+import type { Feature } from "types";
 
 function validLatitude(lat: number) {
   return lat >= -90 && lat <= 90;

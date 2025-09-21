@@ -1,8 +1,8 @@
-import type { Feature, Position } from "types";
-import * as jsonpointer from "app/lib/pointer";
 import { idToJSONPointers } from "app/lib/id";
-import { JsonValue } from "type-fest";
+import * as jsonpointer from "app/lib/pointer";
 import { Maybe } from "purify-ts/Maybe";
+import type { JsonValue } from "type-fest";
+import type { Feature, Position } from "types";
 
 function handleNumber(input: JsonValue): number {
   return typeof input === "number" && !isNaN(input) ? input : 0;
@@ -24,7 +24,7 @@ export function getCoordinates(feature: Feature, id: VertexId): Position {
 
 export function getCoordinatesMaybe(
   feature: Feature,
-  id: VertexId
+  id: VertexId,
 ): Maybe<Position> {
   return Maybe.encase(() => getCoordinates(feature, id));
 }

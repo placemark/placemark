@@ -1,22 +1,22 @@
-import { USelection } from "state";
-import type { HandlerContext, IFeature, Polygon } from "types";
-import { modeAtom, Mode, selectionAtom, cursorStyleAtom } from "state/jotai";
-import * as utils from "app/lib/map_component_utils";
-import { captureException } from "integrations/errors";
-import replaceCoordinates from "app/lib/replace_coordinates";
-import { decodeId } from "app/lib/id";
-import { useSetAtom } from "jotai";
-import { usePopMoment } from "app/lib/persistence/shared";
-import { closePolygon } from "app/lib/map_operations";
+import { lockDirection, useAltHeld, useShiftHeld } from "app/hooks/use_held";
 import { CURSOR_DEFAULT, DECK_SYNTHETIC_ID } from "app/lib/constants";
+import { decodeId } from "app/lib/id";
 import { UIDMap } from "app/lib/id_mapper";
+import * as utils from "app/lib/map_component_utils";
+import { closePolygon } from "app/lib/map_operations";
+import { usePopMoment } from "app/lib/persistence/shared";
+import replaceCoordinates from "app/lib/replace_coordinates";
+import { captureException } from "integrations/errors";
+import { useSetAtom } from "jotai";
+import { useRef } from "react";
+import { USelection } from "state";
+import { cursorStyleAtom, Mode, modeAtom, selectionAtom } from "state/jotai";
+import type { HandlerContext, IFeature, Polygon } from "types";
 import {
   createOrUpdateFeature,
   getMapCoord,
   getSnappingCoordinates,
 } from "./utils";
-import { useRef } from "react";
-import { lockDirection, useShiftHeld, useAltHeld } from "app/hooks/use_held";
 
 export function usePolygonHandlers({
   rep,
@@ -127,7 +127,7 @@ export function usePolygonHandlers({
           featureMap,
           pmap,
           idMap,
-          selection.id
+          selection.id,
         ) as Pos2;
       }
 
@@ -178,7 +178,7 @@ export function usePolygonHandlers({
           featureMap,
           pmap,
           idMap,
-          selection.id
+          selection.id,
         ) as Pos2;
       }
 
@@ -243,7 +243,7 @@ export function usePolygonHandlers({
             selection,
             folderMap,
             featureMap,
-          })
+          }),
         );
       }
 

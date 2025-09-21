@@ -1,19 +1,19 @@
-import { ChangeEvent, useEffect } from "react";
-import type { IWrappedFeature } from "types";
-import { panelCircleOpen } from "state/jotai";
-import { PanelDetailsCollapsible } from "app/components/panel_details";
+import { convertLength, type Units } from "@turf/helpers";
 import { Button, inputClass, styledSelect } from "app/components/elements";
+import { PanelDetailsCollapsible } from "app/components/panel_details";
+import { UnitOptionsGroups } from "app/components/unit_select";
 import {
   getCircleProp,
   getCircleRadius,
   makeCircleNative,
 } from "app/lib/circle";
-import { Field, Form, Formik, useFormikContext } from "formik";
-import { usePersistence } from "app/lib/persistence/context";
-import { CIRCLE_TYPE } from "state/mode";
-import { convertLength, Units } from "@turf/helpers";
-import { UnitOptionsGroups } from "app/components/unit_select";
 import { GROUPED_UNIT_OPTIONS } from "app/lib/constants";
+import { usePersistence } from "app/lib/persistence/context";
+import { Field, Form, Formik, useFormikContext } from "formik";
+import { type ChangeEvent, useEffect } from "react";
+import { panelCircleOpen } from "state/jotai";
+import { CIRCLE_TYPE } from "state/mode";
+import type { IWrappedFeature } from "types";
 
 export function FeatureEditorCircle({
   wrappedFeature,
@@ -118,7 +118,7 @@ function AutoReset({
         "radius",
         type === CIRCLE_TYPE.GEODESIC
           ? convertLength(radius, "radians", "meters")
-          : radius
+          : radius,
       );
     }
   }, [setFieldValue, type, wrappedFeature]);
@@ -141,7 +141,7 @@ function UnitSelectField() {
         const newValue = e.target.value as Units;
         setFieldValue(
           "radius",
-          convertLength(values.radius, values.units, newValue)
+          convertLength(values.radius, values.units, newValue),
         );
         setFieldValue("units", newValue);
       }}

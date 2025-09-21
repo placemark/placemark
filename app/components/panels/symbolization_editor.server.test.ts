@@ -1,14 +1,14 @@
+import { fcTwoPoly, wrapMap } from "test/helpers";
 import { expect, test } from "vitest";
-
-import { wrapMap, fcTwoPoly } from "test/helpers";
 import {
   getNumericPropertyMap,
   getViablePropertiesForCategorical,
 } from "./symbolization_editor";
 
 test("getViablePropertiesForCategorical", () => {
-  expect(getViablePropertiesForCategorical(wrapMap(fcTwoPoly)))
-    .toMatchInlineSnapshot(`
+  expect(
+    getViablePropertiesForCategorical(wrapMap(fcTwoPoly)),
+  ).toMatchInlineSnapshot(`
     Map {
       "x" => Set {
         1,
@@ -19,7 +19,7 @@ test("getViablePropertiesForCategorical", () => {
     }
   `);
   expect(getViablePropertiesForCategorical(new Map())).toMatchInlineSnapshot(
-    `Map {}`
+    `Map {}`,
   );
 });
 

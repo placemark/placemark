@@ -1,5 +1,5 @@
 import noop from "lodash/noop";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function useResettable({
   value,

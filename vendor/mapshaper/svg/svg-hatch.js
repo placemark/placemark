@@ -1,5 +1,5 @@
+import { message, stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
-import { stop, message } from "../utils/mapshaper-logging";
 
 /* example patterns
 hatches 1px black 1px red 1px white
@@ -157,9 +157,7 @@ function getHashId(str) {
 function convertFillPattern(properties, defs) {
   var hatchStr = properties["fill-pattern"];
   var hashId = getHashId(hatchStr);
-  var hash = utils.find(defs, function (o) {
-    return o.id == hashId;
-  });
+  var hash = utils.find(defs, (o) => o.id == hashId);
   delete properties["fill-pattern"];
   if (!hash) {
     hash = makeSVGPatternFill(hatchStr, hashId);
@@ -228,7 +226,7 @@ function makeDotPatternSVG(o) {
       x,
       y,
       dotSize,
-      o.colors[(i + Math.floor(i / colorCount)) % colorCount]
+      o.colors[(i + Math.floor(i / colorCount)) % colorCount],
     );
     x = ((i + 1) % colorCount) * dotDist;
     if (x === 0) y += dotDist;

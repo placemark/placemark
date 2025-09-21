@@ -1,8 +1,8 @@
-import type { FeatureCollection } from "types";
 import { polygonFromPositions } from "app/lib/geometry";
+import type { FeatureCollection } from "types";
 
 export async function getGeotiffExtent(
-  file: ArrayBuffer
+  file: ArrayBuffer,
 ): Promise<FeatureCollection> {
   const { fromArrayBuffer } = await import("vendor/geotiff/index");
   const { default: proj4 } = await import("proj4");

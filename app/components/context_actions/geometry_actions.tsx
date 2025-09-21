@@ -1,58 +1,57 @@
 import {
-  MixIcon,
+  AllSidesIcon,
+  CopyIcon,
+  Crosshair1Icon,
+  DotIcon,
+  GlobeIcon,
   LinkBreak2Icon,
   MaskOnIcon,
-  AllSidesIcon,
-  TrashIcon,
-  Crosshair1Icon,
-  CopyIcon,
-  GlobeIcon,
-  DotIcon,
+  MixIcon,
   TextIcon,
+  TrashIcon,
 } from "@radix-ui/react-icons";
-import { Tooltip } from "radix-ui";
+import { ToolbarTrigger } from "app/components/context_actions";
 import type {
   Action,
   ActionProps,
 } from "app/components/context_actions/action_item";
-import { ToolbarTrigger } from "app/components/context_actions";
-import { DropdownMenu as DD } from "radix-ui";
 import {
-  TContent,
-  StyledTooltipArrow,
+  type B3Variant,
   DDContent,
-  B3Variant,
+  StyledTooltipArrow,
+  TContent,
 } from "app/components/elements";
-import { dialogAtom } from "state/dialog_state";
 import { SingleActions } from "app/components/single_actions";
-import { useSetAtom } from "jotai";
+import { useZoomTo } from "app/hooks/use_zoom_to";
 import {
   GEOJSON_MULTI_GEOMETRY_TYPES,
   MULTI_TO_SINGULAR,
 } from "app/lib/constants";
+import { newFeatureId } from "app/lib/id";
 import {
-  canInnerRing,
   addInnerRing,
   CanInnerRingResult,
+  canInnerRing,
 } from "app/lib/map_operations";
 import { deleteFeatures } from "app/lib/map_operations/delete_features";
-import { duplicateFeatures } from "app/lib/map_operations/duplicate_features";
-import { usePersistence } from "app/lib/persistence/context";
-import { newFeatureId } from "app/lib/id";
-import toast from "react-hot-toast";
-import { selectionAtom, dataAtom } from "state/jotai";
-import { Geometry, IFeature, IWrappedFeature, Polygon } from "types";
-import { ActionItem } from "./action_item";
-import { useAtomCallback } from "jotai/utils";
-import { useCallback } from "react";
-import { useZoomTo } from "app/hooks/use_zoom_to";
-import { drawArc } from "app/lib/map_operations/draw_arc";
 import { divideFeatures } from "app/lib/map_operations/divide_feature";
+import { drawArc } from "app/lib/map_operations/draw_arc";
 import { drawCentroids } from "app/lib/map_operations/draw_centroids";
 import { drawLabelPoints } from "app/lib/map_operations/draw_label_points";
+import { duplicateFeatures } from "app/lib/map_operations/duplicate_features";
+import { usePersistence } from "app/lib/persistence/context";
+import { useSetAtom } from "jotai";
+import { useAtomCallback } from "jotai/utils";
+import { DropdownMenu as DD, Tooltip } from "radix-ui";
+import { useCallback } from "react";
+import toast from "react-hot-toast";
+import { dialogAtom } from "state/dialog_state";
+import { dataAtom, selectionAtom } from "state/jotai";
+import type { Geometry, IFeature, IWrappedFeature, Polygon } from "types";
+import { ActionItem } from "./action_item";
 
 export function useActions(
-  selectedWrappedFeatures: IWrappedFeature[]
+  selectedWrappedFeatures: IWrappedFeature[],
 ): Action[] {
   const rep = usePersistence();
   const transact = rep.useTransact();
@@ -82,7 +81,7 @@ export function useActions(
   const supportsCentroids = selectedFeatures.some(
     (feature) =>
       feature.geometry?.type &&
-      geometriesThatYieldCentroids.has(feature.geometry?.type)
+      geometriesThatYieldCentroids.has(feature.geometry?.type),
   );
 
   const onCentroid = useAtomCallback(
@@ -93,8 +92,8 @@ export function useActions(
         set(selectionAtom, newSelection);
         return transact(moment);
       },
-      [transact, selectedWrappedFeatures]
-    )
+      [transact, selectedWrappedFeatures],
+    ),
   );
 
   const addCentroidAction = {
@@ -109,13 +108,13 @@ export function useActions(
       // eslint-disable-next-line
       async (_get, set) => {
         const { newSelection, moment } = drawLabelPoints(
-          selectedWrappedFeatures
+          selectedWrappedFeatures,
         );
         set(selectionAtom, newSelection);
         return transact(moment);
       },
-      [transact, selectedWrappedFeatures]
-    )
+      [transact, selectedWrappedFeatures],
+    ),
   );
 
   const addLabelPointAction = {
@@ -139,8 +138,8 @@ export function useActions(
           },
         });
       },
-      [transact, selectedWrappedFeatures]
-    )
+      [transact, selectedWrappedFeatures],
+    ),
   );
 
   const drawArcAction = {
@@ -160,8 +159,8 @@ export function useActions(
         set(selectionAtom, newSelection);
         await transact(moment);
       },
-      [transact]
-    )
+      [transact],
+    ),
   );
 
   const duplicateFeaturesAction = {
@@ -179,8 +178,8 @@ export function useActions(
         set(selectionAtom, newSelection);
         await transact(moment);
       },
-      [transact]
-    )
+      [transact],
+    ),
   );
 
   const deleteFeaturesAction = {
@@ -207,7 +206,7 @@ export function useActions(
     onSelect: async function doAddInnerRing() {
       return await addInnerRing(
         selectedFeatures[0] as IFeature<Polygon>,
-        selectedFeatures[1] as IFeature<Polygon>
+        selectedFeatures[1] as IFeature<Polygon>,
       ).caseOf({
         Left(error) {
           return Promise.resolve(void toast.error(error.message));
@@ -238,7 +237,7 @@ export function useActions(
     applicable: selectedFeatures.some(
       (feature) =>
         feature.geometry !== null &&
-        GEOJSON_MULTI_GEOMETRY_TYPES.has(feature.geometry?.type)
+        GEOJSON_MULTI_GEOMETRY_TYPES.has(feature.geometry?.type),
     ),
     label:
       selectedFeatures.length === 1
@@ -250,7 +249,7 @@ export function useActions(
         : `Divide features`,
     onSelect: async function doDivide() {
       const { putFeatures, deleteFeatures } = divideFeatures(
-        selectedWrappedFeatures
+        selectedWrappedFeatures,
       );
       await transact({
         note: "Divided multi-features into single features",

@@ -1,7 +1,7 @@
+import { absArcId } from "../paths/mapshaper-arc-utils";
+import { reversePath } from "../paths/mapshaper-path-utils";
 import { ArcIndex } from "../topology/mapshaper-arc-index";
 import { initPointChains } from "../topology/mapshaper-topology-chains-v2";
-import { reversePath } from "../paths/mapshaper-path-utils";
-import { absArcId } from "../paths/mapshaper-arc-utils";
 import { error } from "../utils/mapshaper-logging";
 
 // Converts all polygon and polyline paths in a dataset to a topological format
@@ -11,7 +11,7 @@ export function buildTopology(dataset) {
   var raw = dataset.arcs.getVertexData(),
     cooked = buildPathTopology(raw.nn, raw.xx, raw.yy);
   dataset.arcs.updateVertexData(cooked.nn, cooked.xx, cooked.yy);
-  dataset.layers.forEach(function (lyr) {
+  dataset.layers.forEach((lyr) => {
     if (lyr.geometry_type == "polyline" || lyr.geometry_type == "polygon") {
       lyr.shapes = replaceArcIds(lyr.shapes, cooked.paths);
     }
@@ -61,7 +61,7 @@ function buildPathTopology(nn, xx, yy) {
     for (var i = 0, len = nn.length; i < len; i++) {
       pathLen = nn[i];
       paths.push(
-        pathLen < 2 ? null : convertPath(pointId, pointId + pathLen - 1)
+        pathLen < 2 ? null : convertPath(pointId, pointId + pathLen - 1),
       );
       pointId += pathLen;
     }
@@ -196,12 +196,12 @@ function buildPathTopology(nn, xx, yy) {
       start1,
       end2,
       nextPoint,
-      prevPoint
+      prevPoint,
     );
     if (arcId === null) {
       arcId = index.addArc(
         mergeArcParts(xx, start1, end1, start2, end2),
-        mergeArcParts(yy, start1, end1, start2, end2)
+        mergeArcParts(yy, start1, end1, start2, end2),
       );
     }
     return arcId;
@@ -215,12 +215,12 @@ function buildPathTopology(nn, xx, yy) {
       start,
       end,
       nextPoint,
-      prevPoint
+      prevPoint,
     );
     if (arcId === null) {
       arcId = index.addArc(
         slice.call(xx, start, end + 1),
-        slice.call(yy, start, end + 1)
+        slice.call(yy, start, end + 1),
       );
     }
     return arcId;
@@ -268,19 +268,15 @@ function initPathIds(size, pathSizes) {
 }
 
 function replaceArcIds(src, replacements) {
-  return src.map(function (shape) {
-    return replaceArcsInShape(shape, replacements);
-  });
+  return src.map((shape) => replaceArcsInShape(shape, replacements));
 
   function replaceArcsInShape(shape, replacements) {
     if (!shape) return null;
-    return shape.map(function (path) {
-      return replaceArcsInPath(path, replacements);
-    });
+    return shape.map((path) => replaceArcsInPath(path, replacements));
   }
 
   function replaceArcsInPath(path, replacements) {
-    return path.reduce(function (memo, id) {
+    return path.reduce((memo, id) => {
       var abs = absArcId(id);
       var topoPath = replacements[abs];
       if (topoPath) {

@@ -1,17 +1,17 @@
-import { exportPathData } from "../paths/mapshaper-path-export";
+import { crsToPrj, getDatasetCRS } from "../crs/mapshaper-projections";
 import { getFeatureCount } from "../dataset/mapshaper-layer-utils";
-import { findMaxPartCount } from "../paths/mapshaper-shape-utils";
-import { getDatasetCRS, crsToPrj } from "../crs/mapshaper-projections";
-import { exportDbfFile } from "../shapefile/dbf-export";
-import { message, error } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
-import ShpType from "../shapefile/shp-type";
 import { Bounds } from "../geom/mapshaper-bounds";
+import { exportPathData } from "../paths/mapshaper-path-export";
+import { findMaxPartCount } from "../paths/mapshaper-shape-utils";
+import { exportDbfFile } from "../shapefile/dbf-export";
+import ShpType from "../shapefile/shp-type";
 import { BinArray } from "../utils/mapshaper-binarray";
+import { error, message } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // Convert a dataset to Shapefile files
 export function exportShapefile(dataset, opts) {
-  return dataset.layers.reduce(function (files, lyr) {
+  return dataset.layers.reduce((files, lyr) => {
     var prj = exportPrjFile(lyr, dataset);
     files = files.concat(exportShpAndShxFiles(lyr, dataset, opts));
     files = files.concat(exportDbfFile(lyr, dataset, opts));
@@ -71,7 +71,7 @@ function exportShpAndShxFiles(layer, dataset, opts) {
   // TODO: consider writing records to an expanding buffer instead of generating
   // individual buffers for each record (for large point datasets,
   // creating millions of buffers impacts performance significantly)
-  var shapeBuffers = shapes.map(function (shape, i) {
+  var shapeBuffers = shapes.map((shape, i) => {
     var pathData = exportPathData(shape, dataset.arcs, layer.geometry_type);
     var rec = exportShpRecord(pathData, i + 1, shpType);
     var recBytes = rec.buffer.byteLength;
@@ -108,7 +108,7 @@ function exportShpAndShxFiles(layer, dataset, opts) {
   shpBin.skipBytes(4 * 8); // skip Z & M type bounding boxes;
 
   // write records section of .shp
-  shapeBuffers.forEach(function (buf) {
+  shapeBuffers.forEach((buf) => {
     shpBin.writeBuffer(buf);
   });
 
@@ -177,7 +177,7 @@ function exportShpRecord(data, id, shpType) {
     }
 
     bin.writeInt32(data.pointCount);
-    data.pathData.forEach(function (path, i) {
+    data.pathData.forEach((path, i) => {
       if (multiPartType) {
         bin.position(partIndexIdx + i * 4).writeInt32(pointCount);
       }
@@ -193,7 +193,7 @@ function exportShpRecord(data, id, shpType) {
         "Shp record point count mismatch; pointCount:",
         pointCount,
         "data.pointCount:",
-        data.pointCount
+        data.pointCount,
       );
     }
   }

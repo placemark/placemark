@@ -1,8 +1,10 @@
-import { countMultiPartFeatures } from "../dataset/mapshaper-layer-utils";
+import {
+  countMultiPartFeatures,
+  getLayerBounds,
+} from "../dataset/mapshaper-layer-utils";
 import { compileValueExpression } from "../expressions/mapshaper-expressions";
-import { getLayerBounds } from "../dataset/mapshaper-layer-utils";
-import { probablyDecimalDegreeBounds } from "../geom/mapshaper-latlon";
 import geom from "../geom/mapshaper-geom";
+import { probablyDecimalDegreeBounds } from "../geom/mapshaper-latlon";
 import { stop } from "../utils/mapshaper-logging";
 
 export function dissolvePointGeometry(lyr, getGroupId, opts) {
@@ -15,7 +17,7 @@ export function dissolvePointGeometry(lyr, getGroupId, opts) {
     stop("Dissolving multi-part points is not supported");
   }
 
-  lyr.shapes.forEach(function (shp, i) {
+  lyr.shapes.forEach((shp, i) => {
     var groupId = getGroupId(i);
     var weight = getWeight ? getWeight(i) : 1;
     var p = shp && shp[0]; // Using first point (TODO: handle multi-point features)
@@ -29,7 +31,7 @@ export function dissolvePointGeometry(lyr, getGroupId, opts) {
     groups[groupId] = reducePointCentroid(groups[groupId], p, weight);
   });
 
-  return groups.map(function (memo) {
+  return groups.map((memo) => {
     var p1, p2;
     if (!memo) return null;
     if (useSph) {

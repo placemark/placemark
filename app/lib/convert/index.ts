@@ -1,41 +1,41 @@
+import { GEOJSON_TYPES } from "app/lib/constants";
+import { ConvertError, PlacemarkError, parseOrError } from "app/lib/errors";
+import type { ProxyMarked } from "comlink";
+import isPlainObject from "lodash/isPlainObject";
+import { Left } from "purify-ts/Either";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import type { Data } from "state/jotai";
+import type { JsonObject, JsonValue, SetOptional } from "type-fest";
 import {
-  FeatureCollection,
-  FeatureMap,
-  FolderMap,
+  type FeatureCollection,
+  type FeatureMap,
+  type FolderMap,
   UWrappedFeature,
 } from "types";
-import { ConvertResult, getExtension } from "./utils";
-import { KML } from "./kml";
-import { KMZ } from "./kmz";
-import { TCX } from "./tcx";
-import { GPX } from "./gpx";
-import { CSV } from "./csv";
-import { OSM } from "./osm";
-import { XLS } from "./xls";
 import { BBOX } from "./bbox";
-import { Polyline } from "./polyline";
+import { CoordinateString } from "./coordinate_string";
+import { CSV } from "./csv";
+import { EXIF } from "./exif";
+import { FlatGeobuf } from "./flatgeobuf";
 import { GeoJSON } from "./geojson";
 import { GeoJSONL } from "./geojsonl";
-import { Shapefile } from "./shapefile";
-import { TopoJSON } from "./topojson";
 import { GeoTIFF } from "./geotiff";
-import { EXIF } from "./exif";
-import { WKT } from "./wkt";
+import { GPX } from "./gpx";
 import { GTFS } from "./gtfs";
-import { GEOJSON_TYPES } from "app/lib/constants";
-import { ConvertError, parseOrError, PlacemarkError } from "app/lib/errors";
-import { EitherAsync } from "purify-ts/EitherAsync";
-import { Left } from "purify-ts/Either";
-import { CoordinateString } from "./coordinate_string";
-import isPlainObject from "lodash/isPlainObject";
-import { JsonObject, JsonValue, SetOptional } from "type-fest";
-import { FlatGeobuf } from "./flatgeobuf";
-import { Data } from "state/jotai";
-import { ProxyMarked } from "comlink";
+import { KML } from "./kml";
+import { KMZ } from "./kmz";
+import { OSM } from "./osm";
+import { Polyline } from "./polyline";
+import { Shapefile } from "./shapefile";
+import { TCX } from "./tcx";
+import { TopoJSON } from "./topojson";
+import { type ConvertResult, getExtension } from "./utils";
+import { WKT } from "./wkt";
+import { XLS } from "./xls";
 
 export enum GeocodingBehavior {
   NULL_GEOMETRY,
-  }
+}
 
 export interface ExportedData {
   extensions: FileType["extensions"];
@@ -221,12 +221,12 @@ export interface FileType {
   forwardBinary?: (
     file: ArrayBuffer,
     options: ImportOptions,
-    callback: ProgressCb
+    callback: ProgressCb,
   ) => EitherAsync<Error | PlacemarkError, ConvertResult>;
   forwardString?: (
     file: string,
     options: ImportOptions,
-    callback: ProgressCb
+    callback: ProgressCb,
   ) => EitherAsync<Error | PlacemarkError, ConvertResult>;
   back?: (
     inputs: {
@@ -234,7 +234,7 @@ export interface FileType {
       featureMap: FeatureMap;
       folderMap: FolderMap;
     },
-    options: ExportOptions
+    options: ExportOptions,
   ) => EitherAsync<PlacemarkError, ExportResult>;
 }
 
@@ -280,7 +280,7 @@ async function detectJson(file: File) {
         return { ...DEFAULT_IMPORT_OPTIONS, type: GeoJSON.id };
       }
       return throwE(new PlacemarkError("Could not determine JSON type"));
-    }
+    },
   ).run();
 
   return res;
@@ -316,7 +316,7 @@ export async function detectType(file: File) {
       }
 
       return throwE(new PlacemarkError("Could not detect file type"));
-    }
+    },
   ).run();
 }
 
@@ -338,7 +338,7 @@ export async function fileToGeoJSON(
 }
 
 export function importToExportOptions(
-  options: ImportOptions
+  options: ImportOptions,
 ): ExportOptions | null {
   const driver = findType(options.type);
   if (!("back" in driver)) return null;
@@ -356,7 +356,7 @@ export function importToExportOptions(
  */
 export function fromGeoJSON(
   { featureMap, folderMap }: SetOptional<Data, "selection">,
-  exportOptions: ExportOptions
+  exportOptions: ExportOptions,
 ) {
   return EitherAsync<ConvertError, ExportedData>(
     async ({ throwE, fromPromise }) => {
@@ -369,24 +369,24 @@ export function fromGeoJSON(
         UWrappedFeature.filterMapByFolder(
           featureMap,
           folderMap,
-          exportOptions.folderId
+          exportOptions.folderId,
         );
 
       const geojson = UWrappedFeature.toFeatureCollection(
-        Array.from(filteredFeatures.values())
+        Array.from(filteredFeatures.values()),
       );
 
       const result = await fromPromise(
         type.back(
           { geojson, featureMap: filteredFeatures, folderMap: filteredFolders },
-          exportOptions
-        )
+          exportOptions,
+        ),
       );
 
       return {
         result,
         extensions: type.extensions,
       };
-    }
+    },
   );
 }

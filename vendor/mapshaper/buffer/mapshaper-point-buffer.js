@@ -1,16 +1,16 @@
-import { getGeodeticSegmentFunction } from "../geom/mapshaper-geodesic";
 import { getBufferDistanceFunction } from "../buffer/mapshaper-buffer-common";
-import { importGeoJSON } from "../geojson/geojson-import";
 import {
-  getDatasetCRS,
   getCRS,
+  getDatasetCRS,
   isLatLngCRS,
 } from "../crs/mapshaper-projections";
+import { importGeoJSON } from "../geojson/geojson-import";
 import {
-  removePolylineCrosses,
-  removePolygonCrosses,
   countCrosses,
+  removePolygonCrosses,
+  removePolylineCrosses,
 } from "../geom/mapshaper-antimeridian-cuts";
+import { getGeodeticSegmentFunction } from "../geom/mapshaper-geodesic";
 import { getSphericalPathArea2 } from "../geom/mapshaper-polygon-geom";
 import { PointIter } from "../paths/mapshaper-shape-iter";
 
@@ -43,7 +43,7 @@ function makePointBufferGeoJSON(lyr, dataset, opts) {
   var crs = getDatasetCRS(dataset);
   var spherical = isLatLngCRS(crs);
   var geod = getGeodeticSegmentFunction(crs);
-  var geometries = lyr.shapes.map(function (shape, i) {
+  var geometries = lyr.shapes.map((shape, i) => {
     var dist = distanceFn(i);
     if (!dist || !shape) return null;
     return getPointBufferPolygon(shape, dist, vertices, geod, spherical);
@@ -55,13 +55,7 @@ function makePointBufferGeoJSON(lyr, dataset, opts) {
   };
 }
 
-function getPointBufferPolygon(
-  points,
-  distance,
-  vertices,
-  geod,
-  spherical
-) {
+function getPointBufferPolygon(points, distance, vertices, geod, spherical) {
   var rings = [],
     coords,
     coords2;

@@ -1,13 +1,13 @@
 import { newFeatureId } from "app/lib/id";
+import { EMPTY_MOMENT, type MomentInput } from "app/lib/persistence/moment";
 import polylabel from "polylabel";
-import { EMPTY_MOMENT, MomentInput } from "app/lib/persistence/moment";
 import { USelection } from "state";
-import { Sel } from "state/jotai";
-import { IWrappedFeature } from "types";
+import type { Sel } from "state/jotai";
+import type { IWrappedFeature } from "types";
 
 export function centroidFeature(
   wrappedFeature: IWrappedFeature,
-  coordinates: Pos2
+  coordinates: Pos2,
 ): MomentInput["putFeatures"][number] {
   return {
     id: newFeatureId(),
@@ -55,7 +55,7 @@ export function drawLabelPoints(wrappedFeatures: IWrappedFeature[]): {
         }
       }
       return [];
-    }
+    },
   );
 
   return {

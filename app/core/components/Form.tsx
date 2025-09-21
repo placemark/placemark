@@ -1,10 +1,10 @@
-import type { ReactNode, PropsWithoutRef } from "react";
-import { useState } from "react";
+import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
+import { InlineError } from "app/components/inline_error";
 import type { FormikHelpers, FormikProps } from "formik";
 import { Formik } from "formik";
-import { InlineError } from "app/components/inline_error";
+import type { PropsWithoutRef, ReactNode } from "react";
+import { useState } from "react";
 import type { z } from "zod";
-import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
 
 interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
@@ -17,7 +17,7 @@ interface FormProps<S extends z.ZodType<any, any>>
   track?: string;
   onSubmit: (
     values: z.infer<S>,
-    helpers: FormikHelpers<z.infer<S>>
+    helpers: FormikHelpers<z.infer<S>>,
   ) => Promise<void | OnSubmitResult>;
   initialValues?: FormikProps<z.infer<S>>["initialValues"];
 }
@@ -93,4 +93,3 @@ export function Form<S extends z.ZodType<any, any>>({
     </Formik>
   );
 }
-

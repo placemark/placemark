@@ -1,15 +1,16 @@
 import {
-  encodeString,
-  decodeString,
-  stringIsAscii,
-} from "../text/mapshaper-encodings";
-import {
   findFieldNames,
   getUniqFieldNames,
 } from "../datatable/mapshaper-data-utils";
+import {
+  decodeString,
+  encodeString,
+  stringIsAscii,
+} from "../text/mapshaper-encodings";
+import { BinArray } from "../utils/mapshaper-binarray";
 import { error, message } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
-import { BinArray } from "../utils/mapshaper-binarray";
+
 var Dbf = {};
 var MAX_STRING_LEN = 254;
 export default Dbf;
@@ -36,12 +37,12 @@ function BufferPool() {
   }
 
   return {
-    reserve: function (bytes) {
+    reserve: (bytes) => {
       if (i + bytes > n) newPool();
       i += bytes;
       return pool.subarray(i - bytes, i);
     },
-    putBack: function (bytes) {
+    putBack: (bytes) => {
       i -= bytes;
     },
   };
@@ -56,7 +57,7 @@ function exportRecords(records, encoding, fieldOrder) {
   var headerEncoding = stringIsAscii(fields.join("")) ? "ascii" : dataEncoding;
   var fieldNames = convertFieldNames(fields, headerEncoding);
   var fieldBuffers = encodeFieldNames(fieldNames, headerEncoding); // array of 11-byte buffers
-  var fieldData = fields.map(function (name, i) {
+  var fieldData = fields.map((name, i) => {
     var info = getFieldInfo(records, name, dataEncoding);
     if (info.warning) {
       message("[" + name + "] " + info.warning);
@@ -85,7 +86,7 @@ function exportRecords(records, encoding, fieldOrder) {
   bin.skipBytes(2);
 
   // field subrecords
-  fieldData.reduce(function (recordOffset, obj, i) {
+  fieldData.reduce((recordOffset, obj, i) => {
     // bin.writeCString(obj.name, 11);
     bin.writeBuffer(fieldBuffers[i], 11, 0);
     bin.writeUint8(obj.type.charCodeAt(0));
@@ -102,11 +103,11 @@ function exportRecords(records, encoding, fieldOrder) {
       "Dbf#exportRecords() header size mismatch; expected:",
       headerBytes,
       "written:",
-      bin.position()
+      bin.position(),
     );
   }
 
-  records.forEach(function (rec, i) {
+  records.forEach((rec, i) => {
     var start = bin.position();
     bin.writeUint8(0x20); // delete flag; 0x20 valid 0x2a deleted
     for (var j = 0, n = fieldData.length; j < n; j++) {
@@ -124,7 +125,7 @@ function exportRecords(records, encoding, fieldOrder) {
       "Dbf#exportRecords() file size mismatch; expected:",
       fileBytes,
       "written:",
-      bin.position()
+      bin.position(),
     );
   }
   return buffer;
@@ -147,7 +148,7 @@ function initNumericField(info, arr, name) {
   info.decimals = data.decimals;
   size = Math.max(
     data.max.toFixed(info.decimals).length,
-    data.min.toFixed(info.decimals).length
+    data.min.toFixed(info.decimals).length,
   );
   if (size > MAX_FIELD_SIZE) {
     size = MAX_FIELD_SIZE;
@@ -159,7 +160,7 @@ function initNumericField(info, arr, name) {
   info.size = size;
 
   var formatter = getDecimalFormatter(size, info.decimals);
-  info.write = function (i, bin) {
+  info.write = (i, bin) => {
     var rec = arr[i],
       str = formatter(rec[name]);
     if (str.length < size) {
@@ -171,7 +172,7 @@ function initNumericField(info, arr, name) {
 
 function initBooleanField(info, arr, name) {
   info.size = 1;
-  info.write = function (i, bin) {
+  info.write = (i, bin) => {
     var val = arr[i][name],
       c;
     if (val === true) c = "T";
@@ -183,7 +184,7 @@ function initBooleanField(info, arr, name) {
 
 function initDateField(info, arr, name) {
   info.size = 8;
-  info.write = function (i, bin) {
+  info.write = (i, bin) => {
     var d = arr[i][name],
       str;
     if (d instanceof Date === false) {
@@ -207,7 +208,7 @@ function initStringField(info, arr, name, encoding) {
     encoding == "ascii" ? encodeValueAsAscii : getStringWriterEncoded(encoding);
   var size = 0;
   var truncated = 0;
-  var buffers = arr.map(function (rec) {
+  var buffers = arr.map((rec) => {
     var strval = convertValueToString(rec[name]);
     var buf = formatter(strval);
     if (buf.length > MAX_STRING_LEN) {
@@ -222,7 +223,7 @@ function initStringField(info, arr, name, encoding) {
     return buf;
   });
   info.size = size;
-  info.write = function (i, bin) {
+  info.write = (i, bin) => {
     var buf = buffers[i],
       n = Math.min(size, buf.length),
       dest = bin._bytes,
@@ -245,7 +246,7 @@ function initStringField(info, arr, name, encoding) {
 
 // Convert string names to 11-byte buffers terminated by 0
 function encodeFieldNames(names, encoding) {
-  return names.map(function (name) {
+  return names.map((name) => {
     var encoded = encodeString(name, encoding);
     var encLen = encoded.length;
     var buf = utils.createBuffer(11);
@@ -260,7 +261,7 @@ function encodeFieldNames(names, encoding) {
 //
 function convertFieldNames(names, encoding) {
   var names2 = getUniqFieldNames(names.map(cleanFieldName), 10, encoding);
-  names2.forEach(function (name2, i) {
+  names2.forEach((name2, i) => {
     if (names[i] != name2) {
       message('Changed field name from "' + names[i] + '" to "' + name2 + '"');
     }
@@ -303,7 +304,7 @@ function getFieldInfo(arr, name, encoding) {
       info.warning =
         "Unable to export " + type + "-type data, writing null values";
     }
-    info.write = function () {};
+    info.write = () => {};
   }
   return info;
 }
@@ -324,7 +325,7 @@ function discoverFieldType(arr, name) {
 function getDecimalFormatter(size, decimals) {
   // TODO: find better way to handle nulls
   var nullValue = " "; // ArcGIS may use 0
-  return function (val) {
+  return (val) => {
     // TODO: handle invalid values better
     var valid = utils.isFiniteNumber(val),
       strval = valid ? val.toFixed(decimals) : String(nullValue);
@@ -395,7 +396,7 @@ function encodeValueAsAscii(val, strict) {
 }
 
 function getStringWriterEncoded(encoding) {
-  return function (val) {
+  return (val) => {
     // optimization -- large majority of strings in real-world datasets are
     // ascii. Try (faster) ascii encoding first, fall back to text encoder.
     var buf = encodeValueAsAscii(val, true);

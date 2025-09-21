@@ -1,32 +1,32 @@
-import { Formik, Form, Field, FormikHelpers } from "formik";
-import {
-  fromGeoJSON,
-  ExportOptions,
-  findType,
-  DEFAULT_EXPORT_GEOJSON_OPTIONS,
-  FileType,
-  ExportedData,
-  DEFAULT_IMPORT_OPTIONS,
-} from "app/lib/convert";
-import { lib } from "app/lib/worker";
-import * as E from "app/components/elements";
-import { Collapsible as C } from "radix-ui";
-import { captureException } from "integrations/errors";
-import toast from "react-hot-toast";
 import { DownloadIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import type { Root } from "@tmcw/togeojson";
 import { DialogHeader } from "app/components/dialog";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
-import { dataAtom, fileInfoAtom } from "state/jotai";
+import * as E from "app/components/elements";
 import { SelectFileType } from "app/components/fields";
 import { NarrowExport } from "app/components/narrow_export";
-import { useAtomValue, useSetAtom } from "jotai";
 import {
   useFolderSummary,
   useRootItems,
 } from "app/components/panels/feature_editor/feature_editor_folder/math";
-import type { Root } from "@tmcw/togeojson";
-import { FeatureMap } from "types";
+import {
+  DEFAULT_EXPORT_GEOJSON_OPTIONS,
+  DEFAULT_IMPORT_OPTIONS,
+  type ExportedData,
+  type ExportOptions,
+  type FileType,
+  findType,
+  fromGeoJSON,
+} from "app/lib/convert";
 import { pluralize } from "app/lib/utils";
+import { lib } from "app/lib/worker";
+import { Field, Form, Formik, type FormikHelpers } from "formik";
+import { captureException } from "integrations/errors";
+import { useAtomValue, useSetAtom } from "jotai";
+import { Collapsible as C } from "radix-ui";
+import toast from "react-hot-toast";
+import { dataAtom, fileInfoAtom } from "state/jotai";
+import type { FeatureMap } from "types";
 
 function fallbackSave(result: ExportedData, type: FileType) {
   const a = document.createElement("a");
@@ -51,7 +51,7 @@ function CSVOptions({
 }) {
   const folderSummary = useFolderSummary({ root, featureMap });
   const selectedFolder = folderSummary.find(
-    (folder) => folder.meta.id === (values.folderId || null)
+    (folder) => folder.meta.id === (values.folderId || null),
   );
 
   let omittedFeatureCount = 0;
@@ -197,7 +197,7 @@ export function ExportDialog({ onClose }: { onClose: () => void }) {
 
   async function onSubmit(
     exportOptions: ExportOptions,
-    helpers: FormikHelpers<ExportOptions>
+    helpers: FormikHelpers<ExportOptions>,
   ) {
     const { fileSave, supported } = await import("browser-fs-access");
 
@@ -228,7 +228,7 @@ export function ExportDialog({ onClose }: { onClose: () => void }) {
               description: "Save file",
               mimeTypes: ["application/octet-stream"],
             },
-            null
+            null,
           );
           if (newHandle) {
             setFileInfo({ handle: newHandle, options: exportOptions });

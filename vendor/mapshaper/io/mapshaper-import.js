@@ -1,13 +1,13 @@
+import { guessInputType } from "../io/mapshaper-file-types";
+import { importJSON } from "../io/mapshaper-json-import";
+import { cleanPathsAfterImport } from "../paths/mapshaper-path-import";
 import { importDbfTable } from "../shapefile/dbf-import";
 import { importShp } from "../shapefile/shp-import";
-import { guessInputType } from "../io/mapshaper-file-types";
 import { importDelim2 } from "../text/mapshaper-delim-import";
-import { cleanPathsAfterImport } from "../paths/mapshaper-path-import";
-import utils from "../utils/mapshaper-utils";
-import { importJSON } from "../io/mapshaper-json-import";
 import { buildTopology } from "../topology/mapshaper-topology";
-import { message, stop } from "../utils/mapshaper-logging";
 import { getFileBase, parseLocalPath } from "../utils/mapshaper-filename-utils";
+import { message, stop } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // Parse content of one or more input files and return a dataset
 // @obj: file data, indexed by file type
@@ -54,7 +54,7 @@ export function importContent(obj, opts) {
 
   // Use file basename for layer name, except TopoJSON, which uses object names
   if (fileFmt != "topojson") {
-    dataset.layers.forEach(function (lyr) {
+    dataset.layers.forEach((lyr) => {
       if (!lyr.name) {
         lyr.name = filenameToLayerName(data.filename || "");
       }

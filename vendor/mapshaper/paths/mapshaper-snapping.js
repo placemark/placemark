@@ -1,6 +1,6 @@
+import { getAvgSegment } from "../paths/mapshaper-path-utils";
 import { message } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
-import { getAvgSegment } from "../paths/mapshaper-path-utils";
 
 // Returns an interval for snapping together coordinates that be co-incident bug
 // have diverged because of floating point rounding errors. Intended to be small
@@ -26,14 +26,18 @@ export function snapCoords(arcs, threshold) {
       utils.format(
         "Applying snapping threshold of %s -- %.6f times avg. segment length",
         threshold,
-        threshold / avgDist
-      )
+        threshold / avgDist,
+      ),
     );
   }
   var snapCount = snapCoordsByInterval(arcs, snapDist);
   if (snapCount > 0) arcs.dedupCoords();
   message(
-    utils.format("Snapped %s point%s", snapCount, utils.pluralSuffix(snapCount))
+    utils.format(
+      "Snapped %s point%s",
+      snapCount,
+      utils.pluralSuffix(snapCount),
+    ),
   );
 }
 

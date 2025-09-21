@@ -1,12 +1,12 @@
 import { MapContext } from "app/context/map_context";
-import { useAtomCallback } from "jotai/utils";
 import { getExtent, isBBoxEmpty } from "app/lib/geometry";
-import { LngLatBoundsLike } from "mapbox-gl";
+import { useAtomCallback } from "jotai/utils";
+import type { LngLatBoundsLike } from "mapbox-gl";
 import { Maybe } from "purify-ts/Maybe";
 import { useCallback, useContext } from "react";
 import { USelection } from "state";
-import { dataAtom, Sel } from "state/jotai";
-import { BBox, FeatureCollection, IWrappedFeature } from "types";
+import { dataAtom, type Sel } from "state/jotai";
+import type { BBox, FeatureCollection, IWrappedFeature } from "types";
 
 export function useZoomTo() {
   const map = useContext(MapContext);
@@ -40,7 +40,7 @@ export function useZoomTo() {
           });
         });
       },
-      [map]
-    )
+      [map],
+    ),
   );
 }

@@ -5,9 +5,7 @@ import { PathIndex } from "../paths/mapshaper-path-index";
 export function clipPolylines(targetShapes, clipShapes, nodes, type) {
   var index = new PathIndex(clipShapes, nodes.arcs);
 
-  return targetShapes.map(function (shp) {
-    return clipPolyline(shp);
-  });
+  return targetShapes.map((shp) => clipPolyline(shp));
 
   function clipPolyline(shp) {
     var clipped = null;

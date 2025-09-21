@@ -1,15 +1,15 @@
 import { Bounds } from "../geom/mapshaper-bounds";
+import geom from "../geom/mapshaper-geom";
 import { absArcId } from "../paths/mapshaper-arc-utils";
 import { error } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
-import geom from "../geom/mapshaper-geom";
 
 // Utility functions for working with ArcCollection and arrays of arc ids.
 
 // Return average segment length (with simplification)
 export function getAvgSegment(arcs) {
   var sum = 0;
-  var count = arcs.forEachSegment(function (i, j, xx, yy) {
+  var count = arcs.forEachSegment((i, j, xx, yy) => {
     var dx = xx[i] - xx[j],
       dy = yy[i] - yy[j];
     sum += Math.sqrt(dx * dx + dy * dy);
@@ -21,7 +21,7 @@ export function getAvgSegment(arcs) {
 export function getAvgSegment2(arcs) {
   var dx = 0,
     dy = 0;
-  var count = arcs.forEachSegment(function (i, j, xx, yy) {
+  var count = arcs.forEachSegment((i, j, xx, yy) => {
     dx += Math.abs(xx[i] - xx[j]);
     dy += Math.abs(yy[i] - yy[j]);
   });
@@ -44,12 +44,12 @@ this.getAvgSegmentSph2 = function() {
 
 function getDirectedArcPresenceTest(shapes, n) {
   var flags = new Uint8Array(n);
-  forEachArcId(shapes, function (id) {
+  forEachArcId(shapes, (id) => {
     var absId = absArcId(id);
     if (absId < n === false) error("index error");
     flags[absId] |= id < 0 ? 2 : 1;
   });
-  return function (arcId) {
+  return (arcId) => {
     var absId = absArcId(arcId);
     return arcId < 0 ? (flags[absId] & 2) == 2 : (flags[absId] & 1) == 1;
   };
@@ -58,7 +58,7 @@ function getDirectedArcPresenceTest(shapes, n) {
 export function getArcPresenceTest(shapes, arcs) {
   var counts = new Uint8Array(arcs.size());
   countArcsInShapes(shapes, counts);
-  return function (id) {
+  return (id) => {
     if (id < 0) id = ~id;
     return counts[id] > 0;
   };
@@ -67,7 +67,7 @@ export function getArcPresenceTest(shapes, arcs) {
 // @counts A typed array for accumulating count of each abs arc id
 //   (assume it won't overflow)
 export function countArcsInShapes(shapes, counts) {
-  traversePaths(shapes, null, function (obj) {
+  traversePaths(shapes, null, (obj) => {
     var arcs = obj.arcs,
       id;
     for (var i = 0; i < arcs.length; i++) {
@@ -80,7 +80,7 @@ export function countArcsInShapes(shapes, counts) {
 
 export function getPathBounds(shapes, arcs) {
   var bounds = new Bounds();
-  forEachArcId(shapes, function (id) {
+  forEachArcId(shapes, (id) => {
     arcs.mergeArcBounds(id, bounds);
   });
   return bounds;
@@ -90,12 +90,12 @@ export function getPathBounds(shapes, arcs) {
 function findShapesByArcId(shapes, arcIds, numArcs) {
   var index = numArcs ? new Uint8Array(numArcs) : [],
     found = [];
-  arcIds.forEach(function (id) {
+  arcIds.forEach((id) => {
     index[absArcId(id)] = 1;
   });
-  shapes.forEach(function (shp, shpId) {
+  shapes.forEach((shp, shpId) => {
     var isHit = false;
-    forEachArcId(shp || [], function (id) {
+    forEachArcId(shp || [], (id) => {
       isHit = isHit || index[absArcId(id)] == 1;
     });
     if (isHit) {
@@ -175,7 +175,7 @@ export function forEachSegmentInPath(ids, arcs, cb) {
 
 export function traversePaths(shapes, cbArc, cbPart, cbShape) {
   var segId = 0;
-  shapes.forEach(function (parts, shapeId) {
+  shapes.forEach((parts, shapeId) => {
     if (!parts || parts.length === 0) return; // null shape
     var arcIds, arcId;
     if (cbShape) {
@@ -225,7 +225,7 @@ function arcHasLength(id, coords) {
 export function filterEmptyArcs(shape, coords) {
   if (!shape) return null;
   var shape2 = [];
-  shape.forEach(function (ids) {
+  shape.forEach((ids) => {
     var path = [];
     for (var i = 0; i < ids.length; i++) {
       if (arcHasLength(ids[i], coords)) {
@@ -263,7 +263,7 @@ function quantizeArcs(arcs, quanta) {
     fw = bb1.getTransform(bb2),
     inv = fw.invert();
 
-  arcs.transformPoints(function (x, y) {
+  arcs.transformPoints((x, y) => {
     var p = fw.transform(x, y);
     return inv.transform(Math.round(p[0]), Math.round(p[1]));
   });

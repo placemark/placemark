@@ -1,6 +1,6 @@
 export function sortAts<T extends { at: string; id: string }>(
   a: T,
-  b: T
+  b: T,
 ): number {
   if (a.at > b.at) {
     return 1;

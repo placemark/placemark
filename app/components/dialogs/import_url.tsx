@@ -1,14 +1,14 @@
-import { Formik, Form } from "formik";
 import { GlobeIcon } from "@radix-ui/react-icons";
 import { DialogHeader } from "app/components/dialog";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
-import { LabeledTextField } from "app/core/components/LabeledTextField";
-import { useState } from "react";
-import { InlineError } from "app/components/inline_error";
-import { useSetAtom } from "jotai";
-import { dialogAtom } from "state/dialog_state";
 import { styledInlineA, TextWell } from "app/components/elements";
+import { InlineError } from "app/components/inline_error";
+import { LabeledTextField } from "app/core/components/LabeledTextField";
 import { MB_TO_BYTES } from "app/lib/constants";
+import { Form, Formik } from "formik";
+import { useSetAtom } from "jotai";
+import { useState } from "react";
+import { dialogAtom } from "state/dialog_state";
 
 interface UrlValue {
   url: string;
@@ -30,7 +30,7 @@ export function ImportURLDialog({ onClose }: { onClose: () => void }) {
             const buffer = await res.arrayBuffer();
             if (buffer.byteLength > MB_TO_BYTES * MB_LIMIT) {
               setFormError(
-                `Files over ${MB_LIMIT}MB are not supported for URL input.`
+                `Files over ${MB_LIMIT}MB are not supported for URL input.`,
               );
               return;
             }

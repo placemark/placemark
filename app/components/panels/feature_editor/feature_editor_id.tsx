@@ -1,17 +1,17 @@
-import React from "react";
-import { usePersistence } from "app/lib/persistence/context";
-import type { IWrappedFeature } from "types";
-import { PanelDetailsCollapsible } from "app/components/panel_details";
-import { panelIdOpen } from "state/jotai";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
   inputClass,
   StyledField,
   StyledLabelSpan,
 } from "app/components/elements";
-import { Formik, Form } from "formik";
+import { PanelDetailsCollapsible } from "app/components/panel_details";
+import { usePersistence } from "app/lib/persistence/context";
+import { Form, Formik } from "formik";
+import React from "react";
 import toast from "react-hot-toast";
-import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { panelIdOpen } from "state/jotai";
+import type { IWrappedFeature } from "types";
 
 export function FeatureEditorId({
   wrappedFeature,
@@ -44,8 +44,8 @@ export function FeatureEditorId({
                   values.id === ""
                     ? undefined
                     : isNaN(+values.id)
-                    ? values.id
-                    : +values.id;
+                      ? values.id
+                      : +values.id;
                 await transact({
                   note: "Updated a feature’s id",
                   putFeatures: [

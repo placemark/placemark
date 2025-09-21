@@ -1,5 +1,5 @@
-import { Left, Right, Either } from "purify-ts/Either";
 import type { TransferHandler } from "comlink";
+import { Either, Left, Right } from "purify-ts/Either";
 
 interface SerializedEither {
   __val: any;

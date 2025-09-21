@@ -1,8 +1,7 @@
-import { expect, describe, it, test } from "vitest";
-
 import { USelection } from "state";
 import { exampleFolder, fcLineString, wrapMap } from "test/helpers";
-import { solveRootItems, getRequiredExpansionsFeature } from "./math";
+import { describe, expect, it, test } from "vitest";
+import { getRequiredExpansionsFeature, solveRootItems } from "./math";
 
 test("solveRootItems", () => {
   expect(solveRootItems(new Map(), new Map())).toEqual({
@@ -21,7 +20,7 @@ describe("getRequiredExpansionsFeature", () => {
         featureMap: m,
         folderMap: new Map(),
         selection,
-      })
+      }),
     ).toEqual([]);
   });
 
@@ -35,7 +34,7 @@ describe("getRequiredExpansionsFeature", () => {
         featureMap: m,
         folderMap: new Map([[exampleFolder.id, exampleFolder]]),
         selection,
-      })
+      }),
     ).toEqual([]);
   });
 
@@ -50,7 +49,7 @@ describe("getRequiredExpansionsFeature", () => {
         featureMap: m,
         folderMap: new Map([[collapsedFolder.id, collapsedFolder]]),
         selection,
-      })
+      }),
     ).toEqual([collapsedFolder]);
   });
 });

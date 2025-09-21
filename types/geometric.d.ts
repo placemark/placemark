@@ -32,7 +32,7 @@ declare module "geometric" {
   export function pointRotate(
     point: Point,
     angle: number,
-    origin?: Point
+    origin?: Point,
   ): Point;
 
   /**
@@ -41,7 +41,7 @@ declare module "geometric" {
   export function pointTranslate(
     point: Point,
     angle: number,
-    distance: number
+    distance: number,
   ): Point;
 
   // -------------------------------LINES-------------------------------------------//
@@ -53,7 +53,7 @@ declare module "geometric" {
   export function lineRotate(
     line: Line,
     angle: number,
-    origin: [number, number]
+    origin: [number, number],
   ): Line;
 
   /**
@@ -124,7 +124,7 @@ declare module "geometric" {
   export function polygonRegular(
     sides?: number,
     area?: number,
-    center?: Point
+    center?: Point,
   ): Polygon;
 
   /**
@@ -134,7 +134,7 @@ declare module "geometric" {
   export function polygonRotate(
     polygon: Polygon,
     angle: number,
-    origin?: Point
+    origin?: Point,
   ): Polygon;
 
   /**
@@ -144,7 +144,7 @@ declare module "geometric" {
   export function polygonScale(
     polygon: Polygon,
     scaleFactor: number,
-    origin?: Point
+    origin?: Point,
   ): Polygon;
 
   /**
@@ -153,7 +153,7 @@ declare module "geometric" {
   export function polygonTranslate(
     polygon: Polygon,
     angle: number,
-    distance: number
+    distance: number,
   ): Polygon;
 
   // -------------------------------RELATIONSHIPS-------------------------------------------//
@@ -204,7 +204,7 @@ declare module "geometric" {
    */
   export function polygonInPolygon(
     polygonA: Polygon,
-    polygonB: Polygon
+    polygonB: Polygon,
   ): boolean;
 
   /**
@@ -212,7 +212,7 @@ declare module "geometric" {
    */
   export function polygonIntersectsPolygon(
     polygonA: Polygon,
-    polygonB: Polygon
+    polygonB: Polygon,
   ): boolean;
 
   // -------------------------------ANGLES-------------------------------------------//
@@ -223,7 +223,7 @@ declare module "geometric" {
    */
   export function angleReflect(
     incidenceAngle: number,
-    surfaceAngle: number
+    surfaceAngle: number,
   ): number;
 
   /**

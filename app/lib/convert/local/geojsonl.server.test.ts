@@ -1,12 +1,11 @@
-import { expect, describe, it } from "vitest";
-
-import { GeoJSONToGeoJSONL, GeoJSONLToGeoJSON } from "./geojsonl";
 import { twoPoints } from "test/helpers";
+import { describe, expect, it } from "vitest";
+import { GeoJSONLToGeoJSON, GeoJSONToGeoJSONL } from "./geojsonl";
 
 describe("GeoJSONLToGeoJSON", () => {
   it("is symmetric", () => {
     expect(GeoJSONLToGeoJSON(GeoJSONToGeoJSONL(twoPoints))).toEqualRight(
-      twoPoints
+      twoPoints,
     );
   });
 
@@ -17,8 +16,8 @@ describe("GeoJSONLToGeoJSON", () => {
           JSON.stringify(twoPoints),
           JSON.stringify(twoPoints.features[0]),
           JSON.stringify(twoPoints.features[0].geometry),
-        ].join("\n")
-      )
+        ].join("\n"),
+      ),
     ).toMatchInlineSnapshot(`
       {
         "features": [

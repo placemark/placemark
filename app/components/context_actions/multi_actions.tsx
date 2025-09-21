@@ -1,23 +1,23 @@
 import { LinkNone2Icon } from "@radix-ui/react-icons";
 import type { ActionProps } from "app/components/context_actions/action_item";
-import type { BooleanOp } from "app/lib/map_operations";
 import {
+  SendToBack16,
   ShapeIntersect16,
   ShapeUnite16,
-  SendToBack16,
 } from "app/components/icons";
-import { mergeFeaturesMessage, mergeFeatures } from "app/lib/map_operations";
-import { lib } from "app/lib/worker";
-import { usePersistence } from "app/lib/persistence/context";
 import { newFeatureId } from "app/lib/id";
-import toast from "react-hot-toast";
-import { ActionItem } from "./action_item";
-import type { Action } from "./action_item";
-import type { IWrappedFeature } from "types";
+import type { BooleanOp } from "app/lib/map_operations";
+import { mergeFeatures, mergeFeaturesMessage } from "app/lib/map_operations";
+import { usePersistence } from "app/lib/persistence/context";
+import { lib } from "app/lib/worker";
 import { captureException } from "integrations/errors";
+import toast from "react-hot-toast";
+import type { IWrappedFeature } from "types";
+import type { Action } from "./action_item";
+import { ActionItem } from "./action_item";
 
 export function useMultiActions(
-  selectedWrappedFeatures: IWrappedFeature[]
+  selectedWrappedFeatures: IWrappedFeature[],
 ): Action[] {
   const rep = usePersistence();
   const transact = rep.useTransact();
@@ -31,7 +31,7 @@ export function useMultiActions(
   function makeBooleanAction(
     op: BooleanOp,
     label: string,
-    icon: React.ReactNode
+    icon: React.ReactNode,
   ) {
     return {
       label,
@@ -58,7 +58,7 @@ export function useMultiActions(
                 }),
               });
             },
-          })
+          }),
         );
         return toast.promise(
           work,
@@ -71,7 +71,7 @@ export function useMultiActions(
             loading: { duration: Infinity },
             success: { duration: 2000 },
             error: { duration: 2000 },
-          }
+          },
         );
       },
     };

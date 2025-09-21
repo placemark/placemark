@@ -19,8 +19,8 @@ test("geojsonToCSV", () => {
           },
         ],
       },
-      DEFAULT_EXPORT_OPTIONS
-    )
+      DEFAULT_EXPORT_OPTIONS,
+    ),
   ).toEqual(`name,latitude,longitude
 Null island,0,0`);
 
@@ -39,8 +39,8 @@ Null island,0,0`);
           },
         ],
       },
-      DEFAULT_EXPORT_OPTIONS
-    )
+      DEFAULT_EXPORT_OPTIONS,
+    ),
   ).toEqual(`name,latitude,longitude
 Null island,0,0`);
 
@@ -77,8 +77,8 @@ Null island,0,0`);
           ...DEFAULT_IMPORT_OPTIONS["csvOptions"],
           kind: "polyline",
         },
-      }
-    )
+      },
+    ),
   ).toEqual(`name,polyline
 Null island,
 Two,??_seK_ibE_seK_seK`);

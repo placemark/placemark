@@ -5,7 +5,7 @@ import {
   FILL_PAINT,
   LINE_PAINT,
 } from "app/lib/load_and_augment_style";
-import { ISymbolization } from "types";
+import type { ISymbolization } from "types";
 
 export interface EOption {
   name: string;
@@ -36,7 +36,7 @@ export function exportStyle(symbolization: ISymbolization): EOption[] {
           },
         }),
         null,
-        2
+        2,
       ),
     },
     {

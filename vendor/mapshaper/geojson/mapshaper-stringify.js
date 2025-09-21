@@ -27,7 +27,7 @@ export function getFormattedStringify(numArrayKeys) {
     return val;
   }
 
-  return function (obj) {
+  return (obj) => {
     var json = JSON.stringify(obj, replace, indentChars);
     return json.replace(stripRxp, "");
   };

@@ -1,5 +1,5 @@
-import { Root } from "@tmcw/togeojson";
-import { FeatureCollection } from "types";
+import type { Root } from "@tmcw/togeojson";
+import type { FeatureCollection } from "types";
 
 // https://github.com/browserify/path-browserify/blob/872fec31a8bac7b9b43be0e54ef3037e0202c5fb/index.js#L389
 /**

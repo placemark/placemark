@@ -8,7 +8,7 @@ export function editArcs(arcs, onPoint) {
     errors = 0,
     n;
 
-  arcs.forEach(function (arc, i) {
+  arcs.forEach((arc, i) => {
     editArc(arc, onPoint);
   });
   arcs.updateVertexData(nn2, xx2, yy2);

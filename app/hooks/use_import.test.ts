@@ -1,4 +1,4 @@
-import { expect, vi, test } from "vitest";
+import { expect, test, vi } from "vitest";
 
 vi.mock("app/lib/worker", () => {
   return {};
@@ -14,8 +14,9 @@ test("getTargetMap", () => {
       "targetMap": Map {},
     }
   `);
-  expect(getTargetMap({ featureMap: wrapMap(twoPoints) }, "b"))
-    .toMatchInlineSnapshot(`
+  expect(
+    getTargetMap({ featureMap: wrapMap(twoPoints) }, "b"),
+  ).toMatchInlineSnapshot(`
       {
         "sourceMissingFieldCount": 1,
         "targetMap": Map {

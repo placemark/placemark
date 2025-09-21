@@ -1,6 +1,6 @@
+import { Bounds } from "../geom/mapshaper-bounds";
 import geom from "../geom/mapshaper-geom";
 import utils from "../utils/mapshaper-utils";
-import { Bounds } from "../geom/mapshaper-bounds";
 
 export function getWorldBounds(e) {
   e = utils.isFiniteNumber(e) ? e : 1e-10;
@@ -19,7 +19,7 @@ export function clampToWorldBounds(b) {
     Math.max(bbox[0], -180),
     Math.max(bbox[1], -90),
     Math.min(bbox[2], 180),
-    Math.min(bbox[3], 90)
+    Math.min(bbox[3], 90),
   );
 }
 

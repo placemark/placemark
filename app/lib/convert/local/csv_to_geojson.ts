@@ -1,26 +1,26 @@
-import type { FeatureCollection, Feature } from "types";
+import { MAX_GEOCODER_ROWS } from "app/lib/constants";
 import {
   DEFAULT_IMPORT_OPTIONS,
   GeocodingBehavior,
-  ImportOptions,
-  ProgressCb,
+  type ImportOptions,
+  type ProgressCb,
 } from "app/lib/convert";
+import { getZipDB, type ZipDB } from "app/lib/get_zip_db";
 import type { DSVRowString } from "d3-dsv";
 import { dsvFormat } from "d3-dsv";
-import { getZipDB, ZipDB } from "app/lib/get_zip_db";
+import type { JsonObject, JsonValue } from "type-fest";
+import type { Feature, FeatureCollection } from "types";
 import {
   castRowGeocode,
-  castRowLonLat,
-  castRowWKT,
   castRowGeoJSON,
+  castRowLonLat,
   castRowPolyline,
+  castRowWKT,
   castRowZip,
   EnforcedLonLatOptions,
   EnforcedWKTOptions,
   EnforcedZipOptions,
 } from "./shared";
-import { JsonObject, JsonValue } from "type-fest";
-import { MAX_GEOCODER_ROWS } from "app/lib/constants";
 
 interface Scores {
   latitudeScore: number;
@@ -40,7 +40,7 @@ type ColumnWithScore = {
 // https://github.com/d3/d3-dsv#autoType
 export function autoType(
   input: DSVRowString,
-  options: ImportOptions["csvOptions"]
+  options: ImportOptions["csvOptions"],
 ): JsonObject {
   const object = input as JsonObject;
   for (const key in object) {
@@ -62,7 +62,7 @@ export function autoType(
 
 function sortByScore(
   columnsWithScores: ColumnWithScore[],
-  scoreKey: keyof Scores
+  scoreKey: keyof Scores,
 ) {
   const [winner] = columnsWithScores
     .filter((column) => column[scoreKey] > 0)
@@ -115,19 +115,19 @@ export function detectColumns(columns: string[]): ImportOptions["csvOptions"] {
     kind: hasPolylineColumn
       ? "polyline"
       : hasWktColumn
-      ? "wkt"
-      : latitudeHeader?.column === longitudeHeader?.column ||
-        goodZipHeaders.has(zipHeader?.column?.toLowerCase())
-      ? "zip"
-      : "lonlat",
+        ? "wkt"
+        : latitudeHeader?.column === longitudeHeader?.column ||
+            goodZipHeaders.has(zipHeader?.column?.toLowerCase())
+          ? "zip"
+          : "lonlat",
     delimiter: ",",
     latitudeHeader: latitudeHeader?.column || singleColumn,
     longitudeHeader: longitudeHeader?.column || singleColumn,
     geometryHeader: hasPolylineColumn
       ? "polyline"
       : hasWktColumn
-      ? "wkt"
-      : singleColumn,
+        ? "wkt"
+        : singleColumn,
     joinTargetHeader: singleColumn,
     joinSourceHeader: singleColumn,
     sheet: "",
@@ -154,7 +154,7 @@ function scoreColumn(column: string, regex: RegExp) {
 export async function csvToGeoJSON(
   csv: string,
   options: ImportOptions["csvOptions"],
-  progress: ProgressCb
+  progress: ProgressCb,
 ): Promise<FeatureCollection> {
   if (!options) throw new Error("Options should not be undefined");
   const { kind, delimiter } = options;
@@ -173,7 +173,7 @@ export async function csvToGeoJSON(
     case "addresses": {
       if (rows.length > MAX_GEOCODER_ROWS) {
         throw new Error(
-          `Up to ${MAX_GEOCODER_ROWS} rows are supported for the address type`
+          `Up to ${MAX_GEOCODER_ROWS} rows are supported for the address type`,
         );
       }
       break;
@@ -197,7 +197,7 @@ export async function csvToGeoJSON(
       case "lonlat": {
         const feature = castRowLonLat(
           castRow,
-          EnforcedLonLatOptions.parse(options)
+          EnforcedLonLatOptions.parse(options),
         );
         if (feature) {
           features.push(feature);
@@ -214,7 +214,7 @@ export async function csvToGeoJSON(
       case "geojson": {
         const feature = castRowGeoJSON(
           castRow,
-          EnforcedWKTOptions.parse(options)
+          EnforcedWKTOptions.parse(options),
         );
         if (feature) {
           features.push(feature);
@@ -224,7 +224,7 @@ export async function csvToGeoJSON(
       case "polyline": {
         const feature = castRowPolyline(
           castRow,
-          EnforcedWKTOptions.parse(options)
+          EnforcedWKTOptions.parse(options),
         );
         if (feature) {
           features.push(feature);
@@ -235,7 +235,7 @@ export async function csvToGeoJSON(
         const feature = castRowZip(
           castRow,
           zipDb!,
-          EnforcedZipOptions.parse(options)
+          EnforcedZipOptions.parse(options),
         );
         if (feature) {
           features.push(feature);

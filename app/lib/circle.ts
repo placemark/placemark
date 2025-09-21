@@ -1,8 +1,8 @@
-import { Polygon } from "geojson";
+import type { Polygon } from "geojson";
 import clamp from "lodash/clamp";
-import { z } from "zod";
 import { CIRCLE_TYPE } from "state/mode";
-import { Feature } from "types";
+import type { Feature } from "types";
+import { z } from "zod";
 
 const D2R = Math.PI / 180;
 const MAXEXTENT = 20037508.342789244;
@@ -42,7 +42,7 @@ function toMercator(position: Pos2): Pos2 {
     clamp(
       A * Math.log(Math.tan(Math.PI * 0.25 + 0.5 * latitude * D2R)),
       -MAXEXTENT,
-      MAXEXTENT
+      MAXEXTENT,
     ),
   ];
 }
@@ -77,7 +77,7 @@ function radiansToDegrees(radians: number): number {
 function getVerticesDegrees(
   center: Pos2,
   degrees: number,
-  angles: number[]
+  angles: number[],
 ): Pos2[] {
   return angles.map((bearingRad): Pos2 => {
     return [
@@ -90,7 +90,7 @@ function getVerticesDegrees(
 function getVerticesGeodesic(
   center: Pos2,
   radians: number,
-  angles: number[]
+  angles: number[],
 ): Pos2[] {
   const [longitude1, latitude1] = [
     degreesToRadians(center[0]),
@@ -100,13 +100,13 @@ function getVerticesGeodesic(
   return angles.map((bearingRad): Pos2 => {
     const latitude2 = Math.asin(
       Math.sin(latitude1) * Math.cos(radians) +
-        Math.cos(latitude1) * Math.sin(radians) * Math.cos(bearingRad)
+        Math.cos(latitude1) * Math.sin(radians) * Math.cos(bearingRad),
     );
     const longitude2 =
       longitude1 +
       Math.atan2(
         Math.sin(bearingRad) * Math.sin(radians) * Math.cos(latitude1),
-        Math.cos(radians) - Math.sin(latitude1) * Math.sin(latitude2)
+        Math.cos(radians) - Math.sin(latitude1) * Math.sin(latitude2),
       );
     return [radiansToDegrees(longitude2), radiansToDegrees(latitude2)];
   });
@@ -122,8 +122,8 @@ function distanceInRadians(a: Pos2, b: Pos2) {
   const lat2 = degreesToRadians(b[1]);
 
   const ax =
-    Math.pow(Math.sin(dLat / 2), 2) +
-    Math.pow(Math.sin(dLon / 2), 2) * Math.cos(lat1) * Math.cos(lat2);
+    Math.sin(dLat / 2) ** 2 +
+    Math.sin(dLon / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
 
   return 2 * Math.atan2(Math.sqrt(ax), Math.sqrt(1 - ax));
 }
@@ -131,7 +131,7 @@ function distanceInRadians(a: Pos2, b: Pos2) {
 function getVerticesMercator(
   center: Pos2,
   meters: number,
-  angles: number[]
+  angles: number[],
 ): Pos2[] {
   const centerMercator = toMercator(center);
 
@@ -182,7 +182,7 @@ function makeCircleDegrees(center: Pos2, degrees: number): Polygon {
 
 function makeCircleMercator(
   center: Pos2,
-  distanceInMercatorMeters: number
+  distanceInMercatorMeters: number,
 ): Polygon {
   // TODO: auto steps
   const steps = 100;
@@ -194,7 +194,7 @@ function makeCircleMercator(
   const vertices = getVerticesMercator(
     center,
     distanceInMercatorMeters,
-    angles
+    angles,
   );
 
   return {
@@ -206,11 +206,11 @@ function makeCircleMercator(
 function distanceInMercatorMeters(a: Pos2, b: Pos2) {
   const am = toMercator(a);
   const bm = toMercator(b);
-  return Math.sqrt(Math.pow(am[0] - bm[0], 2) + Math.pow(am[1] - bm[1], 2));
+  return Math.sqrt((am[0] - bm[0]) ** 2 + (am[1] - bm[1]) ** 2);
 }
 
 function distanceInDegrees(am: Pos2, bm: Pos2) {
-  return Math.sqrt(Math.pow(am[0] - bm[0], 2) + Math.pow(am[1] - bm[1], 2));
+  return Math.sqrt((am[0] - bm[0]) ** 2 + (am[1] - bm[1]) ** 2);
 }
 
 export function makeCircleNative({
@@ -248,7 +248,7 @@ export function makeCircle({
     case CIRCLE_TYPE.MERCATOR: {
       return makeCircleMercator(
         center,
-        distanceInMercatorMeters(center, mouse)
+        distanceInMercatorMeters(center, mouse),
       );
     }
     case CIRCLE_TYPE.GEODESIC: {

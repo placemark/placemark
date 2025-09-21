@@ -1,9 +1,9 @@
+import { DataTable } from "../datatable/mapshaper-data-table";
+import { fixInconsistentFields } from "../datatable/mapshaper-data-utils";
 import {
   getFormattedStringify,
   stringifyAsNDJSON,
 } from "../geojson/mapshaper-stringify";
-import { fixInconsistentFields } from "../datatable/mapshaper-data-utils";
-import { DataTable } from "../datatable/mapshaper-data-table";
 
 export function importJSONTable(arr) {
   fixInconsistentFields(arr);
@@ -18,7 +18,7 @@ export function importJSONTable(arr) {
 }
 
 export function exportJSON(dataset, opts) {
-  return dataset.layers.reduce(function (arr, lyr) {
+  return dataset.layers.reduce((arr, lyr) => {
     if (lyr.data) {
       arr.push({
         content: exportJSONTable(lyr, opts),

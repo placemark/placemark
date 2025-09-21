@@ -1,8 +1,8 @@
-import { ILayerConfig } from "types";
 import { getMapboxLayerURL, getTileJSON } from "app/lib/utils";
+import once from "lodash/once";
 import mapboxgl from "mapbox-gl";
 import { toast } from "react-hot-toast";
-import once from "lodash/once";
+import type { ILayerConfig } from "types";
 
 const warnOffline = once(() => {
   toast.error("Offline: falling back to blank background");
@@ -10,7 +10,7 @@ const warnOffline = once(() => {
 
 export async function addMapboxStyle(
   _base: mapboxgl.Style,
-  layer: ILayerConfig
+  layer: ILayerConfig,
 ): Promise<mapboxgl.Style> {
   const nextToken = layer.token;
   mapboxgl.accessToken = nextToken;
@@ -48,7 +48,7 @@ function updateMapboxStyle(
   options: {
     labelVisibility?: boolean;
     rasterOpacity?: number;
-  }
+  },
 ): mapboxgl.Style {
   const { labelVisibility = true, rasterOpacity } = options;
 
@@ -104,7 +104,7 @@ function updateMapboxStyle(
   };
 }
 function paintLayoutFromRasterLayer(
-  layer: ILayerConfig
+  layer: ILayerConfig,
 ): Pick<mapboxgl.RasterLayer, "type" | "paint" | "layout"> {
   return {
     type: "raster",
@@ -120,7 +120,7 @@ function paintLayoutFromRasterLayer(
 export async function addTileJSONStyle(
   style: mapboxgl.Style,
   layer: ILayerConfig,
-  id: number
+  id: number,
 ) {
   // mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -148,7 +148,7 @@ export async function addTileJSONStyle(
     style.layers.push(newLayer);
   } catch (e) {
     toast.error(
-      "A TileJSON layer failed to load: the server it depends on may be down"
+      "A TileJSON layer failed to load: the server it depends on may be down",
     );
   }
   return style;
@@ -157,7 +157,7 @@ export async function addTileJSONStyle(
 export function addXYZStyle(
   style: mapboxgl.Style,
   layer: ILayerConfig,
-  id: number
+  id: number,
 ) {
   // mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_TOKEN;
 

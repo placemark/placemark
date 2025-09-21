@@ -1,6 +1,6 @@
-import utils from "../utils/mapshaper-utils";
 import { Transform } from "../geom/mapshaper-transform";
 import { error } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 export function Bounds() {
   if (arguments.length > 0) {
@@ -8,7 +8,7 @@ export function Bounds() {
   }
 }
 
-Bounds.from = function () {
+Bounds.from = () => {
   var b = new Bounds();
   return b.setBounds.apply(b, arguments);
 };
@@ -163,7 +163,8 @@ Bounds.prototype.scale = function (pct, pctY) {
 };
 
 // Return a bounding box with the same extent as this one.
-Bounds.prototype.cloneBounds = Bounds.prototype.clone = function () { // alias so child classes can override clone()
+Bounds.prototype.cloneBounds = Bounds.prototype.clone = function () {
+  // alias so child classes can override clone()
   return new Bounds(this.xmin, this.ymin, this.xmax, this.ymax);
 };
 

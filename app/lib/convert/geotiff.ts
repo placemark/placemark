@@ -1,7 +1,7 @@
-import type { FileType, ImportOptions } from ".";
-import { okResult, ConvertResult } from "./utils";
-import { EitherAsync } from "purify-ts/EitherAsync";
 import type { ConvertError } from "app/lib/errors";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import type { FileType, ImportOptions } from ".";
+import { type ConvertResult, okResult } from "./utils";
 
 // https://github.com/geotiffjs/cog-explorer/blob/master/src/components/mapview.jsx#L202
 class CGeoTIFF implements FileType {
@@ -16,7 +16,7 @@ class CGeoTIFF implements FileType {
         const { getGeotiffExtent } = await import("vendor/geotiff");
         const extent = await getGeotiffExtent(file);
         return okResult(extent);
-      }
+      },
     );
   }
 }

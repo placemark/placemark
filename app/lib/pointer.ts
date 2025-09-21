@@ -1,4 +1,4 @@
-import { JsonValue } from "type-fest";
+import type { JsonValue } from "type-fest";
 
 const hasExcape = /~/;
 const escapeMatcher = /~[01]/g;

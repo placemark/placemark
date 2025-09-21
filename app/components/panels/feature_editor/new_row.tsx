@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { styledPropertyInput, styledTd } from "app/components/elements";
+import { useRef, useState } from "react";
 import { coordPropsAttr } from "./property_row/value";
 
 export function NewRow({

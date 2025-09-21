@@ -14,7 +14,7 @@ export function useAutoSubmit() {
 
   const debouncedSubmit = useMemo(
     () => debounce(() => submitForm(), AUTO_SUBMIT_DEBOUNCE_MS),
-    [submitForm]
+    [submitForm],
   );
 
   useEffect(() => {

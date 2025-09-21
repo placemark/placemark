@@ -20,7 +20,7 @@ export function isClosedPath(arr) {
 
 // duplicate points occur if a vertex is on the antimeridan
 function dedup(ring) {
-  return ring.reduce(function (memo, p, i) {
+  return ring.reduce((memo, p, i) => {
     var pp = memo.length > 0 ? memo[memo.length - 1] : null;
     if (!pp || pp[0] != p[0] || pp[1] != p[1]) memo.push(p);
     return memo;

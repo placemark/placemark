@@ -1,9 +1,9 @@
-import { emptySelection, EMPTY_ARRAY } from "app/lib/constants";
+import { EMPTY_ARRAY, emptySelection } from "app/lib/constants";
 import { generateExclude } from "app/lib/folder";
 import { encodeId } from "app/lib/id";
-import { IDMap, UIDMap } from "app/lib/id_mapper";
-import { Data, PreviewProperty } from "state/jotai";
-import { Feature, ISymbolization } from "types";
+import { type IDMap, UIDMap } from "app/lib/id_mapper";
+import type { Data, PreviewProperty } from "state/jotai";
+import type { Feature, ISymbolization } from "types";
 import { generateSyntheticPoints } from "./generate_synthetic_points";
 import { fixDegenerates } from "./merge_ephemeral_state";
 import { getKeepProperties, stripFeature } from "./strip_features";
@@ -82,7 +82,7 @@ export function splitFeatureGroups({
           wrappedFeature: feature,
           keepProperties,
           idMap,
-        })
+        }),
       );
     }
   }
@@ -109,7 +109,7 @@ export function splitFeatureGroups({
       return {
         synthetic: generateSyntheticPoints(
           selectedFeature,
-          UIDMap.getIntID(idMap, id)
+          UIDMap.getIntID(idMap, id),
         ),
         ephemeral: [fixDegenerates(selectedFeature)],
         features,
@@ -124,7 +124,7 @@ export function splitFeatureGroups({
       // Performance optimization: using .includes()
       // here with an array may be slow.
       const selectionIds = new Set<RawId>(
-        selection.ids.map((uuid) => UIDMap.getIntID(idMap, uuid))
+        selection.ids.map((uuid) => UIDMap.getIntID(idMap, uuid)),
       );
       return {
         synthetic: EMPTY_ARRAY,

@@ -1,7 +1,6 @@
-import { expect, describe, it } from "vitest";
-
-import { flattenResult } from "./import_utils";
 import { fcLineString } from "test/helpers";
+import { describe, expect, it } from "vitest";
+import { flattenResult } from "./import_utils";
 
 describe("flattenResult", () => {
   it("#geojson", () => {
@@ -10,7 +9,7 @@ describe("flattenResult", () => {
         type: "geojson",
         geojson: fcLineString,
         notes: [],
-      })
+      }),
     ).toEqual(fcLineString);
   });
   it("#root", () => {
@@ -22,7 +21,7 @@ describe("flattenResult", () => {
           children: fcLineString.features,
         },
         notes: [],
-      })
+      }),
     ).toEqual(fcLineString);
   });
 });

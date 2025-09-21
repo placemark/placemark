@@ -1,31 +1,31 @@
-import { getLayerBounds } from "../dataset/mapshaper-layer-utils";
-// import { exportSVG } from '../svg/mapshaper-svg';
-import { exportDbf } from "../shapefile/dbf-export";
-import { exportDelim } from "../text/mapshaper-delim-export";
-import { exportShapefile } from "../shapefile/shp-export";
-import { exportTopoJSON } from "../topojson/topojson-export";
-import { exportGeoJSON2 } from "../geojson/geojson-export";
-import { exportJSON } from "../datatable/mapshaper-json-table";
-import { setCoordinatePrecision } from "../geom/mapshaper-rounding";
 import {
   copyDatasetForExport,
   copyDatasetForRenaming,
 } from "../dataset/mapshaper-dataset-utils";
+import { getLayerBounds } from "../dataset/mapshaper-layer-utils";
 import { mergeDatasetsForExport } from "../dataset/mapshaper-merging";
+import { exportJSON } from "../datatable/mapshaper-json-table";
+import { exportGeoJSON2 } from "../geojson/geojson-export";
+import { setCoordinatePrecision } from "../geom/mapshaper-rounding";
 import { getOutputFormat } from "../io/mapshaper-output-format";
-import utils from "../utils/mapshaper-utils";
-import { error } from "../utils/mapshaper-logging";
-import { buildTopology } from "../topology/mapshaper-topology";
 import { runningInBrowser } from "../mapshaper-state";
+// import { exportSVG } from '../svg/mapshaper-svg';
+import { exportDbf } from "../shapefile/dbf-export";
+import { exportShapefile } from "../shapefile/shp-export";
+import { exportDelim } from "../text/mapshaper-delim-export";
+import { exportTopoJSON } from "../topojson/topojson-export";
+import { buildTopology } from "../topology/mapshaper-topology";
 import { getFileBase } from "../utils/mapshaper-filename-utils";
+import { error } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // @targets - non-empty output from Catalog#findCommandTargets()
 //
 function exportTargetLayers(targets, opts) {
   // convert target fmt to dataset fmt
-  var datasets = targets.map(function (target) {
-    return utils.defaults({ layers: target.layers }, target.dataset);
-  });
+  var datasets = targets.map((target) =>
+    utils.defaults({ layers: target.layers }, target.dataset),
+  );
   return exportDatasets(datasets, opts);
 }
 
@@ -57,7 +57,7 @@ function exportDatasets(datasets, opts) {
     datasets = datasets.map(copyDatasetForRenaming);
     assignUniqueLayerNames2(datasets);
   }
-  files = datasets.reduce(function (memo, dataset) {
+  files = datasets.reduce((memo, dataset) => {
     if (runningInBrowser()) {
       utils.sortOn(dataset.layers, "stack_id", true);
     } else {
@@ -89,17 +89,15 @@ export function exportFileContent(dataset, opts) {
   // shallow-copy dataset and layers, so layers can be renamed for export
   dataset = utils.defaults(
     {
-      layers: dataset.layers.map(function (lyr) {
-        return utils.extend({}, lyr);
-      }),
+      layers: dataset.layers.map((lyr) => utils.extend({}, lyr)),
     },
-    dataset
+    dataset,
   );
 
   // Adjust layer names, so they can be used as output file names
   // (except for multi-layer formats TopoJSON and SVG)
   if (opts.file && outFmt != "topojson" && outFmt != "svg") {
-    dataset.layers.forEach(function (lyr) {
+    dataset.layers.forEach((lyr) => {
       lyr.name = getFileBase(opts.file);
     });
   }
@@ -155,7 +153,7 @@ var exporters = {
 // TODO: consider making this a command, or at least make format settable
 //
 function createIndexFile(dataset) {
-  var index = dataset.layers.map(function (lyr) {
+  var index = dataset.layers.map((lyr) => {
     var bounds = getLayerBounds(lyr, dataset.arcs);
     return {
       bbox: bounds.toArray(),
@@ -171,15 +169,10 @@ function createIndexFile(dataset) {
 
 // Throw errors for various error conditions
 function validateLayerData(layers) {
-  layers.forEach(function (lyr) {
+  layers.forEach((lyr) => {
     if (!lyr.geometry_type) {
       // allowing data-only layers
-      if (
-        lyr.shapes &&
-        utils.some(lyr.shapes, function (o) {
-          return !!o;
-        })
-      ) {
+      if (lyr.shapes && utils.some(lyr.shapes, (o) => !!o)) {
         error("A layer contains shape records and a null geometry type");
       }
     } else {
@@ -197,7 +190,7 @@ function validateLayerData(layers) {
 
 function validateFileNames(files) {
   var index = {};
-  files.forEach(function (file, i) {
+  files.forEach((file, i) => {
     var filename = file.filename;
     if (!filename) error("Missing a filename for file" + i);
     if (filename in index) error("Duplicate filename", filename);
@@ -206,29 +199,26 @@ function validateFileNames(files) {
 }
 
 function assignUniqueLayerNames(layers) {
-  var names = layers.map(function (lyr) {
-    return lyr.name || "layer";
-  });
+  var names = layers.map((lyr) => lyr.name || "layer");
   var uniqueNames = utils.uniqifyNames(names);
-  layers.forEach(function (lyr, i) {
+  layers.forEach((lyr, i) => {
     lyr.name = uniqueNames[i];
   });
 }
 
 // Assign unique layer names across multiple datasets
 function assignUniqueLayerNames2(datasets) {
-  var layers = datasets.reduce(function (memo, dataset) {
-    return memo.concat(dataset.layers);
-  }, []);
+  var layers = datasets.reduce(
+    (memo, dataset) => memo.concat(dataset.layers),
+    [],
+  );
   assignUniqueLayerNames(layers);
 }
 
 function assignUniqueFileNames(output) {
-  var names = output.map(function (o) {
-    return o.filename;
-  });
+  var names = output.map((o) => o.filename);
   var uniqnames = utils.uniqifyNames(names, formatVersionedFileName);
-  output.forEach(function (o, i) {
+  output.forEach((o, i) => {
     o.filename = uniqnames[i];
   });
 }
@@ -238,7 +228,7 @@ function assignUniqueFileNames(output) {
 //    from colliding with names of GeoJSON or TopoJSON files)
 function exportDataTables(layers, opts) {
   var tables = [];
-  layers.forEach(function (lyr) {
+  layers.forEach((lyr) => {
     if (lyr.data) {
       tables.push({
         content: JSON.stringify(lyr.data),

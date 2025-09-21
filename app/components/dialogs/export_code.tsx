@@ -1,6 +1,5 @@
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { DialogHeader } from "app/components/dialog";
-import { usePersistence } from "app/lib/persistence/context";
 import {
   Button,
   styledInlineA,
@@ -8,6 +7,7 @@ import {
   TextWell,
 } from "app/components/elements";
 import { asColorExpression } from "app/lib/load_and_augment_style";
+import { usePersistence } from "app/lib/persistence/context";
 import type { ISymbolization } from "types";
 
 function CopySymbolization({

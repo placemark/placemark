@@ -1,18 +1,17 @@
-import { expect, describe, it, test } from "vitest";
-
-import { fcLineString, fcMultiPoint, fcMultiPoly, fcPoly } from "test/helpers";
-import type { IFeature, GeometryCollection } from "types";
 import { generateSyntheticPoints } from "app/lib/pmap/generate_synthetic_points";
 import * as jsonpointer from "app/lib/pointer";
-import { Random, MersenneTwister19937 } from "random-js";
+import { MersenneTwister19937, Random } from "random-js";
+import { fcLineString, fcMultiPoint, fcMultiPoly, fcPoly } from "test/helpers";
+import type { GeometryCollection, IFeature } from "types";
+import { describe, expect, it, test } from "vitest";
 import {
-  encodeId,
   decodeId,
   encodeFeature,
-  encodeVertex,
-  nanoid,
+  encodeId,
   encodeMidpoint,
+  encodeVertex,
   idToJSONPointers,
+  nanoid,
 } from "./id";
 
 test("nanoid", () => {
@@ -78,14 +77,14 @@ describe("syntheticIds", () => {
       },
     };
     const ids = generateSyntheticPoints(gc, 0).map((f) =>
-      decodeId(f.id as RawId)
+      decodeId(f.id as RawId),
     ) as VertexId[];
 
     expect(ids.map((id) => idToJSONPointers(id, gc))).toMatchSnapshot();
   });
   it("LineString", () => {
     const ids = generateSyntheticPoints(fcLineString.features[0], 0).map((f) =>
-      decodeId(f.id as RawId)
+      decodeId(f.id as RawId),
     ) as VertexId[];
 
     expect(idToJSONPointers(ids[0], fcLineString.features[0])).toEqual([
@@ -97,7 +96,7 @@ describe("syntheticIds", () => {
   });
   it("Polygon", () => {
     const ids = generateSyntheticPoints(fcPoly.features[0], 0).map((f) =>
-      decodeId(f.id as RawId)
+      decodeId(f.id as RawId),
     ) as VertexId[];
 
     expect(idToJSONPointers(ids[0], fcPoly.features[0])).toEqual([
@@ -107,7 +106,7 @@ describe("syntheticIds", () => {
   });
   it("MultiPolygon", () => {
     const ids = generateSyntheticPoints(fcMultiPoly.features[0], 0).map((f) =>
-      decodeId(f.id as RawId)
+      decodeId(f.id as RawId),
     ) as VertexId[];
     const [pointer] = idToJSONPointers(ids[4], fcMultiPoly.features[0]);
     expect(pointer).toEqual("/geometry/coordinates/0/0/2");

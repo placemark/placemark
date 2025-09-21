@@ -7,9 +7,7 @@ import utils from "../utils/mapshaper-utils";
 //   (may be null, or, depending on layer type, an array of points or an array of arrays of arc ids)
 function cloneShape(shp) {
   if (!shp) return null;
-  return shp.map(function (part) {
-    return part.concat();
-  });
+  return shp.map((part) => part.concat());
 }
 
 export function cloneShapes(arr) {
@@ -52,9 +50,7 @@ export function editShapeParts(parts, cb) {
   if (nulls == n) {
     return null;
   } else if (nulls > 0) {
-    return parts.filter(function (part) {
-      return !!part;
-    });
+    return parts.filter((part) => !!part);
   } else {
     return parts;
   }

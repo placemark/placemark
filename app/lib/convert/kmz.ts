@@ -1,12 +1,12 @@
-import { ConvertResult, getExtension } from "./utils";
-import readAsText from "app/lib/read_as_text";
-import { ConvertError, PlacemarkError } from "app/lib/errors";
-import type { FeatureCollection, FeatureMap, FolderMap } from "types";
-import type { ExportOptions, ExportResult, FileType, ImportOptions } from ".";
-import { EitherAsync } from "purify-ts/EitherAsync";
 import { solveRootItems } from "app/components/panels/feature_editor/feature_editor_folder/math";
 import { KML } from "app/lib/convert/kml";
+import { ConvertError, PlacemarkError } from "app/lib/errors";
+import readAsText from "app/lib/read_as_text";
+import { EitherAsync } from "purify-ts/EitherAsync";
+import type { FeatureCollection, FeatureMap, FolderMap } from "types";
+import type { ExportOptions, ExportResult, FileType, ImportOptions } from ".";
 import { unzip } from "./local/shared";
+import { type ConvertResult, getExtension } from "./utils";
 
 class CKMZ implements FileType {
   id = "kmz" as const;
@@ -25,10 +25,10 @@ class CKMZ implements FileType {
           return throwE(new PlacemarkError("No KML file found within KMZ"));
         }
         const text = await liftEither(
-          await readAsText(kmlFile[1] as unknown as ArrayBuffer)
+          await readAsText(kmlFile[1] as unknown as ArrayBuffer),
         );
         return liftEither(await KML.forwardString(text));
-      }
+      },
     );
   }
   back(
@@ -41,7 +41,7 @@ class CKMZ implements FileType {
       featureMap: FeatureMap;
       folderMap: FolderMap;
     },
-    _options: ExportOptions
+    _options: ExportOptions,
   ) {
     return EitherAsync<ConvertError, ExportResult>(async ({ throwE }) => {
       const { foldersToKML } = await import("@placemarkio/tokml");
@@ -58,7 +58,7 @@ class CKMZ implements FileType {
             (err, res) => {
               if (err) return reject(err);
               resolve(res);
-            }
+            },
           );
         });
         return {

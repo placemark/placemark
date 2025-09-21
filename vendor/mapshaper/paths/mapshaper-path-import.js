@@ -1,18 +1,18 @@
 import { getDatasetCRS } from "../crs/mapshaper-projections";
-import { convertIntervalParam } from "../geom/mapshaper-units";
-import { snapCoords } from "../paths/mapshaper-snapping";
 import {
-  layerHasPaths,
   divideFeaturesByType,
+  layerHasPaths,
 } from "../dataset/mapshaper-layer-utils";
-import { cleanShapes } from "../paths/mapshaper-path-repair-utils";
-import { getRoundingFunction } from "../geom/mapshaper-rounding";
-import { verbose, stop, message } from "../utils/mapshaper-logging";
 import { DataTable } from "../datatable/mapshaper-data-table";
 import { fixInconsistentFields } from "../datatable/mapshaper-data-utils";
-import { ArcCollection } from "../paths/mapshaper-arcs";
-import utils from "../utils/mapshaper-utils";
 import geom from "../geom/mapshaper-geom";
+import { getRoundingFunction } from "../geom/mapshaper-rounding";
+import { convertIntervalParam } from "../geom/mapshaper-units";
+import { ArcCollection } from "../paths/mapshaper-arcs";
+import { cleanShapes } from "../paths/mapshaper-path-repair-utils";
+import { snapCoords } from "../paths/mapshaper-snapping";
+import { message, stop, verbose } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
 // Apply snapping, remove duplicate coords and clean up defective paths in a dataset
 // Assumes that any CRS info has been added to the dataset
@@ -25,14 +25,14 @@ export function cleanPathsAfterImport(dataset, opts) {
     if (opts.snap_interval) {
       snapDist = convertIntervalParam(
         opts.snap_interval,
-        getDatasetCRS(dataset)
+        getDatasetCRS(dataset),
       );
     }
     if (arcs) {
       snapCoords(arcs, snapDist);
     }
   }
-  dataset.layers.forEach(function (lyr) {
+  dataset.layers.forEach((lyr) => {
     if (layerHasPaths(lyr)) {
       cleanShapes(lyr.shapes, arcs, lyr.geometry_type);
     }
@@ -57,12 +57,12 @@ function PathImportStream(drain) {
     yy = new Float64Array(buflen),
     i = 0;
 
-  this.endPath = function () {
+  this.endPath = () => {
     drain(xx, yy, i);
     i = 0;
   };
 
-  this.addPoint = function (x, y) {
+  this.addPoint = (x, y) => {
     if (i >= buflen) {
       buflen = Math.ceil(buflen * 1.3);
       xx = utils.extendBuffer(xx, buflen);
@@ -101,7 +101,7 @@ export function PathImporter(opts) {
   // mix in #addPoint() and #endPath() methods
   utils.extend(this, new PathImportStream(importPathCoords));
 
-  this.startShape = function (d) {
+  this.startShape = (d) => {
     shapes[++shapeId] = null;
     if (d) properties[shapeId] = d;
   };
@@ -115,11 +115,11 @@ export function PathImporter(opts) {
     this.importPath(points);
   };
 
-  this.importPoints = function (points) {
+  this.importPoints = (points) => {
     setShapeType("point");
     points = points.filter(pointHasValidCoords);
     if (round) {
-      points.forEach(function (p) {
+      points.forEach((p) => {
         p[0] = round(p[0]);
         p[1] = round(p[1]);
       });
@@ -156,7 +156,7 @@ export function PathImporter(opts) {
   // Apply any requested snapping and rounding
   // Remove duplicate points, check for ring inversions
   //
-  this.done = function () {
+  this.done = () => {
     var arcs;
     var layers;
     var lyr = { name: "" };
@@ -167,8 +167,8 @@ export function PathImporter(opts) {
         utils.format(
           "Removed %,d duplicate point%s",
           dupeCount,
-          utils.pluralSuffix(dupeCount)
-        )
+          utils.pluralSuffix(dupeCount),
+        ),
       );
     }
     if (openRingCount > 0) {
@@ -176,8 +176,8 @@ export function PathImporter(opts) {
         utils.format(
           "Closed %,d open polygon ring%s",
           openRingCount,
-          utils.pluralSuffix(openRingCount)
-        )
+          utils.pluralSuffix(openRingCount),
+        ),
       );
     }
     if (pointId > 0) {
@@ -205,7 +205,7 @@ export function PathImporter(opts) {
       layers = [lyr];
     }
 
-    layers.forEach(function (lyr) {
+    layers.forEach((lyr) => {
       //if (internal.layerHasPaths(lyr)) {
       //internal.cleanShapes(lyr.shapes, arcs, lyr.geometry_type);
       //}

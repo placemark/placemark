@@ -1,16 +1,16 @@
-import type { IWrappedFeature } from "types";
-import { FeatureEditorProperties } from "./feature_editor_properties";
-import { FeatureEditorId } from "./feature_editor_id";
-import { FeatureEditorExport } from "./feature_editor_export";
-import { FeatureEditorVertex } from "./feature_editor_vertex";
-import { selectionAtom } from "state/jotai";
-import React from "react";
-import { RawEditor } from "./raw_editor";
 import { useAtomValue } from "jotai";
+import React from "react";
 import { USelection } from "state";
-import { FeatureEditorNullGeometry } from "./feature_editor_null_geometry";
+import { selectionAtom } from "state/jotai";
+import type { IWrappedFeature } from "types";
 import { FeatureEditorCircle } from "./feature_editor_circle";
+import { FeatureEditorExport } from "./feature_editor_export";
+import { FeatureEditorId } from "./feature_editor_id";
+import { FeatureEditorNullGeometry } from "./feature_editor_null_geometry";
+import { FeatureEditorProperties } from "./feature_editor_properties";
 import { FeatureEditorStyle } from "./feature_editor_style";
+import { FeatureEditorVertex } from "./feature_editor_vertex";
+import { RawEditor } from "./raw_editor";
 
 export function FeatureEditorInner({
   selectedFeature,

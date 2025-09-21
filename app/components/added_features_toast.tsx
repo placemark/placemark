@@ -1,7 +1,7 @@
-import { toast } from "react-hot-toast";
 import type { ConvertResult } from "app/lib/convert/utils";
 import { pluralize } from "app/lib/utils";
 import { useSetAtom } from "jotai";
+import { toast } from "react-hot-toast";
 import { dialogAtom } from "state/dialog_state";
 import { Button } from "./elements";
 
@@ -34,6 +34,6 @@ export default function addedFeaturesToast(result: ConvertResult) {
     },
     {
       duration: result.notes.length ? 10000 : 5000,
-    }
+    },
   );
 }

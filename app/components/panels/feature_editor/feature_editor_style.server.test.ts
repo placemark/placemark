@@ -1,4 +1,4 @@
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { parseProperties } from "./feature_editor_style";
 
@@ -38,8 +38,9 @@ describe("parseProperties", () => {
   });
 
   it("rejects invalid types", () => {
-    expect(parseProperties({ fill: 10, "stroke-width": "ten" }))
-      .toMatchInlineSnapshot(`
+    expect(
+      parseProperties({ fill: 10, "stroke-width": "ten" }),
+    ).toMatchInlineSnapshot(`
         {
           "enableFill": false,
           "enableFillOpacity": false,

@@ -1,14 +1,14 @@
-import type { Feature, FeatureMap, FolderMap } from "types";
-import { idToJSONPointers } from "app/lib/id";
+import { getFoldersInTree } from "app/lib/folder";
 import { removeDegenerates } from "app/lib/geometry";
+import { idToJSONPointers } from "app/lib/id";
+import { EMPTY_MOMENT, type Moment } from "app/lib/persistence/moment";
+import * as jsonpointer from "app/lib/pointer";
 import type { Operation } from "fast-json-patch";
 import { applyPatch } from "fast-json-patch";
+import cloneDeep from "lodash/cloneDeep";
 import { USelection } from "state/index";
 import type { Data, Sel, SelFolder, SelMulti, SelSingle } from "state/jotai";
-import cloneDeep from "lodash/cloneDeep";
-import * as jsonpointer from "app/lib/pointer";
-import { EMPTY_MOMENT, Moment } from "app/lib/persistence/moment";
-import { getFoldersInTree } from "app/lib/folder";
+import type { Feature, FeatureMap, FolderMap } from "types";
 
 interface DeleteResult {
   newSelection: Sel;
@@ -17,7 +17,7 @@ interface DeleteResult {
 
 export function removeCoordinatesVertex(
   id: VertexId,
-  feature: Feature
+  feature: Feature,
 ): Feature | null {
   const [pointer] = idToJSONPointers(id, feature);
   feature = jsonpointer.clone(feature, pointer);
@@ -48,7 +48,7 @@ function sortParts(parts: readonly VertexId[]): VertexId[] {
 function deleteFolder(
   selection: SelFolder,
   featureMap: FeatureMap,
-  folderMap: FolderMap
+  folderMap: FolderMap,
 ): DeleteResult {
   const folderId = selection.id;
 
@@ -73,7 +73,7 @@ function deleteFolder(
 
 function deleteSingleAndMulti(
   selection: SelSingle | SelMulti,
-  featureMap: FeatureMap
+  featureMap: FeatureMap,
 ): DeleteResult {
   // Delete vertexes in a feature
   if (selection.type === "single" && selection.parts.length) {

@@ -31,11 +31,7 @@ export function detectEncoding(samples) {
 
 // Convert an array of text samples to a single string using a given encoding
 export function decodeSamples(enc, samples) {
-  return samples
-    .map(function (buf) {
-      return decodeString(buf, enc).trim();
-    })
-    .join("\n");
+  return samples.map((buf) => decodeString(buf, enc).trim()).join("\n");
 }
 
 // Quick-and-dirty win1251 detection: decoded string contains mostly common ascii

@@ -1,6 +1,5 @@
-import { expect, describe, test } from "vitest";
-
 import { NIL } from "uuid";
+import { describe, expect, test } from "vitest";
 import { UIDMap } from "./id_mapper";
 
 const ids = Array.from({ length: 5 }, (_, i) => {

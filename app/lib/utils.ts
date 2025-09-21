@@ -1,13 +1,13 @@
-import without from "lodash/without";
+import { zTileJSON } from "app/mapbox-layers/validations";
 import isEqual from "lodash/isEqual";
 import once from "lodash/once";
+import without from "lodash/without";
 import type { Either } from "purify-ts/Either";
 import { EitherAsync } from "purify-ts/EitherAsync";
-import { Promisable } from "type-fest";
-import { SafeParseReturnType, z } from "zod";
-import { Just, Maybe, Nothing } from "purify-ts/Maybe";
-import { zTileJSON } from "app/mapbox-layers/validations";
-import { ILayerConfig } from "types";
+import { Just, type Maybe, Nothing } from "purify-ts/Maybe";
+import type { Promisable } from "type-fest";
+import type { ILayerConfig } from "types";
+import type { SafeParseReturnType, z } from "zod";
 
 /**
  * Used for the "title" tag so that if we change
@@ -174,7 +174,7 @@ export function pluralize(
   word: string,
   count: number,
   inclusive = true,
-  irregular: string | undefined = undefined
+  irregular: string | undefined = undefined,
 ) {
   if (!irregular && word in IRREGS) irregular = IRREGS[word];
   const pluralized = count === 1 ? word : irregular ? irregular : word + "s";
@@ -265,7 +265,7 @@ export const formatCapitalize = (str: string) =>
   str.replace(/^\w/, (c) => c.toUpperCase());
 
 export function safeParseMaybe<T>(
-  parsed: SafeParseReturnType<unknown, T>
+  parsed: SafeParseReturnType<unknown, T>,
 ): Maybe<T> {
   if (parsed.success) {
     return Just(parsed.data);
@@ -288,7 +288,7 @@ export async function getTileJSON(url: string) {
 
 export async function get<T extends z.ZodType<unknown>>(
   url: string,
-  type: T
+  type: T,
 ): Promise<z.infer<T>> {
   const resp = await fetch(url);
   const json = await resp.json();

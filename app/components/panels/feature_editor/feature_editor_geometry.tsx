@@ -1,19 +1,19 @@
-import { memo } from "react";
-import type { IWrappedFeature, Geometry } from "types";
-import { e6bbox, getExtent } from "app/lib/geometry";
-import {
-  PolygonArea,
-  PolygonAreaMulti,
-} from "app/components/panels/feature_editor/geometry/polygon_area";
+import { Input, StyledLabelSpan, TextWell } from "app/components/elements";
+import { GeometryCollectionEditor } from "app/components/panels/feature_editor/geometry/geometry_collection_editor";
 import {
   LineGeometry,
   LineGeometryMulti,
 } from "app/components/panels/feature_editor/geometry/line_geometry";
 import PointGeometry from "app/components/panels/feature_editor/geometry/point_geometry";
-import { GeometryCollectionEditor } from "app/components/panels/feature_editor/geometry/geometry_collection_editor";
-import { Input, StyledLabelSpan, TextWell } from "app/components/elements";
+import {
+  PolygonArea,
+  PolygonAreaMulti,
+} from "app/components/panels/feature_editor/geometry/polygon_area";
+import { e6bbox, getExtent } from "app/lib/geometry";
 import { countVertexes } from "app/lib/id";
 import { pluralize } from "app/lib/utils";
+import { memo } from "react";
+import type { Geometry, IWrappedFeature } from "types";
 import { GeometryTypesGrid } from "../feature_table/feature_table_stats";
 
 function Bbox({ geometry }: { geometry: Geometry }) {
@@ -26,7 +26,7 @@ function Bbox({ geometry }: { geometry: Geometry }) {
         <Input type="text" readOnly value={e6bbox(bbox)} />
       </StyledLabelSpan>
     ),
-    null
+    null,
   );
 }
 

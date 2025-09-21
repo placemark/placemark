@@ -9,7 +9,7 @@ export function updatePropertyKey(
   }: {
     key: string;
     newKey: string;
-  }
+  },
 ): Feature {
   return {
     ...feature,

@@ -1,26 +1,26 @@
-import { traversePaths } from "../paths/mapshaper-path-utils";
-import { groupPolygonRings } from "../polygons/mapshaper-ring-nesting";
-import { exportPathData } from "../paths/mapshaper-path-export";
-import { forEachPoint } from "../points/mapshaper-point-utils";
+import { mergeLayerNames } from "../commands/mapshaper-merge-layers";
+import { getDatasetCRS, isLatLngCRS } from "../crs/mapshaper-projections";
+import { copyDatasetForExport } from "../dataset/mapshaper-dataset-utils";
 import {
-  layerHasPoints,
   layerHasPaths,
+  layerHasPoints,
 } from "../dataset/mapshaper-layer-utils";
-import { isLatLngCRS, getDatasetCRS } from "../crs/mapshaper-projections";
+import GeoJSON from "../geojson/geojson-common";
 import {
   getFormattedStringify,
   stringifyAsNDJSON,
 } from "../geojson/mapshaper-stringify";
-import { mergeLayerNames } from "../commands/mapshaper-merge-layers";
-import { setCoordinatePrecision } from "../geom/mapshaper-rounding";
-import { copyDatasetForExport } from "../dataset/mapshaper-dataset-utils";
-import { encodeString } from "../text/mapshaper-encodings";
-import GeoJSON from "../geojson/geojson-common";
-import { message, error, stop } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
 import { Bounds } from "../geom/mapshaper-bounds";
-import { Buffer } from "../utils/mapshaper-node-buffer";
+import { setCoordinatePrecision } from "../geom/mapshaper-rounding";
+import { exportPathData } from "../paths/mapshaper-path-export";
+import { traversePaths } from "../paths/mapshaper-path-utils";
+import { forEachPoint } from "../points/mapshaper-point-utils";
+import { groupPolygonRings } from "../polygons/mapshaper-ring-nesting";
+import { encodeString } from "../text/mapshaper-encodings";
 import { getFileExtension } from "../utils/mapshaper-filename-utils";
+import { error, message, stop } from "../utils/mapshaper-logging";
+import { Buffer } from "../utils/mapshaper-node-buffer";
+import utils from "../utils/mapshaper-utils";
 export default GeoJSON;
 
 // switch to RFC 7946-compatible output (while retaining the original export function,
@@ -58,11 +58,9 @@ function exportGeoJSON(dataset, opts) {
   if (opts.combine_layers) {
     layerGroups = [dataset.layers];
   } else {
-    layerGroups = dataset.layers.map(function (lyr) {
-      return [lyr];
-    });
+    layerGroups = dataset.layers.map((lyr) => [lyr]);
   }
-  return layerGroups.map(function (layers) {
+  return layerGroups.map((layers) => {
     // Use common part of layer names if multiple layers are being merged
     var name = mergeLayerNames(layers) || "output";
     var d = utils.defaults({ layers: layers }, dataset);
@@ -94,7 +92,7 @@ function exportLayerAsGeoJSON(lyr, dataset, opts, asFeatures, ofmt) {
     error("Mismatch between number of properties and number of shapes");
   }
 
-  return (shapes || properties || []).reduce(function (memo, o, i) {
+  return (shapes || properties || []).reduce((memo, o, i) => {
     var shape = shapes ? shapes[i] : null,
       exporter = GeoJSON.exporters[lyr.geometry_type],
       geom = shape ? exporter(shape, dataset.arcs, opts) : null,
@@ -144,14 +142,14 @@ function getDatasetBbox(dataset, rfc7946) {
     margins,
     bbox;
 
-  dataset.layers.forEach(function (lyr) {
+  dataset.layers.forEach((lyr) => {
     if (layerHasPaths(lyr)) {
-      traversePaths(lyr.shapes, null, function (o) {
+      traversePaths(lyr.shapes, null, (o) => {
         var bounds = dataset.arcs.getSimpleShapeBounds(o.arcs);
         (bounds.centerX() < 0 ? westBounds : eastBounds).mergeBounds(bounds);
       });
     } else if (layerHasPoints(lyr)) {
-      forEachPoint(lyr.shapes, function (p) {
+      forEachPoint(lyr.shapes, (p) => {
         (p[0] < 0 ? westBounds : eastBounds).mergePoint(p[0], p[1]);
       });
     }
@@ -194,7 +192,7 @@ function exportDatasetAsGeoJSON(dataset, opts, ofmt) {
     }
   }
 
-  collection = layers.reduce(function (memo, lyr, i) {
+  collection = layers.reduce((memo, lyr, i) => {
     var items = exportLayerAsGeoJSON(lyr, dataset, opts, useFeatures, ofmt);
     return memo.length > 0 ? memo.concat(items) : items;
   }, []);
@@ -218,9 +216,9 @@ function collectionName(type) {
 }
 
 // collection: an array of Buffers, one per feature
-GeoJSON.formatCollectionAsNDJSON = function (collection) {
+GeoJSON.formatCollectionAsNDJSON = (collection) => {
   var delim = utils.createBuffer("\n", "utf8");
-  var parts = collection.reduce(function (memo, buf, i) {
+  var parts = collection.reduce((memo, buf, i) => {
     if (i > 0) memo.push(delim);
     memo.push(buf);
     return memo;
@@ -229,10 +227,10 @@ GeoJSON.formatCollectionAsNDJSON = function (collection) {
 };
 
 // collection: an array of individual GeoJSON Features or geometries as strings or buffers
-GeoJSON.formatCollection = function (container, collection) {
+GeoJSON.formatCollection = (container, collection) => {
   var head = JSON.stringify(container).replace(
     /\}$/,
-    ', "' + collectionName(container.type) + '": [\n'
+    ', "' + collectionName(container.type) + '": [\n',
   );
   var tail = "\n]}";
   if (utils.isString(collection[0])) {
@@ -242,22 +240,22 @@ GeoJSON.formatCollection = function (container, collection) {
   return GeoJSON.joinOutputBuffers(head, tail, collection);
 };
 
-GeoJSON.joinOutputBuffers = function (head, tail, collection) {
+GeoJSON.joinOutputBuffers = (head, tail, collection) => {
   var comma = utils.createBuffer(",\n", "utf8");
   var parts = collection.reduce(
-    function (memo, buf, i) {
+    (memo, buf, i) => {
       if (i > 0) memo.push(comma);
       memo.push(buf);
       return memo;
     },
-    [utils.createBuffer(head, "utf8")]
+    [utils.createBuffer(head, "utf8")],
   );
   parts.push(utils.createBuffer(tail, "utf8"));
   return Buffer.concat(parts);
 };
 
 // export GeoJSON or TopoJSON point geometry
-GeoJSON.exportPointGeom = function (points, arcs) {
+GeoJSON.exportPointGeom = (points, arcs) => {
   var geom = null;
   if (points.length == 1) {
     geom = {
@@ -273,12 +271,10 @@ GeoJSON.exportPointGeom = function (points, arcs) {
   return geom;
 };
 
-GeoJSON.exportLineGeom = function (ids, arcs) {
+GeoJSON.exportLineGeom = (ids, arcs) => {
   var obj = exportPathData(ids, arcs, "polyline");
   if (obj.pointCount === 0) return null;
-  var coords = obj.pathData.map(function (path) {
-    return path.points;
-  });
+  var coords = obj.pathData.map((path) => path.points);
   return coords.length == 1
     ? {
         type: "LineString",
@@ -290,19 +286,19 @@ GeoJSON.exportLineGeom = function (ids, arcs) {
       };
 };
 
-GeoJSON.exportPolygonGeom = function (ids, arcs, opts) {
+GeoJSON.exportPolygonGeom = (ids, arcs, opts) => {
   var obj = exportPathData(ids, arcs, "polygon");
   if (obj.pointCount === 0) return null;
   var groups = groupPolygonRings(obj.pathData, arcs, opts.invert_y);
   // invert_y is used internally for SVG generation
   // mapshaper's internal winding order is the opposite of RFC 7946
   var reverse = (opts.rfc7946 || opts.v2) && !opts.invert_y;
-  var coords = groups.map(function (paths) {
-    return paths.map(function (path) {
+  var coords = groups.map((paths) =>
+    paths.map((path) => {
       if (reverse) path.points.reverse();
       return path.points;
-    });
-  });
+    }),
+  );
   return coords.length == 1
     ? {
         type: "Polygon",
@@ -350,7 +346,7 @@ function useFeatureCollection(layers, opts) {
     stop("Unsupported GeoJSON type:", opts.geojson_type);
   }
   // default is true iff layers contain attributes
-  return utils.some(layers, function (lyr) {
+  return utils.some(layers, (lyr) => {
     var fields = lyr.data ? lyr.data.getFields() : [];
     var haveData = useFeatureProperties(fields, opts);
     var haveId = !!getIdField(fields, opts);
@@ -378,7 +374,7 @@ export function exportProperties(table, opts) {
   records = table.getRecords();
   if (idField == GeoJSON.ID_FIELD) {
     // delete default id field, not user-set fields
-    properties = records.map(function (rec) {
+    properties = records.map((rec) => {
       rec = utils.extend({}, rec); // copy rec;
       delete rec[idField];
       return rec;
@@ -400,16 +396,14 @@ function getIdField(fields, opts) {
     ids = opt;
   }
   ids.push(GeoJSON.ID_FIELD); // default id field
-  return utils.find(ids, function (name) {
-    return utils.contains(fields, name);
-  });
+  return utils.find(ids, (name) => utils.contains(fields, name));
 }
 
 export function exportIds(table, opts) {
   var fields = table ? table.getFields() : [],
     idField = getIdField(fields, opts);
   if (!idField) return null;
-  return table.getRecords().map(function (rec) {
-    return idField in rec ? rec[idField] : null;
-  });
+  return table
+    .getRecords()
+    .map((rec) => (idField in rec ? rec[idField] : null));
 }

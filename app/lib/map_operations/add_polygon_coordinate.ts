@@ -2,7 +2,7 @@ import type { Feature } from "types";
 
 export function addPolygonCoordinate(
   feature: Feature,
-  coordinate: Pos2
+  coordinate: Pos2,
 ): Feature {
   const { geometry } = feature;
   if (geometry?.type === "Polygon") {

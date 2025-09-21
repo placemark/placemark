@@ -1,9 +1,9 @@
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { convex } from "./concaveman";
 
-describe("convex", function () {
-  it("generates convex shape from points", function () {
+describe("convex", () => {
+  it("generates convex shape from points", () => {
     expect(
       convex({
         type: "FeatureCollection",
@@ -33,7 +33,7 @@ describe("convex", function () {
             },
           },
         ],
-      })
+      }),
     ).toEqualRight({
       geometry: {
         coordinates: [

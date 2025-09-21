@@ -1,16 +1,16 @@
-import { useContext } from "react";
-import type { IWrappedFeature, GeometryCollection } from "types";
-import { GeometryEditor } from "app/components/panels/feature_editor/feature_editor_geometry";
-import { pluralize } from "app/lib/utils";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import Zoom from "app/components/icons/zoom";
-import { captureException } from "integrations/errors";
-import { getExtent } from "app/lib/geometry";
+import { GeometryEditor } from "app/components/panels/feature_editor/feature_editor_geometry";
 import { MapContext } from "app/context/map_context";
-import cloneDeep from "lodash/cloneDeep";
+import { getExtent } from "app/lib/geometry";
+import { CVertexId, countVertexes } from "app/lib/id";
 import { usePersistence } from "app/lib/persistence/context";
-import { countVertexes, CVertexId } from "app/lib/id";
+import { pluralize } from "app/lib/utils";
+import { captureException } from "integrations/errors";
+import cloneDeep from "lodash/cloneDeep";
 import type { LngLatBoundsLike } from "mapbox-gl";
+import { useContext } from "react";
+import type { GeometryCollection, IWrappedFeature } from "types";
 
 export function GeometryCollectionEditor({
   geometry: geometryCollection,

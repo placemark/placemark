@@ -1,11 +1,11 @@
-import readAsText from "app/lib/read_as_text";
-import type { FileType } from ".";
-import type { Feature } from "types";
-import { EitherAsync } from "purify-ts/EitherAsync";
-import { ConvertResult } from "./utils";
 import { ConvertError } from "app/lib/errors";
+import readAsText from "app/lib/read_as_text";
 import { rough } from "app/lib/roughly_geojson";
+import { EitherAsync } from "purify-ts/EitherAsync";
 import { Maybe } from "purify-ts/Maybe";
+import type { Feature } from "types";
+import type { FileType } from ".";
+import type { ConvertResult } from "./utils";
 
 class CWKT implements FileType {
   id = "wkt" as const;
@@ -34,7 +34,7 @@ class CWKT implements FileType {
         })
           .chainNullable((x) => x)
           .toEither(new ConvertError("Could not convert WKT"))
-          .chain((geojson) => rough(geojson))
+          .chain((geojson) => rough(geojson)),
       );
       return geojson;
     });
@@ -43,11 +43,11 @@ class CWKT implements FileType {
     return EitherAsync<ConvertError, string>(
       async function featureToStringWkt() {
         const stringify = await import("betterknown").then(
-          (mod) => mod.geoJSONToWkt
+          (mod) => mod.geoJSONToWkt,
         );
         if (geojson.geometry === null) return "";
         return Maybe.fromNullable(stringify(geojson.geometry)).orDefault("");
-      }
+      },
     );
   }
 }

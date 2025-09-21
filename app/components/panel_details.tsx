@@ -1,10 +1,10 @@
-import clsx from "clsx";
-import { styledPanelTitle } from "./elements";
-import { Collapsible as C } from "radix-ui";
 import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
-import React from "react";
+import clsx from "clsx";
 import { useAtom } from "jotai";
-import { PanelAtom } from "state/jotai";
+import { Collapsible as C } from "radix-ui";
+import type React from "react";
+import type { PanelAtom } from "state/jotai";
+import { styledPanelTitle } from "./elements";
 
 export function PanelDetails({
   children,
@@ -28,7 +28,7 @@ export function PanelDetails({
           {
             "px-3": variant === "default",
           },
-          `pb-3 contain-layout`
+          `pb-3 contain-layout`,
         )}
       >
         {children}

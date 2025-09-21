@@ -1,6 +1,5 @@
-import { expect, describe, it } from "vitest";
-
-import { wrap, fcLineString, wrapMap } from "test/helpers";
+import { fcLineString, wrap, wrapMap } from "test/helpers";
+import { describe, expect, it } from "vitest";
 import {
   extractMultiProperties,
   extractPropertyKeys,
@@ -12,7 +11,7 @@ describe("extractMultiProperties", () => {
   });
   it("single feature", () => {
     expect(extractMultiProperties(wrap(fcLineString))).toEqual(
-      new Map([["x", new Map([[1, 1]])]])
+      new Map([["x", new Map([[1, 1]])]]),
     );
   });
   it("single feature", () => {
@@ -39,13 +38,13 @@ describe("extractMultiProperties", () => {
       };
     })[0];
     expect(extractMultiProperties([w1])).toEqual(
-      new Map([["x", new Map([[[10], 1]])]])
+      new Map([["x", new Map([[[10], 1]])]]),
     );
     expect(extractMultiProperties([w1, w1])).toEqual(
-      new Map([["x", new Map([[[10], 2]])]])
+      new Map([["x", new Map([[[10], 2]])]]),
     );
     expect(extractMultiProperties([w1, w2])).toEqual(
-      new Map([["x", new Map([[[10], 2]])]])
+      new Map([["x", new Map([[[10], 2]])]]),
     );
   });
 });

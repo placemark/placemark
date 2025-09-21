@@ -1,20 +1,20 @@
-import { useRef } from "react";
-import { NewRow } from "./new_row";
-import { cast } from "app/lib/cast";
-import { usePersistence } from "app/lib/persistence/context";
-import type { Feature, IWrappedFeature } from "types";
 import { PanelDetails } from "app/components/panel_details";
-import without from "lodash/without";
-import { extractMultiProperties } from "app/lib/multi_properties";
-import sortBy from "lodash/sortBy";
-import { updatePropertyValue } from "app/lib/map_operations/update_property_value";
-import { updatePropertyKey } from "app/lib/map_operations/update_property_key";
-import { deletePropertyKey } from "app/lib/map_operations/delete_property_key";
-import type { JsonValue } from "type-fest";
-import { PropertyTableHead } from "./feature_editor_properties";
-import { pluralize } from "app/lib/utils";
-import { PropertyRowMulti } from "./property_row";
 import { onArrow } from "app/lib/arrow_navigation";
+import { cast } from "app/lib/cast";
+import { deletePropertyKey } from "app/lib/map_operations/delete_property_key";
+import { updatePropertyKey } from "app/lib/map_operations/update_property_key";
+import { updatePropertyValue } from "app/lib/map_operations/update_property_value";
+import { extractMultiProperties } from "app/lib/multi_properties";
+import { usePersistence } from "app/lib/persistence/context";
+import { pluralize } from "app/lib/utils";
+import sortBy from "lodash/sortBy";
+import without from "lodash/without";
+import { useRef } from "react";
+import type { JsonValue } from "type-fest";
+import type { Feature, IWrappedFeature } from "types";
+import { PropertyTableHead } from "./feature_editor_properties";
+import { NewRow } from "./new_row";
+import { PropertyRowMulti } from "./property_row";
 
 type Transformer = (arg0: Feature) => Feature;
 
@@ -45,13 +45,13 @@ export function FeatureEditorPropertiesMulti({
       updatePropertyValue(feature, {
         key,
         value,
-      })
+      }),
     );
   };
 
   const updateKey = (key: string, newKey: string) => {
     void updateFeatures((feature) =>
-      updatePropertyKey(feature, { key, newKey })
+      updatePropertyKey(feature, { key, newKey }),
     );
   };
 
@@ -73,14 +73,14 @@ export function FeatureEditorPropertiesMulti({
 
   const addRow = (key: string, value: string) => {
     void updateFeatures((feature) =>
-      updatePropertyValue(feature, { key, value })
+      updatePropertyValue(feature, { key, value }),
     ).then(() => {
       if (!localOrder.current.includes(key)) localOrder.current.push(key);
     });
   };
 
   const pairs = sortBy(Array.from(propertyMap.entries()), ([key]) =>
-    localOrder.current.indexOf(key)
+    localOrder.current.indexOf(key),
   );
 
   return (

@@ -1,21 +1,21 @@
+import { midpoint } from "app/lib/geometry";
+import { encodeMidpoint, encodeVertex } from "app/lib/id";
+import memoize from "memoize-one";
+import { match } from "ts-pattern";
 import type {
-  IFeature,
   Feature,
+  GeoJsonProperties,
   Geometry,
   GeometryCollection,
-  GeoJsonProperties,
-  Position,
-  Point,
-  MultiPoint,
+  IFeature,
   LineString,
   MultiLineString,
-  Polygon,
+  MultiPoint,
   MultiPolygon,
+  Point,
+  Polygon,
+  Position,
 } from "types";
-import { encodeVertex, encodeMidpoint } from "app/lib/id";
-import { match } from "ts-pattern";
-import { midpoint } from "app/lib/geometry";
-import memoize from "memoize-one";
 
 // fp = FromPoint
 const propertiesFromPoint = { fp: true };
@@ -85,15 +85,15 @@ function syntheticPointsForRing({
       new Vertex(
         encodeVertex(index, offset),
         ring[i],
-        ringType === RingType.Point
-      )
+        ringType === RingType.Point,
+      ),
     );
     if (ringType !== RingType.Point && i < ring.length - 1) {
       syntheticPoints.push(
         new Midpoint(
           encodeMidpoint(index, offset),
-          midpoint(ring[i], ring[i + 1])
-        )
+          midpoint(ring[i], ring[i + 1]),
+        ),
       );
     }
     offset++;
@@ -185,7 +185,7 @@ function syntheticPointsForPoint({
   offset: number;
 }) {
   syntheticPoints.push(
-    new Vertex(encodeVertex(index, offset), geometry.coordinates, true)
+    new Vertex(encodeVertex(index, offset), geometry.coordinates, true),
   );
   return offset + 1;
 }
@@ -273,25 +273,25 @@ function generateSyntheticPointsForGeometry(args: {
   return match(args)
     .with({ geometry: null }, () => 0)
     .with({ geometry: { type: "LineString" } }, (args) =>
-      syntheticPointsForLineString(args)
+      syntheticPointsForLineString(args),
     )
     .with({ geometry: { type: "MultiLineString" } }, (args) =>
-      syntheticPointsForMultiLineString(args)
+      syntheticPointsForMultiLineString(args),
     )
     .with({ geometry: { type: "MultiPoint" } }, (args) =>
-      syntheticPointsForMultiPoint(args)
+      syntheticPointsForMultiPoint(args),
     )
     .with({ geometry: { type: "Point" } }, (args) =>
-      syntheticPointsForPoint(args)
+      syntheticPointsForPoint(args),
     )
     .with({ geometry: { type: "Polygon" } }, (args) =>
-      syntheticPointsForPolygon(args)
+      syntheticPointsForPolygon(args),
     )
     .with({ geometry: { type: "MultiPolygon" } }, (args) =>
-      syntheticPointsForMultiPolygon(args)
+      syntheticPointsForMultiPolygon(args),
     )
     .with({ geometry: { type: "GeometryCollection" } }, (args) =>
-      syntheticPointsForGeometryCollection(args)
+      syntheticPointsForGeometryCollection(args),
     )
     .otherwise(() => 0);
 }
@@ -303,7 +303,7 @@ function generateSyntheticPointsForGeometry(args: {
  */
 export const generateSyntheticPoints = memoize(function generateSyntheticPoints(
   feature: Feature,
-  index: number
+  index: number,
 ): IFeature<Point>[] {
   const syntheticPoints: IFeature<Point>[] = [];
   const { geometry } = feature;

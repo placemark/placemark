@@ -33,7 +33,7 @@ export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
         }),
     {
       suspense: true,
-    }
+    },
   );
 
   return (
@@ -63,14 +63,14 @@ export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
                             type: "geojson",
                           },
                           () => {},
-                          nice
+                          nice,
                         );
                       }),
                     {
                       loading: "Loading…",
                       success: "Loaded",
                       error: "Error loading from the data library",
-                    }
+                    },
                   );
                   onClose();
                 }}

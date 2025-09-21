@@ -1,76 +1,76 @@
 import {
-  CategoricalValues,
-  ISymbolization,
-  ISymbolizationNone,
-  ISymbolizationCategorical,
-  Symbolization,
-  FeatureMap,
-  ISymbolizationRamp,
-  RampValues,
-} from "types";
-import { usePersistence } from "app/lib/persistence/context";
-import { captureException } from "integrations/errors";
-import { Fragment, useMemo, useState } from "react";
-import { match } from "ts-pattern";
-import {
   CaretDownIcon,
   CopyIcon,
   PlusIcon,
   ResetIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
-import { Accordion, Popover as P } from "radix-ui";
+import { ColorPopoverField } from "app/components/color_popover";
 import {
   Button,
+  Hint,
   inputClass,
-  TextWell,
+  PopoverContent2,
   StyledLabelSpan,
   StyledPopoverArrow,
-  PopoverContent2,
   StyledPopoverTrigger,
-  styledSelect,
   styledCheckbox,
+  styledSelect,
   styledTextarea,
-  Hint,
+  TextWell,
 } from "app/components/elements";
-import {
-  ArrayHelpers,
-  ErrorMessage,
-  Field,
-  FieldArray,
-  FieldInputProps,
-  FieldProps,
-  Form,
-  Formik,
-  FormikProps,
-} from "formik";
-import { atom, useAtom, useAtomValue } from "jotai";
-import {
-  CBColors,
-  COLORBREWER_ALL,
-  COLORBREWER_DIVERGING,
-  COLORBREWER_QUAL,
-  COLORBREWER_SEQUENTIAL,
-  CARTO_COLOR_DIVERGING,
-  CARTO_COLOR_SEQUENTIAL,
-  CARTO_COLOR_QUALITATIVE,
-} from "app/lib/colorbrewer";
-import find from "lodash/find";
-import last from "lodash/last";
-import { dataAtom, panelSymbolizationExportOpen } from "state/jotai";
-import * as d3 from "d3-array";
-import { ColorPopoverField } from "app/components/color_popover";
-import { linearGradient } from "app/lib/color";
-import { lerp, writeToClipboard } from "app/lib/utils";
-import { InlineError } from "../inline_error";
-import { EOption, exportStyle } from "app/lib/export_style";
-import toast from "react-hot-toast";
 import {
   PanelDetails,
   PanelDetailsCollapsible,
 } from "app/components/panel_details";
 import { useAutoSubmit } from "app/hooks/use_auto_submit";
+import { linearGradient } from "app/lib/color";
+import {
+  CARTO_COLOR_DIVERGING,
+  CARTO_COLOR_QUALITATIVE,
+  CARTO_COLOR_SEQUENTIAL,
+  type CBColors,
+  COLORBREWER_ALL,
+  COLORBREWER_DIVERGING,
+  COLORBREWER_QUAL,
+  COLORBREWER_SEQUENTIAL,
+} from "app/lib/colorbrewer";
 import { purple900 } from "app/lib/constants";
+import { type EOption, exportStyle } from "app/lib/export_style";
+import { usePersistence } from "app/lib/persistence/context";
+import { lerp, writeToClipboard } from "app/lib/utils";
+import * as d3 from "d3-array";
+import {
+  type ArrayHelpers,
+  ErrorMessage,
+  Field,
+  FieldArray,
+  type FieldInputProps,
+  type FieldProps,
+  Form,
+  Formik,
+  type FormikProps,
+} from "formik";
+import { captureException } from "integrations/errors";
+import { atom, useAtom, useAtomValue } from "jotai";
+import find from "lodash/find";
+import last from "lodash/last";
+import { Accordion, Popover as P } from "radix-ui";
+import { Fragment, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { dataAtom, panelSymbolizationExportOpen } from "state/jotai";
+import { match } from "ts-pattern";
+import {
+  type CategoricalValues,
+  type FeatureMap,
+  type ISymbolization,
+  type ISymbolizationCategorical,
+  type ISymbolizationNone,
+  type ISymbolizationRamp,
+  type RampValues,
+  Symbolization,
+} from "types";
+import { InlineError } from "../inline_error";
 
 const regenerateAtom = atom<boolean>(false);
 const DEFAULT_CLASSES = 7;
@@ -106,7 +106,7 @@ export function getViablePropertiesForCategorical(featureMap: FeatureMap) {
   const categoryPropertyMap = new Map<string, Set<string | number>>();
   for (const wrappedFeature of featureMap.values()) {
     for (const [key, value] of Object.entries(
-      wrappedFeature.feature.properties || {}
+      wrappedFeature.feature.properties || {},
     )) {
       if (typeof value === "number" || typeof value === "string") {
         const oldValue = categoryPropertyMap.get(key);
@@ -135,7 +135,7 @@ export function getNumericPropertyMap(featureMap: FeatureMap) {
   const numericPropertyMap = new Map<string, number[]>();
   for (const wrappedFeature of featureMap.values()) {
     for (const [key, value] of Object.entries(
-      wrappedFeature.feature.properties || {}
+      wrappedFeature.feature.properties || {},
     )) {
       if (typeof value === "number") {
         const oldValue = numericPropertyMap.get(key);
@@ -317,7 +317,7 @@ function RampWizard() {
     <Formik<RampValues>
       onSubmit={async (values) => {
         const ramp = COLORBREWER_ALL.find(
-          (ramp) => ramp.name === values.rampName
+          (ramp) => ramp.name === values.rampName,
         )!;
         const dataValues = options.get(values.property)!;
         const colors = ramp.colors[values.classes]!;
@@ -367,7 +367,7 @@ function RampWizard() {
         await Promise.resolve(
           setMeta({
             symbolization: newSymbolization,
-          })
+          }),
         ).catch(() => {
           toast.error("Failed to generate ramp");
         });
@@ -532,7 +532,7 @@ function RampWizard() {
             await Promise.resolve(
               setMeta({
                 symbolization: values,
-              })
+              }),
             ).catch(() => {
               toast.error("Failed to generate ramp");
             });
@@ -651,7 +651,7 @@ function CategoryWizard() {
     <Formik<CategoricalValues>
       onSubmit={async (values) => {
         const ramp = COLORBREWER_ALL.find(
-          (ramp) => ramp.name === values.rampName
+          (ramp) => ramp.name === values.rampName,
         )!;
         const dataValues = Array.from(options.get(values.property) || []);
 
@@ -672,7 +672,7 @@ function CategoryWizard() {
         };
 
         await Promise.resolve(
-          setMeta({ symbolization: newSymbolization })
+          setMeta({ symbolization: newSymbolization }),
         ).catch(() => {
           toast.error("Failed to generate ramp");
         });
@@ -783,7 +783,7 @@ function CategoryWizard() {
             await Promise.resolve(
               setMeta({
                 symbolization: values,
-              })
+              }),
             ).catch(() => {
               toast.error("Failed to generate ramp");
             });
@@ -884,7 +884,7 @@ function NoneSymbolization() {
             await Promise.resolve(
               setMeta({
                 symbolization: values,
-              })
+              }),
             ).catch((e) => {
               toast.error("Failed to generate");
               captureException(e);
@@ -1005,13 +1005,13 @@ function SymbolizationEditor() {
                           simplestyle: true,
                           defaultColor: purple900,
                         },
-                      })
+                      }),
                     ),
                     {
                       loading: "Generating style…",
                       success: "Generated",
                       error: "Failed to generate style",
-                    }
+                    },
                   );
                 } else {
                   setRegenerate(true);

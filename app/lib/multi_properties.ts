@@ -1,6 +1,6 @@
-import type { JsonValue } from "type-fest";
 import isEqual from "lodash/isEqual";
 import isObject from "lodash/isObject";
+import type { JsonValue } from "type-fest";
 import type { FeatureMap, IWrappedFeature } from "types";
 
 /*
@@ -36,14 +36,14 @@ export function extractPropertyKeys(featureMap: FeatureMap): string[] {
  * values of their properties.
  */
 export function extractMultiProperties(
-  features: IWrappedFeature[]
+  features: IWrappedFeature[],
 ): MultiPropertyMap {
   const map: MultiPropertyMap = new Map();
 
   for (const feature of features) {
     if (!feature.feature.properties) continue;
     for (const key in feature.feature.properties) {
-      const value = feature.feature.properties[key] ;
+      const value = feature.feature.properties[key];
 
       // { key -> {} }
       if (!map.has(key)) map.set(key, new Map());

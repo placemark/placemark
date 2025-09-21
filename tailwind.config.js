@@ -42,7 +42,7 @@ module.exports = {
   plugins: [
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
-    plugin(function ({ addVariant, e }) {
+    plugin(({ addVariant, e }) => {
       function addPointerVariant(ruleName, params) {
         addVariant(ruleName, ({ container, separator }) => {
           const pointerRule = postcss.atRule({
@@ -53,7 +53,7 @@ module.exports = {
           container.append(pointerRule);
           pointerRule.walkRules((rule) => {
             rule.selector = `.${e(
-              `${ruleName}${separator}${rule.selector.slice(1)}`
+              `${ruleName}${separator}${rule.selector.slice(1)}`,
             )}`;
           });
         });
@@ -70,7 +70,7 @@ module.exports = {
         container.append(hoverHover);
         hoverHover.walkRules((rule) => {
           rule.selector = `.${e(
-            `hover-hover${separator}${rule.selector.slice(1)}`
+            `hover-hover${separator}${rule.selector.slice(1)}`,
           )}`;
         });
       });
@@ -83,7 +83,7 @@ module.exports = {
         container.append(hoverNone);
         hoverNone.walkRules((rule) => {
           rule.selector = `.${e(
-            `hover-none${separator}${rule.selector.slice(1)}`
+            `hover-none${separator}${rule.selector.slice(1)}`,
           )}`;
         });
       });

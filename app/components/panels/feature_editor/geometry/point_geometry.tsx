@@ -1,10 +1,10 @@
-import useResettable from "app/hooks/use_resettable";
-import type { IWrappedFeature } from "types";
 import { LongitudeLatitudeInputs } from "app/components/longitude_latitude_inputs";
-import { captureException } from "integrations/errors";
-import { usePersistence } from "app/lib/persistence/context";
-import { getCoordinates, setCoordinates } from "app/lib/map_operations";
+import useResettable from "app/hooks/use_resettable";
 import { CVertexId } from "app/lib/id";
+import { getCoordinates, setCoordinates } from "app/lib/map_operations";
+import { usePersistence } from "app/lib/persistence/context";
+import { captureException } from "integrations/errors";
+import type { IWrappedFeature } from "types";
 
 export default function PointGeometry({
   wrappedFeature,
@@ -20,7 +20,7 @@ export default function PointGeometry({
 
   const [longitude, latitude] = getCoordinates(
     wrappedFeature.feature,
-    vertexId
+    vertexId,
   );
 
   const longitudeProps = useResettable({

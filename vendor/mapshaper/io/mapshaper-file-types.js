@@ -1,5 +1,5 @@
-import utils from "../utils/mapshaper-utils";
 import { getFileExtension } from "../utils/mapshaper-filename-utils";
+import utils from "../utils/mapshaper-utils";
 
 // Guess the type of a data file from file extension, or return null if not sure
 export function guessInputFileType(file) {

@@ -1,8 +1,7 @@
-import { NodeCollection } from "../topology/mapshaper-nodes";
-import { getArcPresenceTest } from "../paths/mapshaper-path-utils";
-import { forEachShapePart } from "../paths/mapshaper-shape-utils";
 import { IdLookupIndex } from "../indexing/mapshaper-id-lookup-index";
-import { reversePath } from "../paths/mapshaper-path-utils";
+import { getArcPresenceTest, reversePath } from "../paths/mapshaper-path-utils";
+import { forEachShapePart } from "../paths/mapshaper-shape-utils";
+import { NodeCollection } from "../topology/mapshaper-nodes";
 import { error } from "../utils/mapshaper-logging";
 
 // Assumes intersection cuts have been added and duplicated points removed
@@ -12,7 +11,7 @@ export function cleanPolylineLayerGeometry(lyr, dataset, opts) {
   var filter = getArcPresenceTest(lyr.shapes, arcs);
   var nodes = new NodeCollection(arcs, filter);
   var arcIndex = new IdLookupIndex(arcs.size(), true);
-  lyr.shapes = lyr.shapes.map(function (shp, i) {
+  lyr.shapes = lyr.shapes.map((shp, i) => {
     if (!shp) return null;
     // split parts at nodes (where multiple arcs intersect)
     shp = divideShapeAtNodes(shp, nodes);
@@ -32,7 +31,7 @@ export function cleanPolylineLayerGeometry(lyr, dataset, opts) {
 }
 
 function uniqifyArcs(shp, index) {
-  var shp2 = shp.reduce(function (memo, ids) {
+  var shp2 = shp.reduce((memo, ids) => {
     addUnusedArcs(memo, ids, index);
     return memo;
   }, []);
@@ -86,7 +85,7 @@ function combineContiguousParts(parts, nodes, endpointIndex) {
   if (!parts || parts.length < 2) return parts;
 
   // Index the terminal arcs of this group of polyline parts
-  parts.forEach(function (ids, i) {
+  parts.forEach((ids, i) => {
     var tailId = ~ids[0]; // index the reversed arc (so it points outwards)
     var headId = ids[ids.length - 1];
     // edge case: an endpoint arc is shared by multiple parts
@@ -102,16 +101,14 @@ function combineContiguousParts(parts, nodes, endpointIndex) {
     procEndpoint(headId, i);
   });
 
-  return parts.filter(function (ids) {
-    return !!ids;
-  });
+  return parts.filter((ids) => !!ids);
 
   function procEndpoint(endpointId, sourcePartId) {
     var joins = 0;
     var partId2 = -1;
     var endpointId2;
     var indexedPartId = endpointIndex.getId(endpointId);
-    nodes.forEachConnectedArc(endpointId, function (arcId) {
+    nodes.forEachConnectedArc(endpointId, (arcId) => {
       if (endpointIndex.hasId(arcId)) {
         partId2 = endpointIndex.getId(arcId);
         endpointId2 = arcId;
@@ -124,7 +121,7 @@ function combineContiguousParts(parts, nodes, endpointIndex) {
         partId2,
         endpointId2,
         indexedPartId,
-        endpointId
+        endpointId,
       );
       // update indexed part id of joining endpoint
       endpointIndex.setId(endpointId, partId2);
@@ -147,13 +144,7 @@ function getOtherEndpointId(ids, endpointId) {
   error("Indexing error");
 }
 
-function extendPolylinePart(
-  parts,
-  partId1,
-  endpoint1,
-  partId2,
-  endpoint2
-) {
+function extendPolylinePart(parts, partId1, endpoint1, partId2, endpoint2) {
   var ids1 = parts[partId1];
   var ids2 = parts[partId2];
   var joinToTail, joinFromTail;

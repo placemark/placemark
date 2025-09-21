@@ -1,27 +1,36 @@
-import { useCallback } from "react";
-import {
-  stringToGeoJSON,
-  importToExportOptions,
-  RawProgressCb,
-} from "app/lib/convert";
-import type { ConvertResult } from "app/lib/convert/utils";
+import type { Folder, Root } from "@tmcw/togeojson";
 import type { ImportOptions } from "app/lib/convert";
-import { Data, dataAtom, fileInfoAtom } from "state/jotai";
-import { useSetAtom } from "jotai";
-import { lib } from "app/lib/worker";
-import type { FileWithHandle } from "browser-fs-access";
-import { usePersistence } from "app/lib/persistence/context";
-import { newFeatureId } from "app/lib/id";
+import {
+  importToExportOptions,
+  type RawProgressCb,
+  stringToGeoJSON,
+} from "app/lib/convert";
 import type { ShapefileGroup } from "app/lib/convert/shapefile";
 import { Shapefile } from "app/lib/convert/shapefile";
-import { transfer } from "comlink";
-import { fMoment, Moment, MomentInput } from "app/lib/persistence/moment";
-import { generateNKeysBetween } from "fractional-indexing";
-import { Folder, Root } from "@tmcw/togeojson";
-import { Feature, FeatureCollection, IFolder, IWrappedFeature } from "types";
-import * as Comlink from "comlink";
-import { useAtomCallback } from "jotai/utils";
+import type { ConvertResult } from "app/lib/convert/utils";
+import { newFeatureId } from "app/lib/id";
+import { usePersistence } from "app/lib/persistence/context";
+import {
+  fMoment,
+  type Moment,
+  type MomentInput,
+} from "app/lib/persistence/moment";
 import { pluralize, truncate } from "app/lib/utils";
+import { lib } from "app/lib/worker";
+import type { FileWithHandle } from "browser-fs-access";
+import * as Comlink from "comlink";
+import { transfer } from "comlink";
+import { generateNKeysBetween } from "fractional-indexing";
+import { useSetAtom } from "jotai";
+import { useAtomCallback } from "jotai/utils";
+import { useCallback } from "react";
+import { type Data, dataAtom, fileInfoAtom } from "state/jotai";
+import type {
+  Feature,
+  FeatureCollection,
+  IFolder,
+  IWrappedFeature,
+} from "types";
 
 /**
  * Creates the _input_ to a transact() operation,
@@ -39,7 +48,7 @@ function resultToTransact({
     string,
     {
       format: string;
-    }
+    },
   ];
   existingFolderId?: string | undefined;
 }): Partial<MomentInput> {
@@ -95,7 +104,7 @@ export function flattenRoot(
   root: Root | Folder,
   features: IWrappedFeature[],
   folders: IFolder[],
-  parentFolder: string | null
+  parentFolder: string | null,
 ): Pick<Moment, "note" | "putFolders" | "putFeatures"> {
   // TODO: find a start key here and use that as the start, not null.
   const ats = generateNKeysBetween(null, null, root.children.length);
@@ -149,7 +158,7 @@ export function useImportString() {
       options: ImportOptions,
       progress: RawProgressCb,
       name: string = "Imported text",
-      existingFolderId?: string
+      existingFolderId?: string,
     ) => {
       return (await stringToGeoJSON(text, options, Comlink.proxy(progress)))
         .map(async (result) => {
@@ -164,7 +173,7 @@ export function useImportString() {
                 },
               ],
               existingFolderId,
-            })
+            }),
           );
           return result;
         })
@@ -174,13 +183,13 @@ export function useImportString() {
           return e;
         });
     },
-    [transact]
+    [transact],
   );
 }
 
 export function getTargetMap(
   { featureMap }: Pick<Data, "featureMap">,
-  joinTargetHeader: string
+  joinTargetHeader: string,
 ) {
   const targetMap = new Map<string, IWrappedFeature[]>();
   let sourceMissingFieldCount = 0;
@@ -207,7 +216,7 @@ function momentForJoin(
   features: Feature[],
   targetMap: ReturnType<typeof getTargetMap>["targetMap"],
   joinSourceHeader: string,
-  result: ConvertResult
+  result: ConvertResult,
 ) {
   const moment: MomentInput = {
     ...fMoment("Joined data"),
@@ -222,8 +231,8 @@ function momentForJoin(
     if (!target) {
       result.notes.push(
         `No feature on the map found for ${truncate(
-          joinSourceHeader
-        )} = "${truncate(String(value))}"`
+          joinSourceHeader,
+        )} = "${truncate(String(value))}"`,
       );
       continue;
     }
@@ -262,7 +271,7 @@ function useJoinFeatures() {
           options: ImportOptions;
           geojson: FeatureCollection;
           result: ConvertResult;
-        }
+        },
       ) => {
         const { features } = geojson;
         const { joinTargetHeader, joinSourceHeader } = options.csvOptions;
@@ -270,22 +279,22 @@ function useJoinFeatures() {
 
         const { targetMap, sourceMissingFieldCount } = getTargetMap(
           data,
-          joinTargetHeader
+          joinTargetHeader,
         );
 
         if (sourceMissingFieldCount > 0) {
           result.notes.push(
             `${pluralize(
               "feature",
-              sourceMissingFieldCount
-            )} in existing map data missing the join column.`
+              sourceMissingFieldCount,
+            )} in existing map data missing the join column.`,
           );
         }
 
         return momentForJoin(features, targetMap, joinSourceHeader, result);
       },
-      []
-    )
+      [],
+    ),
   );
 }
 
@@ -303,7 +312,7 @@ export function useImportFile() {
     async (
       file: FileWithHandle,
       options: ImportOptions,
-      progress: RawProgressCb
+      progress: RawProgressCb,
     ) => {
       const arrayBuffer = await file.arrayBuffer();
 
@@ -311,7 +320,7 @@ export function useImportFile() {
         await lib.fileToGeoJSON(
           transfer(arrayBuffer, [arrayBuffer]),
           options,
-          Comlink.proxy(progress)
+          Comlink.proxy(progress),
         )
       ).bimap(
         (err) => {
@@ -349,12 +358,12 @@ export function useImportFile() {
             await transact(moment);
             return result;
           }
-        }
+        },
       );
 
       return either;
     },
-    [setFileInfo, transact, joinFeatures]
+    [setFileInfo, transact, joinFeatures],
   );
 }
 
@@ -380,14 +389,14 @@ export function useImportShapefile() {
                   format: "shapefile",
                 },
               ],
-            })
+            }),
           );
           return result;
-        }
+        },
       );
 
       return either;
     },
-    [transact]
+    [transact],
   );
 }

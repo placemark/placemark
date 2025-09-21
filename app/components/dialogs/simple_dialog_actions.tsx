@@ -1,7 +1,7 @@
-import { useFormikContext } from "formik";
-import clsx from "clsx";
-import { Button } from "app/components/elements";
 import { SymbolIcon } from "@radix-ui/react-icons";
+import { Button } from "app/components/elements";
+import clsx from "clsx";
+import { useFormikContext } from "formik";
 
 export default function SimpleDialogActions({
   action,
@@ -27,7 +27,7 @@ export default function SimpleDialogActions({
         "pb-1 relative",
         fullWidthSubmit
           ? "flex items-stretch justify-stretch"
-          : `pb-1 flex flex-col sm:items-center sm:flex-row-reverse space-y-2 sm:space-y-0 sm:gap-x-3`
+          : `pb-1 flex flex-col sm:items-center sm:flex-row-reverse space-y-2 sm:space-y-0 sm:gap-x-3`,
       )}
     >
       {action ? (
@@ -59,7 +59,7 @@ export default function SimpleDialogActions({
         className={clsx(
           "animate-spin transition-opacity",
           isSubmitting ? "opacity-50" : "opacity-0",
-          fullWidthSubmit && "absolute top-8 right-2.5 text-white"
+          fullWidthSubmit && "absolute top-8 right-2.5 text-white",
         )}
       />
     </div>

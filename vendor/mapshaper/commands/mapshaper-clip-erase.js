@@ -1,48 +1,44 @@
-import { filterClipSlivers } from "../commands/mapshaper-filter-slivers";
-import { clipPolylines } from "../clipping/mapshaper-polyline-clipping";
-import { clipPolygons } from "../clipping/mapshaper-polygon-clipping";
-import { clipPoints } from "../clipping/mapshaper-point-clipping";
-import { requirePolygonLayer } from "../dataset/mapshaper-layer-utils";
-import { addIntersectionCuts } from "../paths/mapshaper-intersection-cuts";
-import { mergeLayersForOverlay } from "../clipping/mapshaper-overlay-utils";
 import { divideDatasetByBBox } from "../clipping/mapshaper-bbox2-clipping";
-import { layerHasPaths } from "../dataset/mapshaper-layer-utils";
-import cmd from "../mapshaper-cmd";
-import { stop, message } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
-import { ArcCollection } from "../paths/mapshaper-arcs";
-import { NodeCollection } from "../topology/mapshaper-nodes";
-import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
+import { mergeLayersForOverlay } from "../clipping/mapshaper-overlay-utils";
+import { clipPoints } from "../clipping/mapshaper-point-clipping";
+import { clipPolygons } from "../clipping/mapshaper-polygon-clipping";
+import { clipPolylines } from "../clipping/mapshaper-polyline-clipping";
+import { filterClipSlivers } from "../commands/mapshaper-filter-slivers";
+import {
+  layerHasPaths,
+  requirePolygonLayer,
+} from "../dataset/mapshaper-layer-utils";
 import { dissolvePolygonLayer2 } from "../dissolve/mapshaper-polygon-dissolve2";
+import cmd from "../mapshaper-cmd";
+import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
+import { ArcCollection } from "../paths/mapshaper-arcs";
+import { addIntersectionCuts } from "../paths/mapshaper-intersection-cuts";
+import { NodeCollection } from "../topology/mapshaper-nodes";
+import { message, stop } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 
-cmd.clipLayers = function (target, src, dataset, opts) {
-  return clipLayers(target, src, dataset, "clip", opts);
-};
+cmd.clipLayers = (target, src, dataset, opts) =>
+  clipLayers(target, src, dataset, "clip", opts);
 
-cmd.eraseLayers = function (target, src, dataset, opts) {
-  return clipLayers(target, src, dataset, "erase", opts);
-};
+cmd.eraseLayers = (target, src, dataset, opts) =>
+  clipLayers(target, src, dataset, "erase", opts);
 
-cmd.clipLayer = function (targetLyr, src, dataset, opts) {
-  return cmd.clipLayers([targetLyr], src, dataset, opts)[0];
-};
+cmd.clipLayer = (targetLyr, src, dataset, opts) =>
+  cmd.clipLayers([targetLyr], src, dataset, opts)[0];
 
-cmd.eraseLayer = function (targetLyr, src, dataset, opts) {
-  return cmd.eraseLayers([targetLyr], src, dataset, opts)[0];
-};
+cmd.eraseLayer = (targetLyr, src, dataset, opts) =>
+  cmd.eraseLayers([targetLyr], src, dataset, opts)[0];
 
-cmd.sliceLayers = function (target, src, dataset, opts) {
-  return clipLayers(target, src, dataset, "slice", opts);
-};
+cmd.sliceLayers = (target, src, dataset, opts) =>
+  clipLayers(target, src, dataset, "slice", opts);
 
-cmd.sliceLayer = function (targetLyr, src, dataset, opts) {
-  return cmd.sliceLayers([targetLyr], src, dataset, opts);
-};
+cmd.sliceLayer = (targetLyr, src, dataset, opts) =>
+  cmd.sliceLayers([targetLyr], src, dataset, opts);
 
 export function clipLayersInPlace(layers, clipSrc, dataset, type, opts) {
   var outputLayers = clipLayers(layers, clipSrc, dataset, type, opts);
   // remove arcs from the clipping dataset, if they are not used by any layer
-  layers.forEach(function (lyr, i) {
+  layers.forEach((lyr, i) => {
     var lyr2 = outputLayers[i];
     lyr.shapes = lyr2.shapes;
     lyr.data = lyr2.data;
@@ -64,7 +60,7 @@ function clipLayers(targetLayers, clipSrc, targetDataset, type, opts) {
     targetLayers,
     targetDataset,
     clipSrc,
-    opts
+    opts,
   );
   clipLyr = mergedDataset.layers[mergedDataset.layers.length - 1];
   if (usingPathClip) {
@@ -95,7 +91,7 @@ function clipLayersByBBox(layers, dataset, opts) {
 
 function clipLayersByLayer(targetLayers, clipLyr, nodes, type, opts) {
   requirePolygonLayer(clipLyr, "Requires a polygon clipping layer");
-  return targetLayers.reduce(function (memo, targetLyr) {
+  return targetLayers.reduce((memo, targetLyr) => {
     if (type == "slice") {
       memo = memo.concat(sliceLayerByLayer(targetLyr, clipLyr, nodes, opts));
     } else {
@@ -113,7 +109,7 @@ function getSliceLayerName(clipLyr, field, i) {
 function sliceLayerByLayer(targetLyr, clipLyr, nodes, opts) {
   // may not need no_replace
   var clipLayers = cmd.splitLayer(clipLyr, opts.id_field, { no_replace: true });
-  return clipLayers.map(function (clipLyr, i) {
+  return clipLayers.map((clipLyr, i) => {
     var outputLyr = clipLayerByLayer(targetLyr, clipLyr, nodes, "clip", opts);
     outputLyr.name = getSliceLayerName(clipLyr, opts.id_field, i);
     return outputLyr;
@@ -142,14 +138,14 @@ function clipLayerByLayer(targetLyr, clipLyr, nodes, type, opts) {
       clipLyr.shapes,
       nodes,
       type,
-      opts
+      opts,
     );
   } else if (targetLyr.geometry_type == "polyline") {
     clippedShapes = clipPolylines(
       targetLyr.shapes,
       clipLyr.shapes,
       nodes,
-      type
+      type,
     );
   } else {
     stop("Invalid target layer:", targetLyr.name);
@@ -189,7 +185,7 @@ function getClipMessage(nullCount, sliverCount) {
     ? utils.format(
         "%,d null feature%s",
         nullCount,
-        utils.pluralSuffix(nullCount)
+        utils.pluralSuffix(nullCount),
       )
     : "";
   var sliverMsg = sliverCount
@@ -200,7 +196,7 @@ function getClipMessage(nullCount, sliverCount) {
       "Removed %s%s%s",
       nullMsg,
       nullMsg && sliverMsg ? " and " : "",
-      sliverMsg
+      sliverMsg,
     );
   }
   return "";

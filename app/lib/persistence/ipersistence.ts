@@ -1,8 +1,8 @@
+import type { IDMap } from "app/lib/id_mapper";
+import type { Promisable } from "type-fest";
 import type { ISymbolization } from "types";
-import type { MomentInput } from "./moment";
-import { IDMap } from "app/lib/id_mapper";
-import { Promisable } from "type-fest";
 import { z } from "zod";
+import type { MomentInput } from "./moment";
 
 export type PersistenceMetadataMemory = {
   type: "memory";
@@ -35,7 +35,7 @@ export type MetaUpdatesInput = Omit<
 
 export type MetaPair = [
   PersistenceMetadata,
-  (updates: MetaUpdatesInput) => Promisable<void>
+  (updates: MetaUpdatesInput) => Promisable<void>,
 ];
 
 export interface IPersistence {
@@ -54,7 +54,7 @@ export interface IPersistence {
    * is quiet, the change is pushed onto the undo history.
    */
   useTransact(): (
-    moment: Partial<MomentInput> & TransactOptions
+    moment: Partial<MomentInput> & TransactOptions,
   ) => Promise<void>;
 
   /**

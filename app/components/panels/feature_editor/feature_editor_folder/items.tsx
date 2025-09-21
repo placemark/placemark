@@ -1,4 +1,6 @@
+import type { UniqueIdentifier } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   CopyIcon,
   LockClosedIcon,
@@ -6,32 +8,30 @@ import {
   MagnifyingGlassIcon,
   TriangleRightIcon,
 } from "@radix-ui/react-icons";
-import clsx from "clsx";
-import { useAtom } from "jotai";
-import { usePersistence } from "app/lib/persistence/context";
-import { IPersistence } from "app/lib/persistence/ipersistence";
-import { USelection } from "state";
-import { dataAtom, selectionAtom } from "state/jotai";
-import { JsonValue } from "type-fest";
-import { CSS } from "@dnd-kit/utilities";
-import { InlineNameEditor } from "./inline_name_editor";
-import { FlattenedFeature, FlattenedFolder, FlattenedItem } from "./math";
-import { ContextMenu as CM } from "radix-ui";
+import { GeometryActions } from "app/components/context_actions/geometry_actions";
 import {
   CMContent,
   CMItem,
   DDSeparator,
   VisibilityToggleIcon,
 } from "app/components/elements";
-import { GeometryActions } from "app/components/context_actions/geometry_actions";
-import { IFolder, IWrappedFeature } from "types";
-import { useAtomCallback } from "jotai/utils";
-import { deleteFeatures } from "app/lib/map_operations/delete_features";
-import { memo, useCallback } from "react";
-import { collectFoldersByFolder, collectDescendents } from "app/lib/folder";
 import { useZoomTo } from "app/hooks/use_zoom_to";
-import { UniqueIdentifier } from "@dnd-kit/core";
+import { collectDescendents, collectFoldersByFolder } from "app/lib/folder";
+import { deleteFeatures } from "app/lib/map_operations/delete_features";
 import { duplicateFeatures } from "app/lib/map_operations/duplicate_features";
+import { usePersistence } from "app/lib/persistence/context";
+import type { IPersistence } from "app/lib/persistence/ipersistence";
+import clsx from "clsx";
+import { useAtom } from "jotai";
+import { useAtomCallback } from "jotai/utils";
+import { ContextMenu as CM } from "radix-ui";
+import { memo, useCallback } from "react";
+import { USelection } from "state";
+import { dataAtom, selectionAtom } from "state/jotai";
+import type { JsonValue } from "type-fest";
+import type { IFolder, IWrappedFeature } from "types";
+import { InlineNameEditor } from "./inline_name_editor";
+import type { FlattenedFeature, FlattenedFolder, FlattenedItem } from "./math";
 
 const visibilityToggleClass =
   "hidden opacity-30 hover:opacity-100 group-hover:inline-block pr-2";
@@ -112,7 +112,7 @@ function ItemFolder({
         onClick={handleToggleExpanded}
         className={clsx(
           "opacity-0 group-hover:opacity-50",
-          folder.expanded ? "transform rotate-90" : ""
+          folder.expanded ? "transform rotate-90" : "",
         )}
       >
         <TriangleRightIcon className="w-4" />
@@ -173,7 +173,7 @@ function ItemInner({
 
 function toggleFeatureVisibility(
   feature: IWrappedFeature,
-  force?: boolean
+  force?: boolean,
 ): IWrappedFeature {
   const newProperties = { ...feature.feature.properties };
   const wasVisible =
@@ -239,7 +239,7 @@ function ItemFeature({
     feature.folderId && USelection.isFolderSelected(sel, feature.folderId);
   const geometryLabel = feature.feature.geometry?.type || "Null geometry";
   const previewVal = limitPreviewValue(
-    (preview && feature.feature.properties?.[preview]) as JsonValue
+    (preview && feature.feature.properties?.[preview]) as JsonValue,
   );
   const transact = rep.useTransact();
 
@@ -255,7 +255,7 @@ function ItemFeature({
             note: "Toggled a feature’s visibility",
             track: "feature-toggle-visibility",
             putFeatures: selectedFeatures.map((feature) =>
-              toggleFeatureVisibility(feature, force)
+              toggleFeatureVisibility(feature, force),
             ),
           });
         } else {
@@ -265,8 +265,8 @@ function ItemFeature({
           });
         }
       },
-      [feature, transact]
-    )
+      [feature, transact],
+    ),
   );
 
   const selState = selected ? "direct" : folderSelected ? "secondary" : false;
@@ -430,7 +430,7 @@ export const SortableItem = memo(function SortableItem({
       className={clsx(
         isDragging ? "opacity-100" : "",
         highlight &&
-          "ring-2 ring-purple-500 ring-inset bg-opacity-20 bg-purple-300 dark:bg-purple-700"
+          "ring-2 ring-purple-500 ring-inset bg-opacity-20 bg-purple-300 dark:bg-purple-700",
       )}
     >
       {isDragging ? (
@@ -488,8 +488,8 @@ function FolderActions({ folder }: { folder: IFolder }) {
         set(selectionAtom, newSelection);
         return transact(moment);
       },
-      [transact, folder.id]
-    )
+      [transact, folder.id],
+    ),
   );
 
   const deleteFolder = useAtomCallback(
@@ -503,8 +503,8 @@ function FolderActions({ folder }: { folder: IFolder }) {
         set(selectionAtom, newSelection);
         return transact(moment);
       },
-      [transact, folder.id]
-    )
+      [transact, folder.id],
+    ),
   );
 
   const zoomToFolder = useAtomCallback(
@@ -530,8 +530,8 @@ function FolderActions({ folder }: { folder: IFolder }) {
           ids: zoomIds,
         });
       },
-      [folder.id, zoomTo]
-    )
+      [folder.id, zoomTo],
+    ),
   );
 
   return (
@@ -574,6 +574,6 @@ function sharedStyle({
       : selected === "secondary"
         ? "bg-opacity-40 bg-purple-200 dark:bg-purple-700"
         : `hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700`,
-    overlay ? "px-4 rounded-sm ring-1 ring-gray-500 shadow-md opacity-60" : ""
+    overlay ? "px-4 rounded-sm ring-1 ring-gray-500 shadow-md opacity-60" : "",
   );
 }

@@ -1,11 +1,11 @@
-import React from "react";
-import type { IWrappedFeature } from "types";
-import { useSetAtom } from "jotai";
-import { dialogAtom, panelRawOpen } from "state/jotai";
 import { Button, sharedOutline, TextWell } from "app/components/elements";
-import { FeatureText } from "app/components/panels/feature_editor/raw_editor_text";
 import { PanelDetailsCollapsible } from "app/components/panel_details";
+import { FeatureText } from "app/components/panels/feature_editor/raw_editor_text";
 import clsx from "clsx";
+import { useSetAtom } from "jotai";
+import React from "react";
+import { dialogAtom, panelRawOpen } from "state/jotai";
+import type { IWrappedFeature } from "types";
 
 export function RawEditor({ feature }: { feature: IWrappedFeature }) {
   const setDialogState = useSetAtom(dialogAtom);
