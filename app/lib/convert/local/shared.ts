@@ -239,7 +239,7 @@ export function castRowLonLat(
   // Numbers.app doesn't prune columns without headers.
   delete parsedRow[""];
 
-  if (isNaN(lon) || isNaN(lat)) {
+  if (Number.isNaN(lon) || Number.isNaN(lat)) {
     // TODO: handle errors
     // errors.push({
     //   message: "A row contained an invalid value for latitude or longitude",

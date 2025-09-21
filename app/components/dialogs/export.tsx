@@ -251,7 +251,7 @@ export function ExportDialog({ onClose }: { onClose: () => void }) {
       }
       toast.success("Saved");
       onClose();
-    } catch (e) {
+    } catch (_e) {
       // Expected
       // console.error(e);
       // console.log("A user went to save a file but cancelled it");
@@ -267,7 +267,7 @@ export function ExportDialog({ onClose }: { onClose: () => void }) {
           type: "geojson",
           folderId: "",
           geojsonOptions: DEFAULT_EXPORT_GEOJSON_OPTIONS,
-          csvOptions: DEFAULT_IMPORT_OPTIONS["csvOptions"],
+          csvOptions: DEFAULT_IMPORT_OPTIONS.csvOptions,
         }}
       >
         {({ values }) => {

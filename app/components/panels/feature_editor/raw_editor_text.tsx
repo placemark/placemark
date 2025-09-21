@@ -9,7 +9,7 @@ import { usePersistence } from "app/lib/persistence/context";
 import { lib } from "app/lib/worker";
 import { captureException } from "integrations/errors";
 import isEqual from "lodash/isEqual";
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import type { Feature, IWrappedFeature } from "types";
 
 const checker = linter((view) => {
@@ -93,7 +93,7 @@ export const FeatureText = memo(function FeatureText({
       setEditor(instance);
     }
     return () => {};
-  }, [setEditor, feature, rep, id, onChanges]);
+  }, [feature, onChanges]);
 
   useEffect(() => {
     if (!editor || !window) {
@@ -127,7 +127,7 @@ export const FeatureText = memo(function FeatureText({
         return;
       }
       overrideValue();
-    } catch (e) {
+    } catch (_e) {
       const editorValue = editor.state.doc.toString();
       if (editorValue.trim() === "") {
         overrideValue();

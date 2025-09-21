@@ -16,7 +16,7 @@ import { writeToClipboard } from "app/lib/utils";
 import { captureException } from "integrations/errors";
 import { useSetAtom } from "jotai";
 import { ContextMenu as CM } from "radix-ui";
-import React, { memo } from "react";
+import { memo } from "react";
 import toast from "react-hot-toast";
 import { USelection } from "state";
 import { dialogAtom, Mode, modeAtom, selectionAtom } from "state/jotai";

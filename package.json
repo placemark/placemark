@@ -5,14 +5,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
+    "lint": "biome check",
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "knip": "knip"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint --fix"
+      "biome check --write"
     ]
   },
   "browserslist": [
@@ -144,14 +144,8 @@
     "@types/rbush": "^4.0.0",
     "@types/topojson-client": "^3.1.5",
     "@types/topojson-server": "^3.0.4",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.7.0",
     "deep-freeze": "^0.0.1",
-    "eslint": "^8.57.1",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-unused-imports": "^3.2.0",
     "fastestsmallesttextencoderdecoder": "^1.0.22",
     "jest-diff": "^30.0.5",
     "jest-matcher-utils": "^30.0.5",

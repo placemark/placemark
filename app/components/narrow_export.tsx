@@ -24,7 +24,7 @@ export function NarrowExport({
           as="select"
           name="folderId"
           aria-label="File format"
-          className={styledSelect({ size: "md" }) + "w-full"}
+          className={`${styledSelect({ size: "md" })}w-full`}
         >
           {folderSummary.map((folder, i) => {
             return (

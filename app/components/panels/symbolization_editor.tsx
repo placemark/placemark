@@ -93,7 +93,7 @@ function InterpolateOption() {
         as="select"
         name="interpolate"
         required
-        className={styledSelect({ size: "sm" }) + " w-full"}
+        className={`${styledSelect({ size: "sm" })} w-full`}
       >
         <option value="linear">Linear</option>
         <option value="step">Step</option>
@@ -405,7 +405,7 @@ function RampWizard() {
                 as="select"
                 name="property"
                 required
-                className={styledSelect({ size: "sm" }) + " w-full"}
+                className={`${styledSelect({ size: "sm" })} w-full`}
               >
                 <option value={""}>Select…</option>
                 {Array.from(options.keys(), (cat) => {
@@ -423,7 +423,7 @@ function RampWizard() {
                 as="select"
                 name="breaks"
                 required
-                className={styledSelect({ size: "sm" }) + " w-full"}
+                className={`${styledSelect({ size: "sm" })} w-full`}
               >
                 <option value="linear">Linear</option>
                 <option value="quantile">Quantile</option>
@@ -459,9 +459,7 @@ function RampWizard() {
                                 as="select"
                                 name="classes"
                                 required
-                                className={
-                                  styledSelect({ size: "sm" }) + " w-full"
-                                }
+                                className={`${styledSelect({ size: "sm" })} w-full`}
                               >
                                 {d3.range(3, 8).map((count) => {
                                   return (
@@ -546,8 +544,7 @@ function RampWizard() {
           for (let i = 1; i < values.stops.length; i++) {
             const thisValue = values.stops[i].input;
             if (thisValue < lastValue) {
-              errors[`stops`] =
-                "Ramp input values need to be in ascending order.";
+              errors.stops = "Ramp input values need to be in ascending order.";
             }
             lastValue = thisValue;
           }
@@ -707,7 +704,7 @@ function CategoryWizard() {
                 as="select"
                 name="property"
                 required
-                className={styledSelect({ size: "sm" }) + " w-full"}
+                className={`${styledSelect({ size: "sm" })} w-full`}
               >
                 <option value={""}>Select…</option>
                 {Array.from(options.keys(), (cat) => {

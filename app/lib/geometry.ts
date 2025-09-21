@@ -53,7 +53,7 @@ function trimAndSplitIntoNumbers(
   const parts = trimmed.split(/[\s|,]+/);
   const numbers = parts
     .map((str) => parseFloat(str))
-    .filter((num) => !isNaN(num));
+    .filter((num) => !Number.isNaN(num));
   if (numbers.length !== len) {
     return Left(
       new ConvertError(

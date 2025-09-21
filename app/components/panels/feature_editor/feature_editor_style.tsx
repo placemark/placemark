@@ -24,13 +24,13 @@ interface FormValues {
   enableFill: boolean;
   fill: string;
   enableFillOpacity: boolean;
-  ["fill-opacity"]: number;
+  "fill-opacity": number;
   enableStroke: boolean;
   stroke: string;
   enableStrokeOpacity: boolean;
-  ["stroke-opacity"]: number;
+  "stroke-opacity": number;
   enableStrokeWidth: boolean;
-  ["stroke-width"]: number;
+  "stroke-width": number;
 }
 
 function getString(set: Set<JsonValue>): string | undefined {
@@ -261,9 +261,9 @@ export function FeatureEditorStyle({
           );
 
           if (values.enableFill) {
-            properties["fill"] = values.fill;
+            properties.fill = values.fill;
           } else {
-            delete properties["fill"];
+            delete properties.fill;
           }
 
           if (values.enableFillOpacity) {
@@ -273,9 +273,9 @@ export function FeatureEditorStyle({
           }
 
           if (values.enableStroke) {
-            properties["stroke"] = values.stroke;
+            properties.stroke = values.stroke;
           } else {
-            delete properties["stroke"];
+            delete properties.stroke;
           }
 
           if (values.enableStrokeOpacity) {
@@ -342,9 +342,9 @@ export function FeatureEditorStyleMulti({
     const allValues: Record<(typeof STYLE_PROPS)[number], Set<JsonValue>> = {
       fill: new Set(),
       stroke: new Set(),
-      ["fill-opacity"]: new Set(),
-      ["stroke-opacity"]: new Set(),
-      ["stroke-width"]: new Set(),
+      "fill-opacity": new Set(),
+      "stroke-opacity": new Set(),
+      "stroke-width": new Set(),
     };
 
     for (const { feature } of wrappedFeatures) {
@@ -358,10 +358,10 @@ export function FeatureEditorStyleMulti({
 
     const uniformValues = {
       fill: getString(allValues.fill),
-      ["fill-opacity"]: getNumber(allValues["fill-opacity"]),
+      "fill-opacity": getNumber(allValues["fill-opacity"]),
       stroke: getString(allValues.stroke),
-      ["stroke-opacity"]: getNumber(allValues["stroke-opacity"]),
-      ["stroke-width"]: getNumber(allValues["stroke-width"]),
+      "stroke-opacity": getNumber(allValues["stroke-opacity"]),
+      "stroke-width": getNumber(allValues["stroke-width"]),
     };
 
     return uniformValues;
@@ -384,7 +384,7 @@ export function FeatureEditorStyleMulti({
               );
 
               if (values.enableFill) {
-                properties["fill"] = values.fill;
+                properties.fill = values.fill;
               }
 
               if (values.enableFillOpacity) {
@@ -392,7 +392,7 @@ export function FeatureEditorStyleMulti({
               }
 
               if (values.enableStroke) {
-                properties["stroke"] = values.stroke;
+                properties.stroke = values.stroke;
               }
 
               if (values.enableStrokeOpacity) {

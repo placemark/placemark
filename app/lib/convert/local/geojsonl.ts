@@ -29,7 +29,7 @@ export function GeoJSONLToGeoJSON(
       type: "FeatureCollection",
       features,
     } as FeatureCollection);
-  } catch (e) {
+  } catch (_e) {
     return Left(new ConvertError("Some GeoJSON data in GeoJSONL was invalid"));
   }
 }

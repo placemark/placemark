@@ -31,6 +31,7 @@ function ModeHint({
       {children}
 
       <button
+        type="button"
         onClick={() => {
           setHideHints((hints) => {
             return hints.concat(mode);
@@ -57,7 +58,7 @@ export function ModeHints() {
   const hold = (shift: boolean = false) => (
     <div className="text-xs">
       Hold {localizeKeybinding("Option", isMac)} to snap to existing features.
-      {shift ? <> Hold Shift to snap to right angles.</> : null}
+      {shift ? "Hold Shift to snap to right angles." : null}
     </div>
   );
 
@@ -65,11 +66,9 @@ export function ModeHints() {
     case Mode.DRAW_RECTANGLE: {
       return (
         <ModeHint mode={mode.mode}>
-          {selection.type === "single" ? (
-            <>Lift the mouse button to finish</>
-          ) : (
-            <>Click and drag to draw a rectangle</>
-          )}
+          {selection.type === "single"
+            ? "Lift the mouse button to finish"
+            : "Click and drag to draw a rectangle"}
         </ModeHint>
       );
     }
@@ -89,7 +88,7 @@ export function ModeHints() {
               {hold(true)}
             </div>
           ) : (
-            <>Click to start the polygon, then click to add each vertex</>
+            "Click to start the polygon, then click to add each vertex"
           )}
         </ModeHint>
       );
@@ -120,11 +119,9 @@ export function ModeHints() {
     case Mode.DRAW_CIRCLE: {
       return (
         <ModeHint mode={mode.mode}>
-          {selection.type === "single" ? (
-            <>Lift the mouse button to finish</>
-          ) : (
-            <>Click and drag to draw a circle</>
-          )}
+          {selection.type === "single"
+            ? "Lift the mouse button to finish"
+            : "Click and drag to draw a circle"}
         </ModeHint>
       );
     }
@@ -138,7 +135,7 @@ export function ModeHints() {
               {hold(true)}
             </div>
           ) : (
-            <>Click to start the line, then click to add each vertex</>
+            "Click to start the line, then click to add each vertex"
           )}
         </ModeHint>
       );

@@ -55,7 +55,7 @@ class CTopoJSON implements FileType {
             }
           }
           return root;
-        } catch (e) {
+        } catch (_e) {
           return throwE(new ConvertError("Could not read TopoJSON file"));
         }
       },
@@ -70,7 +70,7 @@ class CTopoJSON implements FileType {
             blob: stringToBlob(JSON.stringify(topology({ objects: geojson }))),
             name: "features.json",
           };
-        } catch (e) {
+        } catch (_e) {
           return throwE(
             new ConvertError("Could not convert GeoJSON to TopoJSON"),
           );

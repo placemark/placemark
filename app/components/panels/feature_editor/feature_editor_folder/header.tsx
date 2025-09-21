@@ -21,7 +21,7 @@ function PreviewProperty({ featureMap }: { featureMap: FeatureMap }) {
     <div className="space-y-2">
       <StyledLabelSpan>Label property</StyledLabelSpan>
       <select
-        className={styledSelect({ size: "sm" }) + " w-full"}
+        className={`${styledSelect({ size: "sm" })} w-full`}
         onChange={(e) => {
           void setMeta({ label: e.target.value });
         }}

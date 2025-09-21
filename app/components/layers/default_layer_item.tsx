@@ -25,6 +25,7 @@ export function DefaultLayerItem({
     <Tooltip.Root delayDuration={0}>
       <Tooltip.Trigger asChild>
         <button
+          type="button"
           onClick={() => {
             onSelect(mapboxLayer);
           }}

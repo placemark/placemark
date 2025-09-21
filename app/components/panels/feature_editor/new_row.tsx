@@ -73,6 +73,7 @@ export function NewRow({
         />
         <div className="flex items-center absolute top-1 bottom-1 right-1">
           <button
+            type="button"
             aria-label="Save property"
             onClick={() => commit(newKey, newValue)}
             className="text-gray-500 focus:text-gray-700 hover:text-black

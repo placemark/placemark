@@ -46,6 +46,7 @@ export function GeometryCollectionEditor({
                   #{i + 1} {geometry.type}
                 </div>
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -63,6 +64,7 @@ export function GeometryCollectionEditor({
                   <Zoom className="w-3 h-3" />
                 </button>
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();

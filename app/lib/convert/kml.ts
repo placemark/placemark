@@ -51,7 +51,7 @@ class CKML implements FileType {
           blob: stringToBlob(foldersToKML(root)),
           name: "features.kml",
         };
-      } catch (e) {
+      } catch (_e) {
         return throwE(new ConvertError("Could not convert to KML"));
       }
     });

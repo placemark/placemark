@@ -12,7 +12,6 @@ import { useOpenFiles } from "app/hooks/use_open_files";
 import { usePersistence } from "app/lib/persistence/context";
 import { useAtomValue, useSetAtom } from "jotai";
 import { DropdownMenu as DD } from "radix-ui";
-import React from "react";
 import { dialogAtom, momentLogAtom } from "state/jotai";
 
 function UndoList() {

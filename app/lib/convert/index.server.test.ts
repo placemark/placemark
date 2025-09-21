@@ -1,6 +1,6 @@
-import { Blob } from "buffer";
-import Fs from "fs";
-import Path from "path";
+import { Blob } from "node:buffer";
+import Fs from "node:fs";
+import Path from "node:path";
 import { fcLineString, twoPoints } from "test/helpers";
 import type { IFeature, Polygon } from "types";
 import { describe, expect, it, test } from "vitest";

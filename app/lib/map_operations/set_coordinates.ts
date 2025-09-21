@@ -79,7 +79,7 @@ function moveAsRectangle({
   vertexId,
 }: MoveArgs): Feature | null {
   const type = feature.geometry?.type;
-  if (!(type == "Polygon" || type == "MultiPolygon")) return null;
+  if (!(type === "Polygon" || type === "MultiPolygon")) return null;
 
   // There may be multiple pointers because of Polygon
   // and MultiPolygon geometries, which have looped coordinates.

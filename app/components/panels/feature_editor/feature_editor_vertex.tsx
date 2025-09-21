@@ -28,7 +28,7 @@ export function FeatureEditorVertex({
     value: longitude.toString(),
     onCommit(newValue) {
       const num = +newValue;
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         transact({
           putFeatures: [
             {
@@ -49,7 +49,7 @@ export function FeatureEditorVertex({
     value: latitude.toString(),
     onCommit(newValue) {
       const num = +newValue;
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         transact({
           putFeatures: [
             {

@@ -6,7 +6,7 @@ import { useAtomCallback } from "jotai/utils";
 import max from "lodash/max";
 import min from "lodash/min";
 import range from "lodash/range";
-import React, { memo, useCallback } from "react";
+import { memo, useCallback } from "react";
 import { dataAtom, type Sel, selectionAtom } from "state/jotai";
 import { USelection } from "state/uselection";
 import type { IWrappedFeature } from "types";

@@ -106,5 +106,5 @@ test("formatUSD", () => {
 });
 
 test("truncate", () => {
-  expect(truncate("a".repeat(100))).toEqual("a".repeat(48) + "…");
+  expect(truncate("a".repeat(100))).toEqual(`${"a".repeat(48)}…`);
 });

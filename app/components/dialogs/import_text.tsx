@@ -12,7 +12,7 @@ import * as Comlink from "comlink";
 import type { FormikHelpers } from "formik";
 import { Form, Formik } from "formik";
 import { captureException } from "integrations/errors";
-import React, { useState } from "react";
+import { useState } from "react";
 import type { DialogStateLoadText } from "state/dialog_state";
 import { ImportProgressBar } from "./import/import_progress_bar";
 

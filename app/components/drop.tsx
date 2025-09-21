@@ -76,7 +76,7 @@ export default memo(function Drop() {
       window.removeEventListener("dragover", stopWindowDrag);
       window.removeEventListener("drop", stopWindowDrag);
     };
-  }, [setDragging, setDialogState]);
+  }, [setDialogState]);
 
   return dragging ? (
     <StyledDropOverlay>Drop files to add to the map</StyledDropOverlay>

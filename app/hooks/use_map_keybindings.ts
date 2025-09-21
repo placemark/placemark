@@ -15,7 +15,7 @@ export const keybindingOptions: Options = {
   enabled(e) {
     try {
       return !IGNORE_ROLES.has((e.target as HTMLElement).getAttribute("role")!);
-    } catch (e) {
+    } catch (_e) {
       return true;
     }
   },

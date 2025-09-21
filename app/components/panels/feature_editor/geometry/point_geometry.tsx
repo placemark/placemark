@@ -27,7 +27,7 @@ export default function PointGeometry({
     value: longitude.toString(),
     onCommit(newValue) {
       const num = +newValue;
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         transact({
           note: "Manually updated point location",
           putFeatures: [
@@ -50,7 +50,7 @@ export default function PointGeometry({
     value: latitude.toString(),
     onCommit(newValue) {
       const num = +newValue;
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         transact({
           note: "Manually updated point location",
           putFeatures: [

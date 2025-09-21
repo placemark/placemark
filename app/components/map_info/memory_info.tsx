@@ -1,6 +1,5 @@
 import type { PersistenceMetadataMemory } from "app/lib/persistence/ipersistence";
 import { Popover as P } from "radix-ui";
-import React from "react";
 
 export function MemoryInfo({
   metadata: _metadata,

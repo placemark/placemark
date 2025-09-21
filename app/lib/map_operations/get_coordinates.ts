@@ -5,7 +5,7 @@ import type { JsonValue } from "type-fest";
 import type { Feature, Position } from "types";
 
 function handleNumber(input: JsonValue): number {
-  return typeof input === "number" && !isNaN(input) ? input : 0;
+  return typeof input === "number" && !Number.isNaN(input) ? input : 0;
 }
 
 export function getCoordinates(feature: Feature, id: VertexId): Position {

@@ -49,11 +49,13 @@ export function autoType(
       object[key] = value;
       continue;
     }
+    // biome-ignore lint/suspicious/noImplicitAnyLet: vendor
     let number;
     if (!value) value = null;
     else if (value === "true") value = true;
     else if (value === "false") value = false;
-    else if (!isNaN((number = +value))) value = number;
+    // biome-ignore lint/suspicious/noAssignInExpressions: vendor
+    else if (!Number.isNaN((number = +value))) value = number;
     else continue;
     object[key] = value;
   }

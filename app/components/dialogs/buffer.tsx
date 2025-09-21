@@ -77,7 +77,7 @@ export default function BufferDialog({
               <Field
                 as="select"
                 name="units"
-                className={styledSelect({ size: "sm" }) + " w-full"}
+                className={`${styledSelect({ size: "sm" })} w-full`}
               >
                 <UnitOptionsGroups groups={GROUPED_UNIT_OPTIONS.length} />
               </Field>

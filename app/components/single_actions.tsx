@@ -243,11 +243,9 @@ export function SingleActions({
   const goodActions = actions.filter((action) => action.applicable);
 
   return goodActions.length ? (
-    <>
-      {goodActions.map((action, i) => (
-        <ActionItem key={i} as={as} action={action} />
-      ))}
-    </>
+    goodActions.map((action, i) => (
+      <ActionItem key={i} as={as} action={action} />
+    ))
   ) : as !== "context-item" ? (
     // Don't show "No actions available" when this is a
     // context item, because that means there are other multi-actions

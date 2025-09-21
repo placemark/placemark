@@ -108,6 +108,7 @@ function ItemFolder({
     >
       <Spacer selected={selState} depth={depth} />
       <button
+        type="button"
         title="Expand / collapse"
         onClick={handleToggleExpanded}
         className={clsx(
@@ -120,6 +121,7 @@ function ItemFolder({
       <InlineNameEditor folder={folder} rep={rep} />
       <div className="flex-auto" />
       <button
+        type="button"
         title="Toggle locked"
         onClick={handleToggleLocked}
         className="pr-2"
@@ -131,6 +133,7 @@ function ItemFolder({
         )}
       </button>
       <div
+        type="button"
         role="checkbox"
         title="Toggle visibility"
         onClick={handleToggleVisibility}
@@ -273,6 +276,7 @@ function ItemFeature({
 
   return (
     <button
+      type="button"
       className={sharedStyle({
         selected: selState,
         overlay,

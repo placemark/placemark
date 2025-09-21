@@ -1,6 +1,5 @@
 import { StyledLabelSpan, styledSelect } from "app/components/elements";
 import { Field } from "formik";
-import React from "react";
 
 export function SelectHeader({
   label,

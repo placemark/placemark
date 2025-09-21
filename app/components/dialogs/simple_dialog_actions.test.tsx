@@ -1,6 +1,5 @@
 import { Formik } from "formik";
 
-import React from "react";
 import { fireEvent, render, screen } from "test/utils";
 import { expect, test, vi } from "vitest";
 import SimpleDialogActions from "./simple_dialog_actions";

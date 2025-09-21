@@ -74,7 +74,7 @@ Null island,0,0`);
       {
         ...DEFAULT_EXPORT_OPTIONS,
         csvOptions: {
-          ...DEFAULT_IMPORT_OPTIONS["csvOptions"],
+          ...DEFAULT_IMPORT_OPTIONS.csvOptions,
           kind: "polyline",
         },
       },

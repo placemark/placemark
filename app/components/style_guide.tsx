@@ -192,6 +192,7 @@ export function StyleGuide() {
             <StyleGuideSection title="Inline link">
               <div>
                 This is text with a{" "}
+                {/** biome-ignore lint/a11y/useValidAnchor: example */}
                 <a href="#" className={styledInlineA}>
                   link in the middle
                 </a>

@@ -312,7 +312,7 @@ function FeatureTableInner({ data }: { data: Data }) {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [columnWidths],
+    [columnWidths, columns.length, columns[index - 1]],
   );
 
   /**
@@ -500,7 +500,7 @@ function FeatureTableInner({ data }: { data: Data }) {
                         className={E.styledSelect({ size: "xs" })}
                         name="column"
                       >
-                        <option value={""}>Any column</option>;
+                        <option value={""}>Any column</option>:
                         {columns.map((column) => {
                           return (
                             <option key={column} value={column}>
@@ -514,7 +514,7 @@ function FeatureTableInner({ data }: { data: Data }) {
                         className={E.styledSelect({ size: "xs" })}
                         name="geometryType"
                       >
-                        <option value={""}>Any geometry type</option>;
+                        <option value={""}>Any geometry type</option>:
                         {geometryTypes.map((type) => {
                           return (
                             <option key={type} value={type}>

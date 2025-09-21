@@ -1,5 +1,4 @@
 import { useAtomValue } from "jotai";
-import React from "react";
 import { USelection } from "state";
 import { selectionAtom } from "state/jotai";
 import type { IWrappedFeature } from "types";

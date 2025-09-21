@@ -65,7 +65,7 @@ class CKMZ implements FileType {
           blob: new Blob([zipResult], { type: "application/octet-stream" }),
           name: "features.kmz",
         };
-      } catch (e) {
+      } catch (_e) {
         return throwE(new ConvertError("Could not convert to KMZ"));
       }
     });

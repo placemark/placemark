@@ -222,7 +222,7 @@ function ScaleControl() {
         }
       };
     }
-  }, [map, scaleUnit, startTransition]);
+  }, [map, scaleUnit]);
 
   const distance = getRoundNum(maxDistance);
   const ratio = distance / maxDistance;

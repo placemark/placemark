@@ -9,7 +9,7 @@ import { dsvFormat } from "d3-dsv";
 import { Field, type FormikContextType, useFormikContext } from "formik";
 import { captureException } from "integrations/errors";
 import { useAtomValue } from "jotai";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { dataAtom } from "state/jotai";
 import type { JsonObject } from "type-fest";

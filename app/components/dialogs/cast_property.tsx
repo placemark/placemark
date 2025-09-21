@@ -86,7 +86,7 @@ export function CastPropertyDialog({
             <Field
               as="select"
               name="castTarget"
-              className={styledSelect({ size: "md" }) + " w-full"}
+              className={`${styledSelect({ size: "md" })} w-full`}
             >
               {Object.values(ExplicitCast).map((type) => (
                 <option key={type} value={type}>

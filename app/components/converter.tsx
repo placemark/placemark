@@ -473,6 +473,7 @@ function Download() {
         <div className="border-t border-gray-200 -mx-10 mt-8" />
         <div className="pt-8 text-center">
           <button
+            type="button"
             className="inline inherit text-purple-500 underline"
             onClick={() => send("cancel")}
           >
@@ -544,7 +545,7 @@ function ErrorState({ error }: { error: Error | null }) {
           justify-stretch`}
       >
         <div className="text-md pb-4">Sorry, we encountered an error.</div>
-        {error && error.message ? (
+        {error?.message ? (
           <div className="text-center font-monospace">{error.message}</div>
         ) : null}
       </div>

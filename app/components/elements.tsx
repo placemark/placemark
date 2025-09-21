@@ -425,7 +425,7 @@ export const menuItemLike = ({
 export const StyledItem = classed(DD.Item)(menuItemLike);
 export const DDSubTriggerItem = classed(DD.SubTrigger)(menuItemLike);
 export const CMSubTriggerItem = classed(CM.SubTrigger)(
-  menuItemLike({ variant: "default" }) + " justify-between",
+  `${menuItemLike({ variant: "default" })} justify-between`,
 );
 export const CMItem = classed(CM.Item)(menuItemLike);
 
@@ -484,7 +484,7 @@ export function sharedOutline(
     dark:focus-visible:ring-offset-gray-900`,
 
     {
-      [`border border-purple-500`]: variant === "primary",
+      "border border-purple-500": variant === "primary",
       [`border
     border-gray-200               dark:border-gray-500
     shadow-sm

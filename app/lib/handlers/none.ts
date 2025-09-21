@@ -305,8 +305,6 @@ export function useNoneHandlers({
               ],
               quiet: true,
             });
-
-            break;
           }
         }
       }

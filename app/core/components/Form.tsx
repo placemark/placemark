@@ -18,7 +18,7 @@ interface FormProps<S extends z.ZodType<any, any>>
   onSubmit: (
     values: z.infer<S>,
     helpers: FormikHelpers<z.infer<S>>,
-  ) => Promise<void | OnSubmitResult>;
+  ) => Promise<undefined | OnSubmitResult>;
   initialValues?: FormikProps<z.infer<S>>["initialValues"];
 }
 

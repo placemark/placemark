@@ -114,7 +114,7 @@ export function CircleDialog({
                   <Field
                     as="select"
                     name="type"
-                    className={styledSelect({ size: "sm" }) + " w-full"}
+                    className={`${styledSelect({ size: "sm" })} w-full`}
                   >
                     {Object.values(CIRCLE_TYPE).map((type) => {
                       return (
@@ -144,7 +144,7 @@ export function CircleDialog({
                     <Field
                       as="select"
                       name="units"
-                      className={styledSelect({ size: "sm" }) + " w-full"}
+                      className={`${styledSelect({ size: "sm" })} w-full`}
                     >
                       <UnitOptionsGroups groups={GROUPED_UNIT_OPTIONS.length} />
                     </Field>

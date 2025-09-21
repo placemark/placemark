@@ -196,7 +196,7 @@ function MapboxLayer({
         try {
           const style = await get(url, MapboxStyleSkeleton);
           name = style.name || "Mapbox style";
-        } catch (e) {
+        } catch (_e) {
           return {
             [FORM_ERROR]: "Could not load style",
           };
@@ -500,7 +500,8 @@ function AddLayer() {
       ))}
       <E.DivSeparator />
       <button
-        className={"w-full block " + E.menuItemLike({ variant: "default" })}
+        type="button"
+        className={`w-full block ${E.menuItemLike({ variant: "default" })}`}
         onClick={() => {
           setMode("custom");
         }}
@@ -603,6 +604,7 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
     <P.Root open={editing} onOpenChange={(val) => setEditing(val)}>
       <P.Trigger asChild>
         <button
+          type="button"
           className={"opacity-30 hover:opacity-100 select-none"}
           title="Edit"
         >
@@ -647,7 +649,7 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
               <E.TContent>This TileJSON source failed to load</E.TContent>
             </T.Root>
           ) : null}
-          {tilejson && tilejson.bounds ? (
+          {tilejson?.bounds ? (
             <button
               type="button"
               title="Zoom to layer"
@@ -677,7 +679,7 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
               value={Math.round(layerConfig.opacity * 100)}
               onChange={async (e) => {
                 const opacity = clamp(e.target.valueAsNumber / 100, 0, 1);
-                if (isNaN(opacity)) return;
+                if (Number.isNaN(opacity)) return;
                 await transact({
                   note: "Change layer opacity",
                   putLayerConfigs: [
@@ -731,6 +733,7 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
           </div>
 
           <button
+            type="button"
             className={"opacity-30 hover:opacity-100 select-none"}
             onClick={async () => {
               await transact({
@@ -783,7 +786,7 @@ export function LayersPopover() {
           ordered[idx - 1]?.at || null,
           ordered[idx + 1]?.at || null,
         );
-      } catch (e) {}
+      } catch (_e) {}
 
       transact({
         note: "Reorder layers",

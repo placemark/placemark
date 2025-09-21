@@ -12,7 +12,7 @@ import { pluralize } from "app/lib/utils";
 import { Form, Formik } from "formik";
 import isObject from "lodash/isObject";
 import { Popover as P } from "radix-ui";
-import React, { useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useVirtual } from "react-virtual";
 import type { JsonValue } from "type-fest";
 import type { CoordProps } from "types";

@@ -75,7 +75,7 @@ type Coords = CoordinateHavers["coordinates"];
 
 function coordsIsNaN(coords: Coords): boolean {
   if (Array.isArray(coords[0])) return coordsIsNaN(coords[0]);
-  return isNaN(coords[0]);
+  return Number.isNaN(coords[0]);
 }
 
 function projectCoords(coords: Coords, proj: GeoProjection): Coords {

@@ -42,7 +42,7 @@ import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import debounce from "lodash/debounce";
 import { Tooltip as T } from "radix-ui";
-import React, {
+import {
   Suspense,
   useCallback,
   useContext,
@@ -142,7 +142,7 @@ function UrlAPI() {
         }
       })();
     }
-  }, [load, doImportString, doImportFile]);
+  }, [load, doImportString, doImportFile, setDialogState]);
 
   return null;
 }
@@ -350,6 +350,7 @@ function DraggableMap({
         <T.Root delayDuration={0}>
           <T.Trigger asChild>
             <button
+              type="button"
               className={clsx(
                 "block p-2 bg-white rounded-l",
                 splits.layout === "AUTO" ? SELECTED : UNSELECTED,
@@ -375,6 +376,7 @@ function DraggableMap({
         <T.Root delayDuration={0}>
           <T.Trigger asChild>
             <button
+              type="button"
               className={clsx(
                 "block p-2 bg-white",
                 splits.layout === "FLOATING" ? SELECTED : UNSELECTED,
@@ -394,6 +396,7 @@ function DraggableMap({
         <T.Root delayDuration={0}>
           <T.Trigger asChild>
             <button
+              type="button"
               className={clsx(
                 "block p-2 bg-white rounded-r",
                 splits.layout === "VERTICAL" ? SELECTED : UNSELECTED,
@@ -435,7 +438,7 @@ function DraggableMap({
   );
 }
 
-function useMapResize(element: HTMLElement | null, layout: ResolvedLayout) {
+function useMapResize(element: HTMLElement | null, _layout: ResolvedLayout) {
   const pmap = useContext(MapContext);
 
   useLayoutEffect(() => {
@@ -444,7 +447,7 @@ function useMapResize(element: HTMLElement | null, layout: ResolvedLayout) {
       element.style.height = "";
     }
     pmap?.map?.resize();
-  }, [element, pmap, layout]);
+  }, [element, pmap]);
 
   useLayoutEffect(() => {
     if (element) {
@@ -466,5 +469,5 @@ function useMapResize(element: HTMLElement | null, layout: ResolvedLayout) {
     } else {
       // Nothing
     }
-  }, [element, pmap, layout]);
+  }, [element, pmap]);
 }

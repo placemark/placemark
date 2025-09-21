@@ -134,7 +134,7 @@ function UnitSelectField() {
   return (
     <Field
       as="select"
-      className={styledSelect({ size: "sm" }) + " w-24"}
+      className={`${styledSelect({ size: "sm" })} w-24`}
       name="units"
       aria-label="Select units"
       onChange={(e: ChangeEvent<HTMLInputElement>) => {

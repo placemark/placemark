@@ -21,30 +21,27 @@ export const FeatureEditorExport = memo(function FeatureEditorExport({
   const lastFeature = useRef<IWrappedFeature>(wrappedFeature);
   lastFeature.current = wrappedFeature;
 
-  const onCopy = useCallback(
-    async function onCopy(values: CopyForm) {
-      if (lastFeature.current.feature.geometry === null) {
-        return toast.error(
-          "Could not copy, because this feature has no geometry",
-        );
-      }
-      await toast.promise(
-        writeToClipboard(
-          COPIERS[values.format](lastFeature.current.feature as IFeature).then(
-            (either) => {
-              return either.unsafeCoerce();
-            },
-          ),
-        ),
-        {
-          loading: "Copying…",
-          success: "Copied",
-          error: "Failed to copy. Try again?",
-        },
+  const onCopy = useCallback(async function onCopy(values: CopyForm) {
+    if (lastFeature.current.feature.geometry === null) {
+      return toast.error(
+        "Could not copy, because this feature has no geometry",
       );
-    },
-    [lastFeature],
-  );
+    }
+    await toast.promise(
+      writeToClipboard(
+        COPIERS[values.format](lastFeature.current.feature as IFeature).then(
+          (either) => {
+            return either.unsafeCoerce();
+          },
+        ),
+      ),
+      {
+        loading: "Copying…",
+        success: "Copied",
+        error: "Failed to copy. Try again?",
+      },
+    );
+  }, []);
 
   if (wrappedFeature.feature.geometry === null) return null;
 
@@ -64,8 +61,9 @@ const ExportInner = memo(function ExportInner({
     <PanelDetailsCollapsible title="Export" atom={panelExportOpen}>
       <Formik initialValues={{ format: "wkt" }} onSubmit={onCopy}>
         <Form className="flex items-center space-x-2">
+          {/** biome-ignore lint/correctness/useUniqueElementIds: debt */}
           <Field
-            className={styledSelect({ size: "xs" }) + " w-full"}
+            className={`${styledSelect({ size: "xs" })} w-full`}
             component="select"
             id="format"
             name="format"

@@ -70,7 +70,7 @@ export function allowNativePaste(e: Pick<ClipboardEvent, "target">) {
 export const getIsMac = once((): boolean => {
   try {
     return /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
-  } catch (e) {
+  } catch (_e) {
     return false;
   }
 });
@@ -132,7 +132,7 @@ export function eitherToAsync<L, R>(either: Either<L, R>): EitherAsync<L, R> {
  */
 export function truncate(str: string, len = 48): string {
   if (str.length < len) return str;
-  return str.substring(0, len) + "…";
+  return `${str.substring(0, len)}…`;
 }
 
 /**
@@ -177,8 +177,8 @@ export function pluralize(
   irregular: string | undefined = undefined,
 ) {
   if (!irregular && word in IRREGS) irregular = IRREGS[word];
-  const pluralized = count === 1 ? word : irregular ? irregular : word + "s";
-  return (inclusive ? count.toLocaleString() + " " : "") + pluralized;
+  const pluralized = count === 1 ? word : irregular ? irregular : `${word}s`;
+  return (inclusive ? `${count.toLocaleString()} ` : "") + pluralized;
 }
 
 export const formatUSD = (n: number) =>

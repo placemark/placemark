@@ -49,7 +49,7 @@ const getExpr = memoizeOne((symbolization: ISymbolization) => {
 function getColor(symbolization: ISymbolization, feature: IFeature) {
   try {
     return getExpr(symbolization)(feature);
-  } catch (e) {
+  } catch (_e) {
     return purple900;
   }
 }
@@ -143,11 +143,18 @@ function SvgChild({
 
       const color = getColor(symbolization, child as IFeature) || "black";
 
-      if (geometry.type === "LineString" || "MultiLineString") {
+      if (
+        geometry.type === "LineString" ||
+        geometry.type === "MultiLineString"
+      ) {
         attrs.stroke = color;
       }
 
-      if (geometry.type === "Polygon" || "MultiPolygon" || "Point") {
+      if (
+        geometry.type === "Polygon" ||
+        geometry.type === "MultiPolygon" ||
+        geometry.type === "Point"
+      ) {
         attrs.fill = color;
         attrs.fillOpacity = 0.2;
       }
@@ -273,7 +280,7 @@ export function ExportSVGDialog() {
     const path = geo.geoPath(proj).pointRadius(config.pointRadius);
 
     return path;
-  }, [featureMap, featureMap.version, config, mapExtent]);
+  }, [featureMap, config, mapExtent]);
 
   async function onExport() {
     const { fileSave } = await import("browser-fs-access");
@@ -329,7 +336,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="chartWidth"
                 />
                 <StyledLabelSpan>Width</StyledLabelSpan>
@@ -337,7 +344,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="chartHeight"
                 />
                 <StyledLabelSpan>Height</StyledLabelSpan>
@@ -345,7 +352,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="padding"
                 />
                 <StyledLabelSpan>Padding</StyledLabelSpan>
@@ -353,7 +360,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="pointRadius"
                 />
                 <StyledLabelSpan>Point radius</StyledLabelSpan>
@@ -369,7 +376,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <Field
                   as="select"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="extent"
                 >
                   {EXTENTS.map((extent) => {
@@ -385,7 +392,7 @@ export function ExportSVGDialog() {
               <label className="flex items-center gap-x-2">
                 <Field
                   as="select"
-                  className={inputClass({ _size: "sm" }) + " w-32"}
+                  className={`${inputClass({ _size: "sm" })} w-32`}
                   name="projection"
                 >
                   {PROJECTIONS.map((proj) => {

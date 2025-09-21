@@ -82,6 +82,7 @@ function getSqSegDist(p: Position, p1: Position, p2: Position) {
 function simplifyRadialDist(points: Position[], sqTolerance: number) {
   let prevPoint = points[0];
   const newPoints = [prevPoint];
+  // biome-ignore lint/suspicious/noImplicitAnyLet: vendor
   let point;
 
   for (let i = 1, len = points.length; i < len; i++) {

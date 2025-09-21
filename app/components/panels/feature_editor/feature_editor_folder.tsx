@@ -169,7 +169,6 @@ function findBeforeAt({
       break;
     } else if (sortedItems[i].depth === myDepth) {
       return sortedItems[i].at;
-      break;
     } else {
       // console.log("skipping because depth >", sortedItems[i]);
     }
@@ -196,7 +195,6 @@ function findAfterAt({
       break;
     } else if (sortedItems[i].depth === myDepth) {
       return sortedItems[i].at;
-      break;
     } else {
       // console.log("skipping because depth >", sortedItems[i]);
     }

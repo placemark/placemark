@@ -6,7 +6,7 @@ import type { Feature } from "types";
 
 function offsetPointer(pointer: string) {
   return pointer.replace(/(\d+)$/, (index) => {
-    return (parseInt(index) + 1).toString();
+    return (parseInt(index, 10) + 1).toString();
   });
 }
 

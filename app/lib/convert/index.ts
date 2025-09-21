@@ -306,7 +306,7 @@ export async function detectType(file: File) {
         if (
           (ext && type.extensions.includes(ext)) ||
           type.mimes.includes(file.type) ||
-          (type.filenames && type.filenames.includes(name))
+          type.filenames?.includes(name)
         ) {
           return {
             ...DEFAULT_IMPORT_OPTIONS,

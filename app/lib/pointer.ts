@@ -12,7 +12,7 @@ function escapeReplacer(m: string) {
     case "~0":
       return "~";
   }
-  throw new Error("Invalid tilde escape: " + m);
+  throw new Error(`Invalid tilde escape: ${m}`);
 }
 
 function untilde(str: string) {

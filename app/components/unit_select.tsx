@@ -34,7 +34,7 @@ export const UnitSelect = memo(function UnitSelect({
 }) {
   return (
     <select
-      className={styledSelect({ size: "sm" }) + " w-24"}
+      className={`${styledSelect({ size: "sm" })} w-24`}
       value={value}
       aria-label="Select units"
       onChange={(e) => {

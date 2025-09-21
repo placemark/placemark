@@ -22,7 +22,7 @@ export function PolygonArea({
   geometry: Polygon | MultiPolygon;
 }) {
   const area = measureArea(geometry);
-  if (area <= 0 || isNaN(area)) return <PolygonAreaError />;
+  if (area <= 0 || Number.isNaN(area)) return <PolygonAreaError />;
   return <AreaDisplay label="Area square" area={area} />;
 }
 

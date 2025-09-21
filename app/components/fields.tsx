@@ -29,7 +29,7 @@ export function SelectFileTypeField({
       as="select"
       name={name}
       aria-label="File format"
-      className={styledSelect({ size: "md" }) + "w-full"}
+      className={`${styledSelect({ size: "md" })}w-full`}
     >
       {applicableTypes.map((type) =>
         [type.label].flat().map((label, i) => {

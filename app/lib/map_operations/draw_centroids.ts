@@ -40,14 +40,12 @@ export function drawCentroids(wrappedFeatures: IWrappedFeature[]): {
               }
             }
             return [centroidFeature(wrappedFeature, averageSums(sums))];
-            break;
           }
           case "Polygon": {
             for (const ring of geometry.coordinates) {
               sumRing(ring, sums);
             }
             return [centroidFeature(wrappedFeature, averageSums(sums))];
-            break;
           }
           default: {
             return [];

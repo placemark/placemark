@@ -146,7 +146,7 @@ export async function addTileJSONStyle(
     } as mapboxgl.AnyLayer;
 
     style.layers.push(newLayer);
-  } catch (e) {
+  } catch (_e) {
     toast.error(
       "A TileJSON layer failed to load: the server it depends on may be down",
     );

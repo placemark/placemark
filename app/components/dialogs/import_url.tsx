@@ -45,7 +45,7 @@ export function ImportURLDialog({ onClose }: { onClose: () => void }) {
                 },
               ],
             });
-          } catch (e) {
+          } catch (_e) {
             setFormError(`Could not load data from that URL.`);
           }
         }}

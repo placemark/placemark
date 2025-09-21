@@ -317,7 +317,7 @@ function RichTextEditorInner(props: PropertyInputProps) {
     editable: !props.readOnly,
     content: htmlValue,
     editorProps: {
-      handleDrop: (view, event, slice, moved) => {
+      handleDrop: (_view, event, _slice, moved) => {
         if (!moved && event.dataTransfer?.files) {
           throw new Error("Can’t upload files in play");
         }
@@ -472,7 +472,6 @@ function PropertyTextEditor(props: PropertyInputProps) {
   return (
     <div>
       <textarea
-        autoFocus
         className="block w-full
         text-sm
         h-64
@@ -834,13 +833,7 @@ function TextEditor({
       .map((a) => a[0]);
 
     return head;
-  }, [
-    pair,
-    valueProps.value,
-    featureMap,
-    featureMap.version,
-    enableProperties,
-  ]);
+  }, [pair, valueProps.value, featureMap, enableProperties]);
 
   const showOptions = enableProperties && topProperties.length > 0;
 
@@ -878,6 +871,7 @@ function TextEditor({
             {topProperties.map((value, i) => {
               return (
                 <button
+                  type="button"
                   className="block w-full text-left truncate py-1 px-2
                     bg-gray-100 dark:bg-gray-700
                     opacity-75 hover:opacity-100"

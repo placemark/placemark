@@ -225,7 +225,7 @@ export const MapComponent = memo(function MapComponent({
           layerIds: [DECK_SYNTHETIC_ID],
         });
         setCursor(syntheticUnderCursor || features.length ? "move" : "");
-      } catch (e) {
+      } catch (_e) {
         // Deck can throw here if it's just been initialized
         // or uninitialized.
         // console.error(e);

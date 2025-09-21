@@ -37,12 +37,7 @@ export const polygonToLine = (feature: IFeature<Polygon | MultiPolygon>) => {
       return polygonFromRings(feature, feature.geometry.coordinates);
     })
     .with({ geometry: { type: "MultiPolygon" } }, (feature) => {
-      return polygonFromRings(
-        feature,
-        feature.geometry.coordinates.flatMap((ring) => {
-          return ring;
-        }),
-      );
+      return polygonFromRings(feature, feature.geometry.coordinates.flat());
     })
     .exhaustive();
 };
