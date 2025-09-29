@@ -1,5 +1,4 @@
 import utils from "../utils/mapshaper-utils";
-
 var TopoJSON = {};
 export default TopoJSON;
 
@@ -9,20 +8,20 @@ export default TopoJSON;
 //
 TopoJSON.forEachShapePart = function forEachShapePart(obj, cb) {
   var iterators = {
-    GeometryCollection: (o) => {
+    GeometryCollection: function (o) {
       o.geometries.forEach(eachGeom);
     },
-    LineString: (o) => {
+    LineString: function (o) {
       var retn = cb(o.arcs);
       if (retn) o.arcs = retn;
     },
-    MultiLineString: (o) => {
+    MultiLineString: function (o) {
       eachMultiPath(o.arcs);
     },
-    Polygon: (o) => {
+    Polygon: function (o) {
       eachMultiPath(o.arcs);
     },
-    MultiPolygon: (o) => {
+    MultiPolygon: function (o) {
       o.arcs.forEach(eachMultiPath);
     },
   };
@@ -45,7 +44,7 @@ TopoJSON.forEachShapePart = function forEachShapePart(obj, cb) {
 };
 
 TopoJSON.forEachArc = function forEachArc(obj, cb) {
-  TopoJSON.forEachShapePart(obj, (ids) => {
+  TopoJSON.forEachShapePart(obj, function (ids) {
     var retn;
     for (var i = 0; i < ids.length; i++) {
       retn = cb(ids[i]);

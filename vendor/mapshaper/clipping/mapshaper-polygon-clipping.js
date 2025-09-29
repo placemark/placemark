@@ -1,14 +1,14 @@
-import { getPolygonDissolver } from "../dissolve/mapshaper-polygon-dissolver";
-import { absArcId } from "../paths/mapshaper-arc-utils";
-import { PathIndex } from "../paths/mapshaper-path-index";
 import { reversePath } from "../paths/mapshaper-path-utils";
+import { forEachShapePart } from "../paths/mapshaper-shape-utils";
 import {
   closeArcRoutes,
-  getPathFinder,
   openArcRoutes,
+  getPathFinder,
   setBits,
 } from "../paths/mapshaper-pathfinder";
-import { forEachShapePart } from "../paths/mapshaper-shape-utils";
+import { getPolygonDissolver } from "../dissolve/mapshaper-polygon-dissolver";
+import { PathIndex } from "../paths/mapshaper-path-index";
+import { absArcId } from "../paths/mapshaper-arc-utils";
 
 // TODO: remove dependency on old polygon dissolve function
 
@@ -52,10 +52,10 @@ export function clipPolygons(targetShapes, clipShapes, nodes, type, optsArg) {
     type == "clip",
     type == "erase",
     !!"dissolve",
-    0x11,
+    0x11
   );
   var index = new PathIndex(clipShapes, arcs);
-  var clippedShapes = targetShapes.map((shape, i) => {
+  var clippedShapes = targetShapes.map(function (shape, i) {
     if (shape) {
       return clipPolygon(shape, type, index);
     }
@@ -72,7 +72,7 @@ export function clipPolygons(targetShapes, clipShapes, nodes, type, optsArg) {
 
   closeArcRoutes(clipShapes, arcs, routeFlags, true, true); // not needed?
   index = new PathIndex(undividedClipShapes, arcs);
-  targetShapes.forEach((shape, shapeId) => {
+  targetShapes.forEach(function (shape, shapeId) {
     // find clipping paths that are internal to this target polygon
     var paths = shape ? findInteriorPaths(shape, type, index) : null;
     if (paths) {
@@ -91,7 +91,7 @@ export function clipPolygons(targetShapes, clipShapes, nodes, type, optsArg) {
     // need to create polygons that connect positive-space rings and holes
     openArcRoutes(shape, arcs, routeFlags, true, false, false);
 
-    forEachShapePart(shape, (ids) => {
+    forEachShapePart(shape, function (ids) {
       var path;
       for (var i = 0, n = ids.length; i < n; i++) {
         clipArcTouches = 0;
@@ -193,9 +193,9 @@ export function clipPolygons(targetShapes, clipShapes, nodes, type, optsArg) {
   // Filter a collection of shapes to exclude paths that contain clip/erase arcs
   // and paths that are hidden (e.g. internal boundaries)
   function findUndividedClipShapes(clipShapes) {
-    return clipShapes.map((shape) => {
+    return clipShapes.map(function (shape) {
       var usableParts = [];
-      forEachShapePart(shape, (ids) => {
+      forEachShapePart(shape, function (ids) {
         var pathIsClean = true,
           pathIsVisible = false;
         for (var i = 0; i < ids.length; i++) {
@@ -240,7 +240,7 @@ export function clipPolygons(targetShapes, clipShapes, nodes, type, optsArg) {
       dissolvedPaths = enclosedPaths; // no need to dissolve single-part paths
     } else {
       openArcRoutes(enclosedPaths, arcs, routeFlags, true, false, true);
-      enclosedPaths.forEach((ids) => {
+      enclosedPaths.forEach(function (ids) {
         var path;
         for (var j = 0; j < ids.length; j++) {
           path = dividePath(ids[j]);

@@ -1,5 +1,5 @@
-import { stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
+import { stop } from "../utils/mapshaper-logging";
 
 export function exportRecordsAsFixedWidthString(fields, records, opts) {
   var rows = [],

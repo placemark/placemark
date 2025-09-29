@@ -1,11 +1,11 @@
-import geom from "../geom/mapshaper-geom";
-import { IdLookupIndex } from "../indexing/mapshaper-id-lookup-index";
-import { IdTestIndex } from "../indexing/mapshaper-id-test-index";
+import { TileShapeIndex } from "../polygons/mapshaper-tile-shape-index";
 import { getHoleDivider } from "../polygons/mapshaper-polygon-holes";
 import { buildPolygonMosaic } from "../polygons/mapshaper-polygon-mosaic";
+import { IdTestIndex } from "../indexing/mapshaper-id-test-index";
+import { IdLookupIndex } from "../indexing/mapshaper-id-lookup-index";
 import { PolygonTiler } from "../polygons/mapshaper-polygon-tiler";
-import { TileShapeIndex } from "../polygons/mapshaper-tile-shape-index";
 import { error, stop } from "../utils/mapshaper-logging";
+import geom from "../geom/mapshaper-geom";
 import { T } from "../utils/mapshaper-timing";
 
 export function MosaicIndex(lyr, nodes, optsArg) {
@@ -30,7 +30,7 @@ export function MosaicIndex(lyr, nodes, optsArg) {
     weightFunction = getOverlapPriorityFunction(
       lyr.shapes,
       nodes.arcs,
-      opts.overlap_rule,
+      opts.overlap_rule
     );
   }
   this.mosaic = mosaic;
@@ -39,7 +39,7 @@ export function MosaicIndex(lyr, nodes, optsArg) {
   this.getTileIdsByShapeId = tileShapeIndex.getTileIdsByShapeId;
 
   // Assign shape ids to mosaic tile shapes.
-  shapes.forEach((shp, shapeId) => {
+  shapes.forEach(function (shp, shapeId) {
     var tileIds = shapeTiler.getTilesInShape(shp, shapeId);
     tileShapeIndex.indexTileIdsByShapeId(shapeId, tileIds, weightFunction);
   });
@@ -51,14 +51,14 @@ export function MosaicIndex(lyr, nodes, optsArg) {
 
   // fill gaps
   // (assumes that tiles have been allocated to shapes and mosaic has been flattened)
-  this.removeGaps = (filter) => {
+  this.removeGaps = function (filter) {
     if (!opts.flat) {
       error(
-        "MosaicIndex#removeGaps() should only be called with a flat mosaic",
+        "MosaicIndex#removeGaps() should only be called with a flat mosaic"
       );
     }
     var remainingIds = tileShapeIndex.getUnusedTileIds();
-    var filledIds = remainingIds.filter((tileId) => {
+    var filledIds = remainingIds.filter(function (tileId) {
       var tile = mosaic[tileId];
       return filter(tile[0]); // test tile ring, ignoring any holes (does this matter?)
     });
@@ -69,11 +69,13 @@ export function MosaicIndex(lyr, nodes, optsArg) {
     };
   };
 
-  this.getUnusedTiles = () =>
-    tileShapeIndex.getUnusedTileIds().map(tileIdToTile);
+  this.getUnusedTiles = function () {
+    return tileShapeIndex.getUnusedTileIds().map(tileIdToTile);
+  };
 
-  this.getTilesByShapeIds = (shapeIds) =>
-    getTileIdsByShapeIds(shapeIds).map(tileIdToTile);
+  this.getTilesByShapeIds = function (shapeIds) {
+    return getTileIdsByShapeIds(shapeIds).map(tileIdToTile);
+  };
 
   function getOverlapPriorityFunction(shapes, arcs, rule) {
     var f;
@@ -82,9 +84,13 @@ export function MosaicIndex(lyr, nodes, optsArg) {
     } else if (rule == "min-area") {
       f = getAreaWeightFunction(shapes, arcs, true);
     } else if (rule == "max-id") {
-      f = (shapeId) => shapeId;
+      f = function (shapeId) {
+        return shapeId;
+      };
     } else if (rule == "min-id") {
-      f = (shapeId) => -shapeId;
+      f = function (shapeId) {
+        return -shapeId;
+      };
     } else {
       stop("Unknown overlap rule:", rule);
     }
@@ -94,7 +100,7 @@ export function MosaicIndex(lyr, nodes, optsArg) {
   function getAreaWeightFunction(shapes, arcs, invert) {
     var index = [];
     var sign = invert ? -1 : 1;
-    return (shpId) => {
+    return function (shpId) {
       var weight;
       if (shpId in index) {
         weight = index[shpId];
@@ -175,5 +181,7 @@ function ShapeArcIndex(shapes, arcs) {
   }
 
   // returns -1 if shape has not been indexed
-  this.getShapeIdByArcId = (arcId) => index.getId(arcId);
+  this.getShapeIdByArcId = function (arcId) {
+    return index.getId(arcId);
+  };
 }

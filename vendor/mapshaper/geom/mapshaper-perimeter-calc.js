@@ -1,6 +1,6 @@
 import geom from "../geom/mapshaper-geom";
-import { absArcId } from "../paths/mapshaper-arc-utils";
 import { forEachArcId } from "../paths/mapshaper-path-utils";
+import { absArcId } from "../paths/mapshaper-arc-utils";
 
 // Returns a function for calculating the percentage of a shape's perimeter by length that
 // is composed of inner (shared) boundaries
@@ -9,7 +9,7 @@ export function getInnerPctCalcFunction(arcs, shapes) {
   var arcIndex = new ArcTopologyIndex(arcs, shapes);
   var outerLen, innerLen, arcLen; // temp variables
 
-  return (shp) => {
+  return function (shp) {
     outerLen = 0;
     innerLen = 0;
     if (shp) shp.forEach(procRing);
@@ -37,12 +37,12 @@ export function getInnerPctCalcFunction(arcs, shapes) {
 
 function ArcTopologyIndex(arcs, shapes) {
   var index = new Uint8Array(arcs.size());
-  forEachArcId(shapes, (arcId) => {
+  forEachArcId(shapes, function (arcId) {
     if (arcId < 0) index[~arcId] |= 2;
     else index[arcId] |= 1;
   });
 
-  this.isInnerArc = (arcId) => {
+  this.isInnerArc = function (arcId) {
     var i = absArcId(arcId);
     return index[i] == 3;
   };

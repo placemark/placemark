@@ -1,6 +1,6 @@
-import { DataTable } from "../datatable/mapshaper-data-table";
 import DbfReader from "../shapefile/dbf-reader";
 import Dbf from "../shapefile/dbf-writer";
+import { DataTable } from "../datatable/mapshaper-data-table";
 
 export function importDbfTable(buf, o) {
   var opts = o || {};
@@ -28,7 +28,7 @@ function ShapefileTable(buf, encoding) {
     return table;
   }
 
-  this.exportAsDbf = (opts) => {
+  this.exportAsDbf = function (opts) {
     // export original dbf bytes if possible, for performance
     var useOriginal =
       !!reader && !altered && !opts.field_order && !opts.encoding;
@@ -36,14 +36,15 @@ function ShapefileTable(buf, encoding) {
     return Dbf.exportRecords(
       getTable().getRecords(),
       opts.encoding,
-      opts.field_order,
+      opts.field_order
     );
   };
 
-  this.getReadOnlyRecordAt = (i) =>
-    reader ? reader.readRow(i) : table.getReadOnlyRecordAt(i);
+  this.getReadOnlyRecordAt = function (i) {
+    return reader ? reader.readRow(i) : table.getReadOnlyRecordAt(i);
+  };
 
-  this.deleteField = (f) => {
+  this.deleteField = function (f) {
     if (table) {
       table.deleteField(f);
     } else {
@@ -52,15 +53,21 @@ function ShapefileTable(buf, encoding) {
     }
   };
 
-  this.getRecords = () => getTable().getRecords();
+  this.getRecords = function () {
+    return getTable().getRecords();
+  };
 
-  this.getFields = () => (reader ? reader.getFields() : table.getFields());
+  this.getFields = function () {
+    return reader ? reader.getFields() : table.getFields();
+  };
 
   this.isEmpty = function () {
     return reader ? this.size() === 0 : table.isEmpty();
   };
 
-  this.size = () => (reader ? reader.size() : table.size());
+  this.size = function () {
+    return reader ? reader.size() : table.size();
+  };
 }
 
 Object.assign(ShapefileTable.prototype, DataTable.prototype);

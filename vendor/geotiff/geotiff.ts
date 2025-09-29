@@ -1,8 +1,8 @@
-import DataSlice from "./dataslice";
-import DataView64 from "./dataview64";
 import GeoTIFFImage from "./geotiffimage";
-import { arrayFields, fieldTagNames, fieldTypes, geoKeyNames } from "./globals";
+import DataView64 from "./dataview64";
+import DataSlice from "./dataslice";
 import type { Source } from "./source";
+import { fieldTypes, fieldTagNames, arrayFields, geoKeyNames } from "./globals";
 
 type FileDirectory = {
   GeoKeyDirectory?: {
@@ -81,7 +81,7 @@ function getValues(
   dataSlice: DataSlice,
   fieldType: number,
   count: number,
-  offset: number,
+  offset: number
 ) {
   let values = null;
   let readMethod = null;
@@ -157,7 +157,7 @@ function getValues(
       values[i] = readMethod.call(dataSlice, offset + i * fieldTypeLength);
       values[i + 1] = readMethod.call(
         dataSlice,
-        offset + (i * fieldTypeLength + 4),
+        offset + (i * fieldTypeLength + 4)
       );
     }
   }
@@ -179,7 +179,7 @@ class ImageFileDirectory {
   constructor(
     fileDirectory: FileDirectory,
     geoKeyDirectory: FileDirectory,
-    nextIFDByteOffset: number,
+    nextIFDByteOffset: number
   ) {
     this.fileDirectory = fileDirectory;
     this.geoKeyDirectory = geoKeyDirectory;
@@ -226,7 +226,7 @@ class GeoTIFF {
     littleEndian: boolean,
     bigTiff: boolean,
     firstIFDOffset: number,
-    options = { cache: false },
+    options = { cache: false }
   ) {
     this.source = source;
     this.littleEndian = littleEndian;
@@ -241,11 +241,11 @@ class GeoTIFF {
     return new DataSlice(
       await this.source.fetch(
         offset,
-        typeof size !== "undefined" ? size : fallbackSize,
+        typeof size !== "undefined" ? size : fallbackSize
       ),
       offset,
       this.littleEndian,
-      this.bigTiff,
+      this.bigTiff
     );
   }
 
@@ -311,7 +311,7 @@ class GeoTIFF {
             dataSlice,
             fieldType,
             typeCount,
-            actualOffset,
+            actualOffset
           );
         } else {
           const fieldDataSlice = await this.getSlice(actualOffset, length);
@@ -319,7 +319,7 @@ class GeoTIFF {
             fieldDataSlice,
             fieldType,
             typeCount,
-            actualOffset,
+            actualOffset
           );
         }
       }
@@ -343,13 +343,13 @@ class GeoTIFF {
     }
     const geoKeyDirectory = parseGeoKeyDirectory(fileDirectory);
     const nextIFDByteOffset = dataSlice.readOffset(
-      offset + offsetSize + entrySize * numDirEntries,
+      offset + offsetSize + entrySize * numDirEntries
     );
 
     return new ImageFileDirectory(
       fileDirectory,
       geoKeyDirectory as FileDirectory,
-      nextIFDByteOffset,
+      nextIFDByteOffset
     );
   }
 
@@ -402,7 +402,7 @@ class GeoTIFF {
       ifd.geoKeyDirectory,
       this.littleEndian,
       this.cache,
-      this.source,
+      this.source
     );
   }
 

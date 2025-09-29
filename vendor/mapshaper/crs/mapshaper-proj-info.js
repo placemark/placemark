@@ -20,7 +20,7 @@ export function isAxisAligned(P) {
     inList(
       P,
       "cassini,gnom,bertin1953,chamb,ob_tran,tpeqd,healpix,rhealpix," +
-        "ocea,omerc,tmerc,etmerc",
+        "ocea,omerc,tmerc,etmerc"
     )
   ) {
     return false;
@@ -53,14 +53,14 @@ function isParallelBounded(P) {
 function isConic(P) {
   return inList(
     P,
-    "aea,bonne,eqdc,lcc,poly,euler,murd1,murd2,murd3,pconic,tissot,vitk1",
+    "aea,bonne,eqdc,lcc,poly,euler,murd1,murd2,murd3,pconic,tissot,vitk1"
   );
 }
 
 function isAzimuthal(P) {
   return inList(
     P,
-    "aeqd,gnom,laea,mil_os,lee_os,gs48,alsk,gs50,nsper,tpers,ortho,qsc,stere,ups,sterea",
+    "aeqd,gnom,laea,mil_os,lee_os,gs48,alsk,gs50,nsper,tpers,ortho,qsc,stere,ups,sterea"
   );
 }
 

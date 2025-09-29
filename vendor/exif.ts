@@ -3,14 +3,13 @@
  * Copyright 2008 Jacob Seidelin
  * MIT License (https://raw.githubusercontent.com/andrew-womeldorf/exif-js/master/LICENSE)
  */
-
+import { Tags, StringValues } from "./exif_constants";
+import type { FeatureCollection } from "types";
 // import { IMAGE_SYM } from "lib/constants";
 import { ConvertError, PlacemarkError } from "app/lib/errors";
 import type { Either } from "purify-ts/Either";
 import { Left, Right } from "purify-ts/Either";
 import { EitherAsync } from "purify-ts/EitherAsync";
-import type { FeatureCollection } from "types";
-import { StringValues, Tags } from "./exif_constants";
 
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
@@ -23,7 +22,7 @@ type TagObject = {
  * Determine the starting point in the file for reading EXIF data.
  */
 export function getImageData(
-  file: ArrayBufferLike,
+  file: ArrayBufferLike
 ): Either<PlacemarkError, TagObject> {
   const dataView = new DataView(file);
 
@@ -44,9 +43,9 @@ export function getImageData(
       return Left(
         new PlacemarkError(
           `Not a valid marker at offset ${offset}, found: ${dataView.getUint8(
-            offset,
-          )}`,
-        ),
+            offset
+          )}`
+        )
       );
     }
 
@@ -92,7 +91,7 @@ export function toGeoJSON(arrayBuffer: ArrayBuffer) {
       }
 
       return throwE(new ConvertError("No location data found in JPEG"));
-    },
+    }
   );
 }
 
@@ -104,7 +103,7 @@ function readTags(
   dataView: DataView,
   tiffStart: number,
   dirStart: number,
-  bigEnd: boolean,
+  bigEnd: boolean
 ) {
   const entries = dataView.getUint16(dirStart, !bigEnd);
 
@@ -135,7 +134,7 @@ function readTagValue(
   dataView: DataView,
   entryOffset: number,
   tiffStart: number,
-  bigEnd: boolean,
+  bigEnd: boolean
 ): ExifValue | null {
   const type = dataView.getUint16(entryOffset + 2, !bigEnd);
   const numValues = dataView.getUint32(entryOffset + 4, !bigEnd);
@@ -200,7 +199,7 @@ function readTagValue(
           const numerator = dataView.getUint32(valueOffset + 8 * n, !bigEnd);
           const denominator = dataView.getUint32(
             valueOffset + 4 + 8 * n,
-            !bigEnd,
+            !bigEnd
           );
           vals[n] = numerator / denominator;
         }
@@ -260,7 +259,7 @@ function getStringFromDB(buffer: DataView, start: number, length: number) {
 function readEXIFData(dataView: DataView, start: number) {
   if (getStringFromDB(dataView, start, 4) !== "Exif") {
     throw new Error(
-      "Not valid EXIF data! " + getStringFromDB(dataView, start, 4),
+      "Not valid EXIF data! " + getStringFromDB(dataView, start, 4)
     );
   }
 
@@ -296,7 +295,7 @@ function readEXIFData(dataView: DataView, start: number) {
       dataView,
       tiffOffset,
       tiffOffset + (tags.ExifIFDPointer as number),
-      bigEnd,
+      bigEnd
     );
   }
 
@@ -306,7 +305,7 @@ function readEXIFData(dataView: DataView, start: number) {
       dataView,
       tiffOffset,
       tiffOffset + (tags.GPSInfoIFDPointer as number),
-      bigEnd,
+      bigEnd
     );
   }
 

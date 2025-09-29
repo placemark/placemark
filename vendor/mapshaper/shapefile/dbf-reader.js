@@ -1,21 +1,17 @@
-import { getUniqFieldNames } from "../datatable/mapshaper-data-utils";
 import {
-  decodeSamples,
   detectEncoding,
+  decodeSamples,
 } from "../text/mapshaper-encoding-detection";
-import {
-  bufferToString,
-  decodeString,
-  standardizeEncodingName,
-} from "../text/mapshaper-encodings";
+import utils from "../utils/mapshaper-utils";
 import { BinArray } from "../utils/mapshaper-binarray";
 import {
-  error,
-  formatStringsAsGrid,
-  message,
-  stop,
-} from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
+  bufferToString,
+  standardizeEncodingName,
+  decodeString,
+} from "../text/mapshaper-encodings";
+import { formatStringsAsGrid, stop, message } from "../utils/mapshaper-logging";
+import { getUniqFieldNames } from "../datatable/mapshaper-data-utils";
+import { error } from "../utils/mapshaper-logging";
 
 // DBF format references:
 // http://www.dbf2002.com/dbf-file-format.html
@@ -210,7 +206,7 @@ function getStringReader(arg) {
 
   // optimization -- use (fast) native Node conversion if available
   if (inNode && (slug == "utf8" || slug == "ascii")) {
-    return (bin, size) => {
+    return function (bin, size) {
       var n = readStringBytes(bin, size, buf);
       return buf.toString(slug, 0, n);
     };
@@ -290,9 +286,11 @@ export default function DbfReader(src, encodingArg) {
   var fields;
   var encoding;
 
-  this.size = () => header.recordCount;
+  this.size = function () {
+    return header.recordCount;
+  };
 
-  this.readRow = (i) => {
+  this.readRow = function (i) {
     // create record reader on-the-fly
     // (delays encoding detection until we need to read data)
     return getRecordReader()(i);
@@ -300,11 +298,15 @@ export default function DbfReader(src, encodingArg) {
 
   this.getFields = getFieldNames;
 
-  this.getBuffer = () => bin.buffer();
+  this.getBuffer = function () {
+    return bin.buffer();
+  };
 
-  this.deleteField = (f) => {
+  this.deleteField = function (f) {
     prepareToRead();
-    fields = fields.filter((field) => field.name != f);
+    fields = fields.filter(function (field) {
+      return field.name != f;
+    });
   };
 
   this.readRows = function () {
@@ -328,13 +330,13 @@ export default function DbfReader(src, encodingArg) {
     if (getNonAsciiHeaders().length > 0) {
       headerEncoding = getEncoding();
     }
-    fields = header.fields.map((f) => {
+    fields = header.fields.map(function (f) {
       var copy = utils.extend({}, f);
       copy.name = decodeString(f.namebuf, headerEncoding);
       return copy;
     });
     // Uniqify header names
-    getUniqFieldNames(utils.pluck(fields, "name")).forEach((name2, i) => {
+    getUniqFieldNames(utils.pluck(fields, "name")).forEach(function (name2, i) {
       fields[i].name = name2;
     });
   }
@@ -375,14 +377,14 @@ export default function DbfReader(src, encodingArg) {
         "Record length mismatch; header:",
         header.recordSize,
         "detected:",
-        colOffs,
+        colOffs
       );
     }
     if (bin.peek() != 0x0d) {
       message(
         "Found a non-standard DBF header terminator (" +
           bin.peek() +
-          "). DBF file may be corrupted.",
+          "). DBF file may be corrupted."
       );
     }
 
@@ -421,7 +423,7 @@ export default function DbfReader(src, encodingArg) {
       encoding = "utf8";
       stop(
         "Unable to auto-detect the text encoding of the DBF file.\n" +
-          ENCODING_PROMPT,
+          ENCODING_PROMPT
       );
     }
   }
@@ -435,9 +437,9 @@ export default function DbfReader(src, encodingArg) {
   // (Much faster in v8 and other engines than assigning a series of properties
   //  to an object)
   function getRecordConstructor() {
-    var args = getFieldNames().map(
-      (name, i) => JSON.stringify(name) + ": arguments[" + i + "]",
-    );
+    var args = getFieldNames().map(function (name, i) {
+      return JSON.stringify(name) + ": arguments[" + i + "]";
+    });
     return new Function("return {" + args.join(",") + "};");
   }
 
@@ -494,9 +496,11 @@ export default function DbfReader(src, encodingArg) {
           f.name +
           '" has an unsupported type (' +
           f.type +
-          ") -- converting to null values",
+          ") -- converting to null values"
       );
-      r = () => null;
+      r = function () {
+        return null;
+      };
     }
     return r;
   }
@@ -551,7 +555,7 @@ export default function DbfReader(src, encodingArg) {
 
   function getNonAsciiHeaders() {
     var arr = [];
-    header.fields.forEach((f) => {
+    header.fields.forEach(function (f) {
       if (bufferContainsHighBit(f.namebuf, f.namebuf.length)) {
         arr.push(f.namebuf);
       }
@@ -563,7 +567,9 @@ export default function DbfReader(src, encodingArg) {
   // with at least one byte outside the 7-bit ascii range.
   function getNonAsciiSamples() {
     var samples = [];
-    var stringFields = header.fields.filter((f) => f.type == "C");
+    var stringFields = header.fields.filter(function (f) {
+      return f.type == "C";
+    });
     var cols = stringFields.length;
     // don't scan all the rows in large files (slow)
     var rows = Math.min(header.recordCount, 10000);

@@ -1,26 +1,26 @@
+import utils from "../utils/mapshaper-utils";
 import {
-  copyLayer,
-  copyLayerShapes,
-  getFeatureCount,
   getLayerBounds,
   layerHasGeometry,
   layerHasPaths,
+  transformPointsInLayer,
+  copyLayerShapes,
+  copyLayer,
   layerHasPoints,
   setOutputLayerName,
-  transformPointsInLayer,
+  getFeatureCount,
 } from "../dataset/mapshaper-layer-utils";
-import { mergeDatasetsIntoDataset } from "../dataset/mapshaper-merging";
 import { Bounds } from "../geom/mapshaper-bounds";
-import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
+import { mergeDatasetsIntoDataset } from "../dataset/mapshaper-merging";
 import { buildTopology } from "../topology/mapshaper-topology";
+import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
 import { error } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
 
 // utility functions for datasets
 
 // Split into datasets with one layer each
 export function splitDataset(dataset) {
-  return dataset.layers.map((lyr) => {
+  return dataset.layers.map(function (lyr) {
     var split = {
       arcs: dataset.arcs,
       layers: [lyr],
@@ -33,7 +33,7 @@ export function splitDataset(dataset) {
 
 function splitApartLayers(dataset, layers) {
   var datasets = [];
-  dataset.layers = dataset.layers.filter((lyr) => {
+  dataset.layers = dataset.layers.filter(function (lyr) {
     if (!layers.includes(lyr)) {
       return true;
     }
@@ -77,15 +77,17 @@ export function copyDatasetForExport(dataset) {
 export function copyDatasetForRenaming(dataset) {
   return utils.defaults(
     {
-      layers: dataset.layers.map((lyr) => utils.extend({}, lyr)),
+      layers: dataset.layers.map(function (lyr) {
+        return utils.extend({}, lyr);
+      }),
     },
-    dataset,
+    dataset
   );
 }
 
 export function getDatasetBounds(dataset) {
   var bounds = new Bounds();
-  dataset.layers.forEach((lyr) => {
+  dataset.layers.forEach(function (lyr) {
     var lyrbb = getLayerBounds(lyr, dataset.arcs);
     if (lyrbb) bounds.mergeBounds(lyrbb);
   });
@@ -93,11 +95,15 @@ export function getDatasetBounds(dataset) {
 }
 
 export function datasetHasGeometry(dataset) {
-  return utils.some(dataset.layers, (lyr) => layerHasGeometry(lyr));
+  return utils.some(dataset.layers, function (lyr) {
+    return layerHasGeometry(lyr);
+  });
 }
 
 export function datasetHasPaths(dataset) {
-  return utils.some(dataset.layers, (lyr) => layerHasPaths(lyr));
+  return utils.some(dataset.layers, function (lyr) {
+    return layerHasPaths(lyr);
+  });
 }
 
 // Remove ArcCollection of a dataset if not referenced by any layer
@@ -124,7 +130,7 @@ function pruneArcs(dataset) {
 export function replaceLayers(dataset, cutLayers, newLayers) {
   // modify a copy in case cutLayers == dataset.layers
   var currLayers = dataset.layers.concat();
-  utils.repeat(Math.max(cutLayers.length, newLayers.length), (i) => {
+  utils.repeat(Math.max(cutLayers.length, newLayers.length), function (i) {
     var cutLyr = cutLayers[i],
       newLyr = newLayers[i],
       idx = cutLyr ? currLayers.indexOf(cutLyr) : currLayers.length;
@@ -187,7 +193,7 @@ export function transformPoints(dataset, f) {
   if (dataset.arcs) {
     dataset.arcs.transformPoints(f);
   }
-  dataset.layers.forEach((lyr) => {
+  dataset.layers.forEach(function (lyr) {
     if (layerHasPoints(lyr)) {
       transformPointsInLayer(lyr, f);
     }

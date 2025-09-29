@@ -1,15 +1,15 @@
+import { encodingIsUtf8, encodeString } from "../text/mapshaper-encodings";
 import { findFieldNames } from "../datatable/mapshaper-data-utils";
-import { encodeString, encodingIsUtf8 } from "../text/mapshaper-encodings";
-import { getFileExtension } from "../utils/mapshaper-filename-utils";
-import { Buffer } from "../utils/mapshaper-node-buffer";
 import utils from "../utils/mapshaper-utils";
+import { Buffer } from "../utils/mapshaper-node-buffer";
+import { getFileExtension } from "../utils/mapshaper-filename-utils";
 import { exportRecordsAsFixedWidthString } from "./mapshaper-fixed-width";
 
 // Generate output content from a dataset object
 export function exportDelim(dataset, opts) {
   var delim = getExportDelimiter(dataset.info, opts),
     ext = getDelimFileExtension(delim, opts);
-  return dataset.layers.reduce((arr, lyr) => {
+  return dataset.layers.reduce(function (arr, lyr) {
     if (lyr.data) {
       arr.push({
         // TODO: consider supporting encoding= option
@@ -67,7 +67,7 @@ function exportRecordsAsBuffer(fields, records, formatRow, encoding) {
 }
 
 function formatHeader(fields, formatRow) {
-  var rec = fields.reduce((memo, f) => {
+  var rec = fields.reduce(function (memo, f) {
     memo[f] = f;
     return memo;
   }, {});
@@ -81,7 +81,13 @@ function formatDelimHeader(fields, delim) {
 
 function getDelimRowFormatter(fields, delim, opts) {
   var formatValue = getDelimValueFormatter(delim, opts);
-  return (rec) => fields.map((f) => formatValue(rec[f])).join(delim);
+  return function (rec) {
+    return fields
+      .map(function (f) {
+        return formatValue(rec[f]);
+      })
+      .join(delim);
+  };
 }
 
 function getDelimValueFormatter(delim, opts) {
@@ -93,7 +99,7 @@ function getDelimValueFormatter(delim, opts) {
     }
     return s;
   }
-  return (val) => {
+  return function (val) {
     var s;
     if (val == null) {
       s = "";

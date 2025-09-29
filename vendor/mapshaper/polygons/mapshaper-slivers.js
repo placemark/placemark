@@ -1,7 +1,7 @@
-import { getDatasetCRS } from "../crs/mapshaper-projections";
-import geom from "../geom/mapshaper-geom";
 import { roundToSignificantDigits } from "../geom/mapshaper-rounding";
+import { getDatasetCRS } from "../crs/mapshaper-projections";
 import { convertAreaParam, getAreaLabel } from "../geom/mapshaper-units";
+import geom from "../geom/mapshaper-geom";
 import { forEachSegmentInPath } from "../paths/mapshaper-path-utils";
 import { editShapes } from "../paths/mapshaper-shape-utils";
 import { error } from "../utils/mapshaper-logging";
@@ -13,7 +13,9 @@ export function getSliverFilter(lyr, dataset, opts) {
   var areaArg = opts.min_gap_area || opts.min_area || opts.gap_fill_area;
   if (+areaArg == 0) {
     return {
-      filter: () => false, // don't fill any gaps
+      filter: function () {
+        return false;
+      }, // don't fill any gaps
       threshold: 0,
     };
   }
@@ -45,7 +47,7 @@ function getMinAreaTest(minArea, dataset) {
   var pathArea = dataset.arcs.isPlanar()
     ? geom.getPlanarPathArea
     : geom.getSphericalPathArea;
-  return (path) => {
+  return function (path) {
     var area = pathArea(path, dataset.arcs);
     return Math.abs(area) < minArea;
   };
@@ -59,13 +61,15 @@ export function getSliverTest(arcs, threshold, strength) {
     error("Invalid parameter");
   }
   var calcEffectiveArea = getSliverAreaFunction(arcs, strength);
-  return (ring) => Math.abs(calcEffectiveArea(ring)) < threshold;
+  return function (ring) {
+    return Math.abs(calcEffectiveArea(ring)) < threshold;
+  };
 }
 
 // Strength: 0-1
 function getSliverAreaFunction(arcs, strength) {
   var k = Math.sqrt(strength); // more sensible than linear weighted avg.
-  return (ring) => {
+  return function (ring) {
     var area = geom.getPathArea(ring, arcs);
     var perim = geom.getPathPerimeter(ring, arcs);
     var compactness = geom.calcPolsbyPopperCompactness(area, perim);
@@ -83,17 +87,17 @@ export function getDefaultSliverThreshold(lyr, arcs) {
   var calcLen = arcs.isPlanar() ? geom.distance2D : geom.greatCircleDistance;
   var avgSegLen = 0;
   var segCount = 0;
-  var onSeg = (i, j, xx, yy) => {
+  var onSeg = function (i, j, xx, yy) {
     var len = calcLen(xx[i], yy[i], xx[j], yy[j]);
     segCount++;
     avgSegLen += (len - avgSegLen) / segCount;
   };
-  editShapes(lyr.shapes, (path) => {
+  editShapes(lyr.shapes, function (path) {
     ringCount++;
     forEachSegmentInPath(path, arcs, onSeg);
   });
   var segPerRing = segCount / ringCount || 0;
-  var complexityFactor = segPerRing ** 0.75; // use seg/ring as a proxy for complexity
+  var complexityFactor = Math.pow(segPerRing, 0.75); // use seg/ring as a proxy for complexity
   var threshold = ((avgSegLen * avgSegLen) / 50) * complexityFactor;
   threshold = roundToSignificantDigits(threshold, 2); // round for display
   return threshold;
@@ -106,7 +110,7 @@ function calcMaxSliverArea(arcs) {
     dyMax = arcs.getBounds().height() / k,
     count = 0,
     mean = 0;
-  arcs.forEachSegment((i, j, xx, yy) => {
+  arcs.forEachSegment(function (i, j, xx, yy) {
     var dx = Math.abs(xx[i] - xx[j]),
       dy = Math.abs(yy[i] - yy[j]);
     if (dx < dxMax && dy < dyMax) {

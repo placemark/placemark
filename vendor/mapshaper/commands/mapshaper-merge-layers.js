@@ -1,22 +1,20 @@
-import { cleanLayers } from "../commands/mapshaper-clean";
-import { replaceLayers } from "../dataset/mapshaper-dataset-utils";
+import { getColumnType } from "../datatable/mapshaper-data-utils";
+import { fixInconsistentFields } from "../datatable/mapshaper-data-utils";
 import {
   getFeatureCount,
   requirePolygonLayer,
 } from "../dataset/mapshaper-layer-utils";
+import { message, stop, error } from "../utils/mapshaper-logging";
 import { DataTable } from "../datatable/mapshaper-data-table";
-import {
-  fixInconsistentFields,
-  getColumnType,
-} from "../datatable/mapshaper-data-utils";
-import cmd from "../mapshaper-cmd";
-import { error, message, stop } from "../utils/mapshaper-logging";
+import { cleanLayers } from "../commands/mapshaper-clean";
+import { replaceLayers } from "../dataset/mapshaper-dataset-utils";
 import utils from "../utils/mapshaper-utils";
+import cmd from "../mapshaper-cmd";
 
 // Support the opts.flatten option (for removing polygon overlaps)
-cmd.mergeAndFlattenLayers = (layers, dataset, opts) => {
+cmd.mergeAndFlattenLayers = function (layers, dataset, opts) {
   if (!opts.flatten) return cmd.mergeLayers(layers, opts);
-  layers.forEach((lyr) => {
+  layers.forEach(function (lyr) {
     requirePolygonLayer(lyr, "the flatten option requires polygon layers");
   });
   var output = cmd.mergeLayers(layers, opts);
@@ -31,7 +29,7 @@ cmd.mergeAndFlattenLayers = (layers, dataset, opts) => {
 // Merge layers, checking for incompatible geometries and data fields.
 // Assumes that input layers are members of the same dataset (and therefore
 // share the same ArcCollection, if layers have paths).
-cmd.mergeLayers = (layersArg, opts) => {
+cmd.mergeLayers = function (layersArg, opts) {
   var layers = layersArg.filter(getFeatureCount); // ignore empty layers
   var merged = {};
   opts = opts || {};
@@ -59,7 +57,9 @@ cmd.mergeLayers = (layersArg, opts) => {
 function getMergedLayersGeometryType(layers) {
   var geoTypes = utils
     .uniq(utils.pluck(layers, "geometry_type"))
-    .filter((type) => !!type); // ignore null-type layers
+    .filter(function (type) {
+      return !!type;
+    }); // ignore null-type layers
   if (geoTypes.length > 1) {
     stop("Incompatible geometry types:", geoTypes.join(", "));
   }
@@ -67,7 +67,7 @@ function getMergedLayersGeometryType(layers) {
 }
 
 function mergeShapesFromLayers(layers) {
-  return layers.reduce((memo, lyr) => {
+  return layers.reduce(function (memo, lyr) {
     var shapes = lyr.shapes || [];
     var n = getFeatureCount(lyr);
     var i = -1;
@@ -78,13 +78,12 @@ function mergeShapesFromLayers(layers) {
 
 function mergeDataFromLayers(layers, opts) {
   var allFields = utils.uniq(
-    layers.reduce(
-      (memo, lyr) => memo.concat(lyr.data ? lyr.data.getFields() : []),
-      [],
-    ),
+    layers.reduce(function (memo, lyr) {
+      return memo.concat(lyr.data ? lyr.data.getFields() : []);
+    }, [])
   );
   if (allFields.length === 0) return null; // no data in any fields
-  var mergedRecords = layers.reduce((memo, lyr) => {
+  var mergedRecords = layers.reduce(function (memo, lyr) {
     var records = lyr.data
       ? lyr.data.getRecords()
       : new DataTable(getFeatureCount(lyr)).getRecords();
@@ -119,20 +118,18 @@ function handleMissingFields(missingFields, opts) {
 
 function findInconsistentFields(allFields, layers) {
   var missingFields = utils.uniq(
-    layers.reduce(
-      (memo, lyr) =>
-        memo.concat(
-          utils.difference(allFields, lyr.data ? lyr.data.getFields() : []),
-        ),
-      [],
-    ),
+    layers.reduce(function (memo, lyr) {
+      return memo.concat(
+        utils.difference(allFields, lyr.data ? lyr.data.getFields() : [])
+      );
+    }, [])
   );
   return missingFields;
 }
 
 // check for fields with incompatible data types (e.g. number, string)
 function checkInconsistentFieldTypes(fields, layers) {
-  fields.forEach((key) => {
+  fields.forEach(function (key) {
     var types = findFieldTypes(key, layers);
     if (types.length > 1) {
       stop('Inconsistent data types in "' + key + '" field:', types.join(", "));
@@ -142,7 +139,7 @@ function checkInconsistentFieldTypes(fields, layers) {
 
 function findFieldTypes(key, layers) {
   // ignores empty-type fields
-  return layers.reduce((memo, lyr) => {
+  return layers.reduce(function (memo, lyr) {
     var type = lyr.data ? getColumnType(key, lyr.data.getRecords()) : null;
     if (type && memo.indexOf(type) == -1) {
       memo.push(type);
@@ -153,7 +150,7 @@ function findFieldTypes(key, layers) {
 
 export function mergeLayerNames(layers) {
   return (
-    layers.reduce((memo, lyr) => {
+    layers.reduce(function (memo, lyr) {
       if (memo === null) {
         memo = lyr.name || null;
       } else if (memo && lyr.name) {

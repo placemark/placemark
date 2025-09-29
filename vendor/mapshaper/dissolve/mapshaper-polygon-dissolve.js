@@ -12,7 +12,9 @@ function dissolveFirstPass(shapes, getGroupId) {
   var groups = [],
     largeGroups = [],
     segments = [],
-    ids = shapes.map((shp, i) => getGroupId(i));
+    ids = shapes.map(function (shp, i) {
+      return getGroupId(i);
+    });
 
   traversePaths(shapes, procArc);
   largeGroups.forEach(splitGroup);
@@ -90,7 +92,7 @@ function dissolveFirstPass(shapes, getGroupId) {
   }
 
   function updateGroupIds(ids) {
-    ids.forEach((id) => {
+    ids.forEach(function (id) {
       segments[id].group = ids;
     });
   }
@@ -105,7 +107,9 @@ function dissolveFirstPass(shapes, getGroupId) {
       findMatchingPair(group, checkSingleExtension) ||
       findMatchingPair(group, checkPairwiseMatch);
     if (group2) {
-      group = group.filter((i) => !utils.contains(group2, i));
+      group = group.filter(function (i) {
+        return !utils.contains(group2, i);
+      });
       updateGroupIds(group);
       updateGroupIds(group2);
       // Split again if reduced group is still large
@@ -190,7 +194,7 @@ function dissolveSecondPass(segments, shapes, getGroupId) {
     var dissolveId = getGroupId(obj.shapeId), // obj.shape.dissolveKey,
       match,
       matchId;
-    matchId = utils.find(obj.group, (i) => {
+    matchId = utils.find(obj.group, function (i) {
       var a = obj,
         b = segments[i];
       if (

@@ -1,13 +1,13 @@
-import { mergeDatasets } from "../dataset/mapshaper-merging";
-import geom from "../geom/mapshaper-geom";
-import { ArcCollection } from "../paths/mapshaper-arcs";
-import {
-  getCutPoint,
-  insertCutPoints,
-  remapDividedArcs,
-} from "../paths/mapshaper-intersection-cuts";
+import { getCutPoint } from "../paths/mapshaper-intersection-cuts";
 import { formatIntersectingSegment } from "../paths/mapshaper-segment-intersection";
+import { mergeDatasets } from "../dataset/mapshaper-merging";
+import {
+  remapDividedArcs,
+  insertCutPoints,
+} from "../paths/mapshaper-intersection-cuts";
+import { ArcCollection } from "../paths/mapshaper-arcs";
 import utils from "../utils/mapshaper-utils";
+import geom from "../geom/mapshaper-geom";
 
 // Insert cutting points in arcs, where bbox intersects other shapes
 // Return a polygon layer containing the bounding box vectors, divided at cutting points.
@@ -61,7 +61,7 @@ function findBBoxCutPoints(arcs, bbox) {
     bb = [],
     ll = [];
 
-  arcs.forEachSegment((i, j, xx, yy) => {
+  arcs.forEachSegment(function (i, j, xx, yy) {
     var ax = xx[i],
       ay = yy[i],
       bx = xx[j],
@@ -135,7 +135,7 @@ function getDividedBBoxPoints(bbox, ll, tt, rr, bb) {
   tt = utils.sortOn(tt.concat([tl, tr]), "x", true);
   rr = utils.sortOn(rr.concat([tr, br]), "y", false);
   bb = utils.sortOn(bb.concat([br, bl]), "x", false);
-  return ll.concat(tt, rr, bb).reduce((memo, p2) => {
+  return ll.concat(tt, rr, bb).reduce(function (memo, p2) {
     var p1 = memo.length > 0 ? memo[memo.length - 1] : null;
     if (p1 === null || p1.x != p2.x || p1.y != p2.y) memo.push(p2);
     return memo;

@@ -1,8 +1,8 @@
-import { copyRecord } from "../datatable/mapshaper-data-utils";
-import GeoJSON from "../geojson/geojson-common";
-import { PathImporter } from "../paths/mapshaper-path-import";
 import { verbose } from "../utils/mapshaper-logging";
+import GeoJSON from "../geojson/geojson-common";
 import utils from "../utils/mapshaper-utils";
+import { PathImporter } from "../paths/mapshaper-path-import";
+import { copyRecord } from "../datatable/mapshaper-data-utils";
 
 export function importGeoJSON(src, optsArg) {
   var opts = optsArg || {};
@@ -27,7 +27,7 @@ export function importGeoJSON(src, optsArg) {
     srcCollection = srcObj;
   }
   (srcCollection.features || srcCollection.geometries || []).forEach(
-    importer.parseObject,
+    importer.parseObject
   );
   dataset = importer.done();
   importCRS(dataset, srcObj); // TODO: remove this
@@ -39,7 +39,7 @@ export function GeoJSONParser(opts) {
     importer = new PathImporter(opts),
     dataset;
 
-  this.parseObject = (o) => {
+  this.parseObject = function (o) {
     var geom, rec;
     if (!o || !o.type) {
       // not standard GeoJSON -- importing as null record
@@ -62,18 +62,20 @@ export function GeoJSONParser(opts) {
     }
   };
 
-  this.done = () => importer.done();
+  this.done = function () {
+    return importer.done();
+  };
 }
 
-GeoJSON.importComplexFeature = (importer, geom, rec, opts) => {
+GeoJSON.importComplexFeature = function (importer, geom, rec, opts) {
   var types = divideGeometriesByType(geom.geometries || []);
   if (types.length === 0) {
     importer.startShape(rec); // import a feature with null geometry
     return;
   }
-  types.forEach((geometries, i) => {
+  types.forEach(function (geometries, i) {
     importer.startShape(copyRecord(rec));
-    geometries.forEach((geom) => {
+    geometries.forEach(function (geom) {
       GeoJSON.importSimpleGeometry(importer, geom, opts);
     });
   });
@@ -81,7 +83,7 @@ GeoJSON.importComplexFeature = (importer, geom, rec, opts) => {
 
 function divideGeometriesByType(geometries, index) {
   index = index || {};
-  geometries.forEach((geom) => {
+  geometries.forEach(function (geom) {
     if (!geom) return;
     var mtype = GeoJSON.translateGeoJSONType(geom.type);
     if (mtype) {
@@ -96,12 +98,12 @@ function divideGeometriesByType(geometries, index) {
   return Object.values(index);
 }
 
-GeoJSON.importSimpleFeature = (importer, geom, rec, opts) => {
+GeoJSON.importSimpleFeature = function (importer, geom, rec, opts) {
   importer.startShape(rec);
   GeoJSON.importSimpleGeometry(importer, geom, opts);
 };
 
-GeoJSON.importSimpleGeometry = (importer, geom, opts) => {
+GeoJSON.importSimpleGeometry = function (importer, geom, opts) {
   var type = geom ? geom.type : null;
   if (type === null) {
     // no geometry to import
@@ -122,28 +124,28 @@ GeoJSON.importSimpleGeometry = (importer, geom, opts) => {
 // Functions for importing geometry coordinates using a PathImporter
 //
 GeoJSON.pathImporters = {
-  LineString: (coords, importer) => {
+  LineString: function (coords, importer) {
     importer.importLine(coords);
   },
-  MultiLineString: (coords, importer) => {
+  MultiLineString: function (coords, importer) {
     for (var i = 0; i < coords.length; i++) {
       GeoJSON.pathImporters.LineString(coords[i], importer);
     }
   },
-  Polygon: (coords, importer) => {
+  Polygon: function (coords, importer) {
     for (var i = 0; i < coords.length; i++) {
       importer.importRing(coords[i], i > 0);
     }
   },
-  MultiPolygon: (coords, importer) => {
+  MultiPolygon: function (coords, importer) {
     for (var i = 0; i < coords.length; i++) {
       GeoJSON.pathImporters.Polygon(coords[i], importer);
     }
   },
-  Point: (coord, importer) => {
+  Point: function (coord, importer) {
     importer.importPoints([coord]);
   },
-  MultiPoint: (coords, importer) => {
+  MultiPoint: function (coords, importer) {
     importer.importPoints(coords);
   },
 };

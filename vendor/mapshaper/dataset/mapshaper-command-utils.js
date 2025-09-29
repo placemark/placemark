@@ -1,7 +1,7 @@
 import { compileValueExpression } from "../expressions/mapshaper-expressions";
+import utils from "../utils/mapshaper-utils";
 import cmd from "../mapshaper-cmd";
 import { error } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
 
 // Get a copy of a layer containing a subset of the layer's features,
 // given a "where" expression in the options object

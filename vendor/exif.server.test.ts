@@ -1,6 +1,7 @@
+import { expect, describe, it } from "vitest";
+
 import Fs from "fs";
 import Path from "path";
-import { describe, expect, it } from "vitest";
 import { getImageData, toGeoJSON } from "./exif";
 
 const iphoneExif = {
@@ -70,12 +71,11 @@ const iphoneExif = {
 describe("EXIF", () => {
   it("toGeoJSON (bad data)", async () => {
     await expect(
-      toGeoJSON(Buffer.from([0xff, 0xd8]).buffer as ArrayBuffer),
+      toGeoJSON(Buffer.from([0xff, 0xd8]).buffer as ArrayBuffer)
     ).resolves.toBeLeft();
   });
   it("toGeoJSON", async () => {
-    const input = Fs.readFileSync(Path.join("test", "exifimage.jpg"))
-      .buffer as ArrayBuffer;
+    const input = Fs.readFileSync(Path.join("test", "exifimage.jpg")).buffer as ArrayBuffer;
     const gj = (await toGeoJSON(input)).unsafeCoerce();
     expect(gj).toEqual({
       type: "FeatureCollection",
@@ -91,7 +91,7 @@ describe("EXIF", () => {
       ],
     });
   });
-  it("getImageData", () => {
+  it("getImageData", function () {
     const input = Fs.readFileSync(Path.join("test", "exifimage.jpg"));
     expect(getImageData(input.buffer)).toEqualRight(iphoneExif);
     const input2 = Fs.readFileSync(Path.join("test", "exifimage2.jpg"));
@@ -114,7 +114,7 @@ describe("EXIF", () => {
       YResolution: 300,
     });
   });
-  it("getImageData (invalid data)", () => {
+  it("getImageData (invalid data)", function () {
     expect(getImageData(Buffer.from("").buffer)).toBeLeft();
     expect(getImageData(Buffer.from("hihi").buffer)).toBeLeft();
     expect(getImageData(Buffer.from([0xff, 0xd8]).buffer)).toBeLeft();

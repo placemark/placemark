@@ -1,5 +1,5 @@
+import type { Feature, Position, FeatureCollection } from "types";
 import { dsvFormat } from "d3-dsv";
-import type { Feature, FeatureCollection, Position } from "types";
 
 type GTFSRow = {
   shape_id: string | number;

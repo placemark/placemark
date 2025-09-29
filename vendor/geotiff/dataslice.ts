@@ -7,7 +7,7 @@ export default class DataSlice {
     arrayBuffer: ArrayBuffer,
     sliceOffset: number,
     littleEndian: boolean,
-    bigTiff: boolean,
+    bigTiff: boolean
   ) {
     this._dataView = new DataView(arrayBuffer);
     this._sliceOffset = sliceOffset;
@@ -50,42 +50,42 @@ export default class DataSlice {
   readUint16(offset: number) {
     return this._dataView.getUint16(
       offset - this._sliceOffset,
-      this._littleEndian,
+      this._littleEndian
     );
   }
 
   readInt16(offset: number) {
     return this._dataView.getInt16(
       offset - this._sliceOffset,
-      this._littleEndian,
+      this._littleEndian
     );
   }
 
   readUint32(offset: number) {
     return this._dataView.getUint32(
       offset - this._sliceOffset,
-      this._littleEndian,
+      this._littleEndian
     );
   }
 
   readInt32(offset: number) {
     return this._dataView.getInt32(
       offset - this._sliceOffset,
-      this._littleEndian,
+      this._littleEndian
     );
   }
 
   readFloat32(offset: number) {
     return this._dataView.getFloat32(
       offset - this._sliceOffset,
-      this._littleEndian,
+      this._littleEndian
     );
   }
 
   readFloat64(offset: number) {
     return this._dataView.getFloat64(
       offset - this._sliceOffset,
-      this._littleEndian,
+      this._littleEndian
     );
   }
 
@@ -97,7 +97,7 @@ export default class DataSlice {
       combined = left + 2 ** 32 * right;
       if (!Number.isSafeInteger(combined)) {
         throw new Error(
-          `${combined} exceeds MAX_SAFE_INTEGER. Precision may be lost. Please report if you get this message to https://github.com/geotiffjs/geotiff.js/issues`,
+          `${combined} exceeds MAX_SAFE_INTEGER. Precision may be lost. Please report if you get this message to https://github.com/geotiffjs/geotiff.js/issues`
         );
       }
       return combined;
@@ -105,7 +105,7 @@ export default class DataSlice {
     combined = 2 ** 32 * left + right;
     if (!Number.isSafeInteger(combined)) {
       throw new Error(
-        `${combined} exceeds MAX_SAFE_INTEGER. Precision may be lost. Please report if you get this message to https://github.com/geotiffjs/geotiff.js/issues`,
+        `${combined} exceeds MAX_SAFE_INTEGER. Precision may be lost. Please report if you get this message to https://github.com/geotiffjs/geotiff.js/issues`
       );
     }
 
@@ -121,7 +121,7 @@ export default class DataSlice {
     let carrying = true;
     for (let i = 0; i < 8; i++) {
       let byte = this._dataView.getUint8(
-        offset + (this._littleEndian ? i : 7 - i),
+        offset + (this._littleEndian ? i : 7 - i)
       );
       if (isNegative) {
         if (carrying) {

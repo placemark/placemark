@@ -1,8 +1,8 @@
+import ShpRecordClass from "../shapefile/shp-record";
+import { error, verbose, message, stop } from "../utils/mapshaper-logging";
+import utils from "../utils/mapshaper-utils";
 import { /* FileReader, */ BufferReader } from "../io/mapshaper-file-reader";
 import { isSupportedShapefileType } from "../shapefile/shp-common";
-import ShpRecordClass from "../shapefile/shp-record";
-import { error, message, stop, verbose } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
 
 // Read data from a .shp file
 // @src is an ArrayBuffer, Node.js Buffer or filename
@@ -46,7 +46,9 @@ export function ShpReader(shpSrc, shxSrc) {
     shxBin = shxFile.readToBinArray(0, shxFile.size()).bigEndian();
   }
 
-  this.header = () => header;
+  this.header = function () {
+    return header;
+  };
 
   // Callback interface: for each record in a .shp file, pass a
   //   record object to a callback function
@@ -60,7 +62,7 @@ export function ShpReader(shpSrc, shxSrc) {
   };
 
   // Iterator interface for reading shape records
-  this.nextShape = () => {
+  this.nextShape = function () {
     var shape;
     if (!shpFile) {
       error("Tried to read from a used ShpReader");
@@ -89,7 +91,7 @@ export function ShpReader(shpSrc, shxSrc) {
     shpFile = shxFile = shxBin = null;
     if (badRecordNumberCount > 0) {
       message(
-        `Warning: ${badRecordNumberCount}/${recordCount} features have non-standard record numbers in the .shp file.`,
+        `Warning: ${badRecordNumberCount}/${recordCount} features have non-standard record numbers in the .shp file.`
       );
     }
   }
@@ -148,13 +150,13 @@ export function ShpReader(shpSrc, shxSrc) {
       stop(
         "Index of Shapefile record",
         expectedId,
-        "in the .shx file is invalid.",
+        "in the .shx file is invalid."
       );
     }
     if (shape.id != expectedId) {
       badRecordNumberCount++;
       verbose(
-        `Warning: A feature has a different record number in .shx (${expectedId}) and .shp (${shape.id}).`,
+        `Warning: A feature has a different record number in .shx (${expectedId}) and .shp (${shape.id}).`
       );
     }
     // TODO: consider printing verbose message if a .shp file contains garbage bytes
@@ -197,20 +199,18 @@ export function ShpReader(shpSrc, shxSrc) {
         message(
           "Found a Shapefile record with the same id as a previous record (" +
             shape.id +
-            ") -- skipping.",
+            ") -- skipping."
         );
         offset += shape.byteLength;
       } else {
         stop(
-          "Shapefile contains an out-of-sequence record. Possible data corruption -- bailing.",
+          "Shapefile contains an out-of-sequence record. Possible data corruption -- bailing."
         );
       }
     }
     if (shape && offset > start) {
       verbose(
-        "Skipped over " +
-          (offset - start) +
-          " non-data bytes in the .shp file.",
+        "Skipped over " + (offset - start) + " non-data bytes in the .shp file."
       );
     }
     return shape;

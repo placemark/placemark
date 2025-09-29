@@ -54,7 +54,9 @@ export default function ShpRecordClass(type) {
       this.partCount = hasParts ? bin.readUint32() : 1;
       this.pointCount = bin.readUint32();
     }
-    this._data = () => bin.position(pos);
+    this._data = function () {
+      return bin.position(pos);
+    };
   };
 
   // base prototype has methods shared by all Shapefile types except NULL type
@@ -74,7 +76,9 @@ export default function ShpRecordClass(type) {
       var partSizes = this.readPartSizes(),
         xy = this._data().skipBytes(this._xypos());
 
-      return partSizes.map((pointCount) => xy.readFloat64Array(pointCount * 2));
+      return partSizes.map(function (pointCount) {
+        return xy.readFloat64Array(pointCount * 2);
+      });
     },
 
     readXY: function () {

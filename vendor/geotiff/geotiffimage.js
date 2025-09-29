@@ -145,7 +145,7 @@ class GeoTIFFImage {
         throw new Error(`Sample bit-width of ${bits} is not supported.`);
       } else if (bits !== this.fileDirectory.BitsPerSample[0]) {
         throw new Error(
-          "Differing size of samples in a pixel are not supported.",
+          "Differing size of samples in a pixel are not supported."
         );
       }
       bitsPerSample += bits;

@@ -1,7 +1,7 @@
-import geom from "../geom/mapshaper-geom";
-import { forEachSegmentInShape } from "../paths/mapshaper-path-utils";
 import { sortSegmentIds } from "../paths/mapshaper-segment-sorting";
+import { forEachSegmentInShape } from "../paths/mapshaper-path-utils";
 import { error } from "../utils/mapshaper-logging";
+import geom from "../geom/mapshaper-geom";
 
 // PolygonIndex indexes the coordinates in one polygon feature for efficient
 // point-in-polygon tests
@@ -19,7 +19,7 @@ export function PolygonIndex(shape, arcs, opts) {
   init();
 
   // Return 0 if outside, 1 if inside, -1 if on boundary
-  this.pointInPolygon = (x, y) => {
+  this.pointInPolygon = function (x, y) {
     if (!polygonBounds.containsPoint(x, y)) {
       return false;
     }
@@ -66,7 +66,7 @@ export function PolygonIndex(shape, arcs, opts) {
     // default is this many segs per bucket (average)
     // var buckets = opts && opts.buckets > 0 ? opts.buckets : segCount / 200;
     // using more segs/bucket for more complex shapes, based on trial and error
-    var buckets = segCount ** 0.75 / 10;
+    var buckets = Math.pow(segCount, 0.75) / 10;
     return Math.ceil(buckets);
   }
 
@@ -87,12 +87,12 @@ export function PolygonIndex(shape, arcs, opts) {
       xmax;
 
     // get array of segments as [s0p0, s0p1, s1p0, s1p1, ...], sorted by xmin coordinate
-    forEachSegmentInShape(shape, arcs, () => {
+    forEachSegmentInShape(shape, arcs, function () {
       segCount++;
     });
     segments = new Uint32Array(segCount * 2);
     i = 0;
-    forEachSegmentInShape(shape, arcs, (a, b, xx, yy) => {
+    forEachSegmentInShape(shape, arcs, function (a, b, xx, yy) {
       segments[i++] = a;
       segments[i++] = b;
     });

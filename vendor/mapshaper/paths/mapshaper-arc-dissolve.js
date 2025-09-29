@@ -1,13 +1,11 @@
-import {
-  getArcPresenceTest2,
-  layerHasPaths,
-} from "../dataset/mapshaper-layer-utils";
-import { absArcId } from "../paths/mapshaper-arc-utils";
-import { ArcCollection } from "../paths/mapshaper-arcs";
 import { getPathEndpointTest } from "../paths/mapshaper-path-endpoints";
+import { layerHasPaths } from "../dataset/mapshaper-layer-utils";
 import { editShapeParts } from "../paths/mapshaper-shape-utils";
-import { NodeCollection } from "../topology/mapshaper-nodes";
+import { absArcId } from "../paths/mapshaper-arc-utils";
+import { getArcPresenceTest2 } from "../dataset/mapshaper-layer-utils";
 import { verbose } from "../utils/mapshaper-logging";
+import { NodeCollection } from "../topology/mapshaper-nodes";
+import { ArcCollection } from "../paths/mapshaper-arcs";
 import utils from "../utils/mapshaper-utils";
 
 // Dissolve arcs that can be merged without affecting topology of layers
@@ -28,12 +26,12 @@ export function dissolveArcs(dataset) {
     arcIndex = new Int32Array(arcs.size()), // maps old arc ids to new ids
     arcStatus = new Uint8Array(arcs.size());
   // arcStatus: 0 = unvisited, 1 = dropped, 2 = remapped, 3 = remapped + reversed
-  layers.forEach((lyr) => {
+  layers.forEach(function (lyr) {
     // modify copies of the original shapes; original shapes should be unmodified
     // (need to test this)
-    lyr.shapes = lyr.shapes.map((shape) =>
-      editShapeParts(shape && shape.concat(), translatePath),
-    );
+    lyr.shapes = lyr.shapes.map(function (shape) {
+      return editShapeParts(shape && shape.concat(), translatePath);
+    });
   });
   dataset.arcs = dissolveArcCollection(arcs, newArcs, totalPoints);
 
@@ -94,8 +92,8 @@ function dissolveArcCollection(arcs, newArcs, newLen) {
     interval = arcs.getRetainedInterval(),
     offs = 0;
 
-  newArcs.forEach((newArc, newId) => {
-    newArc.forEach((oldId, i) => {
+  newArcs.forEach(function (newArc, newId) {
+    newArc.forEach(function (oldId, i) {
       extendDissolvedArc(oldId, newId);
     });
   });
@@ -129,12 +127,14 @@ function dissolveArcCollection(arcs, newArcs, newLen) {
 function getArcDissolveTest(layers, arcs) {
   var nodes = new NodeCollection(arcs, getArcPresenceTest2(layers, arcs)),
     // don't allow dissolving through endpoints of polyline paths
-    lineLayers = layers.filter((lyr) => lyr.geometry_type == "polyline"),
+    lineLayers = layers.filter(function (lyr) {
+      return lyr.geometry_type == "polyline";
+    }),
     testLineEndpoint = getPathEndpointTest(lineLayers, arcs),
     linkCount,
     lastId;
 
-  return (id1, id2) => {
+  return function (id1, id2) {
     if (id1 == id2 || id1 == ~id2) {
       verbose("Unexpected arc sequence:", id1, id2);
       return false; // This is unexpected; don't try to dissolve, anyway

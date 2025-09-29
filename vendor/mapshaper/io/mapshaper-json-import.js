@@ -1,15 +1,15 @@
-import { importJSONTable } from "../datatable/mapshaper-json-table";
 import { GeoJSONParser, importGeoJSON } from "../geojson/geojson-import";
-import { GeoJSONReader } from "../geojson/geojson-reader";
 import {
   BufferReader,
   FileReader,
   readFirstChars,
 } from "../io/mapshaper-file-reader";
-import { bufferToString } from "../text/mapshaper-encodings";
+import utils from "../utils/mapshaper-utils";
 import { importTopoJSON } from "../topojson/topojson-import";
 import { stop } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
+import { GeoJSONReader } from "../geojson/geojson-reader";
+import { bufferToString } from "../text/mapshaper-encodings";
+import { importJSONTable } from "../datatable/mapshaper-json-table";
 
 // Identify JSON type from the initial subset of a JSON string
 function identifyJSONString(str, opts) {

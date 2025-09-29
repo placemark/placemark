@@ -1,8 +1,9 @@
-import { densifyPathByInterval } from "../crs/mapshaper-densify";
+import cmd from "../mapshaper-cmd";
+import { convertFourSides } from "../geom/mapshaper-units";
 import {
-  getCRS,
-  getDatasetCRS,
   setDatasetCRS,
+  getDatasetCRS,
+  getCRS,
 } from "../crs/mapshaper-projections";
 import {
   getLayerBounds,
@@ -11,25 +12,24 @@ import {
 } from "../dataset/mapshaper-layer-utils";
 import { mergeDatasetsIntoDataset } from "../dataset/mapshaper-merging";
 import { importGeoJSON } from "../geojson/geojson-import";
-import { Bounds } from "../geom/mapshaper-bounds";
-import {
-  clampToWorldBounds,
-  probablyDecimalDegreeBounds,
-} from "../geom/mapshaper-latlon";
-import { convertFourSides } from "../geom/mapshaper-units";
-import cmd from "../mapshaper-cmd";
 import { getPointFeatureBounds } from "../points/mapshaper-point-utils";
-import { stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
+import { stop } from "../utils/mapshaper-logging";
+import {
+  probablyDecimalDegreeBounds,
+  clampToWorldBounds,
+} from "../geom/mapshaper-latlon";
+import { Bounds } from "../geom/mapshaper-bounds";
+import { densifyPathByInterval } from "../crs/mapshaper-densify";
 
 // Create rectangles around each feature in a layer
-cmd.rectangles = (targetLyr, targetDataset, opts) => {
+cmd.rectangles = function (targetLyr, targetDataset, opts) {
   if (!layerHasGeometry(targetLyr)) {
     stop("Layer is missing geometric shapes");
   }
   var crs = getDatasetCRS(targetDataset);
   var records = targetLyr.data ? targetLyr.data.getRecords() : null;
-  var geometries = targetLyr.shapes.map((shp) => {
+  var geometries = targetLyr.shapes.map(function (shp) {
     var bounds =
       targetLyr.geometry_type == "point"
         ? getPointFeatureBounds(shp)
@@ -40,7 +40,7 @@ cmd.rectangles = (targetLyr, targetDataset, opts) => {
   });
   var geojson = {
     type: "FeatureCollection",
-    features: geometries.map((geom, i) => {
+    features: geometries.map(function (geom, i) {
       var rec = (records && records[i]) || null;
       if (rec && opts.no_replace) {
         rec = utils.extend({}, rec); // make a copy
@@ -60,8 +60,8 @@ cmd.rectangles = (targetLyr, targetDataset, opts) => {
 
 // Create rectangles around one or more target layers
 //
-cmd.rectangle2 = (target, opts) => {
-  var datasets = target.layers.map((lyr) => {
+cmd.rectangle2 = function (target, opts) {
+  var datasets = target.layers.map(function (lyr) {
     var dataset = cmd.rectangle({ layer: lyr, dataset: target.dataset }, opts);
     setOutputLayerName(dataset.layers[0], lyr, null, opts);
     if (!opts.no_replace) {
@@ -72,7 +72,7 @@ cmd.rectangle2 = (target, opts) => {
   return mergeDatasetsIntoDataset(target.dataset, datasets);
 };
 
-cmd.rectangle = (source, opts) => {
+cmd.rectangle = function (source, opts) {
   var offsets, bounds, crs, coords, sourceInfo;
   if (source) {
     bounds = getLayerBounds(source.layer, source.dataset.arcs);

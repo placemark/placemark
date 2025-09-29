@@ -1,21 +1,19 @@
-import cmd from "../mapshaper-cmd";
-import { absArcId } from "../paths/mapshaper-arc-utils";
 import { countArcsInShapes } from "../paths/mapshaper-path-utils";
+import { getSliverTest } from "../polygons/mapshaper-slivers";
+import { getDefaultSliverThreshold } from "../polygons/mapshaper-slivers";
 import { editShapes } from "../paths/mapshaper-shape-utils";
-import {
-  getDefaultSliverThreshold,
-  getSliverFilter,
-  getSliverTest,
-} from "../polygons/mapshaper-slivers";
+import { getSliverFilter } from "../polygons/mapshaper-slivers";
 import { message } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
+import cmd from "../mapshaper-cmd";
+import { absArcId } from "../paths/mapshaper-arc-utils";
 
 // Remove small-area polygon rings (very simple implementation of sliver removal)
 // TODO: more sophisticated sliver detection (e.g. could consider ratio of area to perimeter)
 // TODO: consider merging slivers into adjacent polygons to prevent gaps from forming
 // TODO: consider separate gap removal function as an alternative to merging slivers
 //
-cmd.filterSlivers = (lyr, dataset, opts) => {
+cmd.filterSlivers = function (lyr, dataset, opts) {
   if (lyr.geometry_type != "polygon") {
     return 0;
   }
@@ -27,7 +25,7 @@ function filterSlivers(lyr, dataset, optsArg) {
   var filterData = getSliverFilter(lyr, dataset, opts);
   var ringTest = filterData.filter;
   var removed = 0;
-  var pathFilter = (path, i, paths) => {
+  var pathFilter = function (path, i, paths) {
     if (ringTest(path)) {
       removed++;
       return null;
@@ -40,8 +38,8 @@ function filterSlivers(lyr, dataset, optsArg) {
       "Removed %'d sliver%s using %s",
       removed,
       utils.pluralSuffix(removed),
-      filterData.label,
-    ),
+      filterData.label
+    )
   );
   return removed;
 }
@@ -52,7 +50,7 @@ export function filterClipSlivers(lyr, clipLyr, arcs) {
   var ringTest = getSliverTest(arcs, threshold, 1);
   var flags = new Uint8Array(arcs.size());
   var removed = 0;
-  var pathFilter = (path) => {
+  var pathFilter = function (path) {
     var prevArcs = 0,
       newArcs = 0;
     for (var i = 0, n = (path && path.length) || 0; i < n; i++) {

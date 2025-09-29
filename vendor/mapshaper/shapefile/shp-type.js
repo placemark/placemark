@@ -17,18 +17,30 @@ var ShpType = {
 
 export default ShpType;
 
-ShpType.isPolygonType = (t) => t == 5 || t == 15 || t == 25;
+ShpType.isPolygonType = function (t) {
+  return t == 5 || t == 15 || t == 25;
+};
 
-ShpType.isPolylineType = (t) => t == 3 || t == 13 || t == 23;
+ShpType.isPolylineType = function (t) {
+  return t == 3 || t == 13 || t == 23;
+};
 
-ShpType.isMultiPartType = (t) =>
-  ShpType.isPolygonType(t) || ShpType.isPolylineType(t);
+ShpType.isMultiPartType = function (t) {
+  return ShpType.isPolygonType(t) || ShpType.isPolylineType(t);
+};
 
-ShpType.isMultiPointType = (t) => t == 8 || t == 18 || t == 28;
+ShpType.isMultiPointType = function (t) {
+  return t == 8 || t == 18 || t == 28;
+};
 
-ShpType.isZType = (t) => [11, 13, 15, 18].includes(t);
+ShpType.isZType = function (t) {
+  return [11, 13, 15, 18].includes(t);
+};
 
-ShpType.isMType = (t) => ShpType.isZType(t) || [21, 23, 25, 28].includes(t);
+ShpType.isMType = function (t) {
+  return ShpType.isZType(t) || [21, 23, 25, 28].includes(t);
+};
 
-ShpType.hasBounds = (t) =>
-  ShpType.isMultiPartType(t) || ShpType.isMultiPointType(t);
+ShpType.hasBounds = function (t) {
+  return ShpType.isMultiPartType(t) || ShpType.isMultiPointType(t);
+};

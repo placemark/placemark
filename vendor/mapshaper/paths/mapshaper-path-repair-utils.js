@@ -1,10 +1,10 @@
-import geom from "../geom/mapshaper-geom";
 import { IdTestIndex } from "../indexing/mapshaper-id-test-index";
+import utils from "../utils/mapshaper-utils";
+import geom from "../geom/mapshaper-geom";
 import {
   editShapeParts,
   forEachShapePart,
 } from "../paths/mapshaper-shape-utils";
-import utils from "../utils/mapshaper-utils";
 
 // Clean polygon or polyline shapes (in-place)
 //
@@ -19,7 +19,7 @@ export function cleanShapes(shapes, arcs, type) {
 // Don't remove duplicate points
 // Don't check winding order of polygon rings
 function cleanShape(shape, arcs, type) {
-  return editShapeParts(shape, (path) => {
+  return editShapeParts(shape, function (path) {
     var cleaned = cleanPath(path, arcs);
     if (type == "polygon" && cleaned) {
       removeSpikesInPath(cleaned); // assumed by addIntersectionCuts()
@@ -39,7 +39,11 @@ function cleanPath(path, arcs) {
       path[i] = null;
     }
   }
-  return nulls > 0 ? path.filter((id) => id !== null) : path;
+  return nulls > 0
+    ? path.filter(function (id) {
+        return id !== null;
+      })
+    : path;
 }
 
 // Remove pairs of ids where id[n] == ~id[n+1] or id[0] == ~id[n-1];
@@ -77,8 +81,10 @@ function removeSpikesInPath(ids) {
 //
 export function getSelfIntersectionSplitter(nodes) {
   var pathIndex = new IdTestIndex(nodes.arcs.size(), true);
-  var filter = (arcId) => pathIndex.hasId(~arcId);
-  return (path) => {
+  var filter = function (arcId) {
+    return pathIndex.hasId(~arcId);
+  };
+  return function (path) {
     pathIndex.setIds(path);
     var paths = dividePath(path);
     pathIndex.clear();

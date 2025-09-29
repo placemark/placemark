@@ -1,8 +1,8 @@
-import { absArcId } from "../paths/mapshaper-arc-utils";
-import { ArcCollection } from "../paths/mapshaper-arcs";
 import { initPointChains } from "../topology/mapshaper-topology-chains-v2";
 import { error } from "../utils/mapshaper-logging";
+import { ArcCollection } from "../paths/mapshaper-arcs";
 import utils from "../utils/mapshaper-utils";
+import { absArcId } from "../paths/mapshaper-arc-utils";
 
 // @arcs ArcCollection
 // @filter Optional filter function, arcIds that return false are excluded
@@ -20,11 +20,11 @@ export function NodeCollection(arcs, filter) {
   // Accessor function for arcs
   Object.defineProperty(this, "arcs", { value: arcs });
 
-  var toArray = (this.toArray = () => {
+  var toArray = (this.toArray = function () {
     var chains = getNodeChains(),
       flags = new Uint8Array(chains.length),
       arr = [];
-    utils.forEach(chains, (nextIdx, thisIdx) => {
+    utils.forEach(chains, function (nextIdx, thisIdx) {
       var node, x, y, p;
       if (flags[thisIdx] == 1) return;
       p = getEndpoint(thisIdx);
@@ -44,7 +44,7 @@ export function NodeCollection(arcs, filter) {
     return this.toArray().length;
   };
 
-  this.findDanglingEndpoints = () => {
+  this.findDanglingEndpoints = function () {
     var chains = getNodeChains(),
       arr = [],
       p;
@@ -81,12 +81,12 @@ export function NodeCollection(arcs, filter) {
     return count;
   };
 
-  this.detachArc = (arcId) => {
+  this.detachArc = function (arcId) {
     unlinkDirectedArc(arcId);
     unlinkDirectedArc(~arcId);
   };
 
-  this.forEachConnectedArc = (arcId, cb) => {
+  this.forEachConnectedArc = function (arcId, cb) {
     var nextId = nextConnectedArc(arcId),
       i = 0;
     while (nextId != arcId) {
@@ -102,7 +102,7 @@ export function NodeCollection(arcs, filter) {
   //    of each connected arc and excludes arcs for which the filter returns false.
   //    The filter is also applied to the initial arc; if false, no arcs are returned.
   //
-  this.getConnectedArcs = (arcId, filter) => {
+  this.getConnectedArcs = function (arcId, filter) {
     var ids = [];
     var filtered = !!filter;
     var nextId = nextConnectedArc(arcId);
@@ -120,7 +120,7 @@ export function NodeCollection(arcs, filter) {
 
   // Returns the id of the first identical arc or @arcId if none found
   // TODO: find a better function name
-  this.findDuplicateArc = (arcId) => {
+  this.findDuplicateArc = function (arcId) {
     var nextId = nextConnectedArc(arcId),
       match = arcId;
     while (nextId != arcId) {
@@ -237,7 +237,7 @@ function findNodeTopology(arcs, filter) {
     yy2 = new Float64Array(n),
     ids2 = new Int32Array(n);
 
-  arcs.forEach2((i, n, xx, yy, zz, arcId) => {
+  arcs.forEach2(function (i, n, xx, yy, zz, arcId) {
     var start = i,
       end = i + n - 1,
       start2 = arcId * 2,

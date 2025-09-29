@@ -1,12 +1,12 @@
+import { fixNestingErrors } from "../polygons/mapshaper-ring-nesting";
 import { reversePath } from "../paths/mapshaper-path-utils";
 import { getRingIntersector } from "../paths/mapshaper-pathfinder";
 import { getHoleDivider } from "../polygons/mapshaper-polygon-holes";
-import { fixNestingErrors } from "../polygons/mapshaper-ring-nesting";
 
 // TODO: remove this obsolete dissolve code (still used by clip)
 
 function concatShapes(shapes) {
-  return shapes.reduce((memo, shape) => {
+  return shapes.reduce(function (memo, shape) {
     extendShape(memo, shape);
     return memo;
   }, []);
@@ -35,7 +35,7 @@ export function getPolygonDissolver(nodes, spherical) {
   var divide = getHoleDivider(nodes, spherical);
   var pathfind = getRingIntersector(nodes, flags);
 
-  return (shp) => {
+  return function (shp) {
     if (!shp) return null;
     var cw = [],
       ccw = [];

@@ -1,38 +1,38 @@
-import { cleanProjectedLayers } from "../commands/mapshaper-proj";
+import cmd from "../mapshaper-cmd";
 import {
-  densifyAntimeridianSegment,
-  densifyDataset,
-  densifyPathByInterval,
-  getIntervalInterpolator,
-} from "../crs/mapshaper-densify";
-import { getDatasetCRS, isLatLngCRS } from "../crs/mapshaper-projections";
-import {
-  getRotationFunction2,
   rotateDatasetCoords,
+  getRotationFunction2,
 } from "../crs/mapshaper-spherical-rotation";
-import { DatasetEditor } from "../dataset/mapshaper-dataset-editor";
 import {
-  removeCutSegments,
   removePolygonCrosses,
   removePolylineCrosses,
   segmentCrossesAntimeridian,
+  removeCutSegments,
 } from "../geom/mapshaper-antimeridian-cuts";
+import { DatasetEditor } from "../dataset/mapshaper-dataset-editor";
+import { getDatasetCRS, isLatLngCRS } from "../crs/mapshaper-projections";
 import {
   getPlanarPathArea,
   getSphericalPathArea,
 } from "../geom/mapshaper-polygon-geom";
-import cmd from "../mapshaper-cmd";
 import {
-  isClosedPath,
-  isEdgeSegment,
-  isWholeWorld,
-  lastEl,
-  onPole,
+  densifyDataset,
+  densifyPathByInterval,
+  densifyAntimeridianSegment,
+  getIntervalInterpolator,
+} from "../crs/mapshaper-densify";
+import { cleanProjectedLayers } from "../commands/mapshaper-proj";
+import { stop, error, debug } from "../utils/mapshaper-logging";
+import { buildTopology } from "../topology/mapshaper-topology";
+import {
   samePoint,
   snapToEdge,
+  isEdgeSegment,
+  isWholeWorld,
+  onPole,
+  isClosedPath,
+  lastEl,
 } from "../paths/mapshaper-coordinate-utils";
-import { buildTopology } from "../topology/mapshaper-topology";
-import { debug, error, stop } from "../utils/mapshaper-logging";
 
 cmd.rotate = rotateDataset;
 
@@ -49,7 +49,7 @@ export function rotateDataset(dataset, opts) {
     dataset.arcs.flatten();
   }
 
-  dataset.layers.forEach((lyr) => {
+  dataset.layers.forEach(function (lyr) {
     var type = lyr.geometry_type;
     editor.editLayer(lyr, getGeometryRotator(type, rotatePoint, opts));
   });
@@ -63,20 +63,20 @@ export function rotateDataset(dataset, opts) {
 function getGeometryRotator(layerType, rotatePoint, opts) {
   var rings;
   if (layerType == "point") {
-    return (coords) => {
+    return function (coords) {
       coords.forEach(rotatePoint);
       return coords;
     };
   }
   if (layerType == "polyline") {
-    return (coords) => {
+    return function (coords) {
       coords = densifyPathByInterval(coords, 0.5);
       coords.forEach(rotatePoint);
       return removePolylineCrosses(coords);
     };
   }
   if (layerType == "polygon") {
-    return (coords, i, shape) => {
+    return function (coords, i, shape) {
       if (isWholeWorld(coords)) {
         coords = densifyPathByInterval(coords, 0.5);
       } else {
@@ -109,7 +109,7 @@ function getGeometryRotator(layerType, rotatePoint, opts) {
 
 function getInterpolator(interval) {
   var interpolate = getIntervalInterpolator(interval);
-  return (a, b) => {
+  return function (a, b) {
     var points;
     if (onPole(a) || onPole(b)) {
       points = [];

@@ -1,6 +1,6 @@
+import utils from "../utils/mapshaper-utils";
 import { error } from "../utils/mapshaper-logging";
 import { Buffer } from "../utils/mapshaper-node-buffer";
-import utils from "../utils/mapshaper-utils";
 
 function buffersAreIdentical(a, b) {
   var alen = BinArray.bufferSize(a);
@@ -30,7 +30,7 @@ export function BinArray(buf, le) {
   }
   if (buf instanceof ArrayBuffer == false) {
     error(
-      "BinArray constructor takes an integer, ArrayBuffer or Buffer argument",
+      "BinArray constructor takes an integer, ArrayBuffer or Buffer argument"
     );
   }
   this._buffer = buf;
@@ -40,16 +40,18 @@ export function BinArray(buf, le) {
   this._le = le !== false;
 }
 
-BinArray.bufferToUintArray = (buf, wordLen) => {
+BinArray.bufferToUintArray = function (buf, wordLen) {
   if (wordLen == 4) return new Uint32Array(buf);
   if (wordLen == 2) return new Uint16Array(buf);
   if (wordLen == 1) return new Uint8Array(buf);
   error("BinArray.bufferToUintArray() invalid word length:", wordLen);
 };
 
-BinArray.uintSize = (i) => i & 1 || i & 2 || 4;
+BinArray.uintSize = function (i) {
+  return i & 1 || i & 2 || 4;
+};
 
-BinArray.bufferCopy = (dest, destId, src, srcId, bytes) => {
+BinArray.bufferCopy = function (dest, destId, src, srcId, bytes) {
   srcId = srcId || 0;
   bytes = bytes || src.byteLength - srcId;
   if (dest.byteLength - destId < bytes)
@@ -62,7 +64,7 @@ BinArray.bufferCopy = (dest, destId, src, srcId, bytes) => {
     BinArray.uintSize(srcId),
     BinArray.uintSize(dest.byteLength),
     BinArray.uintSize(destId),
-    BinArray.uintSize(src.byteLength),
+    BinArray.uintSize(src.byteLength)
   );
 
   var srcArr = BinArray.bufferToUintArray(src, wordSize),
@@ -77,7 +79,7 @@ BinArray.bufferCopy = (dest, destId, src, srcId, bytes) => {
   return bytes;
 };
 
-BinArray.toArrayBuffer = (src) => {
+BinArray.toArrayBuffer = function (src) {
   var n = src.length,
     dest = new ArrayBuffer(n),
     view = new Uint8Array(dest);
@@ -89,8 +91,9 @@ BinArray.toArrayBuffer = (src) => {
 
 // Return length in bytes of an ArrayBuffer or Buffer
 //
-BinArray.bufferSize = (buf) =>
-  buf instanceof ArrayBuffer ? buf.byteLength : buf.length | 0;
+BinArray.bufferSize = function (buf) {
+  return buf instanceof ArrayBuffer ? buf.byteLength : buf.length | 0;
+};
 
 BinArray.prototype = {
   size: function () {
@@ -290,7 +293,7 @@ BinArray.prototype = {
       this._idx,
       buf,
       startIdx,
-      bytes,
+      bytes
     );
     return this;
   },

@@ -1,15 +1,15 @@
+import { dissolvePolygonGroups2 } from "../dissolve/mapshaper-polygon-dissolve2";
+import { cleanPolylineLayerGeometry } from "../polylines/mapshaper-polyline-clean";
+import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
 import {
   layerHasGeometry,
   layerHasPaths,
 } from "../dataset/mapshaper-layer-utils";
-import { dissolvePolygonGroups2 } from "../dissolve/mapshaper-polygon-dissolve2";
-import cmd from "../mapshaper-cmd";
-import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
 import { addIntersectionCuts } from "../paths/mapshaper-intersection-cuts";
 import { rewindPolygons } from "../polygons/mapshaper-ring-nesting";
-import { cleanPolylineLayerGeometry } from "../polylines/mapshaper-polyline-clean";
 import { buildTopology } from "../topology/mapshaper-topology";
 import utils from "../utils/mapshaper-utils";
+import cmd from "../mapshaper-cmd";
 
 cmd.cleanLayers = cleanLayers;
 
@@ -22,7 +22,7 @@ export function cleanLayers(layers, dataset, optsArg) {
     addIntersectionCuts(dataset, opts);
     return;
   }
-  layers.forEach((lyr) => {
+  layers.forEach(function (lyr) {
     if (!layerHasGeometry(lyr)) return;
     if (lyr.geometry_type == "polygon" && opts.rewind) {
       rewindPolygons(lyr, dataset.arcs);
@@ -55,7 +55,9 @@ export function cleanLayers(layers, dataset, optsArg) {
 
 function cleanPolygonLayerGeometry(lyr, dataset, opts) {
   // clean polygons by apply the 'dissolve2' function to each feature
-  var groups = lyr.shapes.map((shp, i) => [i]);
+  var groups = lyr.shapes.map(function (shp, i) {
+    return [i];
+  });
   lyr.shapes = dissolvePolygonGroups2(groups, lyr, dataset, opts);
 }
 
@@ -63,7 +65,7 @@ function cleanPolygonLayerGeometry(lyr, dataset, opts) {
 // TODO: consider checking for invalid coordinates
 function cleanPointLayerGeometry(lyr, dataset, opts) {
   var index, parts;
-  lyr.shapes = lyr.shapes.map((shp, i) => {
+  lyr.shapes = lyr.shapes.map(function (shp, i) {
     if (!shp || shp.length > 0 === false) {
       return null;
     }
