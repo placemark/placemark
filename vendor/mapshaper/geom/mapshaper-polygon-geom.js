@@ -1,7 +1,7 @@
-import { WGS84 } from "../geom/mapshaper-geom-constants";
-import { calcPathLen } from "../geom/mapshaper-path-geom";
-import { forEachSegmentInPath } from "../paths/mapshaper-path-utils";
 import { error } from "../utils/mapshaper-logging";
+import { forEachSegmentInPath } from "../paths/mapshaper-path-utils";
+import { calcPathLen } from "../geom/mapshaper-path-geom";
+import { WGS84 } from "../geom/mapshaper-geom-constants";
 
 // A compactness measure designed for testing electoral districts for gerrymandering.
 // Returns value in [0-1] range. 1 = perfect circle, 0 = collapsed polygon
@@ -24,26 +24,26 @@ export function getPathWinding(ids, arcs) {
 
 export function getShapeArea(shp, arcs) {
   // return (arcs.isPlanar() ? geom.getPlanarShapeArea : geom.getSphericalShapeArea)(shp, arcs);
-  return (shp || []).reduce((area, ids) => area + getPathArea(ids, arcs), 0);
+  return (shp || []).reduce(function (area, ids) {
+    return area + getPathArea(ids, arcs);
+  }, 0);
 }
 
 export function getPlanarShapeArea(shp, arcs) {
-  return (shp || []).reduce(
-    (area, ids) => area + getPlanarPathArea(ids, arcs),
-    0,
-  );
+  return (shp || []).reduce(function (area, ids) {
+    return area + getPlanarPathArea(ids, arcs);
+  }, 0);
 }
 
 export function getSphericalShapeArea(shp, arcs, R) {
   if (arcs.isPlanar()) {
     error(
-      "[getSphericalShapeArea()] Function requires decimal degree coordinates",
+      "[getSphericalShapeArea()] Function requires decimal degree coordinates"
     );
   }
-  return (shp || []).reduce(
-    (area, ids) => area + getSphericalPathArea(ids, arcs, R),
-    0,
-  );
+  return (shp || []).reduce(function (area, ids) {
+    return area + getSphericalPathArea(ids, arcs, R);
+  }, 0);
 }
 
 // export function getEllipsoidalShapeArea(shp, arcs, crs) {
@@ -58,7 +58,7 @@ export function testPointInPolygon(x, y, shp, arcs) {
   var isIn = false,
     isOn = false;
   if (shp) {
-    shp.forEach((ids) => {
+    shp.forEach(function (ids) {
       var inRing = testPointInRing(x, y, ids, arcs);
       if (inRing == 1) {
         isIn = !isIn;
@@ -91,7 +91,7 @@ export function testPointInRing(x, y, ids, arcs) {
   */
   var isIn = false,
     isOn = false;
-  forEachSegmentInPath(ids, arcs, (a, b, xx, yy) => {
+  forEachSegmentInPath(ids, arcs, function (a, b, xx, yy) {
     var result = testRayIntersection(x, y, xx[a], yy[a], xx[b], yy[b]);
     if (result == 1) {
       isIn = !isIn;
@@ -164,7 +164,7 @@ export function getRayIntersection(x, y, ax, ay, bx, by) {
 export function getPathArea(ids, arcs) {
   return (arcs.isPlanar() ? getPlanarPathArea : getSphericalPathArea)(
     ids,
-    arcs,
+    arcs
   );
 }
 
@@ -255,24 +255,25 @@ export function getPlanarPathArea(ids, arcs) {
 export function getPathPerimeter(ids, arcs) {
   return (arcs.isPlanar() ? getPlanarPathPerimeter : getSphericalPathPerimeter)(
     ids,
-    arcs,
+    arcs
   );
 }
 
 export function getShapePerimeter(shp, arcs) {
-  return (shp || []).reduce((len, ids) => len + getPathPerimeter(ids, arcs), 0);
+  return (shp || []).reduce(function (len, ids) {
+    return len + getPathPerimeter(ids, arcs);
+  }, 0);
 }
 
 export function getSphericalShapePerimeter(shp, arcs) {
   if (arcs.isPlanar()) {
     error(
-      "[getSphericalShapePerimeter()] Function requires decimal degree coordinates",
+      "[getSphericalShapePerimeter()] Function requires decimal degree coordinates"
     );
   }
-  return (shp || []).reduce(
-    (len, ids) => len + getSphericalPathPerimeter(ids, arcs),
-    0,
-  );
+  return (shp || []).reduce(function (len, ids) {
+    return len + getSphericalPathPerimeter(ids, arcs);
+  }, 0);
 }
 
 export function getPlanarPathPerimeter(ids, arcs) {

@@ -1,9 +1,9 @@
-import { DataTable } from "../datatable/mapshaper-data-table";
 import Dbf from "../shapefile/dbf-writer";
 import utils from "../utils/mapshaper-utils";
+import { DataTable } from "../datatable/mapshaper-data-table";
 
 export function exportDbf(dataset, opts) {
-  return dataset.layers.reduce((files, lyr) => {
+  return dataset.layers.reduce(function (files, lyr) {
     if (lyr.data) {
       files = files.concat(exportDbfFile(lyr, dataset, opts));
     }

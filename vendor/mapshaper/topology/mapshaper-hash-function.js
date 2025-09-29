@@ -8,7 +8,7 @@ export function getXYHash(size) {
     throw new Error("Invalid size param: " + size);
   }
 
-  return (x, y) => {
+  return function (x, y) {
     var u = uints,
       h;
     floats[0] = x;
@@ -29,7 +29,7 @@ function getXHash(size) {
     throw new Error("Invalid size param: " + size);
   }
 
-  return (x) => {
+  return function (x) {
     var h;
     floats[0] = x;
     h = uints[0] ^ uints[1];

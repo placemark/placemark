@@ -1,14 +1,14 @@
+import { findAnchorPoint } from "../points/mapshaper-anchor-points";
+import { getInnerPctCalcFunction } from "../geom/mapshaper-perimeter-calc";
 import {
   layerHasPaths,
   layerHasPoints,
 } from "../dataset/mapshaper-layer-utils";
-import { addGetters } from "../expressions/mapshaper-expression-utils";
 import { addLayerGetters } from "../expressions/mapshaper-layer-proxy";
-import geom from "../geom/mapshaper-geom";
-import { WGS84 } from "../geom/mapshaper-geom-constants";
-import { getInnerPctCalcFunction } from "../geom/mapshaper-perimeter-calc";
-import { findAnchorPoint } from "../points/mapshaper-anchor-points";
+import { addGetters } from "../expressions/mapshaper-expression-utils";
 import { stop } from "../utils/mapshaper-logging";
+import { WGS84 } from "../geom/mapshaper-geom-constants";
+import geom from "../geom/mapshaper-geom";
 import utils from "../utils/mapshaper-utils";
 
 // Returns a function to return a feature proxy by id
@@ -30,30 +30,34 @@ export function initFeatureProxy(lyr, arcs, optsArg) {
 
   // all contexts have this.id and this.layer
   addGetters(ctx, {
-    id: () => _id,
+    id: function () {
+      return _id;
+    },
   });
   addLayerGetters(ctx, lyr, arcs);
 
   if (opts.geojson_editor) {
     Object.defineProperty(ctx, "geojson", {
-      set: (o) => {
+      set: function (o) {
         opts.geojson_editor.set(o, _id);
       },
-      get: () => opts.geojson_editor.get(_id),
+      get: function () {
+        return opts.geojson_editor.get(_id);
+      },
     });
   }
 
   if (_records) {
     // add r/w member "properties"
     Object.defineProperty(ctx, "properties", {
-      set: (obj) => {
+      set: function (obj) {
         if (utils.isObject(obj)) {
           _records[_id] = obj;
         } else {
           stop("Can't assign non-object to $.properties");
         }
       },
-      get: () => {
+      get: function () {
         var rec = _records[_id];
         if (!rec) {
           rec = _records[_id] = {};
@@ -66,39 +70,59 @@ export function initFeatureProxy(lyr, arcs, optsArg) {
   if (hasPaths) {
     addGetters(ctx, {
       // TODO: count hole/s + containing ring as one part
-      partCount: () => (_ids ? _ids.length : 0),
-      isNull: () => ctx.partCount === 0,
-      bounds: () => shapeBounds().toArray(),
-      height: () => shapeBounds().height(),
-      width: () => shapeBounds().width(),
+      partCount: function () {
+        return _ids ? _ids.length : 0;
+      },
+      isNull: function () {
+        return ctx.partCount === 0;
+      },
+      bounds: function () {
+        return shapeBounds().toArray();
+      },
+      height: function () {
+        return shapeBounds().height();
+      },
+      width: function () {
+        return shapeBounds().width();
+      },
     });
 
     if (lyr.geometry_type == "polyline") {
       addGetters(ctx, {
-        length: () => geom.getShapePerimeter(_ids, arcs),
+        length: function () {
+          return geom.getShapePerimeter(_ids, arcs);
+        },
       });
     }
 
     if (lyr.geometry_type == "polygon") {
       addGetters(ctx, {
-        area: () =>
-          _isPlanar ? ctx.planarArea : geom.getSphericalShapeArea(_ids, arcs),
+        area: function () {
+          return _isPlanar
+            ? ctx.planarArea
+            : geom.getSphericalShapeArea(_ids, arcs);
+        },
         // area2: function() {
         //   return _isPlanar ? ctx.planarArea : geom.getSphericalShapeArea(_ids, arcs, WGS84.SEMIMINOR_RADIUS);
         // },
         // area3: function() {
         //   return _isPlanar ? ctx.planarArea : geom.getSphericalShapeArea(_ids, arcs, WGS84.AUTHALIC_RADIUS);
         // },
-        perimeter: () => geom.getShapePerimeter(_ids, arcs),
-        compactness: () =>
-          geom.calcPolsbyPopperCompactness(ctx.area, ctx.perimeter),
-        planarArea: () => geom.getPlanarShapeArea(_ids, arcs),
-        innerPct: () => {
+        perimeter: function () {
+          return geom.getShapePerimeter(_ids, arcs);
+        },
+        compactness: function () {
+          return geom.calcPolsbyPopperCompactness(ctx.area, ctx.perimeter);
+        },
+        planarArea: function () {
+          return geom.getPlanarShapeArea(_ids, arcs);
+        },
+        innerPct: function () {
           if (!calcInnerPct)
             calcInnerPct = getInnerPctCalcFunction(arcs, lyr.shapes);
           return calcInnerPct(_ids);
         },
-        originalArea: () => {
+        originalArea: function () {
           // Get area
           var i = arcs.getRetainedInterval(),
             area;
@@ -107,19 +131,19 @@ export function initFeatureProxy(lyr, arcs, optsArg) {
           arcs.setRetainedInterval(i);
           return area;
         },
-        centroidX: () => {
+        centroidX: function () {
           var p = centroid();
           return p ? p.x : null;
         },
-        centroidY: () => {
+        centroidY: function () {
           var p = centroid();
           return p ? p.y : null;
         },
-        innerX: () => {
+        innerX: function () {
           var p = innerXY();
           return p ? p.x : null;
         },
-        innerY: () => {
+        innerY: function () {
           var p = innerXY();
           return p ? p.y : null;
         },
@@ -128,31 +152,33 @@ export function initFeatureProxy(lyr, arcs, optsArg) {
   } else if (hasPoints) {
     // TODO: add functions like bounds, isNull, pointCount
     Object.defineProperty(ctx, "coordinates", {
-      set: (obj) => {
+      set: function (obj) {
         if (!obj || utils.isArray(obj)) {
           lyr.shapes[_id] = obj || null;
         } else {
           stop("Can't assign non-array to $.coordinates");
         }
       },
-      get: () => lyr.shapes[_id] || null,
+      get: function () {
+        return lyr.shapes[_id] || null;
+      },
     });
     Object.defineProperty(ctx, "x", {
-      get: () => {
+      get: function () {
         xy();
         return _xy ? _xy[0] : null;
       },
-      set: (val) => {
+      set: function (val) {
         xy();
         if (_xy) _xy[0] = Number(val);
       },
     });
     Object.defineProperty(ctx, "y", {
-      get: () => {
+      get: function () {
         xy();
         return _xy ? _xy[1] : null;
       },
-      set: (val) => {
+      set: function (val) {
         xy();
         if (_xy) _xy[1] = Number(val);
       },
@@ -183,7 +209,7 @@ export function initFeatureProxy(lyr, arcs, optsArg) {
     return _bounds;
   }
 
-  return (id) => {
+  return function (id) {
     _id = id;
     // reset stored values
     if (hasPaths) {

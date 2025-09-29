@@ -13,7 +13,7 @@ export function ArcIndex(pointCount) {
 
   utils.initializeArray(hashTable, -1);
 
-  this.addArc = (xx, yy) => {
+  this.addArc = function (xx, yy) {
     var end = xx.length - 1,
       key = hash(xx[end], yy[end]),
       chainId = hashTable[key],
@@ -29,7 +29,7 @@ export function ArcIndex(pointCount) {
   // opposite direction. (This program uses the convention of CW for space-enclosing rings, CCW for holes,
   // so coincident boundaries should contain the same points in reverse sequence).
   //
-  this.findDuplicateArc = (xx, yy, start, end, getNext, getPrev) => {
+  this.findDuplicateArc = function (xx, yy, start, end, getNext, getPrev) {
     // First, look for a reverse match
     var arcId = findArcNeighbor(xx, yy, start, end, getNext);
     if (arcId === null) {
@@ -73,7 +73,7 @@ export function ArcIndex(pointCount) {
     return null;
   }
 
-  this.getVertexData = () => {
+  this.getVertexData = function () {
     var xx = new Float64Array(arcPoints),
       yy = new Float64Array(arcPoints),
       nn = new Uint32Array(arcs.length),

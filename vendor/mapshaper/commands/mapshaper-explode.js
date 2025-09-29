@@ -1,18 +1,19 @@
+import { reversePath } from "../paths/mapshaper-path-utils";
 import { getFeatureCount } from "../dataset/mapshaper-layer-utils";
+import { groupPolygonRings } from "../polygons/mapshaper-ring-nesting";
+import { getPathMetadata } from "../paths/mapshaper-path-utils";
 import { DataTable } from "../datatable/mapshaper-data-table";
 import cmd from "../mapshaper-cmd";
-import { getPathMetadata, reversePath } from "../paths/mapshaper-path-utils";
-import { groupPolygonRings } from "../polygons/mapshaper-ring-nesting";
-import { message } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
+import { message } from "../utils/mapshaper-logging";
 
-cmd.explodeFeatures = (lyr, arcs, opts) => {
+cmd.explodeFeatures = function (lyr, arcs, opts) {
   var properties = lyr.data ? lyr.data.getRecords() : null,
     explodedProperties = properties ? [] : null,
     explodedShapes = [],
     explodedLyr = utils.extend({}, lyr);
 
-  lyr.shapes.forEach((shp, shpId) => {
+  lyr.shapes.forEach(function (shp, shpId) {
     var exploded;
     if (!shp) {
       explodedShapes.push(null);
@@ -53,24 +54,30 @@ function printMessage(pre, post) {
       n1,
       utils.pluralSuffix(n1),
       n2,
-      utils.pluralSuffix(n2),
+      utils.pluralSuffix(n2)
     );
   message(msg);
 }
 
 function explodeShape(shp) {
-  return shp.map((part) => [part.concat()]);
+  return shp.map(function (part) {
+    return [part.concat()];
+  });
 }
 
 export function explodePolygon(shape, arcs, reverseWinding) {
   var paths = getPathMetadata(shape, arcs, "polygon");
   var groups = groupPolygonRings(paths, arcs, reverseWinding);
-  return groups.map((group) => group.map((ring) => ring.ids));
+  return groups.map(function (group) {
+    return group.map(function (ring) {
+      return ring.ids;
+    });
+  });
 }
 
 function explodePolygonNaive(shape, arcs) {
   var paths = getPathMetadata(shape, arcs, "polygon");
-  return paths.map((path) => {
+  return paths.map(function (path) {
     if (path.area < 0) {
       reversePath(path.ids);
     }

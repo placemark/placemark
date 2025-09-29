@@ -17,16 +17,19 @@ export function IdTestIndex(n) {
   };
 
   this.clear = function () {
-    setList.forEach((id) => {
-      this.clearId(id);
+    var index = this;
+    setList.forEach(function (id) {
+      index.clearId(id);
     });
     setList = [];
   };
 
-  this.hasId = (id) => (id < 0 ? (index[~id] & 2) == 2 : (index[id] & 1) == 1);
+  this.hasId = function (id) {
+    return id < 0 ? (index[~id] & 2) == 2 : (index[id] & 1) == 1;
+  };
 
   // clear a signed id
-  this.clearId = (id) => {
+  this.clearId = function (id) {
     if (id < 0) {
       index[~id] &= 1; // clear reverse arc, preserve fwd arc
     } else {
@@ -34,7 +37,9 @@ export function IdTestIndex(n) {
     }
   };
 
-  this.getIds = () => setList;
+  this.getIds = function () {
+    return setList;
+  };
 
   this.setIds = function (ids) {
     for (var i = 0; i < ids.length; i++) {

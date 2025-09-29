@@ -1,15 +1,13 @@
+import { getFrameSize } from "../commands/mapshaper-frame";
 import {
-  findFrameLayerInDataset,
-  getFrameSize,
-} from "../commands/mapshaper-frame";
-import {
-  getDatasetBounds,
   transformPoints,
+  getDatasetBounds,
 } from "../dataset/mapshaper-dataset-utils";
 import { getFurnitureLayerData } from "../furniture/mapshaper-furniture";
+import { findFrameLayerInDataset } from "../commands/mapshaper-frame";
 import { Bounds } from "../geom/mapshaper-bounds";
-import { error } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
+import { error } from "../utils/mapshaper-logging";
 
 export function transformDatasetToPixels(dataset, opts) {
   var frameLyr = findFrameLayerInDataset(dataset);
@@ -25,7 +23,9 @@ export function transformDatasetToPixels(dataset, opts) {
     bounds2 = calcOutputSizeInPixels(bounds, opts);
   }
   fwd = bounds.getTransform(bounds2, opts.invert_y);
-  transformPoints(dataset, (x, y) => fwd.transform(x, y));
+  transformPoints(dataset, function (x, y) {
+    return fwd.transform(x, y);
+  });
   return [Math.round(bounds2.width()), Math.round(bounds2.height()) || 1];
 }
 
@@ -35,7 +35,7 @@ function parseMarginOption(opt) {
   if (margins.length == 1) margins.push(margins[0]);
   if (margins.length == 2) margins.push(margins[0], margins[1]);
   if (margins.length == 3) margins.push(margins[2]);
-  return margins.map((str) => {
+  return margins.map(function (str) {
     var px = parseFloat(str);
     return isNaN(px) ? 1 : px; // 1 is default
   });
@@ -129,7 +129,7 @@ function calcOutputSizeInPixels(bounds, opts) {
     margins[0] * kx + padX * wx,
     margins[1] * ky + padY * wy,
     margins[2] * kx + padX * (1 - wx),
-    margins[3] * ky + padY * (1 - wy),
+    margins[3] * ky + padY * (1 - wy)
   );
 
   if (!(widthPx > 0 && heightPx > 0)) {

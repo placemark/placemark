@@ -1,4 +1,4 @@
-import type { Geometry } from "types";
+import { Geometry } from "types";
 
 const D2R = Math.PI / 180;
 const R2D = 180 / Math.PI;
@@ -79,8 +79,10 @@ export class GreatCircle {
     const w = this.start.x - this.end.x;
     const h = this.start.y - this.end.y;
     const z =
-      Math.sin(h / 2.0) ** 2 +
-      Math.cos(this.start.y) * Math.cos(this.end.y) * Math.sin(w / 2.0) ** 2;
+      Math.pow(Math.sin(h / 2.0), 2) +
+      Math.cos(this.start.y) *
+        Math.cos(this.end.y) *
+        Math.pow(Math.sin(w / 2.0), 2);
     this.g = 2.0 * Math.asin(Math.sqrt(z));
 
     if (this.g == Math.PI) {
@@ -89,13 +91,13 @@ export class GreatCircle {
           this.start.view() +
           " and " +
           this.end.view() +
-          " are 'antipodal', e.g diametrically opposite, thus there is no single route but rather infinite",
+          " are 'antipodal', e.g diametrically opposite, thus there is no single route but rather infinite"
       );
     } else if (isNaN(this.g)) {
       throw new Error(
         `Could not calculate great circle between ${start.join(
-          ",",
-        )} and ${end.join(",")}`,
+          ","
+        )} and ${end.join(",")}`
       );
     }
   }
@@ -113,7 +115,7 @@ export class GreatCircle {
       A * Math.cos(this.start.y) * Math.sin(this.start.x) +
       B * Math.cos(this.end.y) * Math.sin(this.end.x);
     const z = A * Math.sin(this.start.y) + B * Math.sin(this.end.y);
-    const lat = R2D * Math.atan2(z, Math.sqrt(x ** 2 + y ** 2));
+    const lat = R2D * Math.atan2(z, Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
     const lon = R2D * Math.atan2(y, x);
     return [lon, lat];
   }

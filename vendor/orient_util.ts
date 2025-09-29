@@ -4,13 +4,7 @@ export const splitter = 134217729;
 export const resulterrbound = (3 + 8 * epsilon) * epsilon;
 
 // fast_expansion_sum_zeroelim routine from oritinal code
-export function sum(
-  elen: number,
-  e: number[] | Float64Array,
-  flen: number,
-  f: Float64Array | number[],
-  h: Float64Array | number[],
-) {
+export function sum(elen: number, e: number[] | Float64Array, flen: number, f: Float64Array | number[], h: Float64Array | number[]) {
   let Q, Qnew, hh, bvirt;
   let enow = e[0];
   let fnow = f[0];
@@ -82,16 +76,7 @@ export function sum(
   return hindex;
 }
 
-function sum_three(
-  alen: number,
-  a: Float64Array | number[],
-  blen: number,
-  b: number[],
-  clen: number,
-  c: number[],
-  tmp: number[],
-  out: number[],
-) {
+function sum_three(alen: number, a: Float64Array | number[], blen: number, b: number[], clen: number, c: number[], tmp: number[], out: number[]) {
   return sum(sum(alen, a, blen, b, tmp), tmp, clen, c, out);
 }
 

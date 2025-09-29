@@ -1,6 +1,6 @@
-import { lookupColorName } from "../color/color-names";
 import { stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
+import { lookupColorName } from "../color/color-names";
 
 var rgbaRxp = /^rgba?\(([^)]+)\)/;
 var hexRxp = /^#([a-f0-9]{3,8})/i;
@@ -35,7 +35,9 @@ function testChannel(c) {
 
 function parseRGBA(arg) {
   var str = rgbaRxp.exec(arg)[1];
-  var parts = str.split(",").map((part) => parseFloat(part));
+  var parts = str.split(",").map(function (part) {
+    return parseFloat(part);
+  });
   return {
     r: parts[0],
     g: parts[1],
@@ -81,7 +83,9 @@ function formatHexChannel(arg) {
 function parseHexColor(str) {
   var hex = hexRxp.exec(str)[1];
   if (hex.length == 3 || hex.length == 4) {
-    hex = hex.split("").map((c) => c + c);
+    hex = hex.split("").map(function (c) {
+      return c + c;
+    });
   }
   if (hex.length != 6 && hex.length != 8) return null;
   return {

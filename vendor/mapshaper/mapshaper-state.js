@@ -31,7 +31,7 @@ function createContext() {
 // returns wrapped callback function
 function createAsyncContext(cb) {
   context = createContext();
-  return () => {
+  return function () {
     cb.apply(null, utils.toArray(arguments));
     // clear context after cb(), so output/errors can be handled in current context
     context = createContext();
@@ -43,7 +43,7 @@ function createAsyncContext(cb) {
 // returns wrapped callback function
 export function preserveContext(cb) {
   var ctx = context;
-  return () => {
+  return function () {
     context = ctx;
     cb.apply(null, utils.toArray(arguments));
   };

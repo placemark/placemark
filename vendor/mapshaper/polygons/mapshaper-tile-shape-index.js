@@ -15,20 +15,24 @@ export function TileShapeIndex(mosaic, opts) {
   // index that maps shape ids to tile ids
   var shapeIndex = [];
 
-  this.getTileIdsByShapeId = (shapeId) => {
+  this.getTileIdsByShapeId = function (shapeId) {
     var ids = shapeIndex[shapeId];
     // need to filter out tile ids that have been set to -1 (indicating removal)
-    return ids ? ids.filter((id) => id >= 0) : [];
+    return ids
+      ? ids.filter(function (id) {
+          return id >= 0;
+        })
+      : [];
   };
 
   // assumes index has been flattened
-  this.getShapeIdByTileId = (id) => {
+  this.getShapeIdByTileId = function (id) {
     var shapeId = singleIndex[id];
     return shapeId >= 0 ? shapeId : -1;
   };
 
   // return ids of all shapes that include a tile
-  this.getShapeIdsByTileId = (id) => {
+  this.getShapeIdsByTileId = function (id) {
     var singleId = singleIndex[id];
     if (singleId >= 0) {
       return [singleId];
@@ -39,7 +43,7 @@ export function TileShapeIndex(mosaic, opts) {
     return multipleIndex[id];
   };
 
-  this.indexTileIdsByShapeId = (shapeId, tileIds, weightFunction) => {
+  this.indexTileIdsByShapeId = function (shapeId, tileIds, weightFunction) {
     shapeIndex[shapeId] = [];
     for (var i = 0; i < tileIds.length; i++) {
       indexShapeIdByTileId(shapeId, tileIds[i], weightFunction);
@@ -47,14 +51,14 @@ export function TileShapeIndex(mosaic, opts) {
   };
 
   // remove many-to-one tile=>shape mappings
-  this.flatten = () => {
-    multipleIndex.forEach((shapeIds, tileId) => {
+  this.flatten = function () {
+    multipleIndex.forEach(function (shapeIds, tileId) {
       flattenStackedTile(tileId);
     });
     multipleIndex = [];
   };
 
-  this.getUnusedTileIds = () => {
+  this.getUnusedTileIds = function () {
     var ids = [];
     for (var i = 0, n = singleIndex.length; i < n; i++) {
       if (singleIndex[i] == -1) ids.push(i);
@@ -63,7 +67,7 @@ export function TileShapeIndex(mosaic, opts) {
   };
 
   // used by gap fill; assumes that flatten() has been called
-  this.addTileToShape = (shapeId, tileId) => {
+  this.addTileToShape = function (shapeId, tileId) {
     if (shapeId in shapeIndex === false || singleIndex[tileId] != -1) {
       error("Internal error");
     }
@@ -128,9 +132,9 @@ export function TileShapeIndex(mosaic, opts) {
 
   // This function was a bottleneck in datasets with many overlaps
   function removeTileFromShape_old(tileId, shapeId) {
-    shapeIndex[shapeId] = shapeIndex[shapeId].filter(
-      (tileId2) => tileId2 != tileId,
-    );
+    shapeIndex[shapeId] = shapeIndex[shapeId].filter(function (tileId2) {
+      return tileId2 != tileId;
+    });
     if (shapeIndex[shapeId].length > 0 === false) {
       // TODO: make sure to test the case where a shape becomes empty
       // error("empty shape")

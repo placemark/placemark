@@ -1,7 +1,7 @@
 import { getBoundsSearchFunction } from "../geom/mapshaper-bounds-search";
-import geom from "../geom/mapshaper-geom";
 import { getPathBounds } from "../paths/mapshaper-path-utils";
 import { PolygonIndex } from "../polygons/mapshaper-polygon-index";
+import geom from "../geom/mapshaper-geom";
 import utils from "../utils/mapshaper-utils";
 
 // PathIndex supports several kinds of spatial query on a layer of polyline or polygon shapes
@@ -11,7 +11,7 @@ export function PathIndex(shapes, arcs) {
 
   function getRingData(shapes, arcs) {
     var arr = [];
-    shapes.forEach((shp, shpId) => {
+    shapes.forEach(function (shp, shpId) {
       var n = shp ? shp.length : 0;
       for (var i = 0; i < n; i++) {
         arr.push({
@@ -26,11 +26,11 @@ export function PathIndex(shapes, arcs) {
 
   // Returns shape ids of all polygons that intersect point p
   // (p is inside a ring or on the boundary)
-  this.findEnclosingShapes = (p) => {
+  this.findEnclosingShapes = function (p) {
     var ids = [];
     var cands = findPointHitCandidates(p);
     var groups = groupItemsByShapeId(cands);
-    groups.forEach((group) => {
+    groups.forEach(function (group) {
       if (testPointInRings(p, group)) {
         ids.push(group[0].id);
       }
@@ -40,10 +40,10 @@ export function PathIndex(shapes, arcs) {
 
   // Returns shape id of a polygon that intersects p or -1
   // (If multiple intersections, returns one of the polygons)
-  this.findEnclosingShape = (p) => {
+  this.findEnclosingShape = function (p) {
     var shpId = -1;
     var groups = groupItemsByShapeId(findPointHitCandidates(p));
-    groups.forEach((group) => {
+    groups.forEach(function (group) {
       if (testPointInRings(p, group)) {
         shpId = group[0].id;
       }
@@ -60,12 +60,14 @@ export function PathIndex(shapes, arcs) {
     return this.findEnclosingShapes(p);
   };
 
-  this.findPointEnclosureCandidates = (p, buffer) => {
+  this.findPointEnclosureCandidates = function (p, buffer) {
     var items = findPointHitCandidates(p, buffer);
     return utils.pluck(items, "id");
   };
 
-  this.pointIsEnclosed = (p) => testPointInRings(p, findPointHitCandidates(p));
+  this.pointIsEnclosed = function (p) {
+    return testPointInRings(p, findPointHitCandidates(p));
+  };
 
   // Finds the polygon containing the smallest ring that entirely contains @ring
   // Assumes ring boundaries do not cross.
@@ -73,12 +75,12 @@ export function PathIndex(shapes, arcs) {
   //   two rings share at least one segment but are not congruent.
   // @ring: array of arc ids
   // Returns id of enclosing polygon or -1 if none found
-  this.findSmallestEnclosingPolygon = (ring) => {
+  this.findSmallestEnclosingPolygon = function (ring) {
     var bounds = arcs.getSimpleShapeBounds(ring);
     var p = getTestPoint(ring);
     var smallest;
     var cands = findPointHitCandidates(p);
-    cands.forEach((cand) => {
+    cands.forEach(function (cand) {
       if (
         cand.bounds.contains(bounds) && // skip partially intersecting bboxes (can't be enclosures)
         !cand.bounds.sameBounds(bounds) && // skip self, congruent and reversed-congruent rings
@@ -109,7 +111,7 @@ export function PathIndex(shapes, arcs) {
 
   // return array of paths that are contained within a path, or null if none
   // @pathIds Array of arc ids comprising a closed path
-  this.findEnclosedPaths = (pathIds) => {
+  this.findEnclosedPaths = function (pathIds) {
     var b = arcs.getSimpleShapeBounds(pathIds),
       cands = boundsQuery(b.xmin, b.ymin, b.xmax, b.ymax),
       paths = [],
@@ -118,7 +120,7 @@ export function PathIndex(shapes, arcs) {
     if (cands.length > 6) {
       index = new PolygonIndex([pathIds], arcs);
     }
-    cands.forEach((cand) => {
+    cands.forEach(function (cand) {
       var p = getTestPoint(cand.ids);
       var isEnclosed =
         b.containsPoint(p[0], p[1]) &&
@@ -161,7 +163,7 @@ export function PathIndex(shapes, arcs) {
   function testPointInRings(p, cands) {
     var isOn = false,
       isIn = false;
-    cands.forEach((cand) => {
+    cands.forEach(function (cand) {
       var inRing = testPointInRing(p, cand);
       if (inRing == -1) {
         isOn = true;
@@ -177,7 +179,9 @@ export function PathIndex(shapes, arcs) {
       group,
       item;
     if (items.length > 0) {
-      items.sort((a, b) => a.id - b.id);
+      items.sort(function (a, b) {
+        return a.id - b.id;
+      });
       for (var i = 0; i < items.length; i++) {
         item = items[i];
         if (i === 0 || item.id != items[i - 1].id) {

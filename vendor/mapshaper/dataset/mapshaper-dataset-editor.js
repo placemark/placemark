@@ -1,12 +1,12 @@
-import { ArcCollection } from "../paths/mapshaper-arcs";
 import { buildTopology } from "../topology/mapshaper-topology";
-import { error, stop } from "../utils/mapshaper-logging";
+import { ArcCollection } from "../paths/mapshaper-arcs";
+import { stop, error } from "../utils/mapshaper-logging";
 
 export function DatasetEditor(dataset) {
   var layers = [];
   var arcs = [];
 
-  this.done = () => {
+  this.done = function () {
     dataset.layers = layers;
     if (arcs.length) {
       dataset.arcs = new ArcCollection(arcs);
@@ -14,7 +14,7 @@ export function DatasetEditor(dataset) {
     }
   };
 
-  this.editLayer = (lyr, cb) => {
+  this.editLayer = function (lyr, cb) {
     var type = lyr.geometry_type;
     if (dataset.layers.indexOf(lyr) != layers.length) {
       error("Layer was edited out-of-order");
@@ -23,7 +23,7 @@ export function DatasetEditor(dataset) {
       layers.push(lyr);
       return;
     }
-    var shapes = lyr.shapes.map((shape, shpId) => {
+    var shapes = lyr.shapes.map(function (shape, shpId) {
       var shape2 = [],
         retn,
         input;

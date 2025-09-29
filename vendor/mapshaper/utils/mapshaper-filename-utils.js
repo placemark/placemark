@@ -54,7 +54,7 @@ export function replaceFileExtension(path, ext) {
 }
 
 function getCommonFileBase(names) {
-  return names.reduce((memo, name, i) => {
+  return names.reduce(function (memo, name, i) {
     if (i === 0) {
       memo = getFileBase(name);
     } else {

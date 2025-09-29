@@ -1,15 +1,17 @@
-import geom from "../geom/mapshaper-geom";
-import { getWorldBounds } from "../geom/mapshaper-latlon";
-import { getAvgSegment2 } from "../paths/mapshaper-path-utils";
 import { sortSegmentIds } from "../paths/mapshaper-segment-sorting";
-import { getHighPrecisionSnapInterval } from "../paths/mapshaper-snapping";
+import geom from "../geom/mapshaper-geom";
 import utils from "../utils/mapshaper-utils";
+import { getAvgSegment2 } from "../paths/mapshaper-path-utils";
+import { getWorldBounds } from "../geom/mapshaper-latlon";
+import { getHighPrecisionSnapInterval } from "../paths/mapshaper-snapping";
 
 // Convert an array of intersections into an ArcCollection (for display)
 //
 
 function getIntersectionPoints(intersections) {
-  return intersections.map((obj) => [obj.x, obj.y]);
+  return intersections.map(function (obj) {
+    return [obj.x, obj.y];
+  });
 }
 
 // Identify intersecting segments in an ArcCollection
@@ -59,7 +61,7 @@ export function findSegmentIntersections(arcs, optArg) {
     return 0;
   }
   // Count segments in each stripe
-  arcs.forEachSegment((id1, id2, xx, yy) => {
+  arcs.forEachSegment(function (id1, id2, xx, yy) {
     var s1 = stripeId(yy[id1]),
       s2 = stripeId(yy[id2]);
     while (true) {
@@ -73,7 +75,7 @@ export function findSegmentIntersections(arcs, optArg) {
   var stripeData = getUint32Array(utils.sum(stripeSizes)),
     offs = 0;
   var stripes = [];
-  utils.forEach(stripeSizes, (stripeSize) => {
+  utils.forEach(stripeSizes, function (stripeSize) {
     var start = offs;
     offs += stripeSize;
     stripes.push(stripeData.subarray(start, offs));
@@ -81,7 +83,7 @@ export function findSegmentIntersections(arcs, optArg) {
   // Assign segment ids to each stripe
   utils.initializeArray(stripeSizes, 0);
 
-  arcs.forEachSegment((id1, id2, xx, yy) => {
+  arcs.forEachSegment(function (id1, id2, xx, yy) {
     var s1 = stripeId(yy[id1]),
       s2 = stripeId(yy[id2]),
       count,
@@ -109,18 +111,20 @@ export function findSegmentIntersections(arcs, optArg) {
   }
   return dedupIntersections(
     intersections,
-    opts.unique ? getUniqueIntersectionKey : null,
+    opts.unique ? getUniqueIntersectionKey : null
   );
 }
 
 function sortIntersections(arr) {
-  arr.sort((a, b) => a.x - b.x || a.y - b.y);
+  arr.sort(function (a, b) {
+    return a.x - b.x || a.y - b.y;
+  });
 }
 
 function dedupIntersections(arr, keyFunction) {
   var index = {};
   var getKey = keyFunction || getIntersectionKey;
-  return arr.filter((o) => {
+  return arr.filter(function (o) {
     var key = getKey(o);
     if (key in index) {
       return false;
@@ -144,14 +148,14 @@ function getUniqueIntersectionKey(o) {
 // TODO: measure performance using a range of input data
 function calcSegmentIntersectionStripeCount2(arcs) {
   var segs = arcs.getFilteredPointCount() - arcs.size();
-  var stripes = segs ** 0.4 * 2;
+  var stripes = Math.pow(segs, 0.4) * 2;
   return Math.ceil(stripes) || 1;
 }
 
 // Alternate fast method
 function calcSegmentIntersectionStripeCount(arcs) {
   var segs = arcs.getFilteredPointCount() - arcs.size();
-  var stripes = Math.ceil((segs * 10) ** 0.6 / 40);
+  var stripes = Math.ceil(Math.pow(segs * 10, 0.6) / 40);
   return stripes > 0 ? stripes : 1;
 }
 
@@ -248,7 +252,7 @@ function intersectSegments(ids, xx, yy, optsArg) {
         s2p1y,
         s2p2x,
         s2p2y,
-        tolerance,
+        tolerance
       );
       if (hit) {
         seg1 = [s1p1, s1p2];
@@ -257,7 +261,7 @@ function intersectSegments(ids, xx, yy, optsArg) {
         if (hit.length == 4) {
           // two collinear segments may have two endpoint intersections
           intersections.push(
-            formatIntersection(hit.slice(2), seg1, seg2, xx, yy),
+            formatIntersection(hit.slice(2), seg1, seg2, xx, yy)
           );
         }
       }

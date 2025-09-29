@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-
-import { polygon } from "@turf/helpers";
-import { coordEach } from "@turf/meta";
+import RBush from "rbush";
+import Queue from "./tinyqueue";
 import { GeometryError } from "app/lib/errors";
+import { orient2d } from "./orient2d";
+import { coordEach } from "@turf/meta";
+import type { IFeature, Polygon } from "types";
+import { polygon } from "@turf/helpers";
 import type { Either } from "purify-ts/Either";
 import { Left, Right } from "purify-ts/Either";
-import RBush from "rbush";
-import type { IFeature, Polygon } from "types";
-import { orient2d } from "./orient2d";
-import Queue from "./tinyqueue";
 
 interface Bbox {
   minX: number;
@@ -30,7 +29,7 @@ interface QueueItem {
 }
 
 const error = new GeometryError(
-  "Could not generate convex hull: three points are required",
+  "Could not generate convex hull: three points are required"
 );
 
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -39,7 +38,7 @@ export function convex(geojson: any): Either<Error, IFeature<Polygon>> {
   // Container
   const points: Pos2[] = [];
   // Convert all points to flat 2D coordinate Array
-  coordEach(geojson, (coord) => {
+  coordEach(geojson, function (coord) {
     points.push([coord[0], coord[1]]);
   });
   if (!points.length) {
@@ -61,7 +60,7 @@ function pointInPolygonFlat(
   point: Pos2,
   vs: Pos2,
   start?: number,
-  end?: number,
+  end?: number
 ) {
   const x = point[0],
     y = point[1];
@@ -85,7 +84,7 @@ function pointInPolygonNested(
   point: Pos2,
   vs: Pos2[],
   start?: number,
-  end?: number,
+  end?: number
 ) {
   const x = point[0],
     y = point[1];
@@ -109,7 +108,7 @@ function pointInPolygon(
   point: Pos2,
   vs: Pos2 | Pos2[],
   start?: number,
-  end?: number,
+  end?: number
 ) {
   if (vs.length > 0 && Array.isArray(vs[0])) {
     return pointInPolygonNested(point, vs as Pos2[], start, end);
@@ -121,7 +120,7 @@ function pointInPolygon(
 function concaveman(
   points: Pos2[],
   concavity?: number,
-  lengthThreshold?: number,
+  lengthThreshold?: number
 ) {
   // a relative measure of concavity; higher value means simpler hull
   concavity = Math.max(0, concavity === undefined ? 2 : concavity);
@@ -134,14 +133,20 @@ function concaveman(
 
   // index the points with an R-tree
   const tree = new RBush<Pos2>(16);
-  tree.toBBox = (a: Pos2) => ({
-    minX: a[0],
-    minY: a[1],
-    maxX: a[0],
-    maxY: a[1],
-  });
-  tree.compareMinX = (a: Pos2, b: Pos2) => a[0] - b[0];
-  tree.compareMinY = (a: Pos2, b: Pos2) => a[1] - b[1];
+  tree.toBBox = function (a: Pos2) {
+    return {
+      minX: a[0],
+      minY: a[1],
+      maxX: a[0],
+      maxY: a[1],
+    };
+  };
+  tree.compareMinX = function (a: Pos2, b: Pos2) {
+    return a[0] - b[0];
+  };
+  tree.compareMinY = function (a: Pos2, b: Pos2) {
+    return a[1] - b[1];
+  };
 
   tree.load(points);
 
@@ -184,7 +189,7 @@ function concaveman(
       b!,
       node.next!.next!.p,
       maxSqLen,
-      segTree,
+      segTree
     )!;
 
     // if we found a connection and it satisfies our concavity measure
@@ -223,7 +228,7 @@ function findCandidate(
   c: Pos2,
   d: Pos2,
   maxDist: number,
-  segTree: RBush<LinkedNode>,
+  segTree: RBush<LinkedNode>
 ) {
   const queue = new Queue<QueueItem>([], compareDist);
   let node = tree.data;
@@ -284,7 +289,7 @@ function sqSegBoxDist(a: Pos2, b: Pos2, bbox: any) {
     bbox.minX,
     bbox.minY,
     bbox.maxX,
-    bbox.minY,
+    bbox.minY
   );
   if (d1 === 0) return 0;
   const d2 = sqSegSegDist(
@@ -295,7 +300,7 @@ function sqSegBoxDist(a: Pos2, b: Pos2, bbox: any) {
     bbox.minX,
     bbox.minY,
     bbox.minX,
-    bbox.maxY,
+    bbox.maxY
   );
   if (d2 === 0) return 0;
   const d3 = sqSegSegDist(
@@ -306,7 +311,7 @@ function sqSegBoxDist(a: Pos2, b: Pos2, bbox: any) {
     bbox.maxX,
     bbox.minY,
     bbox.maxX,
-    bbox.maxY,
+    bbox.maxY
   );
   if (d3 === 0) return 0;
   const d4 = sqSegSegDist(
@@ -317,7 +322,7 @@ function sqSegBoxDist(a: Pos2, b: Pos2, bbox: any) {
     bbox.minX,
     bbox.maxY,
     bbox.maxX,
-    bbox.maxY,
+    bbox.maxY
   );
   if (d4 === 0) return 0;
   return Math.min(d1, d2, d3, d4);
@@ -469,7 +474,7 @@ function sqSegSegDist(
   x2: number,
   y2: number,
   x3: number,
-  y3: number,
+  y3: number
 ) {
   const ux = x1 - x0;
   const uy = y1 - y0;

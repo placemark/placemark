@@ -4,7 +4,7 @@ import { addGetters } from "../expressions/mapshaper-expression-utils";
 function addBBoxGetter(obj, lyr, arcs) {
   var bbox;
   addGetters(obj, {
-    bbox: () => {
+    bbox: function () {
       if (!bbox) {
         bbox = getBBox(lyr, arcs);
       }
@@ -47,7 +47,7 @@ export function addLayerGetters(ctx, lyr, arcs) {
   var layerProxy;
   addGetters(ctx, {
     layer_name: lyr.name || "", // consider removing this
-    layer: () => {
+    layer: function () {
       // init on first access (to avoid overhead if not used)
       if (!layerProxy) layerProxy = getLayerProxy(lyr, arcs);
       return layerProxy;

@@ -1,24 +1,22 @@
-import { applyCommandToLayerSelection } from "../dataset/mapshaper-command-utils";
 import { getFeatureCount } from "../dataset/mapshaper-layer-utils";
-import { DataTable } from "../datatable/mapshaper-data-table";
-import {
-  aggregateDataRecords,
-  getCategoryClassifier,
-} from "../dissolve/mapshaper-data-aggregation";
-import { dissolvePointGeometry } from "../dissolve/mapshaper-point-dissolve";
-import { dissolvePolygonGeometry } from "../dissolve/mapshaper-polygon-dissolve";
-import { dissolvePolylineGeometry } from "../dissolve/mapshaper-polyline-dissolve";
-import cmd from "../mapshaper-cmd";
+import { aggregateDataRecords } from "../dissolve/mapshaper-data-aggregation";
 import { cloneShapes } from "../paths/mapshaper-shape-utils";
-import { message, stop } from "../utils/mapshaper-logging";
+import { dissolvePointGeometry } from "../dissolve/mapshaper-point-dissolve";
+import { dissolvePolylineGeometry } from "../dissolve/mapshaper-polyline-dissolve";
+import { dissolvePolygonGeometry } from "../dissolve/mapshaper-polygon-dissolve";
+import { getCategoryClassifier } from "../dissolve/mapshaper-data-aggregation";
+import { applyCommandToLayerSelection } from "../dataset/mapshaper-command-utils";
 import utils from "../utils/mapshaper-utils";
+import { message, stop } from "../utils/mapshaper-logging";
+import cmd from "../mapshaper-cmd";
+import { DataTable } from "../datatable/mapshaper-data-table";
 
 // Generate a dissolved layer
 // @opts.fields (optional) names of data fields (dissolves all if falsy)
 // @opts.sum-fields (Array) (optional)
 // @opts.copy-fields (Array) (optional)
 //
-cmd.dissolve = (lyr, arcs, opts) => {
+cmd.dissolve = function (lyr, arcs, opts) {
   var dissolveShapes, getGroupId;
   opts = utils.extend({}, opts);
   if (opts.where) {
@@ -44,7 +42,7 @@ function makeMultipartShapes(lyr, getGroupId) {
   }
   var shapes = cloneShapes(lyr.shapes);
   var shapes2 = [];
-  lyr.shapes.forEach((shp, i) => {
+  lyr.shapes.forEach(function (shp, i) {
     var groupId = getGroupId(i);
     if (!shp) return;
     if (!shapes2[groupId]) {
@@ -90,7 +88,7 @@ function printDissolveMessage(pre, post) {
       n1,
       utils.pluralSuffix(n1),
       n2,
-      utils.pluralSuffix(n2),
+      utils.pluralSuffix(n2)
     );
   message(msg);
 }

@@ -1,32 +1,32 @@
-import { cleanLayers } from "../commands/mapshaper-clean";
-import { projectAndDensifyArcs } from "../crs/mapshaper-densify";
-import { expandProjDefn } from "../crs/mapshaper-projection-params";
+import { editArcs } from "../paths/mapshaper-arc-editor";
+import { editShapes, cloneShapes } from "../paths/mapshaper-shape-utils";
 import {
-  crsAreEqual,
-  getCRS,
-  getDatasetCRS,
   getProjTransform2,
+  getCRS,
   parsePrj,
+  crsAreEqual,
+  getDatasetCRS,
   setDatasetCRS,
 } from "../crs/mapshaper-projections";
 import { preProjectionClip } from "../crs/mapshaper-spherical-clipping";
-import { datasetHasGeometry } from "../dataset/mapshaper-dataset-utils";
-import {
-  copyLayerShapes,
-  layerHasPoints,
-} from "../dataset/mapshaper-layer-utils";
-import geom from "../geom/mapshaper-geom";
-import { importFile } from "../io/mapshaper-file-import";
-import cmd from "../mapshaper-cmd";
-import { runningInBrowser } from "../mapshaper-state";
+import { cleanLayers } from "../commands/mapshaper-clean";
 import { dissolveArcs } from "../paths/mapshaper-arc-dissolve";
-import { editArcs } from "../paths/mapshaper-arc-editor";
-import { cloneShapes, editShapes } from "../paths/mapshaper-shape-utils";
+import { projectAndDensifyArcs } from "../crs/mapshaper-densify";
+import { expandProjDefn } from "../crs/mapshaper-projection-params";
+import {
+  layerHasPoints,
+  copyLayerShapes,
+} from "../dataset/mapshaper-layer-utils";
+import { datasetHasGeometry } from "../dataset/mapshaper-dataset-utils";
+import { runningInBrowser } from "../mapshaper-state";
+import { stop, message, error } from "../utils/mapshaper-logging";
+import { importFile } from "../io/mapshaper-file-import";
 import { buildTopology } from "../topology/mapshaper-topology";
-import { error, message, stop } from "../utils/mapshaper-logging";
+import cmd from "../mapshaper-cmd";
 import utils from "../utils/mapshaper-utils";
+import geom from "../geom/mapshaper-geom";
 
-cmd.proj = (dataset, catalog, opts) => {
+cmd.proj = function (dataset, catalog, opts) {
   var srcInfo, destInfo, destStr;
   if (opts.init) {
     srcInfo = getCrsInfo(opts.init, catalog);
@@ -80,7 +80,7 @@ function projCmd(dataset, destInfo, opts) {
     target.arcs = modifyCopy ? dataset.arcs.getCopy() : dataset.arcs;
   }
 
-  target.layers = dataset.layers.map((lyr) => {
+  target.layers = dataset.layers.map(function (lyr) {
     if (modifyCopy) {
       originals.push(lyr);
       lyr = copyLayerShapes(lyr);
@@ -92,7 +92,7 @@ function projCmd(dataset, destInfo, opts) {
 
   dataset.info.prj = destInfo.prj; // may be undefined
   dataset.arcs = target.arcs;
-  originals.forEach((lyr, i) => {
+  originals.forEach(function (lyr, i) {
     // replace original layers with modified layers
     utils.extend(lyr, target.layers[i]);
   });
@@ -131,7 +131,7 @@ export function projectDataset(dataset, src, dest, opts) {
   var badPoints = 0;
   var clipped = preProjectionClip(dataset, src, dest, opts);
 
-  dataset.layers.forEach((lyr) => {
+  dataset.layers.forEach(function (lyr) {
     if (layerHasPoints(lyr)) {
       badPoints += projectPointLayer(lyr, proj); // v2 compatible (invalid points are removed)
     }
@@ -154,14 +154,14 @@ export function projectDataset(dataset, src, dest, opts) {
     message(
       `Removed ${badArcs} ${
         badArcs == 1 ? "path" : "paths"
-      } containing unprojectable vertices.`,
+      } containing unprojectable vertices.`
     );
   }
   if (badPoints > 0 && !opts.quiet) {
     message(
       `Removed ${badPoints} unprojectable ${
         badPoints == 1 ? "point" : "points"
-      }.`,
+      }.`
     );
   }
   dataset.info.crs = dest;
@@ -174,7 +174,7 @@ export function projectDataset(dataset, src, dest, opts) {
 export function cleanProjectedLayers(dataset) {
   // TODO: only clean affected polygons (cleaning all polygons can be slow)
   var polygonLayers = dataset.layers.filter(
-    (lyr) => lyr.geometry_type == "polygon",
+    (lyr) => lyr.geometry_type == "polygon"
   );
   // clean options: force a topology update (by default, this only happens when
   // vertices change during cleaning, but reprojection can require a topology update
@@ -197,7 +197,7 @@ export function cleanProjectedLayers(dataset) {
 // TODO: fatal error if no points project?
 export function projectPointLayer(lyr, proj) {
   var errors = 0;
-  editShapes(lyr.shapes, (p) => {
+  editShapes(lyr.shapes, function (p) {
     var p2 = proj(p[0], p[1]);
     if (!p2) errors++;
     return p2; // removes points that fail to project

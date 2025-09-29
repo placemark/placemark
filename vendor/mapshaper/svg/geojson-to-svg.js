@@ -1,13 +1,13 @@
-import GeoJSON from "../geojson/geojson-common";
-import { getTransform, symbolRenderers } from "../svg/svg-common";
 import { stringifyLineStringCoords } from "../svg/svg-path-utils";
+import GeoJSON from "../geojson/geojson-common";
 import { findPropertiesBySymbolGeom } from "../svg/svg-properties";
+import { getTransform, symbolRenderers } from "../svg/svg-common";
 import { stop } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
 
 function importGeoJSONFeatures(features, opts) {
   opts = opts || {};
-  return features.map((obj, i) => {
+  return features.map(function (obj, i) {
     var geom = obj.type == "Feature" ? obj.geometry : obj; // could be null
     var geomType = geom && geom.type;
     var svgObj = null;
@@ -15,7 +15,7 @@ function importGeoJSONFeatures(features, opts) {
       svgObj = geojsonImporters[geomType](
         geom.coordinates,
         obj.properties,
-        opts,
+        opts
       );
     }
     if (!svgObj) {
@@ -144,7 +144,7 @@ function importLabel(rec, p) {
   if (morelines) {
     // multiline label
     obj.children = [];
-    morelines.forEach((line) => {
+    morelines.forEach(function (line) {
       var tspan = {
         tag: "tspan",
         value: line,
@@ -169,7 +169,7 @@ function renderSymbol(d, x, y) {
     stop(
       d.type
         ? "Unknown symbol type: " + d.type
-        : "Symbol is missing a type property",
+        : "Symbol is missing a type property"
     );
   }
   return renderer(d, x || 0, y || 0);
@@ -259,7 +259,13 @@ var geojsonImporters = {
   Point: importPoint,
   Polygon: importPolygon,
   LineString: importLineString,
-  MultiPoint: (coords, rec, opts) => importMultiPoint(coords, rec, opts),
-  MultiLineString: (coords) => importMultiPath(coords, importLineString),
-  MultiPolygon: (coords) => importMultiPath(coords, importPolygon),
+  MultiPoint: function (coords, rec, opts) {
+    return importMultiPoint(coords, rec, opts);
+  },
+  MultiLineString: function (coords) {
+    return importMultiPath(coords, importLineString);
+  },
+  MultiPolygon: function (coords) {
+    return importMultiPath(coords, importPolygon);
+  },
 };

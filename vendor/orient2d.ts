@@ -1,11 +1,11 @@
 /* eslint-disable */
 import {
   epsilon,
-  estimate,
-  resulterrbound,
   splitter,
-  sum,
+  resulterrbound,
+  estimate,
   vec,
+  sum,
 } from "./orient_util";
 
 const ccwerrboundA = (3 + 16 * epsilon) * epsilon;
@@ -25,7 +25,7 @@ function orient2dadapt(
   by: number,
   cx: number,
   cy: number,
-  detsum: number,
+  detsum: number
 ) {
   let acxtail: number, acytail: number, bcxtail: number, bcytail: number;
   let bvirt: number,
@@ -203,7 +203,7 @@ export function orient2d(
   bx: number,
   by: number,
   cx: number,
-  cy: number,
+  cy: number
 ) {
   const detleft = (ay - cy) * (bx - cx);
   const detright = (ax - cx) * (by - cy);

@@ -1,13 +1,13 @@
-import { Bounds } from "../geom/mapshaper-bounds";
-import { probablyDecimalDegreeBounds } from "../geom/mapshaper-latlon";
-import { absArcId, calcArcBounds } from "../paths/mapshaper-arc-utils";
-import { clampIntervalByPct } from "../paths/mapshaper-path-utils";
+import { calcArcBounds, absArcId } from "../paths/mapshaper-arc-utils";
 import {
   ArcIter,
   FilteredArcIter,
   ShapeIter,
 } from "../paths/mapshaper-shape-iter";
+import { clampIntervalByPct } from "../paths/mapshaper-path-utils";
 import { getThresholdByPct } from "../simplify/mapshaper-simplify-pct";
+import { Bounds } from "../geom/mapshaper-bounds";
+import { probablyDecimalDegreeBounds } from "../geom/mapshaper-latlon";
 import { error } from "../utils/mapshaper-logging";
 import utils from "../utils/mapshaper-utils";
 
@@ -42,7 +42,7 @@ export function ArcCollection() {
   function initLegacyArcs(arcs) {
     var xx = [],
       yy = [];
-    var nn = arcs.map((points) => {
+    var nn = arcs.map(function (points) {
       var n = points ? points.length : 0;
       for (var i = 0; i < n; i++) {
         xx.push(points[i][0]);
@@ -129,26 +129,28 @@ export function ArcCollection() {
     };
   }
 
-  this.updateVertexData = (nn, xx, yy, zz) => {
+  this.updateVertexData = function (nn, xx, yy, zz) {
     initXYData(nn, xx, yy);
     initZData(zz || null);
   };
 
   // Give access to raw data arrays...
-  this.getVertexData = () => ({
-    xx: _xx,
-    yy: _yy,
-    zz: _zz,
-    bb: _bb,
-    nn: _nn,
-    ii: _ii,
-  });
+  this.getVertexData = function () {
+    return {
+      xx: _xx,
+      yy: _yy,
+      zz: _zz,
+      bb: _bb,
+      nn: _nn,
+      ii: _ii,
+    };
+  };
 
-  this.getCopy = () => {
+  this.getCopy = function () {
     var copy = new ArcCollection(
       new Int32Array(_nn),
       new Float64Array(_xx),
-      new Float64Array(_yy),
+      new Float64Array(_yy)
     );
     if (_zz) {
       copy.setThresholds(new Float64Array(_zz));
@@ -224,7 +226,7 @@ export function ArcCollection() {
   // Return arcs as arrays of [x, y] points (intended for testing).
   this.toArray = function () {
     var arr = [];
-    this.forEach((iter) => {
+    this.forEach(function (iter) {
       var arc = [];
       while (iter.hasNext()) {
         arc.push([iter.x, iter.y]);
@@ -272,7 +274,7 @@ export function ArcCollection() {
     return count;
   };
 
-  this.transformPoints = (f) => {
+  this.transformPoints = function (f) {
     var xx = _xx,
       yy = _yy,
       arcId = -1,
@@ -373,7 +375,7 @@ export function ArcCollection() {
     initXYData(
       _nn.subarray(0, goodArcs),
       _xx.subarray(0, goodPoints),
-      _yy.subarray(0, goodPoints),
+      _yy.subarray(0, goodPoints)
     );
     if (_zz) initZData(_zz.subarray(0, goodPoints));
   }
@@ -410,7 +412,7 @@ export function ArcCollection() {
   };
 
   // @nth: index of vertex. ~(idx) starts from the opposite endpoint
-  this.indexOfVertex = (arcId, nth) => {
+  this.indexOfVertex = function (arcId, nth) {
     var absId = arcId < 0 ? ~arcId : arcId,
       len = _nn[absId];
     if (nth < 0) nth = len + nth;
@@ -455,9 +457,11 @@ export function ArcCollection() {
     return true;
   };
 
-  this.getArcLength = (arcId) => _nn[absArcId(arcId)];
+  this.getArcLength = function (arcId) {
+    return _nn[absArcId(arcId)];
+  };
 
-  this.getArcIter = (arcId) => {
+  this.getArcIter = function (arcId) {
     var fw = arcId >= 0,
       i = fw ? arcId : ~arcId,
       iter = _zz && _zlimit ? _filteredArcIter : _arcIter;
@@ -493,7 +497,7 @@ export function ArcCollection() {
   function flattenThresholds(arr, n) {
     var zz = new Float64Array(n),
       i = 0;
-    arr.forEach((arr) => {
+    arr.forEach(function (arr) {
       for (var j = 0, n = arr.length; j < n; i++, j++) {
         zz[i] = arr[j];
       }
@@ -513,7 +517,9 @@ export function ArcCollection() {
     }
   };
 
-  this.getRetainedInterval = () => _zlimit;
+  this.getRetainedInterval = function () {
+    return _zlimit;
+  };
 
   this.setRetainedInterval = function (z) {
     _zlimit = z;
@@ -577,7 +583,7 @@ export function ArcCollection() {
     return getThresholdByPct(pct, this, nth);
   };
 
-  this.arcIntersectsBBox = (i, b1) => {
+  this.arcIntersectsBBox = function (i, b1) {
     var b2 = _bb,
       j = i * 4;
     return (
@@ -588,7 +594,7 @@ export function ArcCollection() {
     );
   };
 
-  this.arcIsContained = (i, b1) => {
+  this.arcIsContained = function (i, b1) {
     var b2 = _bb,
       j = i * 4;
     return (
@@ -599,7 +605,7 @@ export function ArcCollection() {
     );
   };
 
-  this.arcIsSmaller = (i, units) => {
+  this.arcIsSmaller = function (i, units) {
     var bb = _bb,
       j = i * 4;
     return bb[j + 2] - bb[j] < units && bb[j + 3] - bb[j + 1] < units;
@@ -610,13 +616,19 @@ export function ArcCollection() {
     return !probablyDecimalDegreeBounds(this.getBounds());
   };
 
-  this.size = () => (_ii && _ii.length) || 0;
+  this.size = function () {
+    return (_ii && _ii.length) || 0;
+  };
 
-  this.getPointCount = () => (_xx && _xx.length) || 0;
+  this.getPointCount = function () {
+    return (_xx && _xx.length) || 0;
+  };
 
   this.getFilteredPointCount = getFilteredPointCount;
 
-  this.getBounds = () => _allBounds.clone();
+  this.getBounds = function () {
+    return _allBounds.clone();
+  };
 
   this.getSimpleShapeBounds = function (arcIds, bounds) {
     bounds = bounds || new Bounds();
@@ -626,7 +638,7 @@ export function ArcCollection() {
     return bounds;
   };
 
-  this.getSimpleShapeBounds2 = (arcIds, arr) => {
+  this.getSimpleShapeBounds2 = function (arcIds, arr) {
     var bbox = arr || [],
       bb = _bb,
       id = absArcId(arcIds[0]) * 4;
@@ -656,7 +668,7 @@ export function ArcCollection() {
     return bounds;
   };
 
-  this.mergeArcBounds = (arcId, bounds) => {
+  this.mergeArcBounds = function (arcId, bounds) {
     if (arcId < 0) arcId = ~arcId;
     var offs = arcId * 4;
     bounds.mergeBounds(_bb[offs], _bb[offs + 1], _bb[offs + 2], _bb[offs + 3]);

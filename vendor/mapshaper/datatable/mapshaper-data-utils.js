@@ -1,5 +1,5 @@
-import { encodeString } from "../text/mapshaper-encodings";
 import utils from "../utils/mapshaper-utils";
+import { encodeString } from "../text/mapshaper-encodings";
 
 // Not a general-purpose deep copy function
 export function copyRecord(o) {
@@ -8,7 +8,7 @@ export function copyRecord(o) {
     val;
   if (!o) return null;
   for (key in o) {
-    if (Object.hasOwn(o, key)) {
+    if (o.hasOwnProperty(key)) {
       val = o[key];
       if (val == o) {
         // avoid infinite recursion if val is a circular reference, by copying all properties except key
@@ -56,7 +56,9 @@ function findIncompleteFields(records) {
       counts[keys[j]] = (counts[keys[j]] | 0) + 1;
     }
   }
-  return Object.keys(counts).filter((k) => counts[k] < records.length);
+  return Object.keys(counts).filter(function (k) {
+    return counts[k] < records.length;
+  });
 }
 
 function patchMissingFields(records, fields) {
@@ -88,7 +90,7 @@ export function getColumnType(key, records) {
 }
 
 export function deleteFields(table, test) {
-  table.getFields().forEach((name) => {
+  table.getFields().forEach(function (name) {
     if (test(name)) {
       table.deleteField(name);
     }
@@ -106,7 +108,7 @@ export function isInvalidFieldName(f) {
 //
 export function getUniqFieldNames(fields, maxLen, encoding) {
   var used = {};
-  return fields.map((name) => {
+  return fields.map(function (name) {
     var i = 0,
       validName;
     do {
@@ -126,13 +128,15 @@ export function getUniqFieldNames(fields, maxLen, encoding) {
 }
 
 function getFieldValues(records, field) {
-  return records.map((rec) => (rec ? rec[field] : undefined));
+  return records.map(function (rec) {
+    return rec ? rec[field] : undefined;
+  });
 }
 
 function getUniqFieldValues(records, field) {
   var index = {};
   var values = [];
-  records.forEach((rec) => {
+  records.forEach(function (rec) {
     var val = rec[field];
     if (val in index === false) {
       index[val] = true;
@@ -172,7 +176,9 @@ function adjustEncodedFieldName(name, maxLen, i, encoding) {
 
 function applyFieldOrder(arr, option) {
   if (option == "ascending") {
-    arr.sort((a, b) => (a.toLowerCase() < b.toLowerCase() ? -1 : 1));
+    arr.sort(function (a, b) {
+      return a.toLowerCase() < b.toLowerCase() ? -1 : 1;
+    });
   }
   return arr;
 }

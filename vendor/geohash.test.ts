@@ -1,5 +1,5 @@
-import { describe, expect, it, test } from "vitest";
-import { decode, encode } from "./geohash";
+import { encode, decode } from "./geohash";
+import { test, describe, it, expect } from "vitest";
 
 describe("geohash", () => {
   it("testEncodeBasic", () => {

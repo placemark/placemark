@@ -1,8 +1,8 @@
-import geom from "../geom/mapshaper-geom";
 import { forEachSegmentInPath } from "../paths/mapshaper-path-utils";
 import { simplifyPolygonFast } from "../simplify/mapshaper-simplify-fast";
-import { verbose } from "../utils/mapshaper-logging";
+import geom from "../geom/mapshaper-geom";
 import utils from "../utils/mapshaper-utils";
+import { verbose } from "../utils/mapshaper-logging";
 
 // Find a point inside a polygon and located away from the polygon edge
 // Method:
@@ -76,7 +76,7 @@ function findAnchorPoint2(shp, arcs) {
       p.x - hstep / 2,
       p.x + hstep / 2,
       2,
-      weight,
+      weight
     );
     if (p2.distance > p.distance) {
       p = p2;
@@ -89,7 +89,7 @@ function getPointWeightingFunction(centroid, pathBounds) {
   // Get a factor for weighting a candidate point
   // Points closer to the centroid are slightly preferred
   var referenceDist = Math.max(pathBounds.width(), pathBounds.height()) / 2;
-  return (x, y) => {
+  return function (x, y) {
     var offset = geom.distance2D(centroid.x, centroid.y, x, y);
     return 1 - Math.min((0.6 * offset) / referenceDist, 0.25);
   };
@@ -97,7 +97,7 @@ function getPointWeightingFunction(centroid, pathBounds) {
 
 function findAnchorPointCandidates(shp, arcs, xx) {
   var ymin = arcs.getBounds().ymin - 1;
-  return xx.reduce((memo, x) => {
+  return xx.reduce(function (memo, x) {
     var cands = findHitCandidates(x, ymin, shp, arcs);
     return memo.concat(cands);
   }, []);
@@ -111,10 +111,12 @@ function probeForBestAnchorPoint(shp, arcs, lbound, rbound, htics, weight) {
   var bestP, adjustedP, candP;
 
   // Sort candidates so points at the center of longer segments are tried first
-  candidates.forEach((p) => {
+  candidates.forEach(function (p) {
     p.interval *= weight(p.x, p.y);
   });
-  candidates.sort((a, b) => b.interval - a.interval);
+  candidates.sort(function (a, b) {
+    return b.interval - a.interval;
+  });
 
   for (var i = 0; i < candidates.length; i++) {
     candP = candidates[i];
@@ -198,7 +200,7 @@ function findHitCandidates(x, y, shp, arcs) {
 //   and a polygon
 function findRayShapeIntersections(x, y, shp, arcs) {
   if (!shp) return [];
-  return shp.reduce((memo, path) => {
+  return shp.reduce(function (memo, path) {
     var yy = findRayRingIntersections(x, y, path, arcs);
     return memo.concat(yy);
   }, []);
@@ -207,7 +209,7 @@ function findRayShapeIntersections(x, y, shp, arcs) {
 // Return array of y-intersections between vertical ray and a polygon ring
 function findRayRingIntersections(x, y, path, arcs) {
   var yints = [];
-  forEachSegmentInPath(path, arcs, (a, b, xx, yy) => {
+  forEachSegmentInPath(path, arcs, function (a, b, xx, yy) {
     var result = geom.getRayIntersection(x, y, xx[a], yy[a], xx[b], yy[b]);
     if (result > -Infinity) {
       yints.push(result);

@@ -5,7 +5,7 @@ import { stop } from "../utils/mapshaper-logging";
 function countPointsInLayer(lyr) {
   var count = 0;
   if (layerHasPoints(lyr)) {
-    forEachPoint(lyr.shapes, () => {
+    forEachPoint(lyr.shapes, function () {
       count++;
     });
   }
@@ -14,7 +14,7 @@ function countPointsInLayer(lyr) {
 
 export function getPointBounds(shapes) {
   var bounds = new Bounds();
-  forEachPoint(shapes, (p) => {
+  forEachPoint(shapes, function (p) {
     bounds.mergePoint(p[0], p[1]);
   });
   return bounds;
@@ -34,7 +34,7 @@ export function getPointFeatureBounds(shape, bounds) {
 // NOTE: layers can have multipoint features and null features
 function getPointsInLayer(lyr) {
   var coords = [];
-  forEachPoint(lyr.shapes, (p) => {
+  forEachPoint(lyr.shapes, function (p) {
     coords.push(p);
   });
   return coords;

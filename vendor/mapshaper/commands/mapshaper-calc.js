@@ -1,14 +1,14 @@
-import { getLayerSelection } from "../dataset/mapshaper-command-utils";
-import {
-  getFeatureCount,
-  getLayerBounds,
-} from "../dataset/mapshaper-layer-utils";
 import { compileFeatureExpression } from "../expressions/mapshaper-expressions";
-import cmd from "../mapshaper-cmd";
-import { getStateVar } from "../mapshaper-state";
+import {
+  getLayerBounds,
+  getFeatureCount,
+} from "../dataset/mapshaper-layer-utils";
 import { getMode } from "../utils/mapshaper-calc-utils";
-import { error, message, stop } from "../utils/mapshaper-logging";
+import { getLayerSelection } from "../dataset/mapshaper-command-utils";
+import cmd from "../mapshaper-cmd";
 import utils from "../utils/mapshaper-utils";
+import { getStateVar } from "../mapshaper-state";
+import { message, error, stop } from "../utils/mapshaper-logging";
 
 // Calculate an expression across a group of features, print and return the result
 // Supported functions include sum(), average(), max(), min(), median(), count()
@@ -17,7 +17,7 @@ import utils from "../utils/mapshaper-utils";
 // opts.expression  Expression to evaluate
 // opts.where  Optional filter expression (see -filter command)
 //
-cmd.calc = (lyr, arcs, opts) => {
+cmd.calc = function (lyr, arcs, opts) {
   var msg = opts.expression,
     result,
     compiled,
@@ -62,7 +62,9 @@ export function compileCalcExpression(lyr, arcs, exp) {
     },
     ctx2 = {
       // context for second phase (calculating results)
-      count: wrap(() => rowNo, 0),
+      count: wrap(function () {
+        return rowNo;
+      }, 0),
       sum: wrap(utils.sum, 0),
       sums: wrap(sums),
       median: wrap(utils.findMedian),
@@ -84,8 +86,12 @@ export function compileCalcExpression(lyr, arcs, exp) {
   if (lyr.geometry_type) {
     // add functions related to layer geometry (e.g. for subdivide())
     ctx1.width = ctx1.height = noop;
-    ctx2.width = () => getLayerBounds(lyr, arcs).width();
-    ctx2.height = () => getLayerBounds(lyr, arcs).height();
+    ctx2.width = function () {
+      return getLayerBounds(lyr, arcs).width();
+    };
+    ctx2.height = function () {
+      return getLayerBounds(lyr, arcs).height();
+    };
   }
 
   calc1 = compileFeatureExpression(exp, lyr, arcs, {
@@ -104,7 +110,7 @@ export function compileCalcExpression(lyr, arcs, exp) {
   });
 
   // @destRec: optional destination record for assignments
-  return (ids, destRec) => {
+  return function (ids, destRec) {
     var result;
     // phase 1: capture data
     if (ids) procRecords(ids);
@@ -126,7 +132,7 @@ export function compileCalcExpression(lyr, arcs, exp) {
   function sums(arr) {
     var n = arr && arr.length ? arr[0].length : 0;
     var output = utils.initializeArray(Array(n), 0);
-    arr.forEach((arr) => {
+    arr.forEach(function (arr) {
       if (!arr || !arr.length) return;
       for (var i = 0; i < n; i++) {
         output[i] += +arr[i] || 0;
@@ -142,7 +148,7 @@ export function compileCalcExpression(lyr, arcs, exp) {
   // process captured data, or return nodata value if no records have been captured
   function wrap(proc, nullVal) {
     var nodata = arguments.length > 1 ? nullVal : null;
-    return () => {
+    return function () {
       var c = colNo++;
       return rowNo > 0 ? proc(cols[c]) : nodata;
     };

@@ -1,6 +1,6 @@
 import { transformPoints } from "../dataset/mapshaper-dataset-utils";
-import { forEachPoint } from "../points/mapshaper-point-utils";
 import { error } from "../utils/mapshaper-logging";
+import { forEachPoint } from "../points/mapshaper-point-utils";
 import utils from "../utils/mapshaper-utils";
 
 export function roundToSignificantDigits(n, d) {
@@ -22,7 +22,13 @@ export function getRoundingFunction(inc) {
   }
   var inv = 1 / inc;
   if (inv > 1) inv = Math.round(inv);
-  return (x) => Math.round(x * inv) / inv;
+  return function (x) {
+    return Math.round(x * inv) / inv;
+    // these alternatives show rounding error after JSON.stringify()
+    // return Math.round(x / inc) / inv;
+    // return Math.round(x / inc) * inc;
+    // return Math.round(x * inv) * inc;
+  };
 }
 
 export function getBoundsPrecisionForDisplay(bbox) {
@@ -38,7 +44,11 @@ export function getBoundsPrecisionForDisplay(bbox) {
 }
 
 function getRoundedCoordString(coords, decimals) {
-  return coords.map((n) => n.toFixed(decimals)).join(",");
+  return coords
+    .map(function (n) {
+      return n.toFixed(decimals);
+    })
+    .join(",");
 }
 
 function getRoundedCoords(coords, decimals) {
@@ -46,7 +56,7 @@ function getRoundedCoords(coords, decimals) {
 }
 
 function roundPoints(lyr, round) {
-  forEachPoint(lyr.shapes, (p) => {
+  forEachPoint(lyr.shapes, function (p) {
     p[0] = round(p[0]);
     p[1] = round(p[1]);
   });
@@ -55,7 +65,9 @@ function roundPoints(lyr, round) {
 export function setCoordinatePrecision(dataset, precision) {
   var round = getRoundingFunction(precision);
   // var dissolvePolygon, nodes;
-  transformPoints(dataset, (x, y) => [round(x), round(y)]);
+  transformPoints(dataset, function (x, y) {
+    return [round(x), round(y)];
+  });
   // v0.4.52 removing polygon dissolve - see issue #219
   /*
   if (dataset.arcs) {

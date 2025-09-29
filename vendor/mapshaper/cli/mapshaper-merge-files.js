@@ -1,18 +1,18 @@
-import { mergeDatasets } from "../dataset/mapshaper-merging";
-import { importFile } from "../io/mapshaper-file-import";
-import cmd from "../mapshaper-cmd";
 import { cleanPathsAfterImport } from "../paths/mapshaper-path-import";
-import { buildTopology } from "../topology/mapshaper-topology";
+import { mergeDatasets } from "../dataset/mapshaper-merging";
 import utils from "../utils/mapshaper-utils";
+import { buildTopology } from "../topology/mapshaper-topology";
+import cmd from "../mapshaper-cmd";
+import { importFile } from "../io/mapshaper-file-import";
 
 // Import multiple files to a single dataset
 export function importFiles(files, opts) {
   var unbuiltTopology = false;
-  var datasets = files.map((fname) => {
+  var datasets = files.map(function (fname) {
     // import without topology or snapping
     var importOpts = utils.defaults(
       { no_topology: true, snap: false, snap_interval: null, files: [fname] },
-      opts,
+      opts
     );
     var dataset = importFile(fname, importOpts);
     // check if dataset contains non-topological paths

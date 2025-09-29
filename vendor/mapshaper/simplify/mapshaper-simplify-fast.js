@@ -1,5 +1,5 @@
-import geom from "../geom/mapshaper-geom";
 import { ArcCollection } from "../paths/mapshaper-arcs";
+import geom from "../geom/mapshaper-geom";
 
 function simplifyArcsFast(arcs, dist) {
   var xx = [],
@@ -25,7 +25,7 @@ export function simplifyPolygonFast(shp, arcs, dist) {
     nn = [],
     shp2 = [];
 
-  shp.forEach((path) => {
+  shp.forEach(function (path) {
     var count = simplifyPathFast(path, arcs, dist, xx, yy);
     while (count < 4 && count > 0) {
       xx.pop();

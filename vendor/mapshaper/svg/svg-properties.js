@@ -1,8 +1,8 @@
 import { compileValueExpression } from "../expressions/mapshaper-expressions";
+import utils from "../utils/mapshaper-utils";
+import { stop } from "../utils/mapshaper-logging";
 import { getStateVar } from "../mapshaper-state";
 import { parsePattern } from "../svg/svg-hatch";
-import { stop } from "../utils/mapshaper-logging";
-import utils from "../utils/mapshaper-utils";
 
 // parsing hints for -style command cli options
 // null values indicate the lack of a function for parsing/identifying this property
@@ -53,12 +53,12 @@ var symbolPropertyTypes = utils.extend(
     "arrow-scaling": "number",
     effect: null, // e.g. "fade"
   },
-  stylePropertyTypes,
+  stylePropertyTypes
 );
 
 var commonProperties =
   "class,opacity,stroke,stroke-width,stroke-dasharray,stroke-opacity,fill-opacity".split(
-    ",",
+    ","
   );
 
 var propertiesBySymbolType = {
@@ -68,9 +68,9 @@ var propertiesBySymbolType = {
   label: utils.arrayToIndex(
     commonProperties.concat(
       "fill,r,font-family,font-size,text-anchor,font-weight,font-style,letter-spacing,dominant-baseline".split(
-        ",",
-      ),
-    ),
+        ","
+      )
+    )
   ),
 };
 
@@ -84,7 +84,9 @@ function isSupportedSvgSymbolProperty(name) {
 
 export function findPropertiesBySymbolGeom(fields, type) {
   var index = propertiesBySymbolType[type] || {};
-  return fields.filter((name) => name in index);
+  return fields.filter(function (name) {
+    return name in index;
+  });
 }
 
 // Returns a function that returns an object containing property values for a single record
@@ -95,7 +97,7 @@ function getSymbolDataAccessor(lyr, opts) {
   var properties = [];
   var fields = lyr.data ? lyr.data.getFields() : [];
 
-  Object.keys(opts).forEach((optName) => {
+  Object.keys(opts).forEach(function (optName) {
     var svgName = optName.replace(/_/g, "-");
     if (!isSupportedSvgSymbolProperty(svgName)) {
       return;
@@ -107,7 +109,7 @@ function getSymbolDataAccessor(lyr, opts) {
 
   // TODO: consider applying values of existing fields with names of symbol properties
 
-  return (id) => {
+  return function (id) {
     var d = {},
       name;
     for (var i = 0; i < properties.length; i++) {
@@ -125,7 +127,7 @@ function getSymbolDataAccessor(lyr, opts) {
 function mightBeExpression(str, fields) {
   fields = fields || [];
   if (fields.indexOf(str.trim()) > -1) return true;
-  return /[(){}./*?:&|=[+-]/.test(str);
+  return /[(){}./*?:&|=\[+-]/.test(str);
 }
 
 function getSymbolPropertyAccessor(val, svgName, lyr) {
@@ -148,7 +150,10 @@ function getSymbolPropertyAccessor(val, svgName, lyr) {
   }
   // console.log("literalVal:", mightBeExpression(strVal, fields), strVal, fields)
   if (accessor) return accessor;
-  if (literalVal !== null) return (id) => literalVal;
+  if (literalVal !== null)
+    return function (id) {
+      return literalVal;
+    };
   stop("Unexpected value for", svgName + ":", strVal);
 }
 

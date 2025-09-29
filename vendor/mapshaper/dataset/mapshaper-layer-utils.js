@@ -1,16 +1,15 @@
 // utility functions for layers
-
-import { DataTable } from "../datatable/mapshaper-data-table";
-import { getFirstNonEmptyRecord } from "../datatable/mapshaper-data-utils";
-import { absArcId } from "../paths/mapshaper-arc-utils";
+import { getPointBounds, forEachPoint } from "../points/mapshaper-point-utils";
 import {
-  countArcsInShapes,
   getPathBounds,
+  countArcsInShapes,
 } from "../paths/mapshaper-path-utils";
 import { cloneShapes, editShapes } from "../paths/mapshaper-shape-utils";
-import { forEachPoint, getPointBounds } from "../points/mapshaper-point-utils";
-import { formatStringsAsGrid, stop } from "../utils/mapshaper-logging";
+import { stop, formatStringsAsGrid } from "../utils/mapshaper-logging";
+import { DataTable } from "../datatable/mapshaper-data-table";
+import { getFirstNonEmptyRecord } from "../datatable/mapshaper-data-utils";
 import utils from "../utils/mapshaper-utils";
+import { absArcId } from "../paths/mapshaper-arc-utils";
 
 // Insert a column of values into a (new or existing) data field
 function insertFieldValues(lyr, fieldName, values) {
@@ -58,7 +57,9 @@ export function layerHasPoints(lyr) {
 }
 
 function layerHasNonNullShapes(lyr) {
-  return utils.some(lyr.shapes || [], (shp) => !!shp);
+  return utils.some(lyr.shapes || [], function (shp) {
+    return !!shp;
+  });
 }
 
 function deleteFeatureById(lyr, i) {
@@ -69,7 +70,7 @@ function deleteFeatureById(lyr, i) {
 // TODO: move elsewhere (moved here from mapshaper-point-utils to avoid circular dependency)
 export function transformPointsInLayer(lyr, f) {
   if (layerHasPoints(lyr)) {
-    forEachPoint(lyr.shapes, (p) => {
+    forEachPoint(lyr.shapes, function (p) {
       var p2 = f(p[0], p[1]);
       p[0] = p2[0];
       p[1] = p2[1];
@@ -111,7 +112,7 @@ function requireDataFields(table, fields) {
       "Table is missing one or more fields:\n",
       missingFields,
       "\nExisting fields:",
-      "\n" + formatStringsAsGrid(dataFields),
+      "\n" + formatStringsAsGrid(dataFields)
     );
   }
 }
@@ -142,7 +143,7 @@ function requireSinglePointLayer(lyr, msg) {
   if (countMultiPartFeatures(lyr) > 0) {
     stop(
       msg ||
-        "This command requires single points; layer contains multi-point features.",
+        "This command requires single points; layer contains multi-point features."
     );
   }
 }
@@ -172,7 +173,7 @@ function getLayerSourceFile(lyr, dataset) {
 // (Used for importing TopoJSON and GeoJSON features)
 export function divideFeaturesByType(shapes, properties, types) {
   var typeSet = utils.uniq(types);
-  var layers = typeSet.map((geoType) => {
+  var layers = typeSet.map(function (geoType) {
     var p = [],
       s = [],
       dataNulls = 0,
@@ -223,7 +224,7 @@ export function copyLayer(lyr) {
 // filtered to exclude paths containing any of the arc ids contained in arcIds.
 // arcIds: an array of (non-negative) arc ids to exclude
 function filterPathLayerByArcIds(pathLyr, arcIds) {
-  var index = arcIds.reduce((memo, id) => {
+  var index = arcIds.reduce(function (memo, id) {
     memo[id] = true;
     return memo;
   }, {});
@@ -261,13 +262,15 @@ export function countMultiPartFeatures(shapes) {
 // moving this here from mapshaper-path-utils to avoid circular dependency
 export function getArcPresenceTest2(layers, arcs) {
   var counts = countArcsInLayers(layers, arcs);
-  return (arcId) => counts[absArcId(arcId)] > 0;
+  return function (arcId) {
+    return counts[absArcId(arcId)] > 0;
+  };
 }
 
 // Count arcs in a collection of layers
 function countArcsInLayers(layers, arcs) {
   var counts = new Uint32Array(arcs.size());
-  layers.filter(layerHasPaths).forEach((lyr) => {
+  layers.filter(layerHasPaths).forEach(function (lyr) {
     countArcsInShapes(lyr.shapes, counts);
   });
   return counts;
@@ -293,9 +296,11 @@ export function getLayerBounds(lyr, arcs) {
 function isolateLayer(layer, dataset) {
   return utils.defaults(
     {
-      layers: dataset.layers.filter((lyr) => lyr == layer),
+      layers: dataset.layers.filter(function (lyr) {
+        return lyr == layer;
+      }),
     },
-    dataset,
+    dataset
   );
 }
 

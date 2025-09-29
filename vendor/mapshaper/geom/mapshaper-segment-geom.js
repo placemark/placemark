@@ -1,10 +1,10 @@
+import { getHighPrecisionSnapInterval } from "../paths/mapshaper-snapping";
+import { debug } from "../utils/mapshaper-logging";
 import {
   distance2D,
   distanceSq,
   pointSegDistSq2,
 } from "../geom/mapshaper-basic-geom";
-import { getHighPrecisionSnapInterval } from "../paths/mapshaper-snapping";
-import { debug } from "../utils/mapshaper-logging";
 
 // Find the intersection between two 2D segments
 // Returns 0, 1 or 2 [x, y] locations as null, [x, y], or [x1, y1, x2, y2]

@@ -1,13 +1,14 @@
-import { composeDissolveLayer } from "../commands/mapshaper-dissolve";
-import { DataTable } from "../datatable/mapshaper-data-table";
-import { getCategoryClassifier } from "../dissolve/mapshaper-data-aggregation";
-import { getArcPresenceTest, reversePath } from "../paths/mapshaper-path-utils";
+import { reversePath } from "../paths/mapshaper-path-utils";
 import { getRingIntersector } from "../paths/mapshaper-pathfinder";
-import { MosaicIndex } from "../polygons/mapshaper-mosaic-index";
 import { getSliverFilter } from "../polygons/mapshaper-slivers";
+import { getArcPresenceTest } from "../paths/mapshaper-path-utils";
+import { composeDissolveLayer } from "../commands/mapshaper-dissolve";
+import { getCategoryClassifier } from "../dissolve/mapshaper-data-aggregation";
+import { DataTable } from "../datatable/mapshaper-data-table";
 import { NodeCollection } from "../topology/mapshaper-nodes";
-import { message } from "../utils/mapshaper-logging";
+import { MosaicIndex } from "../polygons/mapshaper-mosaic-index";
 import utils from "../utils/mapshaper-utils";
+import { message } from "../utils/mapshaper-logging";
 
 // Assumes that arcs do not intersect except at endpoints
 export function dissolvePolygonLayer2(lyr, dataset, opts) {
@@ -37,18 +38,20 @@ function getArcLayer(arcs, name) {
 }
 
 export function composeMosaicLayer(lyr, shapes2) {
-  var records = shapes2.map((shp, i) => ({ tile_id: i }));
+  var records = shapes2.map(function (shp, i) {
+    return { tile_id: i };
+  });
   return utils.defaults(
     {
       shapes: shapes2,
       data: new DataTable(records),
     },
-    lyr,
+    lyr
   );
 }
 
 function groupPolygons2(lyr, getGroupId) {
-  return lyr.shapes.reduce((groups, shape, shapeId) => {
+  return lyr.shapes.reduce(function (groups, shape, shapeId) {
     var groupId = getGroupId(shapeId);
     if (groupId in groups === false) {
       groups[groupId] = [];
@@ -66,7 +69,7 @@ function getGapRemovalMessage(removed, retained, areaLabel) {
     removed,
     removed + retained,
     utils.pluralSuffix(removed),
-    areaLabel,
+    areaLabel
   );
 }
 
@@ -87,10 +90,12 @@ export function dissolvePolygonGroups2(groups, lyr, dataset, opts) {
     cleanupData = mosaicIndex.removeGaps(filterData.filter);
   }
   var pathfind = getRingIntersector(mosaicIndex.nodes);
-  var dissolvedShapes = groups.map((shapeIds) => {
+  var dissolvedShapes = groups.map(function (shapeIds) {
     var tiles = mosaicIndex.getTilesByShapeIds(shapeIds);
     if (opts.tiles) {
-      return tiles.reduce((memo, tile) => memo.concat(tile), []);
+      return tiles.reduce(function (memo, tile) {
+        return memo.concat(tile);
+      }, []);
     }
     return dissolveTileGroup2(tiles, pathfind);
   });
@@ -102,7 +107,7 @@ export function dissolvePolygonGroups2(groups, lyr, dataset, opts) {
     var msg = getGapRemovalMessage(
       cleanupData.removed,
       cleanupData.remaining,
-      filterData.label,
+      filterData.label
     );
     if (msg) message(msg);
   }
@@ -130,7 +135,7 @@ function dissolveTileGroup2(tiles, pathfind) {
 }
 
 function fixTangentHoles(shapes, pathfind) {
-  var onRing = (memo, ring) => {
+  var onRing = function (memo, ring) {
     reversePath(ring);
     var fixed = pathfind([ring], "flatten");
     if (fixed.length > 1) {
@@ -141,7 +146,7 @@ function fixTangentHoles(shapes, pathfind) {
     }
     return memo;
   };
-  return shapes.map((rings) => {
+  return shapes.map(function (rings) {
     if (!rings) return null;
     return rings.reduce(onRing, []);
   });

@@ -42,7 +42,7 @@ const MAX_LON = 180;
  */
 export function encode(
   [longitude, latitude]: [number, number],
-  numberOfChars = 9,
+  numberOfChars = 9
 ) {
   const chars = [];
   let bits = 0;

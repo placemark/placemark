@@ -44,6 +44,9 @@
       },
       "style": {
         "noNonNullAssertion": "off"
+      },
+      "complexity": {
+        "useArrowFunction": "off"
       }
     }
   },
