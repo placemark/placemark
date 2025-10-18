@@ -14,6 +14,7 @@ import {
   UMomentLog,
 } from "app/lib/persistence/moment";
 import { generateKeyBetween } from "fractional-indexing";
+import { useAtom } from "jotai";
 import once from "lodash/once";
 import {
   type Data,
@@ -122,7 +123,7 @@ export class MemPersistence implements IPersistence {
   }
 
   useMetadata(): MetaPair {
-    const meta = this.store.get(memoryMetaAtom);
+    const [meta, setMeta] = useAtom(memoryMetaAtom);
 
     return [
       {
@@ -130,7 +131,7 @@ export class MemPersistence implements IPersistence {
         ...meta,
       },
       (updates: MetaUpdatesInput) => {
-        this.store.set(memoryMetaAtom, (meta) => {
+        setMeta((meta) => {
           return {
             ...meta,
             ...updates,

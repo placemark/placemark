@@ -58,7 +58,7 @@ export interface IPersistence {
   ) => Promise<void>;
 
   /**
-   * Delete existing features.
+   * Subscribe to metadata updates
    */
   useMetadata(): MetaPair;
 }

@@ -4,7 +4,6 @@ import { decodeId } from "app/lib/id";
 import { CLICKABLE_LAYERS } from "app/lib/load_and_augment_style";
 import type PMap from "app/lib/pmap";
 import sortBy from "lodash/sortBy";
-import type { Map as MapboxMap } from "mapbox-gl";
 import type { EphemeralEditingStateLasso } from "state/jotai";
 import type {
   FeatureMap,
