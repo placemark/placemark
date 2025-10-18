@@ -30,7 +30,6 @@ import {
   ephemeralStateAtom,
   layerConfigAtom,
   Mode,
-  memoryMetaAtom,
   modeAtom,
   selectedFeaturesAtom,
 } from "state/jotai";
@@ -110,12 +109,8 @@ export const MapComponent = memo(function MapComponent({
   const transact = rep.useTransact();
 
   // Queries
-  const meta = useAtomValue(memoryMetaAtom);
-
-  const [, updateMeta] = rep.useMetadata();
+  const [meta, updateMeta] = rep.useMetadata();
   const { label, symbolization } = meta;
-
-  console.log(meta);
 
   const currentLayer = meta.layer;
   useClipboard();
