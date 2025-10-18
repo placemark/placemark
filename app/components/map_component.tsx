@@ -29,8 +29,8 @@ import {
   dataAtom,
   ephemeralStateAtom,
   layerConfigAtom,
-  memoryMetaAtom,
   Mode,
+  memoryMetaAtom,
   modeAtom,
   selectedFeaturesAtom,
 } from "state/jotai";

@@ -14,6 +14,7 @@ import {
   UMomentLog,
 } from "app/lib/persistence/moment";
 import { generateKeyBetween } from "fractional-indexing";
+import { useAtom } from "jotai";
 import once from "lodash/once";
 import {
   type Data,
@@ -38,7 +39,6 @@ import {
   momentForDeleteLayerConfigs,
   trackMoment,
 } from "./shared";
-import { useAtom } from "jotai";
 
 export class MemPersistence implements IPersistence {
   idMap: IDMap;
