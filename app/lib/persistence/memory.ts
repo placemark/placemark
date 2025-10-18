@@ -38,7 +38,7 @@ import {
   momentForDeleteLayerConfigs,
   trackMoment,
 } from "./shared";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 
 export class MemPersistence implements IPersistence {
   idMap: IDMap;

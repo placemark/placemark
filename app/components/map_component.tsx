@@ -112,8 +112,6 @@ export const MapComponent = memo(function MapComponent({
   // Queries
   const meta = useAtomValue(memoryMetaAtom);
 
-  console.log(meta);
-
   const [, updateMeta] = rep.useMetadata();
   const { label, symbolization } = meta;
 
@@ -200,8 +198,6 @@ export const MapComponent = memo(function MapComponent({
       if (!map?.map) {
         return;
       }
-
-      console.log("updating metadata / the map");
 
       // These are all, hopefully, things that we can call
       // really often without performance issues because these inputs
