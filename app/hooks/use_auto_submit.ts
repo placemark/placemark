@@ -10,7 +10,7 @@ const AUTO_SUBMIT_DEBOUNCE_MS = 100;
  * up to 10 times a second.
  */
 export function useAutoSubmit() {
-  const { submitForm } = useFormikContext();
+  const { submitForm, values } = useFormikContext();
 
   const debouncedSubmit = useMemo(
     () => debounce(() => submitForm(), AUTO_SUBMIT_DEBOUNCE_MS),
@@ -19,5 +19,5 @@ export function useAutoSubmit() {
 
   useEffect(() => {
     void debouncedSubmit();
-  }, [debouncedSubmit]);
+  }, [debouncedSubmit, values]);
 }

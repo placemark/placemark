@@ -29,6 +29,7 @@ import {
   dataAtom,
   ephemeralStateAtom,
   layerConfigAtom,
+  memoryMetaAtom,
   Mode,
   modeAtom,
   selectedFeaturesAtom,
@@ -109,8 +110,14 @@ export const MapComponent = memo(function MapComponent({
   const transact = rep.useTransact();
 
   // Queries
-  const [meta, updateMeta] = rep.useMetadata();
+  const meta = useAtomValue(memoryMetaAtom);
+
+  console.log(meta);
+
+  const [, updateMeta] = rep.useMetadata();
   const { label, symbolization } = meta;
+
+  console.log(meta);
 
   const currentLayer = meta.layer;
   useClipboard();
@@ -193,6 +200,8 @@ export const MapComponent = memo(function MapComponent({
       if (!map?.map) {
         return;
       }
+
+      console.log("updating metadata / the map");
 
       // These are all, hopefully, things that we can call
       // really often without performance issues because these inputs

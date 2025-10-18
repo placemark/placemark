@@ -38,6 +38,7 @@ import {
   momentForDeleteLayerConfigs,
   trackMoment,
 } from "./shared";
+import { useAtom, useAtomValue } from "jotai";
 
 export class MemPersistence implements IPersistence {
   idMap: IDMap;
@@ -122,7 +123,7 @@ export class MemPersistence implements IPersistence {
   }
 
   useMetadata(): MetaPair {
-    const meta = this.store.get(memoryMetaAtom);
+    const [meta, setMeta] = useAtom(memoryMetaAtom);
 
     return [
       {
@@ -130,7 +131,7 @@ export class MemPersistence implements IPersistence {
         ...meta,
       },
       (updates: MetaUpdatesInput) => {
-        this.store.set(memoryMetaAtom, (meta) => {
+        setMeta((meta) => {
           return {
             ...meta,
             ...updates,

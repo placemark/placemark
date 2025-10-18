@@ -878,6 +878,7 @@ function NoneSymbolization() {
       <Formik<ISymbolizationNone>
         onSubmit={async (values) => {
           try {
+            console.log("here", JSON.stringify(values));
             await Promise.resolve(
               setMeta({
                 symbolization: values,
