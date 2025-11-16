@@ -1,6 +1,5 @@
 import {
   emptyFeatureCollection,
-  LASSO_YELLOW,
   LINE_COLORS_SELECTED,
 } from "app/lib/constants";
 import {

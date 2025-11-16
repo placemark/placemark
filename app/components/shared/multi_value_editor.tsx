@@ -1,4 +1,5 @@
 import { CardStackIcon } from "@radix-ui/react-icons";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import {
   Button,
   PopoverTitleAndClose,
@@ -13,7 +14,6 @@ import { Form, Formik } from "formik";
 import isObject from "lodash/isObject";
 import { Popover as P } from "radix-ui";
 import { useCallback, useRef } from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
 import type { JsonValue } from "type-fest";
 import type { CoordProps } from "types";
 

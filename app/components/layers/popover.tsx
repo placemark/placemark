@@ -29,6 +29,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
+import { useQuery } from "@tanstack/react-query";
 import * as E from "app/components/elements";
 import { TextWell } from "app/components/elements";
 import { FORM_ERROR, Form } from "app/core/components/Form";
@@ -48,7 +49,6 @@ import { Maybe } from "purify-ts/Maybe";
 import { Popover as P, Tooltip as T } from "radix-ui";
 import { Suspense, useState } from "react";
 import toast from "react-hot-toast";
-import { useQuery } from "@tanstack/react-query";
 import { layerConfigAtom } from "state/jotai";
 import { match } from "ts-pattern";
 import { type ILayerConfig, zLayerConfig } from "types";

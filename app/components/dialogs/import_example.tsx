@@ -1,10 +1,10 @@
 import { ClipboardIcon, DownloadIcon } from "@radix-ui/react-icons";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { DialogHeader } from "app/components/dialog";
 import { styledInlineA, TextWell } from "app/components/elements";
 import { useImportString } from "app/hooks/use_import";
 import { DEFAULT_IMPORT_OPTIONS } from "app/lib/convert";
 import toast from "react-hot-toast";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { z } from "zod";
 
 const ExampleList = z.array(z.string());

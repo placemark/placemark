@@ -15,6 +15,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { LEFT_PANEL_ROW_HEIGHT } from "app/lib/constants";
 import { usePersistence } from "app/lib/persistence/context";
 import { generateKeyBetween, generateNKeysBetween } from "fractional-indexing";
@@ -23,7 +24,6 @@ import { useAtomValue } from "jotai";
 import isEqual from "lodash/isEqual";
 import { Portal } from "radix-ui";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
 import { USelection } from "state";
 import { dataAtom, type Sel, splitsAtom } from "state/jotai";
 import type { FolderMap } from "types";

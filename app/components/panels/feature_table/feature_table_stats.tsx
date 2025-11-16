@@ -1,4 +1,5 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import * as E from "app/components/elements";
 import {
   collectGeometryCounts,
@@ -8,7 +9,6 @@ import {
 import { formatCount, pluralize } from "app/lib/utils";
 import { Popover as P } from "radix-ui";
 import React, { useCallback, useMemo, useRef } from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
 import type { IWrappedFeature } from "types";
 
 export function GeometryTypesGrid({

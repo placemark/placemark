@@ -1,8 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import { groupFiles } from "app/lib/group_files";
 import { captureException } from "integrations/errors";
 import { useSetAtom } from "jotai";
 import { useCallback } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { dialogAtom } from "state/jotai";
 
 export function useOpenFiles() {

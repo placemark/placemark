@@ -1,5 +1,6 @@
 import { Combobox } from "@headlessui/react";
 import { ArrowDownIcon } from "@radix-ui/react-icons";
+import { useQuery } from "@tanstack/react-query";
 import { useActions } from "app/components/context_actions/geometry_actions";
 import { useMultiActions } from "app/components/context_actions/multi_actions";
 import {
@@ -21,7 +22,6 @@ import Fuse from "fuse.js";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { LngLatBounds, type LngLatLike } from "mapbox-gl";
 import { useContext, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { USelection } from "state";
 import {
   dataAtom,

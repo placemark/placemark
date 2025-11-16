@@ -5,6 +5,8 @@ import {
   MagnifyingGlassIcon,
 } from "@radix-ui/react-icons";
 import { useMove } from "@react-aria/interactions";
+import type { VirtualItem } from "@tanstack/react-virtual";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import * as E from "app/components/elements";
 import AddColumn from "app/components/panels/feature_table/add_column";
 import { FeatureTableStats } from "app/components/panels/feature_table/feature_table_stats";
@@ -31,8 +33,6 @@ import {
   useRef,
   useState,
 } from "react";
-import type { VirtualItem } from "@tanstack/react-virtual";
-import { useVirtualizer } from "@tanstack/react-virtual";
 import { USelection } from "state";
 import {
   type Data,
