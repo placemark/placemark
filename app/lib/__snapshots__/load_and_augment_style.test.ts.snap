@@ -209,6 +209,21 @@ exports[`loadAndAugmentStyle 1`] = `
       "source": "features",
       "type": "circle",
     },
+    {
+      "filter": [
+        "==",
+        "$type",
+        "Polygon",
+      ],
+      "id": "lasso-layer",
+      "paint": {
+        "fill-color": "#FDE68A",
+        "fill-opacity": 0.5,
+        "fill-outline-color": "#905803",
+      },
+      "source": "lasso",
+      "type": "fill",
+    },
   ],
   "name": "XYZ Layer",
   "sources": {
@@ -222,6 +237,15 @@ exports[`loadAndAugmentStyle 1`] = `
       "type": "geojson",
     },
     "features": {
+      "buffer": 4,
+      "data": {
+        "features": [],
+        "type": "FeatureCollection",
+      },
+      "tolerance": 0,
+      "type": "geojson",
+    },
+    "lasso": {
       "buffer": 4,
       "data": {
         "features": [],
@@ -612,6 +636,21 @@ exports[`makeLayers > categorical 2`] = `
     "source": "features",
     "type": "circle",
   },
+  {
+    "filter": [
+      "==",
+      "$type",
+      "Polygon",
+    ],
+    "id": "lasso-layer",
+    "paint": {
+      "fill-color": "#FDE68A",
+      "fill-opacity": 0.5,
+      "fill-outline-color": "#905803",
+    },
+    "source": "lasso",
+    "type": "fill",
+  },
 ]
 `;
 
@@ -971,6 +1010,21 @@ exports[`makeLayers > none 1`] = `
     "source": "features",
     "type": "circle",
   },
+  {
+    "filter": [
+      "==",
+      "$type",
+      "Polygon",
+    ],
+    "id": "lasso-layer",
+    "paint": {
+      "fill-color": "#FDE68A",
+      "fill-opacity": 0.5,
+      "fill-outline-color": "#905803",
+    },
+    "source": "lasso",
+    "type": "fill",
+  },
 ]
 `;
 
@@ -1319,6 +1373,21 @@ exports[`makeLayers > ramp 1`] = `
     },
     "source": "features",
     "type": "circle",
+  },
+  {
+    "filter": [
+      "==",
+      "$type",
+      "Polygon",
+    ],
+    "id": "lasso-layer",
+    "paint": {
+      "fill-color": "#FDE68A",
+      "fill-opacity": 0.5,
+      "fill-outline-color": "#905803",
+    },
+    "source": "lasso",
+    "type": "fill",
   },
 ]
 `;
@@ -1710,6 +1779,21 @@ exports[`makeLayers > with preview property 1`] = `
     },
     "source": "features",
     "type": "circle",
+  },
+  {
+    "filter": [
+      "==",
+      "$type",
+      "Polygon",
+    ],
+    "id": "lasso-layer",
+    "paint": {
+      "fill-color": "#FDE68A",
+      "fill-opacity": 0.5,
+      "fill-outline-color": "#905803",
+    },
+    "source": "lasso",
+    "type": "fill",
   },
   {
     "filter": [
