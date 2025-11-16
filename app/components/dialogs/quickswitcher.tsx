@@ -173,7 +173,6 @@ export function QuickswitcherDialog({ onClose }: { onClose: () => void }) {
           }
         }}
       >
-        {/** biome-ignore lint/correctness/useUniqueElementIds: test targeting */}
         <Combobox.Input
           ref={(input: any) => {
             (input as HTMLInputElement)?.focus();

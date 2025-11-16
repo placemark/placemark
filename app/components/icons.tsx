@@ -146,7 +146,6 @@ export const ConvexIcon = memo(function ConvexIcon(props: IconProps) {
         strokeWidth="0.5"
         strokeLinejoin="round"
       />
-      {/** biome-ignore lint/correctness/useUniqueElementIds: needs to be referenced */}
       <mask id="path-2-inside-1" fill="white">
         <path
           fillRule="evenodd"
