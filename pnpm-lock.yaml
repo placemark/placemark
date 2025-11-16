@@ -54,8 +54,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       '@placemarkio/check-geojson':
-        specifier: 0.1.12
-        version: 0.1.12
+        specifier: 0.1.14
+        version: 0.1.14
       '@placemarkio/flat-drop-files':
         specifier: ^1.0.2
         version: 1.0.2
@@ -69,8 +69,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(@types/geojson@7946.0.16)
       '@placemarkio/tokml':
-        specifier: 0.3.3
-        version: 0.3.3
+        specifier: 0.3.7
+        version: 0.3.7
       '@placemarkio/turf-jsts':
         specifier: ^2.8.2
         version: 2.8.2
@@ -1104,8 +1104,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@placemarkio/check-geojson@0.1.12':
-    resolution: {integrity: sha512-sSNPtPDVB0oKwImi4NYg1LVE2QSCIqs/jIRmu8U4fQVWdRjlGy+C/n7AbNO2FycE9rVWtz256f33aMGzvKC7gg==}
+  '@placemarkio/check-geojson@0.1.14':
+    resolution: {integrity: sha512-PZvNKzt6STytUw21TUkqU+TG6dbwTWb1ACosvInBYTBm37zsr8C74J6crBTQ3BWkyd6YeitYd4HibJzBEyk6Aw==}
     engines: {node: '>=10'}
 
   '@placemarkio/flat-drop-files@1.0.2':
@@ -1123,8 +1123,8 @@ packages:
     peerDependencies:
       '@types/geojson': '*'
 
-  '@placemarkio/tokml@0.3.3':
-    resolution: {integrity: sha512-Y6lprxpPfDxLoUyeNcI/vfxMkeWlTjNFvh73zlxfQtZ8TWIj+rmPY99l5wNFVkHQOAwCzLaBXyxULpbtaMGyHQ==}
+  '@placemarkio/tokml@0.3.7':
+    resolution: {integrity: sha512-pQaoQTBvDf7p7d/3ZHDaxWaU62guSYB9KQ6vvecshELunzpdN5tbgw0d+SVO1eYaTlrxX3Nvi7F9DI8FcoJePg==}
 
   '@placemarkio/turf-jsts@2.8.2':
     resolution: {integrity: sha512-IfvQQWwTGm/SJI1FFnabxBnwxa/KhuuGVnSwW3tc2hdAY8V5FKVcOBQmU47BN55zxazKGLWM+r0ztYa8vqFwOw==}
@@ -2970,7 +2970,7 @@ packages:
 
   geographiclib@1.48.0:
     resolution: {integrity: sha512-WIpDKKj2Gu+E4jkF3f3fg7OPF6T1/35tQXKc4jLLQrwjNiTZ5KrrYF5Gp0dQ/YbJIoCjb9vs2/abWTRsCEoi2w==}
-    deprecated: This package has been split into geographic-geodesic + geographiclib-dms; use one or both of these instead of geographiclib.
+    deprecated: 'This package has been split into geographic-geodesic + geographiclib-dms; use one or both of these instead of geographiclib.  WARNING: there''s a potential buffer overrun on this package.  SWITCH TO THE NEW PACKAGES NOW.'
 
   geojson-rbush@3.2.0:
     resolution: {integrity: sha512-oVltQTXolxvsz1sZnutlSuLDEcQAKYC/uXt9zDzJJ6bu0W+baTI8LZBaTup5afzibEH4N3jlq2p+a152wlBJ7w==}
@@ -5259,7 +5259,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@placemarkio/check-geojson@0.1.12': {}
+  '@placemarkio/check-geojson@0.1.14': {}
 
   '@placemarkio/flat-drop-files@1.0.2': {}
 
@@ -5276,7 +5276,7 @@ snapshots:
     dependencies:
       '@types/geojson': 7946.0.16
 
-  '@placemarkio/tokml@0.3.3': {}
+  '@placemarkio/tokml@0.3.7': {}
 
   '@placemarkio/turf-jsts@2.8.2': {}
 
