@@ -15,7 +15,6 @@ export const LEFT_PANEL_ROW_HEIGHT = 24;
  */
 
 export const DECK_SYNTHETIC_ID = "deckgl-synthetic";
-export const DECK_LASSO_ID = "deckgl-lasso";
 
 /**
  * Colors
@@ -32,22 +31,6 @@ export const LINE_COLORS_SELECTED_RGB = hexToArray("#D6409F");
  * Utilities ------------------------------------------------------------------
  */
 export const targetSize = [80, 40] as const;
-
-/**
- * Errors that we can represent by redirecting to a page
- * with the error code.
- *
- * This is to avoid the possibility of an ?error=Message…
- * query, which could be a reflection attack.
- */
-export const ERROR_CODES = {
-  SSO_ORGANIZATION_NO_ID:
-    "This organization is set up with SSO but does not have an active SSO provider.",
-  SSO_ORGANIZATION_MISSING:
-    "This organization is set up with SSO but not connected in Placemark.",
-  GITHUB_TOKEN_MISSING:
-    "You were redirected back to Placemark after authenticating with GitHub, but the token was missing.",
-} as const;
 
 export const SUPPORT_EMAIL = "support@placemark.io";
 
@@ -254,4 +237,3 @@ export const zScaleUnit = z.enum(SCALE_UNITS);
 export const WHITE: RGBA = [255, 255, 255, 255];
 
 export const LASSO_YELLOW = hexToArray("#FDE68A55");
-export const LASSO_DARK_YELLOW = hexToArray("#F59E0B");

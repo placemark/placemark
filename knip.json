@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreExportsUsedInFile": {
+    "interface": true,
+    "type": true
+  },
+  "entry": ["pages/index.tsx"],
+  "tags": [
+    "-lintignore"
+  ]
+}
