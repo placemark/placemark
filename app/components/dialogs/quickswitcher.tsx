@@ -1,5 +1,6 @@
 import { Combobox } from "@headlessui/react";
 import { ArrowDownIcon } from "@radix-ui/react-icons";
+import { useQuery } from "@tanstack/react-query";
 import { useActions } from "app/components/context_actions/geometry_actions";
 import { useMultiActions } from "app/components/context_actions/multi_actions";
 import {
@@ -21,7 +22,6 @@ import Fuse from "fuse.js";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { LngLatBounds, type LngLatLike } from "mapbox-gl";
 import { useContext, useMemo, useState } from "react";
-import { useQuery } from "react-query";
 import { USelection } from "state";
 import {
   dataAtom,
@@ -81,9 +81,9 @@ export function QuickswitcherDialog({ onClose }: { onClose: () => void }) {
     data: list,
     isLoading,
     isError,
-  } = useQuery(
-    ["geocoder", query],
-    async ({ signal }) => {
+  } = useQuery({
+    queryKey: ["geocoder", query],
+    queryFn: async ({ signal }) => {
       return geocodeEarth({
         query: query || "",
         center: map?.map.getCenter(),
@@ -93,11 +93,9 @@ export function QuickswitcherDialog({ onClose }: { onClose: () => void }) {
         actions: actions.concat(multiActions).concat(singleActions),
       });
     },
-    {
-      enabled: query.length > 2,
-      keepPreviousData: true,
-    },
-  );
+    enabled: query.length > 2,
+    placeholderData: (previousData, _previousQuery) => previousData,
+  });
 
   function goToFeature(item: QItem) {
     if (!item || !map) return;

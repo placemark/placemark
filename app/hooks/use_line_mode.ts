@@ -1,6 +1,6 @@
-import type { LineString } from "@turf/helpers";
 import { usePersistence } from "app/lib/persistence/context";
 import replaceCoordinates from "app/lib/replace_coordinates";
+import type { LineString } from "geojson";
 import { captureException } from "integrations/errors";
 import { useAtomCallback } from "jotai/utils";
 import last from "lodash/last";

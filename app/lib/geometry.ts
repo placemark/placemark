@@ -1,5 +1,6 @@
 import turfGetBbox from "@turf/bbox";
-import type { BBox } from "@turf/helpers";
+import type { AllGeoJSON } from "@turf/helpers";
+import type { BBox } from "geojson";
 import clamp from "lodash/clamp";
 import isEqual from "lodash/isEqual";
 import last from "lodash/last";
@@ -133,7 +134,7 @@ export function isRectangleNonzero(feature: Feature): boolean {
 }
 
 function getBbox(obj: GeoJSON): Maybe<BBox> {
-  const box = turfGetBbox(obj);
+  const box = turfGetBbox(obj as AllGeoJSON);
   return Number.isFinite(box[0]) ? Just(box) : Nothing;
 }
 

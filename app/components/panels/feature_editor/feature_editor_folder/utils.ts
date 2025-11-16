@@ -1,4 +1,4 @@
-import type { VirtualItem } from "react-virtual";
+import type { VirtualItem } from "@tanstack/react-virtual";
 
 /**
  * Helper to create style for a virtual element.
