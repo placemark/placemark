@@ -23,7 +23,7 @@ import { useAtomValue } from "jotai";
 import isEqual from "lodash/isEqual";
 import { Portal } from "radix-ui";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useVirtual } from "react-virtual";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { USelection } from "state";
 import { dataAtom, type Sel, splitsAtom } from "state/jotai";
 import type { FolderMap } from "types";
@@ -255,9 +255,9 @@ export function FeatureEditorFolderInner() {
     return tree.findIndex(({ id }) => id === activeId);
   }, [tree, activeId]);
 
-  const rowVirtualizer = useVirtual({
-    size: tree.length,
-    parentRef,
+  const rowVirtualizer = useVirtualizer({
+    count: tree.length,
+    getScrollElement: () => parentRef.current,
     estimateSize: useCallback(
       (index: number) => {
         return index === activeItemIndex ? 0 : LEFT_PANEL_ROW_HEIGHT;
@@ -479,10 +479,10 @@ export function FeatureEditorFolderInner() {
             className="relative w-full"
             style={{
               willChange: "transform",
-              height: `${rowVirtualizer.totalSize}px`,
+              height: `${rowVirtualizer.getTotalSize()}px`,
             }}
           >
-            {rowVirtualizer.virtualItems.map((row) => {
+            {rowVirtualizer.getVirtualItems().map((row) => {
               const item = tree[row.index];
               const isDragging = activeId === item.id;
               if (isDragging && dropIntoFolder) {

@@ -10,7 +10,7 @@ import { PersistenceContext } from "app/lib/persistence/context";
 import { MemPersistence } from "app/lib/persistence/memory";
 import { createStore, Provider } from "jotai";
 import { Tooltip as T } from "radix-ui";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 const store = createStore();

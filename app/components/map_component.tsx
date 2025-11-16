@@ -101,7 +101,7 @@ export const MapComponent = memo(function MapComponent({
 
   const dragTargetRef: React.MutableRefObject<DragTarget | null> =
     useRef<DragTarget>(null);
-  const mapHandlers = useRef<PMapHandlers>();
+  const mapHandlers = useRef<PMapHandlers>(null);
 
   // Context
   const map = useContext(MapContext);

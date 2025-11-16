@@ -13,7 +13,7 @@ import { Form, Formik } from "formik";
 import isObject from "lodash/isObject";
 import { Popover as P } from "radix-ui";
 import { useCallback, useRef } from "react";
-import { useVirtual } from "react-virtual";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import type { JsonValue } from "type-fest";
 import type { CoordProps } from "types";
 
@@ -27,9 +27,9 @@ function ValueList({ pair, onAccept }: Omit<MultiValueProps, "x" | "y">) {
 
   const values = Array.from(pair[1].entries());
 
-  const rowVirtualizer = useVirtual({
-    size: values.length,
-    parentRef,
+  const rowVirtualizer = useVirtualizer({
+    count: values.length,
+    getScrollElement: () => parentRef.current,
     estimateSize: useCallback(() => 28, []),
   });
 
@@ -40,10 +40,10 @@ function ValueList({ pair, onAccept }: Omit<MultiValueProps, "x" | "y">) {
         <div
           className="w-full relative rounded"
           style={{
-            height: `${rowVirtualizer.totalSize}px`,
+            height: `${rowVirtualizer.getTotalSize()}px`,
           }}
         >
-          {rowVirtualizer.virtualItems.map((virtualRow) => {
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const val = values[virtualRow.index];
             return (
               <button

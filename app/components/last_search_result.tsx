@@ -90,7 +90,9 @@ export function LastSearchResult() {
                 <Button
                   type="button"
                   variant="primary"
-                  onClick={(e) => {
+                  // TODO: this should have a correct type, but classed-components
+                  // is not updated for React 19
+                  onClick={(e: React.MouseEvent) => {
                     onAddPolygon(asPolygon);
                     e.stopPropagation();
                   }}
@@ -119,7 +121,7 @@ export function LastSearchResult() {
                     <Button
                       type="button"
                       variant="primary"
-                      onClick={(e) => {
+                      onClick={(e: React.MouseEvent) => {
                         e.stopPropagation();
                         onAddPolygon(asPolygon);
                       }}

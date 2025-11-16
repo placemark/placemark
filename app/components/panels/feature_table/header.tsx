@@ -12,7 +12,7 @@ import without from "lodash/without";
 import { DropdownMenu as DD, Popover as P } from "radix-ui";
 import type React from "react";
 import { memo, useCallback, useState } from "react";
-import type { VirtualItem } from "react-virtual";
+import type { VirtualItem } from "@tanstack/react-virtual";
 import { dataAtom, dialogAtom, virtualColumnsAtom } from "state/jotai";
 import { virtualPositionTop } from "../feature_table";
 

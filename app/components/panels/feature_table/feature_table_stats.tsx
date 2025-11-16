@@ -8,7 +8,7 @@ import {
 import { formatCount, pluralize } from "app/lib/utils";
 import { Popover as P } from "radix-ui";
 import React, { useCallback, useMemo, useRef } from "react";
-import { useVirtual } from "react-virtual";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import type { IWrappedFeature } from "types";
 
 export function GeometryTypesGrid({
@@ -133,9 +133,9 @@ function StatValue({ stats }: { stats: RetStat }) {
 function StatValuePopover({ stats }: { stats: RetStat }) {
   const parentRef = useRef<HTMLDivElement | null>(null);
 
-  const rowVirtualizer = useVirtual({
-    size: stats.strings.length,
-    parentRef,
+  const rowVirtualizer = useVirtualizer({
+    count: stats.strings.length,
+    getScrollElement: () => parentRef.current,
     estimateSize: useCallback(() => 24, []),
   });
 
@@ -147,10 +147,10 @@ function StatValuePopover({ stats }: { stats: RetStat }) {
       <div
         className="w-full relative rounded"
         style={{
-          height: `${rowVirtualizer.totalSize}px`,
+          height: `${rowVirtualizer.getTotalSize()}px`,
         }}
       >
-        {rowVirtualizer.virtualItems.map((virtualRow) => {
+        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
           const value = stats.strings[virtualRow.index];
           return (
             <div

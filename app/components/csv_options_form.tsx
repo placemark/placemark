@@ -10,7 +10,7 @@ import { Field, type FormikContextType, useFormikContext } from "formik";
 import { captureException } from "integrations/errors";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { dataAtom } from "state/jotai";
 import type { JsonObject } from "type-fest";
 import type { WorkBook } from "xlsx";
@@ -425,8 +425,9 @@ interface XlsOptionsFormProps {
 }
 
 export function XlsOptionsForm(props: XlsOptionsFormProps) {
-  const { data: xlsx } = useQuery("xlsx", async () => import("xlsx"), {
-    suspense: true,
+  const { data: xlsx } = useSuspenseQuery({
+    queryKey: ["xlsx"],
+    queryFn: async () => import("xlsx"),
   });
 
   return <XlsOptionsFormInner {...props} xlsx={xlsx!} />;

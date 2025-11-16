@@ -31,8 +31,8 @@ import {
   useRef,
   useState,
 } from "react";
-import type { VirtualItem } from "react-virtual";
-import { useVirtual } from "react-virtual";
+import type { VirtualItem } from "@tanstack/react-virtual";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { USelection } from "state";
 import {
   type Data,
@@ -318,17 +318,17 @@ function FeatureTableInner({ data }: { data: Data }) {
    * Virtualizers. Note that we use overscan here so that arrow keybindings
    * work at the edges of the display, otherwise there isn't something to focus.
    */
-  const rowVirtualizer = useVirtual({
-    size: features.length,
-    parentRef,
+  const rowVirtualizer = useVirtualizer({
+    count: features.length,
+    getScrollElement: () => parentRef.current,
     estimateSize: useCallback(() => HEIGHT, []),
     overscan: 3,
   });
 
-  const columnVirtualizer = useVirtual({
-    size: columns.length + 2,
+  const columnVirtualizer = useVirtualizer({
+    count: columns.length + 2,
     horizontal: true,
-    parentRef,
+    getScrollElement: () => parentRef.current,
     estimateSize,
     overscan: 3,
   });
@@ -563,10 +563,10 @@ function FeatureTableInner({ data }: { data: Data }) {
           className="relative w-full sticky top-0 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 z-50"
           style={{
             height: HEIGHT,
-            width: `${columnVirtualizer.totalSize}px`,
+            width: `${columnVirtualizer.getTotalSize()}px`,
           }}
         >
-          {columnVirtualizer.virtualItems.map((virtualColumn) => {
+          {columnVirtualizer.getVirtualItems().map((virtualColumn) => {
             return virtualColumn.index === 0 ? (
               <div
                 style={virtualPositionTop(virtualColumn)}
@@ -619,7 +619,7 @@ function FeatureTableInner({ data }: { data: Data }) {
               />
             );
           })}
-          {columnVirtualizer.virtualItems.map((virtualColumn) => {
+          {columnVirtualizer.getVirtualItems().map((virtualColumn) => {
             return virtualColumn.index === 0 ? null : virtualColumn.index ===
               columns.length + 1 ? null : (
               <HeaderResizer
@@ -635,17 +635,18 @@ function FeatureTableInner({ data }: { data: Data }) {
           className="relative w-full"
           style={{
             willChange: "transform",
-            height: `${rowVirtualizer.totalSize}px`,
-            width: `${columnVirtualizer.totalSize}px`,
+            height: `${rowVirtualizer.getTotalSize()}px`,
+            width: `${columnVirtualizer.getTotalSize()}px`,
           }}
         >
-          {rowVirtualizer.virtualItems.map((virtualRow) => {
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const feature = features[virtualRow.index];
             const selected = USelection.isSelected(selection, feature.id);
-            const rowActionsCol = columnVirtualizer.virtualItems[0];
+            const rowActionsCol = columnVirtualizer.getVirtualItems()[0];
             return (
               <div key={`row-${virtualRow.index}`} className="group">
-                {columnVirtualizer.virtualItems
+                {columnVirtualizer
+                  .getVirtualItems()
                   .slice(1)
                   .map((virtualColumn) => {
                     const style = virtualPosition(virtualColumn, virtualRow);
@@ -675,7 +676,7 @@ function FeatureTableInner({ data }: { data: Data }) {
             );
           })}
 
-          {rowVirtualizer.virtualItems.map((virtualRow) => {
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             return (
               <div
                 key={`row-line-${virtualRow.index}`}
@@ -684,25 +685,28 @@ function FeatureTableInner({ data }: { data: Data }) {
                   transform: `translateY(${
                     virtualRow.start + virtualRow.size
                   }px)`,
-                  width: columnVirtualizer.totalSize - 50,
+                  width: columnVirtualizer.getTotalSize() - 50,
                 }}
               />
             );
           })}
-          {columnVirtualizer.virtualItems.slice(0, -1).map((virtualColumn) => {
-            return (
-              <div
-                key={`column-line-${virtualColumn.index}`}
-                className="group absolute top-0 border-l border-gray-200 dark:border-gray-700 z-50"
-                style={{
-                  transform: `translateX(${
-                    virtualColumn.start + virtualColumn.size
-                  }px)`,
-                  height: rowVirtualizer.totalSize,
-                }}
-              />
-            );
-          })}
+          {columnVirtualizer
+            .getVirtualItems()
+            .slice(0, -1)
+            .map((virtualColumn) => {
+              return (
+                <div
+                  key={`column-line-${virtualColumn.index}`}
+                  className="group absolute top-0 border-l border-gray-200 dark:border-gray-700 z-50"
+                  style={{
+                    transform: `translateX(${
+                      virtualColumn.start + virtualColumn.size
+                    }px)`,
+                    height: rowVirtualizer.getTotalSize(),
+                  }}
+                />
+              );
+            })}
         </div>
       </div>
     </>

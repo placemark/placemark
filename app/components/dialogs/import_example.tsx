@@ -4,7 +4,7 @@ import { styledInlineA, TextWell } from "app/components/elements";
 import { useImportString } from "app/hooks/use_import";
 import { DEFAULT_IMPORT_OPTIONS } from "app/lib/convert";
 import toast from "react-hot-toast";
-import { useQuery as useReactQuery } from "react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { z } from "zod";
 
 const ExampleList = z.array(z.string());
@@ -22,18 +22,15 @@ function friendlyName(filename: string): string {
 
 export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
   const doImport = useImportString();
-  const { data: exampleList } = useReactQuery(
-    "import-examples",
-    () =>
+  const { data: exampleList } = useSuspenseQuery({
+    queryKey: ["import-examples"],
+    queryFn: () =>
       fetch("https://data-library.placemark.io/")
         .then((r) => r.json())
         .then((json) => {
           return ExampleList.parse(json);
         }),
-    {
-      suspense: true,
-    },
-  );
+  });
 
   return (
     <>

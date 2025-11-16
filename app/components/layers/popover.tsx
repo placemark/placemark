@@ -48,7 +48,7 @@ import { Maybe } from "purify-ts/Maybe";
 import { Popover as P, Tooltip as T } from "radix-ui";
 import { Suspense, useState } from "react";
 import toast from "react-hot-toast";
-import { useQuery as reactUseQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { layerConfigAtom } from "state/jotai";
 import { match } from "ts-pattern";
 import { type ILayerConfig, zLayerConfig } from "types";
@@ -590,11 +590,12 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
   const transact = rep.useTransact();
   const [editing, setEditing] = useState<boolean>(false);
 
-  const { data: tilejson, isError } = reactUseQuery(
-    layerConfig.url,
-    async () => layerConfig.type === "TILEJSON" && getTileJSON(layerConfig.url),
-    { suspense: false, retry: false },
-  );
+  const { data: tilejson, isError } = useQuery({
+    queryKey: [layerConfig.url],
+    queryFn: async () =>
+      layerConfig.type === "TILEJSON" && getTileJSON(layerConfig.url),
+    retry: false,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),

@@ -6,12 +6,12 @@ import type { PropsWithoutRef } from "react";
 import { forwardRef } from "react";
 
 interface LabeledTextFieldProps
-  extends PropsWithoutRef<JSX.IntrinsicElements["input"]> {
+  extends PropsWithoutRef<React.JSX.IntrinsicElements["input"]> {
   name: string;
   label: string;
   type?: "text" | "password" | "email" | "number" | "url";
   _size?: B3Size;
-  outerProps?: PropsWithoutRef<JSX.IntrinsicElements["div"]>;
+  outerProps?: PropsWithoutRef<React.JSX.IntrinsicElements["div"]>;
 }
 
 export const LabeledTextField = forwardRef<
