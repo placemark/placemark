@@ -1,4 +1,4 @@
-import type { LineString } from "@turf/helpers";
+import type { LineString } from "geojson";
 import { usePersistence } from "app/lib/persistence/context";
 import replaceCoordinates from "app/lib/replace_coordinates";
 import { captureException } from "integrations/errors";

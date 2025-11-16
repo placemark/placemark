@@ -3,7 +3,7 @@ import type {
   Feature as TurfFeature,
   LineString as TurfLineString,
   MultiLineString as TurfMultiLineString,
-} from "@turf/helpers";
+} from "geojson";
 import nearestPointOnLine from "@turf/nearest-point-on-line";
 import polygonToLine from "@turf/polygon-to-line";
 import { e6position } from "app/lib/geometry";
