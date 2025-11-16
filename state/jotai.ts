@@ -17,7 +17,6 @@ import {
   type FeatureMap,
   type FolderMap,
   type IFolder,
-  type IPresence,
   type LayerConfigMap,
   SYMBOLIZATION_NONE,
 } from "types";
@@ -90,16 +89,6 @@ export const selectionAtom = focusAtom(dataAtom, (optic) =>
   optic.prop("selection"),
 );
 
-/**
- * User presences, keyed by user id
- */
-export const presencesAtom = atom<{
-  presences: Map<number, IPresence>;
-}>({
-  get presences() {
-    return new Map();
-  },
-});
 
 export const memoryMetaAtom = atom<Omit<PersistenceMetadataMemory, "type">>({
   symbolization: SYMBOLIZATION_NONE,

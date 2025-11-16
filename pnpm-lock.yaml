@@ -191,9 +191,6 @@ importers:
       d3-geo:
         specifier: ^3.1.1
         version: 3.1.1
-      envsafe:
-        specifier: ^2.0.3
-        version: 2.0.3
       fast-json-patch:
         specifier: ^3.1.1
         version: 3.1.1
@@ -234,7 +231,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mapbox-gl:
-        specifier: 3.16.0
+        specifier: ^3.16.0
         version: 3.16.0
       memoize-one:
         specifier: ^6.0.0
@@ -348,9 +345,6 @@ importers:
       '@types/lodash':
         specifier: ^4.17.20
         version: 4.17.20
-      '@types/mapbox-gl':
-        specifier: ^3.4.1
-        version: 3.4.1
       '@types/node':
         specifier: ^22.16.5
         version: 22.16.5
@@ -2297,9 +2291,6 @@ packages:
   '@types/lodash@4.17.20':
     resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
-  '@types/mapbox-gl@3.4.1':
-    resolution: {integrity: sha512-NsGKKtgW93B+UaLPti6B7NwlxYlES5DpV5Gzj9F75rK5ALKsqSk15CiEHbOnTr09RGbr6ZYiCdI+59NNNcAImg==}
-
   '@types/mapbox__point-geometry@0.1.4':
     resolution: {integrity: sha512-mUWlSxAmYLfwnRBmgYV86tgYmMIICX4kza8YnE/eIlywGe2XoOxlpVnXWwir92xRLjwyarqwpu2EJKD2pk0IUA==}
 
@@ -2823,10 +2814,6 @@ packages:
   entities@6.0.1:
     resolution: {integrity: sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==}
     engines: {node: '>=0.12'}
-
-  envsafe@2.0.3:
-    resolution: {integrity: sha512-51lek8h5btjXhXUDW//Pno7HPydM1WQzltOb1/ONRKdwB2QkfAURnN4Qn0cJ5LzGvX2Km1ReR2O3K3Bqq9sBMg==}
-    engines: {node: '>=10'}
 
   es-define-property@1.0.1:
     resolution: {integrity: sha512-e3nRfgfUZ4rNGL232gUgX06QNyyez04KdjFrF+LTRoOXmrOgFKDg4BCdsjW8EnT69eqdYGmRpJwiPVYNrCaW3g==}
@@ -6534,10 +6521,6 @@ snapshots:
 
   '@types/lodash@4.17.20': {}
 
-  '@types/mapbox-gl@3.4.1':
-    dependencies:
-      '@types/geojson': 7946.0.16
-
   '@types/mapbox__point-geometry@0.1.4': {}
 
   '@types/markdown-it@14.1.2':
@@ -7121,8 +7104,6 @@ snapshots:
   entities@4.5.0: {}
 
   entities@6.0.1: {}
-
-  envsafe@2.0.3: {}
 
   es-define-property@1.0.1: {}
 

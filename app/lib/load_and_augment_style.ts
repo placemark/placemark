@@ -1,5 +1,6 @@
 import {
   emptyFeatureCollection,
+  LASSO_YELLOW,
   LINE_COLORS_SELECTED,
 } from "app/lib/constants";
 import {
@@ -28,6 +29,7 @@ function getEmptyStyle() {
 const CIRCLE_LAYOUT: mapboxgl.CircleLayout = {};
 
 export const FEATURES_SOURCE_NAME = "features";
+export const LASSO_SOURCE_NAME = "lasso";
 export const EPHEMERAL_SOURCE_NAME = "ephemeral";
 
 const EPHEMERAL_LINE_LAYER_NAME = "ephemeral-line";
@@ -40,6 +42,7 @@ const FEATURES_FILL_LABEL_LAYER_NAME = "features-fill-label";
 const FEATURES_LINE_LABEL_LAYER_NAME = "features-line-label";
 const FEATURES_LINE_LAYER_NAME = "features-line";
 const FEATURES_FILL_LAYER_NAME = "features-fill";
+const LASSO_LAYER_NAME = "lasso-layer";
 
 const emptyGeoJSONSource = {
   type: "geojson",
@@ -118,6 +121,7 @@ export function addEditingLayers({
 }) {
   style.sources[FEATURES_SOURCE_NAME] = emptyGeoJSONSource;
   style.sources[EPHEMERAL_SOURCE_NAME] = emptyGeoJSONSource;
+  style.sources[LASSO_SOURCE_NAME] = emptyGeoJSONSource;
 
   if (!style.layers) {
     throw new Error("Style unexpectedly had no layers");
@@ -193,6 +197,19 @@ export function makeLayers({
       layout: CIRCLE_LAYOUT,
       filter: CONTENT_LAYER_FILTERS[FEATURES_POINT_LAYER_NAME],
       paint: CIRCLE_PAINT(symbolization),
+    },
+
+    // The lasso
+    {
+      id: LASSO_LAYER_NAME,
+      type: "fill",
+      source: LASSO_SOURCE_NAME,
+      filter: ["==", "$type", "Polygon"],
+      paint: {
+        "fill-opacity": 0.5,
+        "fill-color": "#FDE68A",
+        "fill-outline-color": "#905803",
+      },
     },
 
     ...(typeof previewProperty === "string"

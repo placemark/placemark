@@ -1,14 +1,11 @@
-import { PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
+import { ScatterplotLayer } from "@deck.gl/layers";
 import { MapboxOverlay } from "@deck.gl/mapbox";
 import { colorFromPresence } from "app/lib/color";
 import {
   CURSOR_DEFAULT,
-  DECK_LASSO_ID,
   DECK_SYNTHETIC_ID,
   DEFAULT_MAP_BOUNDS,
   emptySelection,
-  LASSO_DARK_YELLOW,
-  LASSO_YELLOW,
   LINE_COLORS_SELECTED_RGB,
   WHITE,
 } from "app/lib/constants";
@@ -16,8 +13,8 @@ import type { IDMap } from "app/lib/id_mapper";
 import loadAndAugmentStyle, {
   EPHEMERAL_SOURCE_NAME,
   FEATURES_SOURCE_NAME,
+  LASSO_SOURCE_NAME,
 } from "app/lib/load_and_augment_style";
-import { makeRectangle } from "app/lib/pmap/merge_ephemeral_state";
 import { splitFeatureGroups } from "app/lib/pmap/split_feature_groups";
 import { shallowArrayEqual } from "app/lib/utils";
 import mapboxgl from "mapbox-gl";
@@ -36,6 +33,7 @@ import type {
   LayerConfigMap,
   Point,
 } from "types";
+import { bboxToPolygon } from "../geometry";
 
 const MAP_OPTIONS: Omit<mapboxgl.MapboxOptions, "container"> = {
   style: { version: 8, layers: [], sources: {} },
@@ -285,6 +283,10 @@ export default class PMap {
       FEATURES_SOURCE_NAME,
     ) as mapboxgl.GeoJSONSource;
 
+    const lassoSource = this.map.getSource(
+      LASSO_SOURCE_NAME,
+    ) as mapboxgl.GeoJSONSource;
+
     const ephemeralSource = this.map.getSource(
       EPHEMERAL_SOURCE_NAME,
     ) as mapboxgl.GeoJSONSource;
@@ -349,23 +351,28 @@ export default class PMap {
             return id % 2 === 0 ? 5 : 3.5;
           },
         }),
-
-        ephemeralState.type === "lasso" &&
-          new PolygonLayer<number[]>({
-            id: DECK_LASSO_ID,
-            data: [makeRectangle(ephemeralState)],
-            visible: ephemeralState.type === "lasso",
-            pickable: false,
-            stroked: true,
-            filled: true,
-            lineWidthUnits: "pixels",
-            getPolygon: (d) => d,
-            getFillColor: LASSO_YELLOW,
-            getLineColor: LASSO_DARK_YELLOW,
-            getLineWidth: 1,
-          }),
       ],
     });
+
+    if (ephemeralState.type === "lasso") {
+      mSetData(
+        lassoSource,
+        [
+          {
+            geometry: bboxToPolygon([
+              ...ephemeralState.box[0],
+              ...ephemeralState.box[1],
+            ]),
+            properties: {},
+            type: "Feature",
+          },
+        ],
+        "features",
+        force,
+      );
+    } else {
+      mSetData(lassoSource, [], "features", force);
+    }
 
     this.lastData = data;
     this.updateSelections(groups.selectionIds);
