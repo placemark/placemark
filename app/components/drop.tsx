@@ -1,4 +1,4 @@
-import { getFilesFromDataTransferItems } from "@placemarkio/flat-drop-files";
+import { getFilesFromDataTransferItems } from "app/lib/flatDropFiles";
 import { groupFiles } from "app/lib/group_files";
 import type { FileWithHandle } from "browser-fs-access";
 import { captureException } from "integrations/errors";

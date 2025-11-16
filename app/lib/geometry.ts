@@ -1,4 +1,5 @@
 import turfGetBbox from "@turf/bbox";
+import type { AllGeoJSON } from "@turf/helpers";
 import type { BBox } from "geojson";
 import clamp from "lodash/clamp";
 import isEqual from "lodash/isEqual";
@@ -26,7 +27,6 @@ import type {
 } from "types";
 import { EMPTY_ARRAY } from "./constants";
 import { ConvertError } from "./errors";
-import { AllGeoJSON } from "@turf/helpers";
 
 export function formatCoordinates(pos: Pos2) {
   function n(dec: number) {

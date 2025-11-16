@@ -1,4 +1,3 @@
-import { getFilesFromDataTransferItems } from "@placemarkio/flat-drop-files";
 import {
   DownloadIcon,
   FileTextIcon,
@@ -18,6 +17,7 @@ import {
   stringToGeoJSON,
 } from "app/lib/convert";
 import type { ConvertResult } from "app/lib/convert/utils";
+import { getFilesFromDataTransferItems } from "app/lib/flatDropFiles";
 import { newFeatureId } from "app/lib/id";
 import { lib } from "app/lib/worker";
 import { fileOpen, fileSave } from "browser-fs-access";

@@ -1,14 +1,14 @@
 import distance from "@turf/distance";
-import type {
-  Feature as TurfFeature,
-  LineString as TurfLineString,
-  MultiLineString as TurfMultiLineString,
-} from "geojson";
 import nearestPointOnLine from "@turf/nearest-point-on-line";
 import polygonToLine from "@turf/polygon-to-line";
 import { e6position } from "app/lib/geometry";
 import { decodeId, newFeatureId } from "app/lib/id";
 import type { MomentInput } from "app/lib/persistence/moment";
+import type {
+  Feature as TurfFeature,
+  LineString as TurfLineString,
+  MultiLineString as TurfMultiLineString,
+} from "geojson";
 import type { MapMouseEvent, MapTouchEvent, PointLike } from "mapbox-gl";
 import { type ModeWithOptions, USelection } from "state";
 import type { Data, Sel } from "state/jotai";
