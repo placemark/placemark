@@ -61,7 +61,6 @@ const ExportInner = memo(function ExportInner({
     <PanelDetailsCollapsible title="Export" atom={panelExportOpen}>
       <Formik initialValues={{ format: "wkt" }} onSubmit={onCopy}>
         <Form className="flex items-center space-x-2">
-          {/** biome-ignore lint/correctness/useUniqueElementIds: debt */}
           <Field
             className={`${styledSelect({ size: "xs" })} w-full`}
             component="select"
