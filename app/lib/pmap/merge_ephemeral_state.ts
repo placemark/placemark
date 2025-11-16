@@ -7,6 +7,15 @@ export function makeRectangle(ephemeralState: EphemeralEditingStateLasso) {
   return [...a, 0, a[0], b[1], 0, ...b, 0, b[0], a[1], 0, ...a, 0];
 }
 
+// Same as above, but for Mapbox
+export function makeRectangleGeoJSON(
+  ephemeralState: EphemeralEditingStateLasso,
+) {
+  const [a, b] = ephemeralState.box;
+  // X, Y, Z format for deck's flattened arrays
+  return [...a, 0, a[0], b[1], 0, ...b, 0, b[0], a[1], 0, ...a, 0];
+}
+
 export function fixDegenerates(feature: Feature) {
   if (feature.geometry?.type === "Polygon") {
     const ring = feature.geometry.coordinates[0];
