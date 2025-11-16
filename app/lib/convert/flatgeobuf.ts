@@ -78,7 +78,7 @@ class CFlatGeobuf implements FileType {
         const flatgeobuf = await import("flatgeobuf/lib/mjs/geojson");
         const res = flatgeobuf.serialize(adjustForFgb(geojson));
         return {
-          blob: new Blob([res]),
+          blob: new Blob([res as Uint8Array<ArrayBuffer>]),
           name: "features.fgb",
         };
       },

@@ -281,7 +281,7 @@ class CShapefile implements FileType {
         });
 
         return {
-          blob: new Blob([zip]),
+          blob: new Blob([zip as Uint8Array<ArrayBuffer>]),
           name: "shapefile.zip",
         };
       },

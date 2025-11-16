@@ -62,7 +62,9 @@ class CKMZ implements FileType {
           );
         });
         return {
-          blob: new Blob([zipResult], { type: "application/octet-stream" }),
+          blob: new Blob([zipResult as Uint8Array<ArrayBuffer>], {
+            type: "application/octet-stream",
+          }),
           name: "features.kmz",
         };
       } catch (_e) {
