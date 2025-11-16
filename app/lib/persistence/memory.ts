@@ -4,6 +4,7 @@ import type {
   IPersistence,
   MetaPair,
   MetaUpdatesInput,
+  TransactOptions,
 } from "app/lib/persistence/ipersistence";
 import {
   EMPTY_MOMENT,
@@ -106,14 +107,16 @@ export class MemPersistence implements IPersistence {
   }
 
   useTransact() {
-    return (partialMoment: Partial<MomentInput>) => {
+    return (partialMoment: Partial<MomentInput> & TransactOptions) => {
       trackMoment(partialMoment);
       const moment: MomentInput = { ...EMPTY_MOMENT, ...partialMoment };
       const result = this.apply(moment);
-      this.store.set(
-        momentLogAtom,
-        UMomentLog.pushMoment(this.store.get(momentLogAtom), result),
-      );
+      if (!partialMoment.quiet) {
+        this.store.set(
+          momentLogAtom,
+          UMomentLog.pushMoment(this.store.get(momentLogAtom), result),
+        );
+      }
       return Promise.resolve();
     };
   }
