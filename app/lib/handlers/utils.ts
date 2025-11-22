@@ -10,18 +10,23 @@ import type {
   MultiLineString as TurfMultiLineString,
 } from "geojson";
 import type { MapMouseEvent, MapTouchEvent, PointLike } from "mapbox-gl";
+import { toast } from "react-hot-toast";
 import { type ModeWithOptions, USelection } from "state";
 import type { Data, Sel } from "state/jotai";
+import type { ROUTE_TYPE } from "state/mode";
 import type {
   Feature,
   FeatureMap,
   GeoJsonProperties,
   Geometry,
+  IWrappedFeature,
   MultiPoint,
   Position,
 } from "types";
+import { env } from "../env_client";
 import { type IDMap, UIDMap } from "../id_mapper";
 import { CLICKABLE_LAYERS } from "../load_and_augment_style";
+import type { IPersistence } from "../persistence/ipersistence";
 import type PMap from "../pmap";
 
 type PutFeature = MomentInput["putFeatures"][0];
@@ -191,3 +196,57 @@ export const getSnappingCoordinates = (
 
   return calculateSnapPosition(feature, cursorCoordinates);
 };
+
+export async function transactRoute(
+  transact: ReturnType<IPersistence["useTransact"]>,
+  wrappedFeature: IWrappedFeature,
+  routeType: ROUTE_TYPE,
+) {
+  const geometry = wrappedFeature.feature.geometry;
+  if (geometry?.type !== "GeometryCollection") return null;
+
+  const points = geometry.geometries.filter((g) => g.type === "Point");
+  const lineString = geometry.geometries.find((g) => g.type === "LineString");
+  if (!lineString || !points.length) return null;
+
+  transact({
+    note: "Added to line",
+    putFeatures: [wrappedFeature],
+  });
+
+  try {
+    const wp = points.map((p) => p.coordinates.join(",")).join(";");
+    const url = `https://api.mapbox.com/directions/v5/mapbox/${routeType}/${wp}?alternatives=false&geometries=geojson&language=en&overview=full&steps=false&access_token=${env.MAPBOX_TOKEN}`;
+    const resp = await fetch(url);
+    const j = await resp.json();
+
+    if (!j.routes?.length) {
+      if (j.message) {
+        toast.error(j.message);
+      } else {
+        toast.error("Could not get route for an unexpected reason");
+      }
+      return;
+    }
+
+    const newLineString = j.routes[0].geometry;
+
+    transact({
+      note: "Added to line",
+      putFeatures: [
+        {
+          ...wrappedFeature,
+          feature: {
+            ...wrappedFeature.feature,
+            geometry: {
+              type: "GeometryCollection",
+              geometries: [newLineString, ...points],
+            },
+          },
+        },
+      ],
+    });
+  } catch (e) {
+    toast.error(`Could not calculate a route for an unexpected reason ${e}`);
+  }
+}

@@ -93,6 +93,21 @@ export function ModeHints() {
         </ModeHint>
       );
     }
+    case Mode.DRAW_ROUTE: {
+      return (
+        <ModeHint mode={mode.mode}>
+          {selection.type === "single" ? (
+            <div>
+              Finish by hitting escape
+              <br />
+              {hold(true)}
+            </div>
+          ) : (
+            "Click to start the route, then click to add each waypoint"
+          )}
+        </ModeHint>
+      );
+    }
     case Mode.NONE: {
       if (selection.type === "single") {
         if (mode.modeOptions?.hasResizedRectangle) {

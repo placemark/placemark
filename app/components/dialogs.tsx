@@ -18,6 +18,7 @@ import { Dialog as D } from "radix-ui";
 import { memo, Suspense, useCallback } from "react";
 import { dialogAtom } from "state/jotai";
 import { match } from "ts-pattern";
+import { RouteHelpDialog } from "./dialogs/route_help";
 import {
   type B3Size,
   DefaultErrorBoundary,
@@ -57,6 +58,7 @@ export const Dialogs = memo(function Dialogs() {
     ))
     .with({ type: "cheatsheet" }, () => <CheatsheetDialog />)
     .with({ type: "circle_types" }, () => <CircleTypesDialog />)
+    .with({ type: "route_help" }, () => <RouteHelpDialog />)
     .with({ type: "circle" }, (modal) => (
       <CircleDialog modal={modal} onClose={onClose} />
     ))

@@ -68,6 +68,9 @@ type DialogState =
       type: "circle_types";
     }
   | {
+      type: "route_help";
+    }
+  | {
       type: "quickswitcher";
     }
   | {

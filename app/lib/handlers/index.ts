@@ -5,6 +5,7 @@ import { useNoneHandlers } from "app/lib/handlers/none";
 import { usePointHandlers } from "app/lib/handlers/point";
 import { usePolygonHandlers } from "app/lib/handlers/polygon";
 import { useRectangleHandlers } from "app/lib/handlers/rectangle";
+import { useRouteHandlers } from "app/lib/handlers/route";
 import { Mode } from "state/jotai";
 import type { HandlerContext } from "types";
 
@@ -13,6 +14,7 @@ export function useHandlers(handlerContext: HandlerContext) {
     [Mode.NONE]: useNoneHandlers(handlerContext),
     [Mode.DRAW_POINT]: usePointHandlers(handlerContext),
     [Mode.DRAW_LINE]: useLineHandlers(handlerContext),
+    [Mode.DRAW_ROUTE]: useRouteHandlers(handlerContext),
     [Mode.DRAW_POLYGON]: usePolygonHandlers(handlerContext),
     [Mode.DRAW_RECTANGLE]: useRectangleHandlers(handlerContext),
     [Mode.DRAW_CIRCLE]: useCircleHandlers(handlerContext),
