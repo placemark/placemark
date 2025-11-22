@@ -12,6 +12,7 @@ import { ImportNotesDialog } from "app/components/dialogs/import_notes";
 import { ImportTextDialog } from "app/components/dialogs/import_text";
 import { ImportURLDialog } from "app/components/dialogs/import_url";
 import { QuickswitcherDialog } from "app/components/dialogs/quickswitcher";
+import { ShareDialog } from "app/components/dialogs/share";
 import SimplifyDialog from "app/components/dialogs/simplify";
 import { useAtom } from "jotai";
 import { Dialog as D } from "radix-ui";
@@ -71,6 +72,7 @@ export const Dialogs = memo(function Dialogs() {
     .with({ type: "import_example" }, () => (
       <ImportExampleDialog onClose={onClose} />
     ))
+    .with({ type: "share" }, () => <ShareDialog onClose={onClose} />)
     .exhaustive();
 
   return (

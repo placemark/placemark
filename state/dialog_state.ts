@@ -77,6 +77,9 @@ type DialogState =
       type: "export";
     }
   | {
+      type: "share";
+    }
+  | {
       type: "export-svg";
     }
   | DialogStateLoadText

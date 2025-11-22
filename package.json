@@ -83,6 +83,7 @@
     "d3-color": "^3.1.0",
     "d3-dsv": "^3.0.1",
     "d3-geo": "^3.1.1",
+    "dropbox": "^10.34.0",
     "fast-json-patch": "^3.1.1",
     "fflate": "^0.8.2",
     "flatbush": "^4.4.1",
