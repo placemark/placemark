@@ -58,6 +58,7 @@ import { useSearchParams } from "wouter";
 import { Button, StyledTooltipArrow, TContent } from "./elements";
 import { FeatureEditorFolder } from "./panels/feature_editor/feature_editor_folder";
 import { Visual } from "./visual";
+import { Dropbox } from "dropbox";
 
 type ResolvedLayout = "HORIZONTAL" | "VERTICAL" | "FLOATING";
 
@@ -86,6 +87,13 @@ function UrlAPI() {
         try {
           const url = new URL(load);
           if (url.protocol === "https:") {
+            const u = URL.parse(url);
+
+            if (u && u.host === "www.dropbox.com") {
+              const dbx = new Dropbox();
+              console.log(await dbx.sharingGetSharedLinkFile({ url: load }));
+            }
+
             const res = await fetch(url);
             const buffer = await res.arrayBuffer();
             const file = new File(

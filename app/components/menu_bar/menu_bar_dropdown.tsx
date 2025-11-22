@@ -131,6 +131,13 @@ export function MenuBarDropdown() {
             >
               Export SVG
             </StyledItem>
+            <StyledItem
+              onSelect={() => {
+                setDialogState({ type: "share" });
+              }}
+            >
+              Share
+            </StyledItem>
 
             <DDSeparator />
             <DD.Sub>

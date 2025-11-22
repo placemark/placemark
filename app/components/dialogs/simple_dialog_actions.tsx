@@ -9,6 +9,7 @@ export default function SimpleDialogActions({
   fullWidthSubmit = false,
   secondary,
   variant = "md",
+  disabled = false,
 }: {
   action?: string;
   onClose?: () => void;
@@ -18,6 +19,7 @@ export default function SimpleDialogActions({
     onClick: () => void;
   };
   variant?: "md" | "xs";
+  disabled?: boolean;
 }) {
   const { isSubmitting } = useFormikContext();
   return (
@@ -33,7 +35,7 @@ export default function SimpleDialogActions({
       {action ? (
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || disabled}
           variant="primary"
           size={fullWidthSubmit ? "full-width" : "sm"}
         >
