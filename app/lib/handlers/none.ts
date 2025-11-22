@@ -22,7 +22,7 @@ import {
   Mode,
   selectionAtom,
 } from "state/jotai";
-import { modeAtom, ROUTE_TYPE } from "state/mode";
+import { modeAtom, type ROUTE_TYPE } from "state/mode";
 import type { HandlerContext } from "types";
 import { getMapCoord, getSnappingCoordinates, transactRoute } from "./utils";
 

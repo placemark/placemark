@@ -5,14 +5,15 @@ import { e6position } from "app/lib/geometry";
 import { decodeId, newFeatureId } from "app/lib/id";
 import type { MomentInput } from "app/lib/persistence/moment";
 import type {
-  Point,
   Feature as TurfFeature,
   LineString as TurfLineString,
   MultiLineString as TurfMultiLineString,
 } from "geojson";
 import type { MapMouseEvent, MapTouchEvent, PointLike } from "mapbox-gl";
+import { toast } from "react-hot-toast";
 import { type ModeWithOptions, USelection } from "state";
 import type { Data, Sel } from "state/jotai";
+import type { ROUTE_TYPE } from "state/mode";
 import type {
   Feature,
   FeatureMap,
@@ -22,13 +23,11 @@ import type {
   MultiPoint,
   Position,
 } from "types";
+import { env } from "../env_client";
 import { type IDMap, UIDMap } from "../id_mapper";
 import { CLICKABLE_LAYERS } from "../load_and_augment_style";
+import type { IPersistence } from "../persistence/ipersistence";
 import type PMap from "../pmap";
-import type { ROUTE_TYPE } from "state/mode";
-import { env } from "../env_client";
-import { IPersistence } from "../persistence/ipersistence";
-import { toast } from "react-hot-toast";
 
 type PutFeature = MomentInput["putFeatures"][0];
 

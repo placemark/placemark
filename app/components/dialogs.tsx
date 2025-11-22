@@ -18,6 +18,7 @@ import { Dialog as D } from "radix-ui";
 import { memo, Suspense, useCallback } from "react";
 import { dialogAtom } from "state/jotai";
 import { match } from "ts-pattern";
+import { RouteHelpDialog } from "./dialogs/route_help";
 import {
   type B3Size,
   DefaultErrorBoundary,
@@ -25,7 +26,6 @@ import {
   StyledDialogContent,
   StyledDialogOverlay,
 } from "./elements";
-import { RouteHelpDialog } from "./dialogs/route_help";
 
 export const Dialogs = memo(function Dialogs() {
   const [dialog, setDialogState] = useAtom(dialogAtom);
