@@ -11,6 +11,12 @@ import { MemPersistence } from "app/lib/persistence/memory";
 import { createStore, Provider } from "jotai";
 import { Tooltip as T } from "radix-ui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AutomergePersistence } from "app/lib/persistence/automerge";
+import {
+  Repo,
+  BroadcastChannelNetworkAdapter,
+  IndexedDBStorageAdapter,
+} from "@automerge/react";
 
 const queryClient = new QueryClient();
 const store = createStore();
@@ -33,6 +39,10 @@ function App() {
                   </PersistenceContext.Provider>
                 </Provider>
               </Route>
+              <Route path="/am/:id">
+                
+              <AutomergePlay />
+              </Route>
               <Route path="/converter">
                 <title>Converter</title>
                 <Converter />
@@ -46,6 +56,24 @@ function App() {
       </StrictMode>
     </Suspense>
   );
+}
+
+  const repo = new Repo({
+  network: [new BroadcastChannelNetworkAdapter()],
+  storage: new IndexedDBStorageAdapter(),
+});
+
+function AutomergePlay() {
+
+
+
+  const idMap = useRef(UIDMap.empty());
+  return <Provider store={store}>
+  <PersistenceContext.Provider value={new AutomergePersistence(idMap.current, store)}>
+  <title>Placemark Play</title>
+  <PlacemarkPlay />
+  </PersistenceContext.Provider>
+  </Provider>
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
