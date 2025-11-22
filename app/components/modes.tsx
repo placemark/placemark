@@ -1,6 +1,7 @@
 import {
   CaretDownIcon,
   CheckIcon,
+  CommitIcon,
   CursorArrowIcon,
   DotFilledIcon,
   PlusIcon,
@@ -31,9 +32,52 @@ import {
   MODE_INFO,
   Mode,
   modeAtom,
+  routeTypeAtom,
 } from "state/jotai";
-import { CIRCLE_TYPE } from "state/mode";
+import { CIRCLE_TYPE, ROUTE_TYPE } from "state/mode";
 import type { IWrappedFeature } from "types";
+
+function RouteMenu() {
+  const [routeType, setRouteType] = useAtom(routeTypeAtom);
+  const setDialogState = useSetAtom(dialogAtom);
+
+  return (
+    <div className="z-50">
+      <DD.Root>
+        <DD.Trigger asChild>
+          <Button size="xxs" variant="quiet">
+            <CaretDownIcon />
+          </Button>
+        </DD.Trigger>
+        <DDContent>
+          <DDLabel>Route type</DDLabel>
+          {[ROUTE_TYPE.DRIVING, ROUTE_TYPE.WALKING, ROUTE_TYPE.CYCLING].map(
+            (type) => (
+              <StyledItem
+                key={type}
+                onSelect={() => {
+                  setRouteType(type);
+                }}
+              >
+                <CheckIcon className={routeType === type ? "" : "opacity-0"} />
+                {type}
+              </StyledItem>
+            ),
+          )}
+          <DDSeparator />
+          <StyledItem
+            onSelect={() => {
+              setDialogState({ type: "route_help" });
+            }}
+          >
+            <QuestionMarkCircledIcon className="h-3 w-3" />{" "}
+            <span className="text-xs">Help</span>
+          </StyledItem>
+        </DDContent>
+      </DD.Root>
+    </div>
+  );
+}
 
 function CircleMenu() {
   const [circleType, setCircleType] = useAtom(circleTypeAtom);
@@ -133,6 +177,12 @@ const MODE_OPTIONS = [
     hotkey: "6",
     Icon: CircleIcon,
     Menu: CircleMenu,
+  },
+  {
+    mode: Mode.DRAW_ROUTE,
+    hotkey: "7",
+    Icon: CommitIcon,
+    Menu: RouteMenu,
   },
 ] as const;
 

@@ -25,6 +25,7 @@ import {
   StyledDialogContent,
   StyledDialogOverlay,
 } from "./elements";
+import { RouteHelpDialog } from "./dialogs/route_help";
 
 export const Dialogs = memo(function Dialogs() {
   const [dialog, setDialogState] = useAtom(dialogAtom);
@@ -57,6 +58,7 @@ export const Dialogs = memo(function Dialogs() {
     ))
     .with({ type: "cheatsheet" }, () => <CheatsheetDialog />)
     .with({ type: "circle_types" }, () => <CircleTypesDialog />)
+    .with({ type: "route_help" }, () => <RouteHelpDialog />)
     .with({ type: "circle" }, (modal) => (
       <CircleDialog modal={modal} onClose={onClose} />
     ))

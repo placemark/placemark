@@ -12,12 +12,19 @@ export enum Mode {
   DRAW_RECTANGLE = "DRAW_RECTANGLE",
   DRAW_POLYGON = "DRAW_POLYGON",
   DRAW_CIRCLE = "DRAW_CIRCLE",
+  DRAW_ROUTE = "DRAW_ROUTE",
 }
 
 export enum CIRCLE_TYPE {
   MERCATOR = "Mercator",
   GEODESIC = "Geodesic",
   DEGREES = "Degrees",
+}
+
+export enum ROUTE_TYPE {
+  DRIVING = "driving",
+  WALKING = "walking",
+  CYCLING = "cycling",
 }
 
 interface ModeOptions {
@@ -63,6 +70,7 @@ export const MODE_INFO: Record<
   [Mode.DRAW_POLYGON]: { label: "Polygon" },
   [Mode.DRAW_CIRCLE]: { label: "Circle" },
   [Mode.LASSO]: { label: "Lasso" },
+  [Mode.DRAW_ROUTE]: { label: "Route" },
 };
 
 export type ModeWithOptions = {

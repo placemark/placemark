@@ -22,9 +22,9 @@ import {
   Mode,
   selectionAtom,
 } from "state/jotai";
-import { modeAtom } from "state/mode";
+import { modeAtom, ROUTE_TYPE } from "state/mode";
 import type { HandlerContext } from "types";
-import { getMapCoord, getSnappingCoordinates } from "./utils";
+import { getMapCoord, getSnappingCoordinates, transactRoute } from "./utils";
 
 export function useNoneHandlers({
   setFlatbushInstance,
@@ -208,6 +208,22 @@ export function useNoneHandlers({
       dragTargetRef.current = null;
       void endSnapshot();
       setCursor(CURSOR_DEFAULT);
+      if (selection.type === "single") {
+        const newFeature = featureMap.get(selection.id);
+
+        if (newFeature) {
+          const typeProperty = newFeature.feature.properties?.["@type"];
+
+          if (
+            typeProperty === "route:walking" ||
+            typeProperty === "route:cycling" ||
+            typeProperty === "route:driving"
+          ) {
+            const routeType = typeProperty.split(":")[1] as ROUTE_TYPE;
+            return transactRoute(transact, newFeature, routeType);
+          }
+        }
+      }
     },
     move: (e) => {
       if (dragTargetRef.current === null) {

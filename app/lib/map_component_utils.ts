@@ -8,6 +8,7 @@ import type { EphemeralEditingStateLasso } from "state/jotai";
 import type {
   FeatureMap,
   FolderMap,
+  GeometryCollection,
   IWrappedFeature,
   LineString,
   Polygon,
@@ -36,6 +37,25 @@ export function wrappedFeaturesFromMapFeatures(
   return {
     ids,
     features: sortBy(Array.from(set), "at"),
+  };
+}
+
+export function newRouteFromClickEvent(
+  e: MouseOrTouchEvent,
+): GeometryCollection {
+  const pos = getMapCoord(e);
+  return {
+    type: "GeometryCollection",
+    geometries: [
+      {
+        type: "Point",
+        coordinates: pos,
+      },
+      {
+        type: "LineString",
+        coordinates: [pos, pos],
+      },
+    ],
   };
 }
 

@@ -1,6 +1,7 @@
 import { useCircleHandlers } from "app/lib/handlers/circle";
 import { useLassoHandlers } from "app/lib/handlers/lasso";
 import { useLineHandlers } from "app/lib/handlers/line";
+import { useRouteHandlers } from "app/lib/handlers/route";
 import { useNoneHandlers } from "app/lib/handlers/none";
 import { usePointHandlers } from "app/lib/handlers/point";
 import { usePolygonHandlers } from "app/lib/handlers/polygon";
@@ -13,6 +14,7 @@ export function useHandlers(handlerContext: HandlerContext) {
     [Mode.NONE]: useNoneHandlers(handlerContext),
     [Mode.DRAW_POINT]: usePointHandlers(handlerContext),
     [Mode.DRAW_LINE]: useLineHandlers(handlerContext),
+    [Mode.DRAW_ROUTE]: useRouteHandlers(handlerContext),
     [Mode.DRAW_POLYGON]: usePolygonHandlers(handlerContext),
     [Mode.DRAW_RECTANGLE]: useRectangleHandlers(handlerContext),
     [Mode.DRAW_CIRCLE]: useCircleHandlers(handlerContext),
