@@ -25,7 +25,7 @@ const EditWrappedFeatureCollection = z.object({
   defaultLayer: z.any(),
   access: z.any(),
   symbolization: z.any(),
-  wrappedFeatureCollectionFolderId: z.string().uuid().nullable().optional(),
+  wrappedFeatureCollectionFolderId: z.uuid().nullable().optional(),
 });
 
 export type MetaUpdatesInput = Omit<
