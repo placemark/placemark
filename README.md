@@ -1,6 +1,6 @@
 # Play
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fplacemark%2Fplacemark&env=NEXT_PUBLIC_MAPBOX_TOKEN)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fplacemark%2Fplacemark&env=VITE_PUBLIC_MAPBOX_TOKEN)
 
 At some point during Placemark development, I tried making a free-as-in-beer
 interface that supported a lot of the things that Placemark could, but for free.
@@ -42,8 +42,8 @@ pnpm install
 3. Build the package with the tokens from the previous step:
 
 ```sh
-NEXT_PUBLIC_MAPBOX_TOKEN="<your Mapbox public access token>" \
-NEXT_PUBLIC_GEOCODE_EARTH_TOKEN="<your Geocode Earth token>" \
+VITE_PUBLIC_MAPBOX_TOKEN="<your Mapbox public access token>" \
+VITE_PUBLIC_GEOCODE_EARTH_TOKEN="<your Geocode Earth token>" \
 pnpm build
 
 ```
@@ -57,5 +57,9 @@ npx serve@latest out
 5. Visit [http://localhost:3000](http://localhost:3000)
 
 If you're planning to run this often or publicly, take care to secure your
-tokens better by adding [URL restrictions to the Mapbox token](https://docs.mapbox.com/help/getting-started/access-tokens/#url-restrictions) and setting allowed Referrer Hostnames to the Geocode Earth one,
-and consider copying and revising the `.env.sample` file.
+tokens better by adding [URL restrictions to the Mapbox token](https://docs.mapbox.com/help/getting-started/access-tokens/#url-restrictions) and setting allowed Referrer Hostnames to the Geocode Earth one.
+
+For local development, copy `.env.example` to `.env.local` and add your tokens there:
+```sh
+cp .env.example .env.local
+```
