@@ -12,7 +12,7 @@ import loadAndAugmentStyle, {
 vi.mock("app/lib/env_client", () => {
   return {
     env: {
-      NEXT_PUBLIC_MAPBOX_TOKEN: "xxx",
+      MAPBOX_TOKEN: "xxx",
     },
   };
 });
