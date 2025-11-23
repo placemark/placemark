@@ -11,6 +11,7 @@ import { MemPersistence } from "app/lib/persistence/memory";
 import { createStore, Provider } from "jotai";
 import { Tooltip as T } from "radix-ui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ConnectDropbox } from "./connect_dropbox";
 
 const queryClient = new QueryClient();
 const store = createStore();
@@ -36,6 +37,10 @@ function App() {
               <Route path="/converter">
                 <title>Converter</title>
                 <Converter />
+              </Route>
+              <Route path="/connect-dropbox">
+                <title>Connect Dropbox</title>
+                <ConnectDropbox />
               </Route>
               <Route path="/secret-styleguide">
                 <StyleGuide />
