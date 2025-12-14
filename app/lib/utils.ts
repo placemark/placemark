@@ -264,9 +264,7 @@ export const formatCount = (n: number) =>
 export const formatCapitalize = (str: string) =>
   str.replace(/^\w/, (c) => c.toUpperCase());
 
-export function safeParseMaybe<T>(
-  parsed: ZodSafeParseResult<T>,
-): Maybe<T> {
+export function safeParseMaybe<T>(parsed: ZodSafeParseResult<T>): Maybe<T> {
   if (parsed.success) {
     return Just(parsed.data);
   }
