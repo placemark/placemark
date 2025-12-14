@@ -28,9 +28,8 @@ const EditWrappedFeatureCollection = z.object({
   wrappedFeatureCollectionFolderId: z.string().uuid().nullable().optional(),
 });
 
-export type MetaUpdatesInput = Omit<
-  z.infer<typeof EditWrappedFeatureCollection>,
-  "id"
+export type MetaUpdatesInput = Partial<
+  Omit<z.infer<typeof EditWrappedFeatureCollection>, "id">
 >;
 
 export type MetaPair = [

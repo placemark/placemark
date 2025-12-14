@@ -7,7 +7,7 @@ import { EitherAsync } from "purify-ts/EitherAsync";
 import { Just, type Maybe, Nothing } from "purify-ts/Maybe";
 import type { Promisable } from "type-fest";
 import type { ILayerConfig } from "types";
-import type { SafeParseReturnType, z } from "zod";
+import type { ZodSafeParseResult, z } from "zod";
 
 /**
  * Used for the "title" tag so that if we change
@@ -264,9 +264,7 @@ export const formatCount = (n: number) =>
 export const formatCapitalize = (str: string) =>
   str.replace(/^\w/, (c) => c.toUpperCase());
 
-export function safeParseMaybe<T>(
-  parsed: SafeParseReturnType<unknown, T>,
-): Maybe<T> {
+export function safeParseMaybe<T>(parsed: ZodSafeParseResult<T>): Maybe<T> {
   if (parsed.success) {
     return Just(parsed.data);
   }
