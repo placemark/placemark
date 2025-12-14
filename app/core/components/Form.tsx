@@ -1,10 +1,10 @@
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
 import { InlineError } from "app/components/inline_error";
-import type { FormikHelpers, FormikProps } from "formik";
+import type { FormikErrors, FormikHelpers, FormikProps } from "formik";
 import { Formik } from "formik";
 import type { PropsWithoutRef, ReactNode } from "react";
 import { useState } from "react";
-import type { z } from "zod";
+import { z } from "zod";
 
 interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<
@@ -47,12 +47,12 @@ export function Form<S extends z.ZodType<any, any>>({
   const [formError, setFormError] = useState<string | null>(null);
   return (
     <Formik
-      initialValues={initialValues || {}}
+      initialValues={initialValues || ({} as z.infer<S>)}
       validate={(values) => {
         if (!schema) return;
         const res = schema.safeParse(values);
         if (res.success === false) {
-          return res.error.formErrors.fieldErrors;
+          return z.flattenError(res.error).fieldErrors;
         }
       }}
       validateOnChange={false}
@@ -60,7 +60,7 @@ export function Form<S extends z.ZodType<any, any>>({
       onSubmit={async (values, helpers) => {
         const { setErrors } = helpers;
         const { FORM_ERROR, ...otherErrors } =
-          (await onSubmit(values, helpers)) || {};
+          (await onSubmit(values, helpers)) || ({} as OnSubmitResult);
 
         if (FORM_ERROR) {
           setFormError(FORM_ERROR);
@@ -69,7 +69,7 @@ export function Form<S extends z.ZodType<any, any>>({
         }
 
         if (Object.keys(otherErrors).length > 0) {
-          setErrors(otherErrors);
+          setErrors(otherErrors as FormikErrors<z.infer<S>>);
         }
       }}
     >
