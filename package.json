@@ -94,7 +94,7 @@
     "iconv-lite": "^0.7.0",
     "jotai": "^2.12.5",
     "jotai-optics": "^0.4.0",
-    "jotai-xstate": "^0.3.0",
+    "jotai-xstate": "^0.6.1",
     "lodash": "^4.17.21",
     "mapbox-gl": "^3.16.0",
     "memoize-one": "^6.0.0",

@@ -228,8 +228,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(jotai@2.12.5(@types/react@19.2.5)(react@19.2.0))(optics-ts@2.4.1)
       jotai-xstate:
-        specifier: ^0.3.0
-        version: 0.3.0(jotai@2.12.5(@types/react@19.2.5)(react@19.2.0))(xstate@4.38.3)
+        specifier: ^0.6.1
+        version: 0.6.1(jotai@2.12.5(@types/react@19.2.5)(react@19.2.0))(xstate@4.38.3)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -3338,11 +3338,11 @@ packages:
       jotai: '>=2.0.0'
       optics-ts: '>=2.0.0'
 
-  jotai-xstate@0.3.0:
-    resolution: {integrity: sha512-ImMTwkT8e2Ld3KBUtisjtzTgtg4jgeAoFzwVZgDCoDkYsYgmE8NatEwBoz63BTmpg+EKOYkDxd6QmrAT9a2TBw==}
+  jotai-xstate@0.6.1:
+    resolution: {integrity: sha512-graSDsorui1a4Zt4jCJ40GuOzOkfOY317XcazYnNx0EHS+D/rOr4aLzZRy0NLaPQZsypfcGSMbNCwksfhwkixA==}
     peerDependencies:
-      jotai: '>=1.11.0'
-      xstate: '*'
+      jotai: '>=2.0.0'
+      xstate: '>=5.0.0'
 
   jotai@2.12.5:
     resolution: {integrity: sha512-G8m32HW3lSmcz/4mbqx0hgJIQ0ekndKWiYP7kWVKi0p6saLXdSoye+FZiOFyonnd7Q482LCzm8sMDl7Ar1NWDw==}
@@ -4600,6 +4600,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -7895,7 +7896,7 @@ snapshots:
       jotai: 2.12.5(@types/react@19.2.5)(react@19.2.0)
       optics-ts: 2.4.1
 
-  jotai-xstate@0.3.0(jotai@2.12.5(@types/react@19.2.5)(react@19.2.0))(xstate@4.38.3):
+  jotai-xstate@0.6.1(jotai@2.12.5(@types/react@19.2.5)(react@19.2.0))(xstate@4.38.3):
     dependencies:
       jotai: 2.12.5(@types/react@19.2.5)(react@19.2.0)
       xstate: 4.38.3
