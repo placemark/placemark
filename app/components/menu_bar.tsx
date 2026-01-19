@@ -1,5 +1,4 @@
 import {
-  EnvelopeClosedIcon,
   GitHubLogoIcon,
   KeyboardIcon,
   ReaderIcon,
@@ -65,13 +64,6 @@ function HelpDot() {
           }}
         >
           <ReaderIcon /> Documentation
-        </StyledItem>
-        <StyledItem
-          onSelect={() => {
-            window.open("https://confirmsubscription.com/h/y/13501B63095BB913");
-          }}
-        >
-          <EnvelopeClosedIcon /> Sign up for updates
         </StyledItem>
       </DDContent>
     </DD.Root>
