@@ -171,7 +171,7 @@ export function simplify(
   const circleProp = getCircleProp(feature);
 
   if (circleProp && feature.properties) {
-    delete feature.properties['@circle'];
+    delete feature.properties["@circle"];
   }
   return {
     ...feature,
