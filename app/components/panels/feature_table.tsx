@@ -300,15 +300,18 @@ function FeatureTableInner({ data }: { data: Data }) {
   const estimateSize = useCallback(
     (index: number) => {
       switch (index) {
-        case 0:
+        case 0: {
           return 120;
-        case columns.length + 1:
+        }
+        case columns.length + 1: {
           return 50;
-        default:
+        }
+        default: {
           return (
             (columnWidths.get(columns[index - 1])?.width ||
               NARROW_COLUMN_WIDTH) + WIDGET_WIDTH
           );
+        }
       }
     },
     [columnWidths],
@@ -334,6 +337,14 @@ function FeatureTableInner({ data }: { data: Data }) {
   });
 
   useEffect(() => {
+    // We update the `estimateSize` method when someone resizes a column, but
+    // useVirtualizer does not automatically re-render when the identity of that
+    // function changes. So this explicitly triggers a re-measure when
+    // someone drags a column resizer.
+    columnVirtualizer.measure();
+  }, [columnWidths]);
+
+  useEffect(() => {
     if (selectionType === "single" && lastSelectionId.current !== selectionId) {
       rowVirtualizer.scrollToIndex(
         features.findIndex((wrappedFeature) => {
@@ -353,11 +364,12 @@ function FeatureTableInner({ data }: { data: Data }) {
   const onResize = useCallback((column: string, delta: number) => {
     setColumnWidths((oldValue) => {
       const newValue = new Map(oldValue);
+      const width = clampColumnWidth(
+        (newValue.get(column)?.width || NARROW_COLUMN_WIDTH) + delta,
+        false,
+      );
       newValue.set(column, {
-        width: clampColumnWidth(
-          (newValue.get(column)?.width || NARROW_COLUMN_WIDTH) + delta,
-          false,
-        ),
+        width,
       });
       return newValue;
     });
@@ -560,7 +572,7 @@ function FeatureTableInner({ data }: { data: Data }) {
         onKeyUp={onArrow}
       >
         <div
-          className="relative w-full sticky top-0 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 z-50"
+          className="w-full sticky top-0 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 z-50"
           style={{
             height: HEIGHT,
             width: `${columnVirtualizer.getTotalSize()}px`,
