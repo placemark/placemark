@@ -60,7 +60,7 @@ function HelpDot() {
         </StyledItem>
         <StyledItem
           onSelect={() => {
-            window.open("https://www.placemark.io/documentation-index");
+            window.open("https://placemark.github.io/docs/");
           }}
         >
           <ReaderIcon /> Documentation
