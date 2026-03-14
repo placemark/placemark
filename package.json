@@ -130,6 +130,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.6",
+    "@changesets/cli": "^2.30.0",
     "@mapbox/mapbox-gl-style-spec": "^14.18.0",
     "@types/d3-dsv": "^3.0.7",
     "@types/deep-freeze": "^0.1.5",
@@ -155,5 +156,7 @@
     "node": ">=22.19.0",
     "pnpm": ">=10.0.0"
   },
-  "publishConfig": {"access": "public"}
+  "publishConfig": {
+    "access": "public"
+  }
 }
