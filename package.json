@@ -1,7 +1,6 @@
 {
   "name": "@placemarkio/play",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
