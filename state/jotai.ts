@@ -301,6 +301,8 @@ export const tabAtom = atom<TabOption>(TabOption.Feature);
 export type VirtualColumns = string[];
 export const virtualColumnsAtom = atom<VirtualColumns>([]);
 
+export type SortOption = { column: string, direction: 'asc' | 'desc' }
+
 export interface FilterOptions {
   column: string | null;
   search: string | null;
@@ -308,6 +310,7 @@ export interface FilterOptions {
   geometryType: string | null;
   folderId: IFolder["id"] | null;
   exact: boolean;
+  sort: SortOption | null
 }
 
 export const initialFilterValues: FilterOptions = {
@@ -317,6 +320,7 @@ export const initialFilterValues: FilterOptions = {
   geometryType: null,
   folderId: null,
   exact: false,
+  sort: null
 };
 
 export const tableFilterAtom = atom<FilterOptions>(initialFilterValues);
