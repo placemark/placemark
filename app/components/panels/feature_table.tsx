@@ -40,6 +40,7 @@ import {
   type FilterOptions,
   initialFilterValues,
   selectionAtom,
+  SortOption,
   splitsAtom,
   tableFilterAtom,
   virtualColumnsAtom,
@@ -149,6 +150,25 @@ export function measureColumn(column: string, featureMap: Data["featureMap"]) {
     }
   }
   return clampColumnWidth(maxLength * CHAR_WIDTH, true);
+}
+
+function sortFeatures({
+  features,
+  sort,
+}: {
+  features: IWrappedFeature[];
+  sort: SortOption | null;
+}) {
+  if (!sort) return features;
+  return features.sort((a, b) => {
+    let ap = a.feature.properties?.[sort.column];
+    let bp = b.feature.properties?.[sort.column];
+    if (ap === undefined && bp === undefined) return a.at > b.at ? -1 : 1;
+    ap ??= "";
+    bp ??= "";
+    if (sort.direction === "desc") return ap > bp ? -1 : 1;
+    return bp > ap ? -1 : 1;
+  });
 }
 
 export function filterFeatures({
@@ -294,7 +314,7 @@ function FeatureTableInner({ data }: { data: Data }) {
       columns,
       featureMap: data.featureMap,
     });
-    return features;
+    return sortFeatures({ features, sort: filter.sort });
   }, [filter, columns, data]);
 
   const estimateSize = useCallback(
