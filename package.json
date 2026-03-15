@@ -1,5 +1,6 @@
 {
   "name": "@placemarkio/play",
+  "description": "Geospatial data editor and multi-tool",
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
@@ -8,6 +9,11 @@
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "knip": "knip"
+  },
+  "author": "Tom MacWright <tom@macwright.com> (https://macwright.com/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/placemark/placemark"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
