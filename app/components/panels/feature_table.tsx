@@ -160,7 +160,7 @@ function sortFeatures({
   sort: SortOption | null;
 }) {
   if (!sort) return features;
-  return features.sort((a, b) => {
+  return features.toSorted((a, b) => {
     let ap = a.feature.properties?.[sort.column];
     let bp = b.feature.properties?.[sort.column];
     if (ap === undefined && bp === undefined) return a.at > b.at ? -1 : 1;

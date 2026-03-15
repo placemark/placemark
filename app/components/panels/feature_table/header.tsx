@@ -149,7 +149,7 @@ export const Header = memo(function Header({
   function setSort(direction: "asc" | "desc") {
     setFilter((filter) => {
       if (
-        filter.sort?.direction === column &&
+        filter.sort?.column === column &&
         filter.sort?.direction === direction
       ) {
         return {
@@ -180,15 +180,7 @@ export const Header = memo(function Header({
               filter.sort?.column === column ? "bg-purple-100 font-bold" : "",
             )}
           >
-            <div
-              title={column}
-              className={clsx(
-                "truncate flex-auto",
-                filter.sort?.column === column ? "font-bold" : "",
-              )}
-            >
-              {column}
-            </div>
+            <div title={column}>{column}</div>
             {filter.sort?.column === column ? (
               filter.sort?.direction === "asc" ? (
                 <DoubleArrowUpIcon className="w-3 h-3" />
@@ -214,6 +206,12 @@ export const Header = memo(function Header({
               Sort asc
             </E.StyledItem>
             <E.StyledItem
+              className={
+                filter.sort?.direction === "desc" &&
+                filter.sort.column === column
+                  ? "bg-purple-200 font-bold"
+                  : ""
+              }
               onSelect={(_e) => {
                 setSort("desc");
               }}
