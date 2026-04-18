@@ -69,6 +69,7 @@ function setAutodetectedFields(
   setFieldValue("csvOptions.latitudeHeader", detected.latitudeHeader);
   // Zip
   setFieldValue("csvOptions.zipHeader", detected.zipHeader);
+  setFieldValue("csvOptions.h3Header", detected.h3Header);
   setFieldValue("csvOptions.geocodingType", detected.geocodingType);
   // Single column
   setFieldValue(
@@ -133,6 +134,18 @@ function ZipHeaders({ columns }: { columns: Columns }) {
       <SelectHeader
         label="ZIP code column"
         name="csvOptions.zipHeader"
+        columns={columns}
+      />
+    </div>
+  );
+}
+
+function H3Headers({ columns }: { columns: Columns }) {
+  return (
+    <div className="col-span-2">
+      <SelectHeader
+        label="H3 column"
+        name="csvOptions.h3Header"
         columns={columns}
       />
     </div>
@@ -337,6 +350,9 @@ function HeaderSelections({
     }
     case "zip": {
       return <ZipHeaders columns={columns} />;
+    }
+    case "h3": {
+      return <H3Headers columns={columns} />;
     }
     case "addresses": {
       return <HeaderSelectionsAddresses columns={columns} values={values} />;
