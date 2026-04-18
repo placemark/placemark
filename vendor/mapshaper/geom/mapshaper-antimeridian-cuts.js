@@ -98,7 +98,7 @@ function reconnectSplitParts(parts) {
     var ring = addPartToRing(part, []);
     if (ring) {
       if (!isClosedPath(ring)) {
-        error("Generated an open ring");
+        error("Generated an open ring-3");
       }
       rings.push(ring);
     } else {

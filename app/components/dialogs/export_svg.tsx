@@ -332,7 +332,7 @@ export function ExportSVGDialog() {
       >
         <Form>
           <div className="pt-4 space-y-2 text-sm">
-            <div className="grid grid-cols-2 gap-2 p-2 border border-gray-200 rounded">
+            <div className="grid grid-cols-2 gap-2 p-2 border border-gray-200 rounded-sm">
               <label className="flex items-center gap-x-2">
                 <StyledField
                   type="number"

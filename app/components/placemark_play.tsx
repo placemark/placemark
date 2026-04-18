@@ -319,7 +319,7 @@ function DraggableMap({
     <div
       className={clsx(
         layout === "FLOATING"
-          ? "overflow-hidden absolute w-64 h-64 flex z-50 rounded border border-gray-500 shadow-lg"
+          ? "overflow-hidden absolute w-64 h-64 flex z-50 rounded-sm border border-gray-500 shadow-lg"
           : "relative flex-auto flex flex-col",
       )}
       ref={(elem) => {

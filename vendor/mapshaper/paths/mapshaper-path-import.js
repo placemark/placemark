@@ -130,13 +130,13 @@ export function PathImporter(opts) {
   this.importRing = function (points, isHole) {
     var area = geom.getPlanarPathArea2(points);
     if (!area || points.length < 4) {
-      verbose("Skipping a defective ring");
+      verbose("Skipping a defective ring-3");
       return;
     }
     setShapeType("polygon");
     if ((isHole === true && area > 0) || (isHole === false && area < 0)) {
       // GeoJSON rings may be either direction -- no point in logging reversal
-      // verbose("Reversing", isHole ? "a CW hole" : "a CCW ring");
+      // verbose("Reversing", isHole ? "a CW hole" : "a CCW ring-3");
       points.reverse();
     }
     this.importPath(points);

@@ -274,7 +274,7 @@ function CustomError({ children }: React.PropsWithChildren<unknown>) {
       role="alert"
       className="pb-4 text-md flex items-start gap-x-1 text-red-700 dark:text-red-300"
     >
-      <InfoCircledIcon className="flex-shrink-0" style={{ marginTop: 2 }} />
+      <InfoCircledIcon className="shrink-0" style={{ marginTop: 2 }} />
       Sorry, couldn’t convert that - that file might not be valid, or the
       correct type. ({Array.isArray(children) ? children.join(", ") : children})
     </div>
@@ -538,7 +538,7 @@ function ErrorState({ error }: { error: Error | null }) {
     <div className="max-w-xl w-full">
       <div
         className={`rounded-lg transition-all
-          shadow-sm
+          shadow-xs
           p-10 bg-white self-center justify-center text-sm flex
           flex-col
           items-center
@@ -607,7 +607,7 @@ export function Converter() {
             </div>
           )}
           <div
-            className={`transition-all p-10 bg-white border border-gray-300 rounded-md shadow-sm
+            className={`transition-all p-10 bg-white border border-gray-300 rounded-md shadow-xs
             ${state.matches("dragging") ? "scale-110" : ""}
             `}
           >

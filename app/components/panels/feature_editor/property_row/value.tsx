@@ -175,7 +175,7 @@ function triggerStyle(even: boolean) {
     px-1 py-1
     hover:bg-gray-100 dark:hover:bg-gray-900
     aria-expanded:bg-gray-100 dark:aria-expanded:bg-gray-900
-    rounded-sm`;
+    rounded-xs`;
 }
 
 const StyledTabTrigger = classed(Tabs.Trigger)(`px-2 py-1 text-xs 
@@ -337,7 +337,7 @@ function RichTextEditorInner(props: PropertyInputProps) {
     <div className="relative" data-handle-drop>
       {editor && (
         <BubbleMenu
-          className="flex rounded px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs gap-x-2"
+          className="flex rounded-sm px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs gap-x-2"
           tippyOptions={{ duration: 100 }}
           editor={editor}
         >
@@ -414,7 +414,7 @@ function RichTextEditorInner(props: PropertyInputProps) {
 
       {editor && (
         <FloatingMenu
-          className="flex rounded px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs gap-x-2"
+          className="flex rounded-sm px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs gap-x-2"
           tippyOptions={{ duration: 100 }}
           editor={editor}
         >
