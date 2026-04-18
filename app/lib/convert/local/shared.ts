@@ -26,6 +26,9 @@ export async function unzip(file: ArrayBuffer) {
     });
   });
 }
+export const EnforcedH3Options = z.object({
+  h3Header: z.string(),
+});
 
 export const EnforcedWKTOptions = z.object({
   geometryHeader: z.string(),
@@ -152,6 +155,29 @@ export function castRowZip(
   return null;
 }
 
+export async function castRowH3(
+  row: JsonObject,
+  options: z.infer<typeof EnforcedH3Options>,
+): Promise<Feature | null> {
+  const { cellToBoundary, isValidCell } = await import("h3-js");
+  const { h3Header } = options;
+  const h3Value = String(row[h3Header]);
+  delete row[""];
+  if (!isValidCell(h3Value)) {
+    return null;
+  }
+  const coords = cellToBoundary(h3Value, true);
+  return Maybe.fromNullable(coords).mapOrDefault((coordinates): Feature => {
+    return {
+      type: "Feature",
+      properties: row,
+      geometry: {
+        type: "Polygon",
+        coordinates: [coordinates],
+      },
+    };
+  }, null);
+}
 function safeParse(value: JsonValue | undefined) {
   if (typeof value === "number") return value;
   if (typeof value !== "string") return NaN;
