@@ -57,7 +57,7 @@ export default function MenuAction({
         <div
           className={`h-10 w-8 ${
             disabled ? "opacity-50" : ""
-          } group bn flex items-stretch py-1 focus:outline-none`}
+          } group bn flex items-stretch py-1 focus:outline-hidden`}
         >
           <Tooltip.Trigger asChild>
             <Button

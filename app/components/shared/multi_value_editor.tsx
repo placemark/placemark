@@ -38,7 +38,7 @@ function ValueList({ pair, onAccept }: Omit<MultiValueProps, "x" | "y">) {
       <div className="pb-2 text-xs">Existing values</div>
       <div ref={parentRef} className="h-32 overflow-y-auto">
         <div
-          className="w-full relative rounded"
+          className="w-full relative rounded-sm"
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
           }}

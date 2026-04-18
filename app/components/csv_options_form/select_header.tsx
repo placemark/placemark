@@ -16,7 +16,7 @@ export function SelectHeader({
     <label className="flex flex-col justify-stretch gap-y-2">
       <StyledLabelSpan>{label}</StyledLabelSpan>
       {columns.length === 0 ? (
-        <div className="block w-full p-1 text-sm text-gray-700 dark:text-white dark:bg-transparent truncate bg-gray-100 border border-gray-300 rounded-sm cursor-not-allowed">
+        <div className="block w-full p-1 text-sm text-gray-700 dark:text-white dark:bg-transparent truncate bg-gray-100 border border-gray-300 rounded-xs cursor-not-allowed">
           No columns detected
         </div>
       ) : (

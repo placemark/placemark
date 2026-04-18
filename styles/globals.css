@@ -1,6 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@config '../tailwind.config.js';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 .mapboxgl-ctrl-attrib.mapboxgl-compact {
   min-height: 24px !important;
@@ -56,29 +74,29 @@ details summary::-webkit-details-marker {
 }
 
 :root {
-  --highlight-purple: theme("colors.purple.500");
-  --highlight-dark-purple: theme("colors.purple.700");
-  --highlight-yellow: theme("colors.yellow.500");
-  --highlight-dark-yellow: theme("colors.yellow.500");
-  --highlight-gray: theme("colors.gray.300");
-  --highlight-dark-gray: theme("colors.gray.500");
-  --highlight-light-gray: theme("colors.purple.100");
-  --highlight-tooltip-text: theme("colors.black");
-  --highlight-background: theme("colors.white");
-  --cm-font: theme("fontFamily.mono");
+  --highlight-purple: var(--color-purple-500);
+  --highlight-dark-purple: var(--color-purple-700);
+  --highlight-yellow: var(--color-yellow-500);
+  --highlight-dark-yellow: var(--color-yellow-500);
+  --highlight-gray: var(--color-gray-300);
+  --highlight-dark-gray: var(--color-gray-500);
+  --highlight-light-gray: var(--color-purple-100);
+  --highlight-tooltip-text: var(--color-black);
+  --highlight-background: var(--color-white);
+  --cm-font: var(--font-mono);
 }
 
 .dark {
-  --highlight-purple: theme("colors.purple.300");
-  --highlight-dark-purple: theme("colors.purple.100");
-  --highlight-yellow: theme("colors.yellow.100");
-  --highlight-dark-yellow: theme("colors.yellow.300");
-  --highlight-gray: theme("colors.gray.300");
-  --highlight-dark-gray: theme("colors.gray.500");
-  --highlight-light-gray: theme("colors.gray.700");
-  --highlight-background: theme("colors.gray.800");
-  --highlight-tooltip-text: theme("colors.white");
-  --cm-font: theme("fontFamily.mono");
+  --highlight-purple: var(--color-purple-300);
+  --highlight-dark-purple: var(--color-purple-100);
+  --highlight-yellow: var(--color-yellow-100);
+  --highlight-dark-yellow: var(--color-yellow-300);
+  --highlight-gray: var(--color-gray-300);
+  --highlight-dark-gray: var(--color-gray-500);
+  --highlight-light-gray: var(--color-gray-700);
+  --highlight-background: var(--color-gray-800);
+  --highlight-tooltip-text: var(--color-white);
+  --cm-font: var(--font-mono);
 }
 
 .cm-editor.cm-focused {
@@ -95,7 +113,7 @@ details summary::-webkit-details-marker {
  */
 
 .properties-tab {
-  @apply py-0.5 px-1 text-xs cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-sm;
+  @apply py-0.5 px-1 text-xs cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xs;
 }
 
 .properties-tab[data-state="active"] {
@@ -128,8 +146,8 @@ details summary::-webkit-details-marker {
 }
 
 body.dark .mapboxgl-ctrl-group {
-  background-color: theme("colors.gray.800");
-  box-shadow: 0 0 0 1px theme("colors.gray.500");
+  background-color: var(--color-gray-800);
+  box-shadow: 0 0 0 1px var(--color-gray-500);
 }
 
 body.dark .mapboxgl-ctrl button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon {
@@ -158,7 +176,7 @@ body.dark .mapboxgl-ctrl-attrib-button {
 
 .placemark-scrollbar::-webkit-scrollbar-thumb {
   @apply bg-gray-400 dark:bg-gray-100;
-  @apply hover:bg-gray-500 hover:dark:bg-white;
+  @apply hover:bg-gray-500 dark:hover:bg-white;
 }
 
 .placemark-scrollbar::-webkit-scrollbar {
@@ -182,7 +200,7 @@ body.dark .mapboxgl-ctrl-attrib-button {
     overflow-auto
     p-2
     border
-    border-gray-300 dark:border-gray-500 rounded
+    border-gray-300 dark:border-gray-500 rounded-sm
     dark:bg-gray-800 dark:text-white;
 
   > * + * {

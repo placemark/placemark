@@ -60,7 +60,7 @@ function debugBufferDivision(lyr, nodes) {
     divide(shp, cw, ccw);
     cw.forEach(function (ring) {
       shapes2.push([ring]);
-      records.push({ type: "ring" });
+      records.push({ type: "ring-3" });
     });
     ccw.forEach(function (hole) {
       shapes2.push([reversePath(hole)]);

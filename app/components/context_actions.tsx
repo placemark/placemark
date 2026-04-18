@@ -24,7 +24,7 @@ export function ToolbarTrigger({
     <div
       className="h-10 w-12 p-1
           group bn
-          flex items-stretch justify-center focus:outline-none"
+          flex items-stretch justify-center focus:outline-hidden"
     >
       <T.Trigger asChild {...props}>
         <DD.Trigger asChild>
@@ -77,7 +77,7 @@ export default function ContextActions() {
             <div
               className="h-10 w-10 p-1
                   group bn
-                  flex items-stretch justify-center focus:outline-none"
+                  flex items-stretch justify-center focus:outline-hidden"
             >
               <P.Trigger asChild aria-label="Measurements">
                 <E.Button variant="quiet">

@@ -34,7 +34,7 @@ function Tab({
       onClick={onClick}
       aria-selected={active}
       className={clsx(
-        "text-left text-sm py-1 px-3 focus:outline-none",
+        "text-left text-sm py-1 px-3 focus:outline-hidden",
         active
           ? "text-black dark:text-white"
           : `

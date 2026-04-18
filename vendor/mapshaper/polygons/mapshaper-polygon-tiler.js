@@ -103,7 +103,7 @@ export function PolygonTiler(mosaic, arcTileIndex, nodes, opts) {
     if (arcs.arcIsContained(absArcId(arcId), currRingBbox) === false) {
       // don't cross boundary of the current ring or of any hole in the current shape
       // TODO: this indicates a geometry bug that should be fixed
-      debug("Out-of-bounds ring arc", arcId);
+      debug("Out-of-bounds ring-3 arc", arcId);
       return -1;
     }
     visitedTileIndex.setId(tileId);

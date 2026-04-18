@@ -202,7 +202,7 @@ export function useActions(
   const innerRingAction = {
     icon: <MaskOnIcon />,
     applicable: canInnerRingResult === CanInnerRingResult.Yes,
-    label: "Add inner ring to polygon",
+    label: "Add inner ring-3 to polygon",
     onSelect: async function doAddInnerRing() {
       return await addInnerRing(
         selectedFeatures[0] as IFeature<Polygon>,
@@ -213,7 +213,7 @@ export function useActions(
         },
         Right(features) {
           return transact({
-            note: "Added an innner ring to a polygon",
+            note: "Added an innner ring-3 to a polygon",
             track: "operation-add-polygon-inner-ring",
             deleteFeatures: [
               selectedWrappedFeatures[0].id,
