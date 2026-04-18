@@ -13,10 +13,12 @@ import type { Feature, FeatureCollection } from "types";
 import {
   castRowGeocode,
   castRowGeoJSON,
+  castRowH3,
   castRowLonLat,
   castRowPolyline,
   castRowWKT,
   castRowZip,
+  EnforcedH3Options,
   EnforcedLonLatOptions,
   EnforcedWKTOptions,
   EnforcedZipOptions,
@@ -31,6 +33,7 @@ interface Scores {
   countryScore: number;
   countyScore: number;
   postalcodeScore: number;
+  h3Score: number;
 }
 
 type ColumnWithScore = {
@@ -86,6 +89,7 @@ export function detectColumns(columns: string[]): ImportOptions["csvOptions"] {
       countyScore: scoreColumn(column, /county?/gi),
       postalcodeScore: scoreColumn(column, /(postalcode|postcode|post)?/gi),
       zipScore: scoreColumn(column, /zip/gi),
+      h3Score: scoreColumn(column, /h3/gi),
     };
   });
 
@@ -100,6 +104,7 @@ export function detectColumns(columns: string[]): ImportOptions["csvOptions"] {
   const latitudeHeader = sortByScore(columnsWithScores, "latitudeScore");
   const longitudeHeader = sortByScore(columnsWithScores, "longitudeScore");
   const zipHeader = sortByScore(columnsWithScores, "zipScore");
+  const h3Header = sortByScore(columnsWithScores, "h3Score");
 
   const addressHeader = sortByScore(columnsWithScores, "addressScore");
   const localityHeader = sortByScore(columnsWithScores, "localityScore");
@@ -118,10 +123,12 @@ export function detectColumns(columns: string[]): ImportOptions["csvOptions"] {
       ? "polyline"
       : hasWktColumn
         ? "wkt"
-        : latitudeHeader?.column === longitudeHeader?.column ||
-            goodZipHeaders.has(zipHeader?.column?.toLowerCase())
-          ? "zip"
-          : "lonlat",
+        : h3Header?.column
+          ? "h3"
+          : latitudeHeader?.column === longitudeHeader?.column ||
+              goodZipHeaders.has(zipHeader?.column?.toLowerCase())
+            ? "zip"
+            : "lonlat",
     delimiter: ",",
     latitudeHeader: latitudeHeader?.column || singleColumn,
     longitudeHeader: longitudeHeader?.column || singleColumn,
@@ -135,6 +142,7 @@ export function detectColumns(columns: string[]): ImportOptions["csvOptions"] {
     sheet: "",
     autoType: true,
     zipHeader: zipHeader?.column || singleColumn,
+    h3Header: h3Header?.column || singleColumn,
     geocodingBehavior: GeocodingBehavior.NULL_GEOMETRY,
     geocodingType: countryHeader ? "structured" : "search",
     geocodingHeaders: {
@@ -184,6 +192,7 @@ export async function csvToGeoJSON(
     case "wkt":
     case "join":
     case "polyline":
+    case "h3":
     case "lonlat": {
       break;
     }
@@ -238,6 +247,16 @@ export async function csvToGeoJSON(
           castRow,
           zipDb!,
           EnforcedZipOptions.parse(options),
+        );
+        if (feature) {
+          features.push(feature);
+        }
+        break;
+      }
+      case "h3": {
+        const feature = await castRowH3(
+          castRow,
+          EnforcedH3Options.parse(options),
         );
         if (feature) {
           features.push(feature);

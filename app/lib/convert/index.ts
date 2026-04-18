@@ -57,6 +57,7 @@ export const CSV_KINDS = [
     label: "Coordinates",
   },
   { value: "zip", label: "ZIP Codes" },
+  { value: "h3", label: "H3 Column" },
   { value: "wkt", label: "WKT Column" },
   { value: "geojson", label: "GeoJSON Column" },
   { value: "join", label: "Join to geodata" },
@@ -77,6 +78,7 @@ export const DEFAULT_IMPORT_OPTIONS: Omit<ImportOptions, "type"> = {
     joinTargetHeader: "",
     geometryHeader: "",
     zipHeader: "",
+    h3Header: "",
     kind: "lonlat",
     autoType: true,
     delimiter: ",",
@@ -116,6 +118,7 @@ export interface ImportOptions {
     /** For WKT / GeoJSON kind */
     geometryHeader: string | null;
     zipHeader: string | null;
+    h3Header: string | null;
     kind: (typeof CSV_KINDS)[number]["value"];
     delimiter: (typeof CSV_DELIMITERS)[number]["value"];
     autoType: boolean;

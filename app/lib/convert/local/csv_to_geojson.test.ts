@@ -108,6 +108,46 @@ Null island;0;0`,
     ).resolves.toEqual(output);
   });
 
+  it("handles h3 values", async () => {
+    await expect(
+      csvToGeoJSON(
+        `name,h3
+Null island,8928308280fffff`,
+        {
+          ...DEFAULT_IMPORT_OPTIONS.csvOptions,
+          delimiter: ",",
+          autoType: true,
+          h3Header: "h3",
+          sheet: "",
+          kind: "h3",
+        },
+        noop,
+      ),
+    ).resolves.toEqual({
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          properties: { name: "Null island" },
+          geometry: {
+            type: "Polygon",
+            coordinates: [
+              [
+                [-122.41719971841658, 37.775197782893386],
+                [-122.41612835779266, 37.77688044840227],
+                [-122.41738797617619, 37.77838500493093],
+                [-122.41971895414808, 37.77820687262238],
+                [-122.4207902454188, 37.776524206993216],
+                [-122.41953062807342, 37.77501967379261],
+                [-122.41719971841658, 37.775197782893386],
+              ],
+            ],
+          },
+        },
+      ],
+    });
+  });
+
   it("casts types", async () => {
     const geojson = await csvToGeoJSON(
       `name;count;n;latitude;longitude
@@ -138,6 +178,7 @@ describe("detect columns", () => {
       latitudeHeader: "lat",
       longitudeHeader: "lon",
       zipHeader: "",
+      h3Header: "",
       joinSourceHeader: "",
       joinTargetHeader: "",
       geometryHeader: "",
@@ -180,6 +221,7 @@ describe("detect columns", () => {
       latitudeHeader: "latitude",
       longitudeHeader: "lon",
       zipHeader: "",
+      h3Header: "",
       joinSourceHeader: "",
       joinTargetHeader: "",
       geometryHeader: "",
@@ -211,7 +253,37 @@ describe("detect columns", () => {
       joinTargetHeader: "",
       geometryHeader: "",
       zipHeader: "zip code",
+      h3Header: "",
       kind: "zip",
+      geocodingBehavior: 0,
+      geocodingHeaders: {
+        address: "",
+        borough: "",
+        country: "",
+        county: "",
+        locality: "",
+        neighbourhood: "",
+        postalcode: "",
+        region: "",
+        text: "",
+      },
+      geocodingType: "search",
+    });
+  });
+
+  it("h3 values", () => {
+    expect(detectColumns(["name", "h3_id"])).toEqual({
+      autoType: true,
+      sheet: "",
+      delimiter: ",",
+      latitudeHeader: "",
+      longitudeHeader: "",
+      joinSourceHeader: "",
+      joinTargetHeader: "",
+      geometryHeader: "",
+      zipHeader: "",
+      h3Header: "h3_id",
+      kind: "h3",
       geocodingBehavior: 0,
       geocodingHeaders: {
         address: "",
