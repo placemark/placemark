@@ -4,7 +4,9 @@
     "interface": true,
     "type": true
   },
-  "entry": ["pages/index.tsx"],
+  "entry": [
+    "pages/*.tsx"
+  ],
   "tags": [
     "-lintignore"
   ]

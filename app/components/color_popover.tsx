@@ -53,7 +53,7 @@ function color2rgb(orig: string): string {
   return c.formatRgb();
 }
 
-export function ColorPopover({
+function ColorPopover({
   color,
   onChange,
   onBlur,

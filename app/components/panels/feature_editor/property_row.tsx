@@ -4,7 +4,7 @@ import type { ExplicitCast } from "app/lib/cast";
 import type { MultiPair } from "app/lib/multi_properties";
 import { Popover as P } from "radix-ui";
 import type { JsonValue } from "type-fest";
-import { PropertyRowKey, PropertyRowKeyReadonly } from "./property_row/key";
+import { PropertyRowKey } from "./property_row/key";
 import { PropertyRowValue } from "./property_row/value";
 
 export type OnChangeValue = (key: string, value: JsonValue) => void;
@@ -104,34 +104,6 @@ export function PropertyRow({
             onChangeValue={onChangeValue}
             onDeleteKey={onDeleteKey}
             onCast={onCast}
-            even={even}
-          />
-        </td>
-      </tr>
-    </P.Root>
-  );
-}
-
-export function PropertyRowReadonly({
-  pair,
-  even,
-  y,
-}: Pick<PropertyRowProps, "pair" | "even" | "y">) {
-  return (
-    <P.Root>
-      <tr className={`${even ? "" : "bg-gray-100 dark:bg-gray-700"}`}>
-        <td className={`border-r border-b border-t ${styledTd}`}>
-          <PropertyRowKeyReadonly x={0} y={y} pair={pair} />
-        </td>
-        <td className={`border-l border-b border-t relative ${styledTd}`}>
-          <PropertyRowValue
-            readOnly
-            onChangeValue={() => {}}
-            onDeleteKey={() => {}}
-            onCast={() => {}}
-            x={1}
-            y={y}
-            pair={pair}
             even={even}
           />
         </td>

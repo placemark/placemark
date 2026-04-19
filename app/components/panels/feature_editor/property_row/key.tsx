@@ -31,28 +31,3 @@ export function PropertyRowKey({
     />
   );
 }
-
-export function PropertyRowKeyReadonly({
-  pair,
-  x,
-  y,
-}: {
-  pair: Pair;
-} & CoordProps) {
-  const [key, value] = pair;
-  const keyProps = useResettable({
-    value: key,
-    onCommit(_newKey) {},
-  });
-  return (
-    <input
-      spellCheck="false"
-      type="text"
-      readOnly
-      className={styledPropertyInput("left", value === undefined)}
-      {...coordPropsAttr({ x, y })}
-      aria-label={`Key: ${key}`}
-      {...keyProps}
-    />
-  );
-}
