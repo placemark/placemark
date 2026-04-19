@@ -128,7 +128,10 @@ Null island,8928308280fffff`,
       features: [
         {
           type: "Feature",
-          properties: { name: "Null island" },
+          properties: {
+            name: "Null island",
+            h3: "8928308280fffff",
+          },
           geometry: {
             type: "Polygon",
             coordinates: [
