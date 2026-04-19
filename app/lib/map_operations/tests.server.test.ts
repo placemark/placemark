@@ -1377,7 +1377,7 @@ describe("map_operations", () => {
     });
   });
 
-  describe("inner ring", () => {
+  describe("inner ring-3", () => {
     describe("canAddInnerRing", () => {
       it("throws if a polygon is not fully contained", () => {
         expect(canInnerRing(fcTwoPoly.features)).toEqual(

@@ -442,7 +442,7 @@ function RampWizard() {
                           classes={form.values.classes}
                           interpolate={form.values.interpolate}
                         />
-                        <CaretDownIcon className="w-5 h-5 flex-shrink-0" />
+                        <CaretDownIcon className="w-5 h-5 shrink-0" />
                       </StyledPopoverTrigger>
                       <PopoverContent2 side="left">
                         <StyledPopoverArrow />
@@ -729,7 +729,7 @@ function CategoryWizard() {
                           classes={DEFAULT_CLASSES}
                           interpolate="step"
                         />
-                        <CaretDownIcon className="w-5 h-5 flex-shrink-0" />
+                        <CaretDownIcon className="w-5 h-5 shrink-0" />
                       </StyledPopoverTrigger>
                       <PopoverContent2>
                         <StyledPopoverArrow />
@@ -912,7 +912,7 @@ function ExportOption({ option }: { option: EOption }) {
   return (
     <Accordion.Item
       value={option.name}
-      className="data-state-open:ring-1 ring-purple-300 data-state-open:rounded"
+      className="data-state-open:ring-1 ring-purple-300 data-state-open:rounded-sm"
     >
       <Accordion.Header>
         <Accordion.Trigger

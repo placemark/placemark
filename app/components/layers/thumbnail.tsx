@@ -11,17 +11,17 @@ export function Thumbnail({
     <div
       className="group flex flex-col
       justify-center items-center
-      rounded-sm
+      rounded-xs
 
-      group-hover:ring
+      group-hover:ring-3
       group-hover:ring-2
       group-hover:ring-purple-300
 
-      focus:ring
+      focus:ring-3
       focus:ring-2
       focus:ring-purple-300
 
-      data-state-on:ring
+      data-state-on:ring-3
       data-state-on:ring-2
       data-state-on:ring-purple-500
       w-32

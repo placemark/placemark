@@ -67,7 +67,7 @@ function LegendRamp({ symbolization }: { symbolization: ISymbolizationRamp }) {
       <LegendTitle title={symbolization.property} />
       <div className="p-2">
         <div
-          className="h-4 rounded dark:border dark:border-white"
+          className="h-4 rounded-sm dark:border dark:border-white"
           style={{
             background: linearGradient({
               colors: symbolization.stops.map((stop) => stop.output),
@@ -104,7 +104,7 @@ function LegendCategorical({
             return (
               <Fragment key={i}>
                 <div
-                  className={`dark:border dark:border-gray-300/40 rounded-sm`}
+                  className={`dark:border dark:border-gray-300/40 rounded-xs`}
                   style={{
                     background: stop.output,
                   }}
@@ -271,7 +271,7 @@ function ScaleControl() {
             {label}
           </div>
         </div>
-        <P.Trigger className="opacity-10 group-hover:opacity-100 p-1 rounded group-hover:bg-white">
+        <P.Trigger className="opacity-10 group-hover:opacity-100 p-1 rounded-sm group-hover:bg-white">
           <GearIcon />
         </P.Trigger>
         <StyledPopoverContent size="xs">

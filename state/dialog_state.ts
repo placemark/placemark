@@ -13,9 +13,9 @@ export type DialogStateImport = {
   files: FileGroups;
 };
 
-export type DialogStateExportSVG = {
-  type: "export-svg";
-};
+// type DialogStateExportSVG = {
+//   type: "export-svg";
+// };
 
 export type DialogStateCircle = {
   type: "circle";

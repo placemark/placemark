@@ -235,5 +235,3 @@ export type ScaleUnit = (typeof SCALE_UNITS)[number];
 export const zScaleUnit = z.enum(SCALE_UNITS);
 
 export const WHITE: RGBA = [255, 255, 255, 255];
-
-export const LASSO_YELLOW = hexToArray("#FDE68A55");

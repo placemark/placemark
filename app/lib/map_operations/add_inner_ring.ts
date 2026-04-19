@@ -49,7 +49,7 @@ export function addInnerRing(
     innerFeature = bFeature;
     outerFeature = aFeature;
   } else {
-    return Left(new GeometryError("Inner ring is outside the outer ring"));
+    return Left(new GeometryError("Inner ring-3 is outside the outer ring-3"));
   }
 
   const [newInnerRing, ...otherRings] = innerFeature.geometry.coordinates;

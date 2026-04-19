@@ -10,7 +10,7 @@ export function RawEditor({ feature }: { feature: IWrappedFeature }) {
   const setDialogState = useSetAtom(dialogAtom);
   return (
     <PanelDetailsCollapsible title="GeoJSON" atom={panelRawOpen}>
-      <div className={`${clsx(sharedOutline("default"))} rounded-sm`}>
+      <div className={`${clsx(sharedOutline("default"))} rounded-xs`}>
         <FeatureText feature={feature} />
       </div>
       <div className="pt-2">

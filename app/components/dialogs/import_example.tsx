@@ -39,14 +39,14 @@ export function ImportExampleDialog({ onClose }: { onClose: () => void }) {
         The data library includes commonly-used datasets ready to add to your
         map.
       </TextWell>
-      <div className="overflow-y-auto placemark-scrollbar max-h-48 mt-4 border border-gray-200 dark:border-gray-700 rounded">
+      <div className="overflow-y-auto placemark-scrollbar max-h-48 mt-4 border border-gray-200 dark:border-gray-700 rounded-sm">
         <div className="grid gap-1 p-1">
           {exampleList?.map((example) => {
             const nice = friendlyName(example);
             return (
               <button
                 type="button"
-                className="text-left text-sm group rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-1"
+                className="text-left text-sm group rounded-sm hover:bg-gray-200 dark:hover:bg-gray-700 p-1"
                 key={example}
                 onClick={async () => {
                   await toast.promise(

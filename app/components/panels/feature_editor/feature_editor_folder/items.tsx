@@ -444,7 +444,7 @@ export const SortableItem = memo(function SortableItem({
           }}
         >
           <div
-            className="rounded-sm bg-purple-500 border border-purple-700"
+            className="rounded-xs bg-purple-500 border border-purple-700"
             style={{
               height: 4,
             }}
@@ -577,6 +577,6 @@ function sharedStyle({
       : selected === "secondary"
         ? "bg-opacity-40 bg-purple-200 dark:bg-purple-700"
         : `hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700`,
-    overlay ? "px-4 rounded-sm ring-1 ring-gray-500 shadow-md opacity-60" : "",
+    overlay ? "px-4 rounded-xs ring-1 ring-gray-500 shadow-md opacity-60" : "",
   );
 }

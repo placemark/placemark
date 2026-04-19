@@ -56,7 +56,7 @@ export function FeatureTableStats({
 
   return (
     <div
-      className="mt-2 rounded p-3 dark:text-white bg-gray-100 dark:bg-gray-900 overflow-y-auto placemark-scrollbar"
+      className="mt-2 rounded-sm p-3 dark:text-white bg-gray-100 dark:bg-gray-900 overflow-y-auto placemark-scrollbar"
       style={{
         maxHeight: 420,
       }}
@@ -112,7 +112,7 @@ function StatValue({ stats }: { stats: RetStat }) {
                 title="View values"
                 className="align-middle inline-flex items-center opacity-50 hover:opacity-100
                 aria-expanded:opacity-100
-                aria-expanded:ring
+                aria-expanded:ring-3
                 aria-expanded:ring-1
                 aria-expanded:ring-purple-500
                 "
@@ -145,7 +145,7 @@ function StatValuePopover({ stats }: { stats: RetStat }) {
       className="text-xs overflow-y-auto h-48 placemark-scrollbar"
     >
       <div
-        className="w-full relative rounded"
+        className="w-full relative rounded-sm"
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
         }}

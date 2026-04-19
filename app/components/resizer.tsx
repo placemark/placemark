@@ -183,8 +183,8 @@ export const Resizer = memo(function ResizerInner({ side }: { side: Side }) {
         hover-none:dark:bg-black
         hover-hover:hover:bg-opacity-100
         hover-hover:dark:hover:bg-opacity-100
-        bg-purple-700
-        dark:bg-purple-700
+        hover:bg-purple-700
+        hover:dark:bg-purple-700
         "
       >
         <div

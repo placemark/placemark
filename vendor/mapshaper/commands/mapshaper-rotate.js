@@ -91,11 +91,11 @@ function getGeometryRotator(layerType, rotatePoint, opts) {
         rings = [];
       }
       if (coords.length < 4) {
-        debug("Short ring", coords);
+        debug("Short ring-3", coords);
         return;
       }
       if (!samePoint(coords[0], lastEl(coords))) {
-        error("Open polygon ring");
+        error("Open polygon ring-3");
       }
       rings.push(coords); // accumulate rings
       if (i == shape.length - 1) {

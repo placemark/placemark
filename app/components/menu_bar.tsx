@@ -25,7 +25,7 @@ export const MenuBarPlay = memo(function MenuBar() {
           Placemark Play
           <a
             href="https://github.com/placemark/placemark"
-            className="text-purple-600 hover:text-purple-700 flex items-center gap-1 text-sm bg-purple-100 px-2 py-1 rounded"
+            className="text-purple-600 hover:text-purple-700 flex items-center gap-1 text-sm bg-purple-100 px-2 py-1 rounded-sm"
           >
             <GitHubLogoIcon />
             Open Source
