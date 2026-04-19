@@ -10,9 +10,9 @@ import {
 } from "app/components/elements";
 import { useOpenFiles } from "app/hooks/use_open_files";
 import { usePersistence } from "app/lib/persistence/context";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DropdownMenu as DD } from "radix-ui";
-import { dialogAtom, momentLogAtom } from "state/jotai";
+import { dialogAtom, momentLogAtom, themeAtom } from "state/jotai";
 
 function UndoList() {
   const rep = usePersistence();
@@ -59,6 +59,20 @@ function UndoList() {
         );
       })}
     </DDSubContent>
+  );
+}
+
+function ThemeSwitcher() {
+  const [theme, setTheme] = useAtom(themeAtom);
+
+  return (
+    <StyledItem
+      onSelect={() => {
+        setTheme((theme) => (theme === "light" ? "dark" : "light"));
+      }}
+    >
+      Switch to {theme === "light" ? "dark" : "light"} theme
+    </StyledItem>
   );
 }
 
@@ -131,6 +145,8 @@ export function MenuBarDropdown() {
             >
               Export SVG
             </StyledItem>
+
+            <ThemeSwitcher />
 
             <DDSeparator />
             <DD.Sub>

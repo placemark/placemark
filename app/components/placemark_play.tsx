@@ -52,7 +52,13 @@ import {
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import { dialogAtom, splitsAtom, TabOption, tabAtom } from "state/jotai";
+import {
+  dialogAtom,
+  splitsAtom,
+  TabOption,
+  tabAtom,
+  themeAtom,
+} from "state/jotai";
 import { match } from "ts-pattern";
 import { useSearchParams } from "wouter";
 import { Button, StyledTooltipArrow, TContent } from "./elements";
@@ -180,8 +186,15 @@ export function PlacemarkPlay() {
     persistentTransformAtom,
   );
 
+  const theme = useAtomValue(themeAtom);
+
   return (
-    <main className="h-screen flex flex-col bg-white dark:bg-gray-800">
+    <main
+      className={clsx([
+        "h-screen flex flex-col bg-white dark:bg-gray-800",
+        theme === "dark" ? "dark" : "",
+      ])}
+    >
       <T.Provider>
         <MapContext.Provider value={map}>
           <ErrorBoundary

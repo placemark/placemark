@@ -334,3 +334,5 @@ export const routeTypeAtom = atomWithStorage<ROUTE_TYPE>(
   "routeType",
   ROUTE_TYPE.WALKING,
 );
+
+export const themeAtom = atomWithStorage<'light' | 'dark'>('theme', 'light');
