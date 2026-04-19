@@ -1,5 +1,15 @@
 # @placemarkio/play
 
+## 0.3.0
+
+### Minor Changes
+
+- fd0355a: Add support for h3 columns in CSVs
+
+  Thanks [Jt Miclat](https://github.com/jtmiclat) for the contribution!
+
+- f283237: Support dark mode again with an option in the File menu
+
 ## 0.2.0
 
 ### Minor Changes
