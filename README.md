@@ -58,6 +58,11 @@ For local development, copy `.env.example` to `.env.local` and add your tokens t
 cp .env.example .env.local
 ```
 
+## Interesting forks
+
+- [epanetjs](https://epanetjs.com/) - focused on water modeling ([repo](https://github.com/epanet-js/epanet-js))
+- [geojson.io/next](https://geojson.io/next/) from Mapbox ([repo](https://github.com/mapbox/geojson.io))
+
 [^1]: With the narrow exception, right now, of [Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js/blob/main/LICENSE.txt), which
   has a restrictive license. We have plans to migrate to [maplibre-gl](https://npmx.dev/package/maplibre-gl), an
   open-source fork of Mapbox GL JS (unfortunately, [funded primarily](https://maplibre.org/news/2026-02-18-supporting-maplibre/) by
