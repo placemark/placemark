@@ -167,8 +167,9 @@
   },
   "engines": {
     "node": ">=22.19.0",
-    "pnpm": ">=10.0.0"
+    "pnpm": ">=11.0.0"
   },
+  "packageManager": "pnpm@11.0.6",
   "publishConfig": {
     "access": "public"
   }
