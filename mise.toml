@@ -1,4 +1,5 @@
 [tools]
+node = "26"
 # Node.js version is specified in .node-version (read by mise, fnm, etc.)
 # pnpm version floats >= 10.0.0 - managed via package.json engines field
 
