@@ -1,6 +1,10 @@
 import { multiLineString, point, wrapMap } from "test/helpers";
 import { describe, expect, it, test } from "vitest";
-import { filterFeatures, measureColumn } from "./feature_table";
+import {
+  filterFeatures,
+  measureColumn,
+  replaceFeatureProperties,
+} from "./feature_table";
 
 const folderId1 = "00000000-0000-0000-0000-000000000000";
 const folderId2 = "00000000-0000-0000-0000-000000000001";
@@ -142,5 +146,68 @@ describe("filterFeatures", () => {
         featureMap,
       }),
     ).toEqual([wrappedFeatures[0]]);
+  });
+});
+
+describe("replaceFeatureProperties", () => {
+  it("should replace matching string properties", () => {
+    const replacedFeatures = replaceFeatureProperties({
+      features: wrappedFeatures,
+      columns: ["name", "description", "street"],
+      column: null,
+      search: "shop",
+      replace: "store",
+      isCaseSensitive: false,
+    });
+
+    expect(replacedFeatures).toHaveLength(2);
+    expect(replacedFeatures[0].feature.properties).toMatchObject({
+      name: "Buttermilk Bakestore",
+    });
+    expect(replacedFeatures[1].feature.properties).toMatchObject({
+      name: "LS Barberstore",
+    });
+  });
+
+  it("should replace only the selected column", () => {
+    const replacedFeatures = replaceFeatureProperties({
+      features: wrappedFeatures,
+      columns: ["name", "description"],
+      column: "description",
+      search: "shop",
+      replace: "store",
+      isCaseSensitive: false,
+    });
+
+    expect(replacedFeatures).toHaveLength(0);
+  });
+
+  it("should honor case sensitivity", () => {
+    const replacedFeatures = replaceFeatureProperties({
+      features: wrappedFeatures,
+      columns: ["name"],
+      column: null,
+      search: "SHOP",
+      replace: "store",
+      isCaseSensitive: true,
+    });
+
+    expect(replacedFeatures).toHaveLength(0);
+  });
+
+  it("should treat regex characters as literal search text", () => {
+    const replacedFeatures = replaceFeatureProperties({
+      features: wrappedFeatures,
+      columns: ["street"],
+      column: null,
+      search: "Pl.",
+      replace: "Place",
+      isCaseSensitive: true,
+    });
+
+    expect(replacedFeatures).toHaveLength(1);
+    expect(replacedFeatures[0].feature.properties).toMatchObject({
+      street: "Garfield Place",
+    });
   });
 });
