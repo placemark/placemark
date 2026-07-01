@@ -169,6 +169,25 @@ describe("replaceFeatureProperties", () => {
     });
   });
 
+  it("should replace matching string properties with nothing", () => {
+    const replacedFeatures = replaceFeatureProperties({
+      features: wrappedFeatures,
+      columns: ["name"],
+      column: null,
+      search: "shop",
+      replace: "",
+      isCaseSensitive: false,
+    });
+
+    expect(replacedFeatures).toHaveLength(2);
+    expect(replacedFeatures[0].feature.properties).toMatchObject({
+      name: "Buttermilk Bake",
+    });
+    expect(replacedFeatures[1].feature.properties).toMatchObject({
+      name: "LS Barber",
+    });
+  });
+
   it("should replace only the selected column", () => {
     const replacedFeatures = replaceFeatureProperties({
       features: wrappedFeatures,

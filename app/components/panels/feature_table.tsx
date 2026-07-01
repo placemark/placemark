@@ -94,7 +94,7 @@ export function replaceFeatureProperties({
   replace: string;
   isCaseSensitive: boolean;
 }): IWrappedFeature[] {
-  if (!search || !replace.trim()) return [];
+  if (!search) return [];
 
   const matcher = new RegExp(
     escapeRegExp(search),
@@ -113,7 +113,7 @@ export function replaceFeatureProperties({
       const value = properties[column];
       if (typeof value !== "string") continue;
 
-      const nextValue = value.replace(matcher, replace);
+      const nextValue = value.replace(matcher, () => replace);
       if (nextValue === value) continue;
 
       changed = true;
@@ -619,6 +619,8 @@ function FeatureTableInner({ data }: { data: Data }) {
                     <E.Button
                       size="xs"
                       type="button"
+                      aria-label="Toggle replace"
+                      title="Toggle replace"
                       {...(replaceOpen
                         ? {
                             "aria-expanded": true,
@@ -645,7 +647,7 @@ function FeatureTableInner({ data }: { data: Data }) {
                           "flex-1",
                         )}
                         name="replace"
-                        type="input"
+                        type="text"
                         placeholder="Replace"
                       />
                       {filter.search ? (
@@ -661,10 +663,7 @@ function FeatureTableInner({ data }: { data: Data }) {
                             captureException(e),
                           );
                         }}
-                        disabled={
-                          replaceMatchCount === 0 ||
-                          !helpers.values.replace.trim()
-                        }
+                        disabled={replaceMatchCount === 0}
                       >
                         Replace All
                       </E.Button>
