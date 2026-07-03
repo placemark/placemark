@@ -5,7 +5,6 @@ import { MenuBarPlay } from "app/components/menu_bar";
 import Modes from "app/components/modes";
 import type PMap from "app/lib/pmap";
 import "styles/globals.css";
-import "core-js/features/array/at";
 import {
   DndContext,
   PointerSensor,
