@@ -2,6 +2,7 @@ import {
   BarChartIcon,
   Cross2Icon,
   GearIcon,
+  InputIcon,
   MagnifyingGlassIcon,
 } from "@radix-ui/react-icons";
 import { useMove } from "@react-aria/interactions";
@@ -16,10 +17,12 @@ import RowActions from "app/components/panels/feature_table/row_actions";
 import TableEmptyState from "app/components/panels/feature_table/table_empty_state";
 import { onArrow } from "app/lib/arrow_navigation";
 import { geometryTypes } from "app/lib/constants";
+import { usePersistence } from "app/lib/persistence/context";
 import { getFn, useColumns } from "app/lib/search_utils";
 import clsx from "clsx";
 import { Field, Form, Formik } from "formik";
 import Fuse from "fuse.js";
+import { captureException } from "integrations/errors";
 import { useAtom, useAtomValue } from "jotai";
 import clamp from "lodash/clamp";
 import sortBy from "lodash/sortBy";
@@ -70,6 +73,65 @@ function clampColumnWidth(width: number, auto: boolean) {
     NARROW_COLUMN_WIDTH,
     auto ? AUTO_MAX_COLUMN_WIDTH : MAX_COLUMN_WIDTH,
   );
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export function replaceFeatureProperties({
+  features,
+  columns,
+  column,
+  search,
+  replace,
+  isCaseSensitive,
+}: {
+  features: IWrappedFeature[];
+  columns: string[];
+  column: string | null;
+  search: string | null;
+  replace: string;
+  isCaseSensitive: boolean;
+}): IWrappedFeature[] {
+  if (!search) return [];
+
+  const matcher = new RegExp(
+    escapeRegExp(search),
+    isCaseSensitive ? "g" : "gi",
+  );
+  const columnsToReplace = column ? [column] : columns;
+
+  return features.flatMap((wrappedFeature) => {
+    const properties = wrappedFeature.feature.properties;
+    if (!properties) return [];
+
+    let changed = false;
+    const nextProperties = { ...properties };
+
+    for (const column of columnsToReplace) {
+      const value = properties[column];
+      if (typeof value !== "string") continue;
+
+      const nextValue = value.replace(matcher, () => replace);
+      if (nextValue === value) continue;
+
+      changed = true;
+      nextProperties[column] = nextValue;
+    }
+
+    if (!changed) return [];
+
+    return [
+      {
+        ...wrappedFeature,
+        feature: {
+          ...wrappedFeature.feature,
+          properties: nextProperties,
+        },
+      },
+    ];
+  });
 }
 
 function virtualPosition(
@@ -220,6 +282,8 @@ export function filterFeatures({
 
 function FeatureTableInner({ data }: { data: Data }) {
   const { featureMap, folderMap } = data;
+  const rep = usePersistence();
+  const transact = rep.useTransact();
   const panelWidth = useAtomValue(splitsAtom).right;
   const panelIsWide = panelWidth > 300;
 
@@ -408,6 +472,40 @@ function FeatureTableInner({ data }: { data: Data }) {
   );
 
   const [statsOpen, setStatsOpen] = useState<boolean>(false);
+  const [replaceOpen, setReplaceOpen] = useState<boolean>(false);
+  const replaceMatchCount = filter.search ? features.length : 0;
+
+  const handleReplaceAll = useCallback(
+    async (replaceValue: string) => {
+      if (replaceMatchCount === 0) return;
+
+      const putFeatures = replaceFeatureProperties({
+        features,
+        columns,
+        column: filter.column,
+        search: filter.search,
+        replace: replaceValue,
+        isCaseSensitive: filter.isCaseSensitive,
+      });
+
+      if (putFeatures.length === 0) return;
+
+      await transact({
+        note: "Replaced property values",
+        track: "property-replace",
+        putFeatures,
+      });
+    },
+    [
+      columns,
+      features,
+      filter.column,
+      filter.isCaseSensitive,
+      filter.search,
+      replaceMatchCount,
+      transact,
+    ],
+  );
 
   const headerBase = `text-xs text-left
     text-gray-700 dark:text-gray-300
@@ -437,37 +535,40 @@ function FeatureTableInner({ data }: { data: Data }) {
   return (
     <>
       <div className="p-2">
-        <div className="flex items-stretch gap-x-1">
-          <E.Button
-            size="xs"
-            type="button"
-            {...(statsOpen
-              ? {
-                  "aria-expanded": true,
-                }
-              : {})}
-            onClick={() => {
-              setStatsOpen((val) => !val);
-            }}
-          >
-            <BarChartIcon />
-            {panelIsWide ? "Stats" : ""}
-          </E.Button>
-          <div className="w-1 mr-1 border-r border-gray-300 dark:border-gray-700" />
-          <select
-            className={
-              E.styledSelect({ size: "xs" }) + (panelIsWide ? " w-24" : "w-16")
-            }
-            onChange={handleFolderChange}
-            value={filter.folderId || "All"}
-          >
-            <option value="All">All folders</option>
-            {Array.from(folderMap.values(), (folder) => (
-              <option key={folder.id} value={folder.id}>
-                {folder.name}
-              </option>
-            ))}
-          </select>
+        <div className="flex flex-wrap items-start gap-x-1 gap-y-2">
+          <div className="flex items-stretch gap-x-1">
+            <E.Button
+              size="xs"
+              type="button"
+              {...(statsOpen
+                ? {
+                    "aria-expanded": true,
+                  }
+                : {})}
+              onClick={() => {
+                setStatsOpen((val) => !val);
+              }}
+            >
+              <BarChartIcon />
+              {panelIsWide ? "Stats" : ""}
+            </E.Button>
+            <div className="w-1 mr-1 border-r border-gray-300 dark:border-gray-700" />
+            <select
+              className={
+                E.styledSelect({ size: "xs" }) +
+                (panelIsWide ? " w-24" : "w-16")
+              }
+              onChange={handleFolderChange}
+              value={filter.folderId || "All"}
+            >
+              <option value="All">All folders</option>
+              {Array.from(folderMap.values(), (folder) => (
+                <option key={folder.id} value={folder.id}>
+                  {folder.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <P.Root>
             <Formik
@@ -487,10 +588,10 @@ function FeatureTableInner({ data }: { data: Data }) {
                   exact: exact,
                 }));
               }}
-              initialValues={filter}
+              initialValues={{ ...filter, replace: "" }}
             >
               {(helpers) => (
-                <Form className="flex-auto">
+                <Form className="flex-auto space-y-2">
                   <div className="flex items-stretch gap-x-1">
                     <div className="relative w-full">
                       <Field
@@ -515,6 +616,20 @@ function FeatureTableInner({ data }: { data: Data }) {
                         </E.Button>
                       </div>
                     </div>
+                    <E.Button
+                      size="xs"
+                      type="button"
+                      aria-label="Toggle replace"
+                      title="Toggle replace"
+                      {...(replaceOpen
+                        ? {
+                            "aria-expanded": true,
+                          }
+                        : {})}
+                      onClick={() => setReplaceOpen((value) => !value)}
+                    >
+                      <InputIcon />
+                    </E.Button>
                     <P.Trigger asChild>
                       <E.Button size="xs">
                         <GearIcon />
@@ -524,6 +639,36 @@ function FeatureTableInner({ data }: { data: Data }) {
                       {panelIsWide ? "Search" : <MagnifyingGlassIcon />}
                     </E.Button>
                   </div>
+                  {replaceOpen ? (
+                    <div className="flex w-full items-center gap-x-3">
+                      <Field
+                        className={clsx(
+                          E.inputClass({ _size: "xs" }),
+                          "flex-1",
+                        )}
+                        name="replace"
+                        type="text"
+                        placeholder="Replace"
+                      />
+                      {filter.search ? (
+                        <div className="text-xs text-gray-500">
+                          {replaceMatchCount} matches
+                        </div>
+                      ) : null}
+                      <E.Button
+                        type="button"
+                        size="xs"
+                        onClick={() => {
+                          handleReplaceAll(helpers.values.replace).catch((e) =>
+                            captureException(e),
+                          );
+                        }}
+                        disabled={replaceMatchCount === 0}
+                      >
+                        Replace All
+                      </E.Button>
+                    </div>
+                  ) : null}
                   <E.PopoverContent2>
                     <div className="grid grid-cols-2 gap-x-2 gap-y-2 py-2">
                       <Field
