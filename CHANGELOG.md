@@ -1,5 +1,11 @@
 # @placemarkio/play
 
+## 0.4.0
+
+### Minor Changes
+
+- 588f7bd: Add find/replace to table editor
+
 ## 0.3.0
 
 ### Minor Changes
