@@ -141,7 +141,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.6",
+    "@biomejs/biome": "^2.5.2",
     "@changesets/cli": "^2.30.0",
     "@mapbox/mapbox-gl-style-spec": "^14.18.0",
     "@types/d3-dsv": "^3.0.7",
@@ -162,7 +162,7 @@
     "random-js": "^2.1.0",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.9"
   },
   "packageManager": "pnpm@11.9.0",
   "engines": {
