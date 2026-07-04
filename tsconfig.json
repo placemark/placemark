@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2022",
     "baseUrl": ".",
     "lib": [
       "dom",
@@ -14,7 +14,7 @@
     "noEmit": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
-    "allowUnreachableCode": true,
+    "allowUnreachableCode": false,
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
