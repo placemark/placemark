@@ -36,7 +36,7 @@ export function useWindowResizeSplits() {
         const newSplits = { ...splits };
 
         // First try reducing the left width.
-        if (windowWidth - splits.right > MIN_MAP_WIDTH) {
+        if (windowWidth - splits.left > MIN_MAP_WIDTH) {
           newSplits.leftOpen = false;
           return newSplits;
         }

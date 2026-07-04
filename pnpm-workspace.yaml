@@ -1,5 +1,7 @@
 allowBuilds:
   esbuild: true
+minimumReleaseAgeExclude:
+  - '@placemarkio/turf-jsts@2.8.3'
 onlyBuiltDependencies:
   - core-js
   - esbuild

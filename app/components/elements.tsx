@@ -117,7 +117,7 @@ export function ErrorFallback(props: ErrorData) {
         automatically reported, but if you can let us know what happened, we can
         fix it even faster:{" "}
         <a
-          href={`mailto:${SUPPORT_EMAIL}&subject=Error (ID: ${
+          href={`mailto:${SUPPORT_EMAIL}?subject=Error (ID: ${
             props.eventId || "?"
           })`}
           className={styledInlineA}
