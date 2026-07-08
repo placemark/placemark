@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "./*"
+      ]
+    },
     "lib": [
       "dom",
       "dom.iterable",
@@ -12,7 +16,6 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "downlevelIteration": true,
     "esModuleInterop": true,
     "allowUnreachableCode": false,
     "module": "esnext",
