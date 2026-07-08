@@ -160,8 +160,7 @@
     "jsdom": "^26.1.0",
     "knip": "^6.24.0",
     "random-js": "^2.1.0",
-    "typescript": "^5.9.3",
-    "vite-tsconfig-paths": "^6.1.1",
+    "typescript": "^7.0.0",
     "vitest": "^4.1.9"
   },
   "packageManager": "pnpm@11.9.0",
