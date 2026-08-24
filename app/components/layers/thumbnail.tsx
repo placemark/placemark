@@ -1,11 +1,6 @@
-import { mapboxStaticURL } from "app/lib/mapbox_static_url";
-import type { PartialLayer } from "state/jotai";
+import { mapboxStaticURL, type PreviewLayer } from "app/lib/mapbox_static_url";
 
-export function Thumbnail({
-  mapboxLayer,
-}: {
-  mapboxLayer: Pick<PartialLayer, "type" | "url" | "token">;
-}) {
+export function Thumbnail({ mapboxLayer }: { mapboxLayer: PreviewLayer }) {
   const url = mapboxStaticURL(mapboxLayer);
   return (
     <div
@@ -27,7 +22,8 @@ export function Thumbnail({
       w-32
       aspect-video"
       style={{
-        backgroundImage: `url(${url})`,
+        backgroundImage: url ? `url(${url})` : undefined,
+        backgroundColor: url ? undefined : "#e5e7eb",
         backgroundSize: "cover",
       }}
     />

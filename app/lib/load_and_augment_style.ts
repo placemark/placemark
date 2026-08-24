@@ -15,6 +15,7 @@ import {
 } from "app/lib/constants";
 import {
   addMapboxStyle,
+  addMapLibreStyle,
   addTileJSONStyle,
   addXYZStyle,
 } from "app/lib/layer_config_adapters";
@@ -101,6 +102,10 @@ export default async function loadAndAugmentStyle({
     switch (layer.type) {
       case "MAPBOX": {
         style = await addMapboxStyle(style, layer);
+        break;
+      }
+      case "STYLE": {
+        style = await addMapLibreStyle(style, layer);
         break;
       }
       case "XYZ": {

@@ -59,6 +59,7 @@ type Mode =
   | "initial"
   | "custom"
   | "custom-xyz"
+  | "custom-style"
   | "custom-mapbox"
   | "custom-tilejson";
 
@@ -98,21 +99,23 @@ function getNextAt(items: ILayerConfig[]) {
 }
 
 /**
- * If there's an existing Mapbox style layer
+ * If there's an existing base style layer
  * in the stack, replace it and use its `at` value.
  */
-function maybeDeleteOldMapboxLayer(items: ILayerConfig[]): {
+function maybeDeleteOldBaseStyle(items: ILayerConfig[]): {
   deleteLayerConfigs: Moment["deleteLayerConfigs"];
   oldAt: string | undefined;
 } {
   let oldAt: string | undefined;
-  const oldMapboxLayer = items.find((layer) => layer.type === "MAPBOX");
+  const oldBaseStyle = items.find(
+    (layer) => layer.type === "MAPBOX" || layer.type === "STYLE",
+  );
 
   const deleteLayerConfigs: string[] = [];
 
-  if (oldMapboxLayer) {
-    oldAt = oldMapboxLayer.at;
-    deleteLayerConfigs.push(oldMapboxLayer.id);
+  if (oldBaseStyle) {
+    oldAt = oldBaseStyle.at;
+    deleteLayerConfigs.push(oldBaseStyle.id);
   }
   return {
     oldAt,
@@ -120,9 +123,9 @@ function maybeDeleteOldMapboxLayer(items: ILayerConfig[]): {
   };
 }
 
-const MapboxStyleSkeleton = z.object({
-  version: z.number(),
-  name: z.string(),
+const StyleSkeleton = z.object({
+  version: z.literal(8),
+  name: z.string().optional(),
 });
 
 function BackButton({ to }: { to: Mode }) {
@@ -191,19 +194,22 @@ function MapboxLayer({
       submitText={isEditing ? "Update layer" : "Add layer"}
       fullWidthSubmit
       onSubmit={async (values) => {
+        if (values.type !== "MAPBOX") {
+          return { [FORM_ERROR]: "Expected a Mapbox style" };
+        }
         const url = getMapboxLayerURL(values);
         let name = "";
         try {
-          const style = await get(url, MapboxStyleSkeleton);
+          const style = await get(url, StyleSkeleton);
           name = style.name || "Mapbox style";
         } catch (_e) {
           return {
             [FORM_ERROR]: "Could not load style",
           };
         }
-        const { deleteLayerConfigs, oldAt } = maybeDeleteOldMapboxLayer(items);
+        const { deleteLayerConfigs, oldAt } = maybeDeleteOldBaseStyle(items);
         if (deleteLayerConfigs.length) {
-          toast("Mapbox layer replaced");
+          toast("Base style replaced");
         }
         await transact({
           note: "Add layer",
@@ -254,6 +260,89 @@ function MapboxLayer({
         label="Access token"
         autoComplete="off"
         placeholder="pk.…"
+      />
+    </Form>
+  );
+}
+
+function MapLibreStyleLayer({
+  layer,
+  onDone,
+}: {
+  layer?: z.infer<typeof zLayerConfig>;
+  onDone?: () => void;
+}) {
+  const setMode = useSetAtom(layerModeAtom);
+  const rep = usePersistence();
+  const transact = rep.useTransact();
+  const isEditing = !!layer;
+  const layerConfigs = useAtomValue(layerConfigAtom);
+  const items = [...layerConfigs.values()];
+
+  const initialValues =
+    layer ||
+    ({
+      ...SHARED_INTIAL_VALUES,
+      type: "STYLE",
+    } as const);
+
+  return (
+    <Form
+      schema={zLayerConfig}
+      initialValues={initialValues}
+      submitText={isEditing ? "Update style" : "Add style"}
+      fullWidthSubmit
+      onSubmit={async (values) => {
+        if (values.type !== "STYLE") {
+          return { [FORM_ERROR]: "Expected a MapLibre style" };
+        }
+        let name = "MapLibre style";
+        try {
+          const style = await get(values.url, StyleSkeleton);
+          name = style.name || name;
+        } catch (_e) {
+          return {
+            [FORM_ERROR]: "Could not load a valid MapLibre style",
+          };
+        }
+
+        const { deleteLayerConfigs, oldAt } = maybeDeleteOldBaseStyle(items);
+        if (deleteLayerConfigs.length) {
+          toast("Base style replaced");
+        }
+        await transact({
+          note: "Add MapLibre style",
+          deleteLayerConfigs,
+          putLayerConfigs: [
+            {
+              ...values,
+              name,
+              visibility: true,
+              labelVisibility: true,
+              tms: false,
+              opacity: 1,
+              at: oldAt || getNextAt(items),
+              id: values.id || newFeatureId(),
+            },
+          ],
+        });
+
+        setMode("initial");
+        onDone?.();
+      }}
+    >
+      <LayerFormHeader isEditing={isEditing}>MapLibre style</LayerFormHeader>
+      <TextWell variant="primary" size="xs">
+        Add an HTTPS URL that returns a MapLibre Style Specification document.
+        No access token is required for OpenFreeMap styles.
+      </TextWell>
+      <LabeledTextField
+        name="url"
+        label="Style URL"
+        required
+        type="url"
+        autoComplete="off"
+        placeholder="https://tiles.openfreemap.org/styles/positron"
       />
     </Form>
   );
@@ -455,6 +544,9 @@ function AnyLayer({
     .with({ type: "TILEJSON" }, (layer) => (
       <TileJSONLayer layer={layer} {...rest} />
     ))
+    .with({ type: "STYLE" }, (layer) => (
+      <MapLibreStyleLayer layer={layer} {...rest} />
+    ))
     .with({ type: "MAPBOX" }, () => <MapboxLayer layer={layer} {...rest} />)
     .exhaustive();
 }
@@ -471,15 +563,15 @@ function AddLayer() {
   const defaultLayerList = (
     <div className="py-2">
       <E.DivLabel>Default layers</E.DivLabel>
-      {Object.entries(LAYERS).map(([id, mapboxLayer]) => (
+      {Object.entries(LAYERS).map(([id, baseLayer]) => (
         <DefaultLayerItem
           key={id}
-          mapboxLayer={mapboxLayer}
+          mapboxLayer={baseLayer}
           onSelect={async (layer) => {
             const { deleteLayerConfigs, oldAt } =
-              maybeDeleteOldMapboxLayer(items);
+              maybeDeleteOldBaseStyle(items);
             if (deleteLayerConfigs.length) {
-              toast("Mapbox layer replaced");
+              toast("Base style replaced");
             }
             await transact({
               note: "Add layer",
@@ -548,6 +640,10 @@ function AddLayer() {
                       XYZ
                       <CaretRightIcon />
                     </E.Button>
+                    <E.Button onClick={() => setMode("custom-style")}>
+                      MapLibre style
+                      <CaretRightIcon />
+                    </E.Button>
                     <E.Button onClick={() => setMode("custom-mapbox")}>
                       Mapbox
                       <CaretRightIcon />
@@ -562,6 +658,11 @@ function AddLayer() {
               .with("custom-xyz", () => (
                 <div className="p-3">
                   <XYZLayer onDone={() => setOpen(false)} />
+                </div>
+              ))
+              .with("custom-style", () => (
+                <div className="p-3">
+                  <MapLibreStyleLayer onDone={() => setOpen(false)} />
                 </div>
               ))
               .with("custom-mapbox", () => (

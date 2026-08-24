@@ -74,6 +74,10 @@ export const zLayerConfig = z.discriminatedUnion("type", [
     url: z.string().startsWith("mapbox://"),
   }),
   zLayerConfigCommon.extend({
+    type: z.literal("STYLE"),
+    url,
+  }),
+  zLayerConfigCommon.extend({
     type: z.literal("TILEJSON"),
     token: z.string(),
     url,

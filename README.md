@@ -23,16 +23,17 @@ git clone
 pnpm install
 ```
 
-2. Obtain a [Mapbox public access token](https://account.mapbox.com/)
-   ([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) and
+2. Optionally obtain a [Mapbox public access token](https://account.mapbox.com/)
+   ([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) and a
    [Geocode Earth token](https://app.geocode.earth/keys)
    ([docs](https://geocode.earth/docs/intro/authentication/)).
 
    Placemark renders maps with the open-source [MapLibre GL JS](https://maplibre.org/).
-   The Mapbox token is still used for the default hosted basemaps and the
-   directions API; custom XYZ and TileJSON layers do not require it.
+   Its default Positron basemap is hosted by [OpenFreeMap](https://openfreemap.org/)
+   and requires no token. The Mapbox token is only needed for Mapbox-hosted
+   styles and the directions API; the Geocode Earth token enables search.
 
-3. Configure the package with the tokens from the previous step:
+3. If needed, configure the package with the optional tokens:
 
 ```sh
 VITE_PUBLIC_MAPBOX_TOKEN="<your Mapbox public access token>" \

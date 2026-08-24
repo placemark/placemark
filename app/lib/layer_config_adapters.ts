@@ -12,38 +12,56 @@ const warnOffline = once(() => {
   toast.error("Offline: falling back to blank background");
 });
 
-export async function addMapboxStyle(
-  _base: StyleSpecification,
-  layer: ILayerConfig,
-): Promise<StyleSpecification> {
-  const url = getMapboxLayerURL(layer);
+const EMPTY_STYLE: StyleSpecification = {
+  version: 8,
+  name: "Empty",
+  glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+  sources: {},
+  layers: [],
+};
 
-  const style: StyleSpecification = await fetch(url)
+async function fetchStyle(url: string): Promise<StyleSpecification> {
+  return fetch(url)
     .then((res) => {
-      if (!res?.ok) {
+      if (!res.ok) {
         throw new Error("Could not fetch layer");
       }
-      return res.json();
+      return res.json() as Promise<StyleSpecification>;
     })
     .catch(() => {
       warnOffline();
-      return {
-        version: 8,
-        name: "Empty",
-        glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
-        sources: {},
-        layers: [],
-      };
+      return EMPTY_STYLE;
     });
+}
+
+export async function addMapboxStyle(
+  _base: StyleSpecification,
+  layer: Extract<ILayerConfig, { type: "MAPBOX" }>,
+): Promise<StyleSpecification> {
+  const url = getMapboxLayerURL(layer);
+  const style = await fetchStyle(url);
 
   const updatedStyle = updateMapboxStyle(
     makeMapboxStyleMapLibreCompatible(style, layer.token),
     {
       labelVisibility: layer.labelVisibility,
       rasterOpacity: layer.opacity,
+      visibility: layer.visibility,
     },
   );
   return updatedStyle;
+}
+
+export async function addMapLibreStyle(
+  _base: StyleSpecification,
+  layer: Extract<ILayerConfig, { type: "STYLE" }>,
+): Promise<StyleSpecification> {
+  const style = await fetchStyle(layer.url);
+  return updateMapboxStyle(style, {
+    labelVisibility: layer.labelVisibility,
+    rasterOpacity: layer.opacity,
+    visibility: layer.visibility,
+  });
 }
 
 function mapboxResourceURL(url: string, token: string): string {
@@ -97,9 +115,10 @@ function updateMapboxStyle(
   options: {
     labelVisibility?: boolean;
     rasterOpacity?: number;
+    visibility?: boolean;
   },
 ): StyleSpecification {
-  const { labelVisibility = true, rasterOpacity } = options;
+  const { labelVisibility = true, rasterOpacity, visibility = true } = options;
 
   if (!style.layers) {
     return style;
@@ -117,6 +136,16 @@ function updateMapboxStyle(
 
       if (!labelVisibility && isLabelLayer) {
         return null;
+      }
+
+      if (!visibility) {
+        return {
+          ...layer,
+          layout: {
+            ...layer.layout,
+            visibility: "none",
+          },
+        } as LayerSpecification;
       }
 
       if (

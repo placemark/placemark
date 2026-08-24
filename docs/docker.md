@@ -13,8 +13,10 @@ for production.
 cp .env.example .env.local
 ```
 
-### Add your Mapbox access token  in 
-``` .env.local ```
+### Optional: add your Mapbox access token in `.env.local`
+
+This is only required for Mapbox-hosted styles and the directions API. The
+default OpenFreeMap Positron style does not require a token.
 
 `VITE_PUBLIC_MAPBOX_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN`
 

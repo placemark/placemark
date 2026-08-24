@@ -1,14 +1,19 @@
-import type { PartialLayer } from "state/jotai";
 import { targetSize } from "./constants";
+
+export type PreviewLayer =
+  | { type: "MAPBOX"; url: string; token: string }
+  | {
+      type: "STYLE" | "XYZ" | "TILEJSON";
+      url: string;
+      token?: string;
+    };
 
 /**
  * Given a layer, return a raw URL for its preview.
  *
  * @returns Raw URL pointing to an image for this layer's preview
  */
-export function mapboxStaticURL(
-  mapboxLayer: Pick<PartialLayer, "type" | "url" | "token">,
-) {
+export function mapboxStaticURL(mapboxLayer: PreviewLayer) {
   switch (mapboxLayer.type) {
     case "MAPBOX": {
       const params = new URLSearchParams({
@@ -34,6 +39,9 @@ export function mapboxStaticURL(
         .replace("{x}", "0")
         .replace("{y}", "0")
         .replace("{z}", "0");
+    }
+    case "STYLE": {
+      return undefined;
     }
   }
 }
