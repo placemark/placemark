@@ -23,12 +23,11 @@ import type {
   MultiPoint,
   Position,
 } from "types";
-import { env } from "../env_client";
 import { type IDMap, UIDMap } from "../id_mapper";
 import { CLICKABLE_LAYERS } from "../load_and_augment_style";
 import type { IPersistence } from "../persistence/ipersistence";
 import type PMap from "../pmap";
-import { getRoutingURL } from "../routing";
+import { routeProperties, routingProvider } from "../routing";
 
 type PutFeature = MomentInput["putFeatures"][0];
 
@@ -214,29 +213,20 @@ export async function transactRoute(
   });
 
   try {
-    if (!env.OSRM_URL) {
+    if (!routingProvider) {
       toast.error("Routing is not configured");
       return;
     }
 
-    const url = getRoutingURL(
-      env.OSRM_URL,
-      routeType,
-      points.map((point) => point.coordinates),
-    );
-    const resp = await fetch(url);
-    const j = await resp.json();
-
-    if (!j.routes?.length) {
-      if (j.message) {
-        toast.error(j.message);
-      } else {
-        toast.error("Could not get route for an unexpected reason");
-      }
+    if (!routingProvider.profiles.includes(routeType)) {
+      toast.error(`${routeType} routing is not configured`);
       return;
     }
 
-    const newLineString = j.routes[0].geometry;
+    const route = await routingProvider.route(
+      routeType,
+      points.map((point) => point.coordinates),
+    );
 
     transact({
       note: "Added to line",
@@ -245,9 +235,13 @@ export async function transactRoute(
           ...wrappedFeature,
           feature: {
             ...wrappedFeature.feature,
+            properties: routeProperties(
+              wrappedFeature.feature.properties,
+              route,
+            ),
             geometry: {
               type: "GeometryCollection",
-              geometries: [newLineString, ...points],
+              geometries: [route.geometry, ...points],
             },
           },
         },

@@ -20,6 +20,9 @@ stored and exported.
 
 `VITE_PUBLIC_OSRM_URL=http://localhost:5000/route/v1`
 
+Routing is optional. See [routing provider configuration](routing.md) for the
+supported environment variables.
+
 #### Build
 
 ```bash

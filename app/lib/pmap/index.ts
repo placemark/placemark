@@ -12,6 +12,7 @@ import loadAndAugmentStyle, {
   SYNTHETIC_SOURCE_NAME,
 } from "app/lib/load_and_augment_style";
 import { splitFeatureGroups } from "app/lib/pmap/split_feature_groups";
+import { routingProvider } from "app/lib/routing";
 import { shallowArrayEqual } from "app/lib/utils";
 import * as maplibregl from "maplibre-gl";
 import type {
@@ -150,8 +151,10 @@ export default class PMap {
     map.addControl(
       new maplibregl.AttributionControl({
         compact: true,
-        customAttribution:
+        customAttribution: [
           '<a href="/map-style-licenses.html" target="_blank">Style licenses</a>',
+          ...(routingProvider ? [routingProvider.attributionHtml] : []),
+        ],
       }),
     );
     map.getCanvas().style.cursor = CURSOR_DEFAULT;

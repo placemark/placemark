@@ -64,6 +64,9 @@ For local development, copy `.env.example` to `.env.local` and add your tokens t
 cp .env.example .env.local
 ```
 
+Routing is optional and supports openrouteservice, Geoapify, or OSRM. See the
+[routing provider configuration](docs/routing.md).
+
 ## Interesting forks
 
 - [epanetjs](https://epanetjs.com/) - focused on water modeling ([repo](https://github.com/epanet-js/epanet-js))
