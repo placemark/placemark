@@ -4,6 +4,7 @@ import replaceCoordinates from "app/lib/replace_coordinates";
 import { captureException } from "integrations/errors";
 import { useSetAtom } from "jotai";
 import noop from "lodash/noop";
+import type { Point as MapLibrePoint } from "maplibre-gl";
 import { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import { USelection } from "state";
@@ -32,7 +33,7 @@ export function useRectangleHandlers({
   const pmap = useContext(MapContext);
   const setCursor = useSetAtom(cursorStyleAtom);
   const transact = rep.useTransact();
-  const [firstCorner, setFirstCorner] = useState<mapboxgl.Point | null>(null);
+  const [firstCorner, setFirstCorner] = useState<MapLibrePoint | null>(null);
   return {
     click: noop,
     move: (e) => {

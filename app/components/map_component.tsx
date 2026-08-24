@@ -1,6 +1,5 @@
 import { MapContextMenu } from "app/components/map_context_menu";
 import { MapContext } from "app/context/map_context";
-import { env } from "app/lib/env_client";
 import type { FlatbushLike } from "app/lib/generate_flatbush_instance";
 import { EmptyIndex } from "app/lib/generate_flatbush_instance";
 import { useHandlers } from "app/lib/handlers/index";
@@ -11,7 +10,7 @@ import PMap from "app/lib/pmap";
 import clsx from "clsx";
 import { captureException } from "integrations/errors";
 import throttle from "lodash/throttle";
-import mapboxgl /*, { LngLatBoundsLike } */ from "mapbox-gl";
+import * as maplibregl from "maplibre-gl";
 import { ContextMenu as CM } from "radix-ui";
 import type React from "react";
 import {
@@ -35,10 +34,9 @@ import {
 } from "state/jotai";
 import type { DragTarget, HandlerContext, IWrappedFeature } from "types";
 import { SYMBOLIZATION_NONE } from "types";
-import "mapbox-gl/dist/mapbox-gl.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 import { useClipboard } from "app/hooks/use_clipboard";
 import { keybindingOptions } from "app/hooks/use_map_keybindings";
-import { DECK_SYNTHETIC_ID } from "app/lib/constants";
 import { newFeatureId } from "app/lib/id";
 import { usePersistence } from "app/lib/persistence/context";
 import { fMoment } from "app/lib/persistence/moment";
@@ -49,15 +47,12 @@ import toast from "react-hot-toast";
 import { LastSearchResult } from "./last_search_result";
 import { ModeHints } from "./mode_hints";
 
-mapboxgl.accessToken = env.MAPBOX_TOKEN;
-
-mapboxgl.setRTLTextPlugin(
-  "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js",
-  (_err) => {
-    // console.error(err);
-  },
-  true, // Lazy load the plugin
-);
+void maplibregl
+  .setRTLTextPlugin(
+    "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
+    true,
+  )
+  .catch(captureException);
 
 export interface ContextInfo {
   features: ReturnType<typeof wrappedFeaturesFromMapFeatures>;
@@ -214,22 +209,12 @@ export const MapComponent = memo(function MapComponent({
   );
 
   const throttledMovePointer = useMemo(() => {
-    function fastMovePointer(point: mapboxgl.Point) {
+    function fastMovePointer(point: maplibregl.Point) {
       if (!map) return;
       const features = map.map.queryRenderedFeatures(point, {
         layers: CLICKABLE_LAYERS,
       });
-      try {
-        const syntheticUnderCursor = map.overlay.pickObject({
-          ...point,
-          layerIds: [DECK_SYNTHETIC_ID],
-        });
-        setCursor(syntheticUnderCursor || features.length ? "move" : "");
-      } catch (_e) {
-        // Deck can throw here if it's just been initialized
-        // or uninitialized.
-        // console.error(e);
-      }
+      setCursor(features.length ? "move" : "");
     }
     return fastMovePointer;
   }, [map, setCursor]);
@@ -255,15 +240,15 @@ export const MapComponent = memo(function MapComponent({
   // const log = false;
 
   const newHandlers: PMapHandlers = {
-    onClick: (e: mapboxgl.MapMouseEvent) => {
+    onClick: (e: maplibregl.MapMouseEvent) => {
       // if (log) console.log(`${mode.mode} click`);
       HANDLERS[mode.mode].click(e);
     },
-    onMapMouseDown: (e: mapboxgl.MapMouseEvent) => {
+    onMapMouseDown: (e: maplibregl.MapMouseEvent) => {
       // if (log) console.log(`${mode.mode} down`);
       HANDLERS[mode.mode].down(e);
     },
-    onMapTouchStart: (e: mapboxgl.MapTouchEvent) => {
+    onMapTouchStart: (e: maplibregl.MapTouchEvent) => {
       // if (log) console.log(`${mode.mode} down`);
       const handler = HANDLERS[mode.mode];
       if (handler.touchstart) {
@@ -272,11 +257,11 @@ export const MapComponent = memo(function MapComponent({
         handler.down(e);
       }
     },
-    onMapMouseUp: (e: mapboxgl.MapMouseEvent) => {
+    onMapMouseUp: (e: maplibregl.MapMouseEvent) => {
       // if (log) console.log(`${mode.mode} up`);
       HANDLERS[mode.mode].up(e);
     },
-    onMapTouchEnd: (e: mapboxgl.MapTouchEvent) => {
+    onMapTouchEnd: (e: maplibregl.MapTouchEvent) => {
       // if (log) console.log(`${mode.mode} up`);
       const handler = HANDLERS[mode.mode];
       if (handler.touchend) {
@@ -285,7 +270,7 @@ export const MapComponent = memo(function MapComponent({
         handler.up(e);
       }
     },
-    onMapTouchMove: (e: mapboxgl.MapTouchEvent) => {
+    onMapTouchMove: (e: maplibregl.MapTouchEvent) => {
       // if (log) console.log(`${mode.mode} up`);
       const handler = HANDLERS[mode.mode];
       if (handler.touchmove) {
@@ -294,7 +279,7 @@ export const MapComponent = memo(function MapComponent({
         handler.move(e);
       }
     },
-    onMapMouseMove: (e: mapboxgl.MapMouseEvent) => {
+    onMapMouseMove: (e: maplibregl.MapMouseEvent) => {
       // if (log) console.log(`${mode.mode} move`);
       HANDLERS[mode.mode].move(e);
       const map = mapRef.current?.map;
@@ -304,12 +289,12 @@ export const MapComponent = memo(function MapComponent({
         cursorLatitude: e.lngLat.lat,
       };
     },
-    onDoubleClick: (e: mapboxgl.MapMouseEvent) => {
+    onDoubleClick: (e: maplibregl.MapMouseEvent) => {
       // if (log) console.log(`${mode.mode} double`);
       HANDLERS[mode.mode].double(e);
     },
     onMoveEnd() {},
-    onMove: throttle((e: mapboxgl.MapboxEvent) => {
+    onMove: throttle((e: maplibregl.MapLibreEvent) => {
       const center = e.target.getCenter().toArray();
       const bounds = e.target.getBounds()?.toArray();
       return {
@@ -385,7 +370,7 @@ export const MapComponent = memo(function MapComponent({
       <CM.Trigger asChild onContextMenu={onContextMenu}>
         <div
           className={clsx(
-            "top-0 bottom-0 left-0 right-0 mapboxgl-map",
+            "top-0 bottom-0 left-0 right-0 maplibregl-map",
             cursor === "move"
               ? "cursor-move"
               : {

@@ -3,7 +3,7 @@ import { env } from "app/lib/env_client";
 import type { ContainerNode, LeafNode } from "app/lib/tree";
 import Fuse, { type FuseResult } from "fuse.js";
 import pick from "lodash/pick";
-import type { LngLat } from "mapbox-gl";
+import type { LngLat } from "maplibre-gl";
 import { Either, Left, Right } from "purify-ts/Either";
 import type { JsonObject } from "type-fest";
 import type {

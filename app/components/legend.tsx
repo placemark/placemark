@@ -6,6 +6,7 @@ import { usePersistence } from "app/lib/persistence/context";
 import { useAtom, useSetAtom } from "jotai";
 import last from "lodash/last";
 import throttle from "lodash/throttle";
+import type { MapLibreEvent, Map as MapLibreMap } from "maplibre-gl";
 import { Popover as P } from "radix-ui";
 import {
   Fragment,
@@ -122,7 +123,7 @@ function LegendCategorical({
 }
 
 function getScale(
-  map: mapboxgl.Map,
+  map: MapLibreMap,
   options: {
     unit: ScaleUnit;
   },
@@ -136,9 +137,9 @@ function getScale(
   // found between the two coordinates.
   const maxWidth = MAX_WIDTH;
 
-  // These are "internal" so we have to cast to any.
-  const y = (map as any)._containerHeight / 2;
-  const x = (map as any)._containerWidth / 2 - maxWidth / 2;
+  const { clientHeight, clientWidth } = map.getContainer();
+  const y = clientHeight / 2;
+  const x = clientWidth / 2 - maxWidth / 2;
   const left = map.unproject([x, y]);
   const right = map.unproject([x + maxWidth, y]);
   const maxMeters = left.distanceTo(right);
@@ -201,7 +202,7 @@ function ScaleControl() {
 
   useEffect(() => {
     if (map) {
-      const onMove = throttle((e: mapboxgl.MapboxEvent) => {
+      const onMove = throttle((e: MapLibreEvent) => {
         startTransition(() => {
           setMeasurement(
             getScale(e.target, {

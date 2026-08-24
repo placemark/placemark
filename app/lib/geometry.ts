@@ -6,6 +6,10 @@ import isEqual from "lodash/isEqual";
 import last from "lodash/last";
 import remove from "lodash/remove";
 import uniq from "lodash/uniq";
+import type {
+  Point as MapLibrePoint,
+  PointLike as MapLibrePointLike,
+} from "maplibre-gl";
 import type { Either } from "purify-ts/Either";
 import { Left, Right } from "purify-ts/Either";
 import { Just, Maybe, Nothing } from "purify-ts/Maybe";
@@ -300,8 +304,8 @@ export function bboxToPolygon(bbox: TBBox): Polygon {
  * without absolutely hitting them as features.
  */
 export function bufferPoint(
-  point: mapboxgl.Point,
-): [mapboxgl.PointLike, mapboxgl.PointLike] {
+  point: MapLibrePoint,
+): [MapLibrePointLike, MapLibrePointLike] {
   const ry = 10;
   const rx = ry;
   return [

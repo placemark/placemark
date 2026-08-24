@@ -17,6 +17,7 @@ import type {
   Polygon,
 } from "geojson";
 import clamp from "lodash/clamp";
+import type { Point as MapLibrePoint } from "maplibre-gl";
 import { Just, type Maybe, Nothing } from "purify-ts/Maybe";
 import type { Dispatch, SetStateAction } from "react";
 import type { Sel } from "state/jotai";
@@ -356,7 +357,7 @@ export interface HandlerContext {
   flatbushInstance: FlatbushLike;
   dragTargetRef: React.MutableRefObject<DragTarget | null>;
   mode: ModeWithOptions;
-  throttledMovePointer: (arg0: mapboxgl.Point) => void;
+  throttledMovePointer: (arg0: MapLibrePoint) => void;
   featureMap: FeatureMap;
   folderMap: FolderMap;
   idMap: IDMap;
