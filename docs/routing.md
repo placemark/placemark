@@ -69,6 +69,18 @@ server's routing profile is selected when its data is prepared, not by the
 profile label in the request path. Use a service you operate or have permission
 to use. Public demo servers are not suitable for production traffic.
 
+For a few local test routes, the FOSSGIS demo endpoints can be used:
+
+```sh
+VITE_PUBLIC_ROUTING_PROVIDER=osrm
+VITE_PUBLIC_OSRM_DRIVING_URL=https://routing.openstreetmap.de/routed-car/route/v1/driving
+VITE_PUBLIC_OSRM_WALKING_URL=https://routing.openstreetmap.de/routed-foot/route/v1/driving
+VITE_PUBLIC_OSRM_CYCLING_URL=https://routing.openstreetmap.de/routed-bike/route/v1/driving
+```
+
+The demo service permits at most one request per second and prohibits heavy
+usage. Do not use it in a deployment.
+
 ## Attribution and keys
 
 Placemark shows the configured routing provider in the map attribution and
