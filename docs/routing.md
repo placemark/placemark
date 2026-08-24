@@ -12,6 +12,19 @@ says that Navigation API results may not be exported, downloaded, cached, or
 stored. This is a restriction in the Mapbox service terms, separate from the
 Mapbox GL JS and Mapbox Style Specification licenses.
 
+## Exporting results
+
+| Provider | Storage and export |
+| --- | --- |
+| openrouteservice | Allowed under CC BY 4.0 with openrouteservice, HeiGIT, and OpenStreetMap attribution. |
+| Geoapify | Explicitly permits caching, storage, and redistribution. OpenStreetMap attribution is always required, and Geoapify attribution is required on the free plan. |
+| OSRM | Depends on the routed dataset and the operator's terms. For self-hosted OSRM using OpenStreetMap, retain OpenStreetMap attribution. Bulk extraction may have additional ODbL obligations. |
+
+Placemark stores the applicable attribution on each generated route. See the
+[openrouteservice terms](https://openrouteservice.org/terms-of-service/),
+[Geoapify terms](https://www.geoapify.com/terms-and-conditions/), and
+[OpenStreetMap license](https://www.openstreetmap.org/copyright/).
+
 ## openrouteservice
 
 Hosted openrouteservice supports driving, walking, and cycling:

@@ -34,14 +34,14 @@ const OSM_ATTRIBUTION =
 const PROVIDERS = {
   openrouteservice: {
     attribution:
-      "Powered by openrouteservice.org | Map data © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)",
-    attributionHtml: `Powered by <a href="https://openrouteservice.org/" target="_blank">openrouteservice.org</a> | ${OSM_ATTRIBUTION}`,
+      "© openrouteservice.org by HeiGIT (CC BY 4.0) | Map data © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)",
+    attributionHtml: `© <a href="https://openrouteservice.org/terms-of-service/" target="_blank">openrouteservice.org</a> by HeiGIT | ${OSM_ATTRIBUTION}`,
     homepage: "https://openrouteservice.org/",
     name: "openrouteservice",
   },
   geoapify: {
     attribution:
-      "Powered by Geoapify | © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)",
+      "Powered by Geoapify (https://www.geoapify.com/) | © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)",
     attributionHtml: `Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | ${OSM_ATTRIBUTION}`,
     homepage: "https://www.geoapify.com/",
     name: "Geoapify",
