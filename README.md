@@ -24,20 +24,21 @@ pnpm install
 ```
 
 2. Optionally obtain a [Geocode Earth token](https://app.geocode.earth/keys)
-   ([docs](https://geocode.earth/docs/intro/authentication/)) for search and a
-   [Mapbox public access token](https://account.mapbox.com/)
-   ([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) for
-   directions.
+   ([docs](https://geocode.earth/docs/intro/authentication/)) for search.
 
    Placemark renders maps with the open-source [MapLibre GL JS](https://maplibre.org/).
    Its default basemaps are hosted by [OpenFreeMap](https://openfreemap.org/)
-   and require no token. Mapbox-hosted basemap styles are not loaded.
+   and require no token. Mapbox-hosted basemap styles are not loaded. See
+   [map licenses and services](docs/map-licenses.md) for details.
 
-3. If needed, configure the package with the optional tokens:
+   Routing requires an OSRM-compatible service whose terms permit storing and
+   exporting route results. No routing service is configured by default.
+
+3. If needed, configure the optional services:
 
 ```sh
-VITE_PUBLIC_MAPBOX_TOKEN="<your Mapbox public access token>" \
 VITE_PUBLIC_GEOCODE_EARTH_TOKEN="<your Geocode Earth token>" \
+VITE_PUBLIC_OSRM_URL="http://localhost:5000/route/v1"
 ```
 
 4. Start the server:
@@ -55,8 +56,8 @@ pnpm build
 pnpm dlx serve@latest dist
 ```
 
-If you're planning to run this often or publicly, secure optional tokens by
-adding [URL restrictions to the Mapbox token](https://docs.mapbox.com/help/getting-started/access-tokens/#url-restrictions) and setting allowed Referrer Hostnames on the Geocode Earth token.
+If you're planning to run this often or publicly, set allowed Referrer
+Hostnames on the Geocode Earth token.
 
 For local development, copy `.env.example` to `.env.local` and add your tokens there:
 ```sh

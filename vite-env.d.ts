@@ -5,8 +5,8 @@ interface ViteTypeOptions {
 }
 
 interface ImportMetaEnv {
-  readonly VITE_PUBLIC_MAPBOX_TOKEN: string;
   readonly VITE_PUBLIC_GEOCODE_EARTH_TOKEN: string;
+  readonly VITE_PUBLIC_OSRM_URL: string;
 }
 
 interface ImportMeta {

@@ -28,6 +28,7 @@ import { type IDMap, UIDMap } from "../id_mapper";
 import { CLICKABLE_LAYERS } from "../load_and_augment_style";
 import type { IPersistence } from "../persistence/ipersistence";
 import type PMap from "../pmap";
+import { getRoutingURL } from "../routing";
 
 type PutFeature = MomentInput["putFeatures"][0];
 
@@ -213,8 +214,16 @@ export async function transactRoute(
   });
 
   try {
-    const wp = points.map((p) => p.coordinates.join(",")).join(";");
-    const url = `https://api.mapbox.com/directions/v5/mapbox/${routeType}/${wp}?alternatives=false&geometries=geojson&language=en&overview=full&steps=false&access_token=${env.MAPBOX_TOKEN}`;
+    if (!env.OSRM_URL) {
+      toast.error("Routing is not configured");
+      return;
+    }
+
+    const url = getRoutingURL(
+      env.OSRM_URL,
+      routeType,
+      points.map((point) => point.coordinates),
+    );
     const resp = await fetch(url);
     const j = await resp.json();
 

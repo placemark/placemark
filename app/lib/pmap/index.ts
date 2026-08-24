@@ -150,6 +150,8 @@ export default class PMap {
     map.addControl(
       new maplibregl.AttributionControl({
         compact: true,
+        customAttribution:
+          '<a href="/map-style-licenses.html" target="_blank">Style licenses</a>',
       }),
     );
     map.getCanvas().style.cursor = CURSOR_DEFAULT;

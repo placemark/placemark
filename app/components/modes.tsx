@@ -20,6 +20,7 @@ import Line from "app/components/icons/line";
 import Polygon from "app/components/icons/polygon";
 import MenuAction from "app/components/menu_action";
 import { useLineMode } from "app/hooks/use_line_mode";
+import { env } from "app/lib/env_client";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DropdownMenu as DD } from "radix-ui";
 import { memo } from "react";
@@ -200,6 +201,7 @@ export default memo(function Modes({
   return (
     <div className="flex items-center justify-start gap-x-1" role="radiogroup">
       {MODE_OPTIONS.filter((mode) => {
+        if (mode.mode === Mode.DRAW_ROUTE && !env.OSRM_URL) return false;
         if (!replaceGeometryForId) return true;
         return mode.mode !== Mode.NONE;
       }).map(({ mode, hotkey, Icon, Menu }, i) => {

@@ -13,12 +13,12 @@ for production.
 cp .env.example .env.local
 ```
 
-### Optional: add your Mapbox access token in `.env.local`
+### Optional: configure routing in `.env.local`
 
-This is only required for the directions API. OpenFreeMap basemaps do not
-require a token.
+Routing requires an OSRM-compatible service whose terms allow its results to be
+stored and exported.
 
-`VITE_PUBLIC_MAPBOX_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN`
+`VITE_PUBLIC_OSRM_URL=http://localhost:5000/route/v1`
 
 #### Build
 
