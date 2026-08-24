@@ -49,7 +49,8 @@ const PROVIDERS = {
   osrm: {
     attribution:
       "Routing data © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)",
-    attributionHtml: `Routing data ${OSM_ATTRIBUTION}`,
+    attributionHtml:
+      'Routing data <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
     homepage: "https://project-osrm.org/",
     name: "OSRM",
   },

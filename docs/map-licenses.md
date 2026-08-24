@@ -12,5 +12,6 @@
 - The [RTL text plugin](https://github.com/mapbox/mapbox-gl-rtl-text/blob/main/LICENSE.md)
   is BSD-3-Clause and is loaded as recommended by MapLibre.
 - Custom styles, tiles, and routing endpoints must permit the intended use.
-- No routing provider is enabled by default. Configured routing results are
-  stored in Placemark documents and may be exported.
+- No routing provider is enabled by default. See the
+  [routing provider configuration](routing.md) for export terms and required
+  attribution.

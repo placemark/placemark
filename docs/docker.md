@@ -15,13 +15,8 @@ cp .env.example .env.local
 
 ### Optional: configure routing in `.env.local`
 
-Routing requires an OSRM-compatible service whose terms allow its results to be
-stored and exported.
-
-`VITE_PUBLIC_OSRM_URL=http://localhost:5000/route/v1`
-
-Routing is optional. See [routing provider configuration](routing.md) for the
-supported environment variables.
+See [routing provider configuration](routing.md) for supported providers and
+environment variables.
 
 #### Build
 

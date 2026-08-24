@@ -31,14 +31,14 @@ pnpm install
    and require no token. Mapbox-hosted basemap styles are not loaded. See
    [map licenses and services](docs/map-licenses.md) for details.
 
-   Routing requires an OSRM-compatible service whose terms permit storing and
-   exporting route results. No routing service is configured by default.
+   Routing is optional and supports openrouteservice, Geoapify, or OSRM. No
+   routing service is configured by default. See the
+   [routing provider configuration](docs/routing.md).
 
 3. If needed, configure the optional services:
 
 ```sh
-VITE_PUBLIC_GEOCODE_EARTH_TOKEN="<your Geocode Earth token>" \
-VITE_PUBLIC_OSRM_URL="http://localhost:5000/route/v1"
+VITE_PUBLIC_GEOCODE_EARTH_TOKEN="<your Geocode Earth token>"
 ```
 
 4. Start the server:
@@ -63,9 +63,6 @@ For local development, copy `.env.example` to `.env.local` and add your tokens t
 ```sh
 cp .env.example .env.local
 ```
-
-Routing is optional and supports openrouteservice, Geoapify, or OSRM. See the
-[routing provider configuration](docs/routing.md).
 
 ## Interesting forks
 
