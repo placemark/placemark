@@ -4,7 +4,7 @@ import { CLICKABLE_LAYERS } from "app/lib/load_and_augment_style";
 import sortBy from "lodash/sortBy";
 import type {
   MapGeoJSONFeature,
-  Map as MapLibreMap,
+  MapLibreMap,
   MapMouseEvent,
   MapTouchEvent,
 } from "maplibre-gl";

@@ -3,9 +3,6 @@ import type { LayerConfigTemplate } from "app/lib/default_layers";
 
 type T = LayerConfigTemplate;
 
-/**
- * A list-like interface for selecting a default basemap.
- */
 export function DefaultLayerItem({
   layer,
   onSelect,

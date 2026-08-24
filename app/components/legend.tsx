@@ -6,7 +6,7 @@ import { usePersistence } from "app/lib/persistence/context";
 import { useAtom, useSetAtom } from "jotai";
 import last from "lodash/last";
 import throttle from "lodash/throttle";
-import type { MapLibreEvent, Map as MapLibreMap } from "maplibre-gl";
+import type { MapLibreEvent, MapLibreMap } from "maplibre-gl";
 import { Popover as P } from "radix-ui";
 import {
   Fragment,

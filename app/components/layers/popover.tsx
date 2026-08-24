@@ -77,15 +77,6 @@ const SHARED_INTIAL_VALUES = {
 } as const;
 
 /**
- * LayersPopover
- * --> AddLayer
- * ----> DefaultLayerItem
- * ----> XYZLayer
- * ----> MapLibreStyleLayer
- * ----> TileJSONLayer
- */
-
-/**
  * Layers with lower ats stack on top,
  * so this finds the lowest at possible.
  */
@@ -96,10 +87,6 @@ function getNextAt(items: ILayerConfig[]) {
   return generateKeyBetween(null, items[0].at || null);
 }
 
-/**
- * If there's an existing base style layer
- * in the stack, replace it and use its `at` value.
- */
 function maybeDeleteOldBaseStyle(items: ILayerConfig[]): {
   deleteLayerConfigs: Moment["deleteLayerConfigs"];
   oldAt: string | undefined;
@@ -169,9 +156,8 @@ function LegacyMapboxLayer() {
     <div className="p-3 space-y-3">
       <LayerFormHeader isEditing>Legacy Mapbox style</LayerFormHeader>
       <TextWell variant="primary" size="xs">
-        Mapbox-hosted styles are not loaded by the MapLibre renderer. Close this
-        dialog, add an OpenFreeMap or custom MapLibre style, and it will replace
-        this legacy basemap configuration.
+        Mapbox basemaps are disabled. Add an OpenFreeMap or custom MapLibre
+        style to replace this layer.
       </TextWell>
     </div>
   );
@@ -245,8 +231,8 @@ function MapLibreStyleLayer({
     >
       <LayerFormHeader isEditing={isEditing}>MapLibre style</LayerFormHeader>
       <TextWell variant="primary" size="xs">
-        Add an HTTPS URL that returns a MapLibre Style Specification document.
-        No access token is required for OpenFreeMap styles.
+        Enter an HTTPS URL for a MapLibre style. OpenFreeMap styles do not
+        require a token.
       </TextWell>
       <LabeledTextField
         name="url"

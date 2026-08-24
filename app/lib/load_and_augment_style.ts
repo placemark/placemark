@@ -55,9 +55,7 @@ const LASSO_LAYER_NAME = "lasso-layer";
 export const SYNTHETIC_POINT_LAYER_NAME = "synthetic-points";
 
 const warnLegacyMapboxStyle = once(() => {
-  toast.error(
-    "This document uses a legacy Mapbox basemap. Choose a MapLibre style to replace it.",
-  );
+  toast.error("Legacy Mapbox basemap ignored. Choose a MapLibre style.");
 });
 
 const emptyGeoJSONSource = {

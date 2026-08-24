@@ -326,8 +326,6 @@ export function useNoneHandlers({
       }
     },
     click: (e) => {
-      // Get the fuzzy feature. This is a maplibregl feature
-      // with only an id.
       const fuzzyResult = utils.fuzzyClick(e, {
         idMap,
         featureMap,

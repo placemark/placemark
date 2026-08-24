@@ -24,7 +24,8 @@ export function CircleTypesDialog() {
           >
             web mercator projection
           </a>
-          . These circles will also look like circles on standard web maps.
+          . These circles will also look like circles on standard Mapbox,
+          Google, and other kinds of web maps.
         </p>
         <p className="pt-2">
           Use this kind:{" "}
