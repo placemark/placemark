@@ -39,7 +39,7 @@ import LAYERS from "app/lib/default_layers";
 import { newFeatureId } from "app/lib/id";
 import { usePersistence } from "app/lib/persistence/context";
 import type { Moment } from "app/lib/persistence/moment";
-import { get, getMapboxLayerURL, getTileJSON } from "app/lib/utils";
+import { get, getTileJSON } from "app/lib/utils";
 import { zTileJSON } from "app/mapbox-layers/validations";
 import { generateKeyBetween } from "fractional-indexing";
 import { captureException } from "integrations/errors";
@@ -60,7 +60,6 @@ type Mode =
   | "custom"
   | "custom-xyz"
   | "custom-style"
-  | "custom-mapbox"
   | "custom-tilejson";
 
 const layerModeAtom = atom<Mode>("initial");
@@ -82,9 +81,8 @@ const SHARED_INTIAL_VALUES = {
  * --> AddLayer
  * ----> DefaultLayerItem
  * ----> XYZLayer
- * ----> MapboxLayer
- * ------> MapboxLayerList
- * --------> DefaultLayerItem
+ * ----> MapLibreStyleLayer
+ * ----> TileJSONLayer
  */
 
 /**
@@ -166,102 +164,16 @@ function LayerFormHeader({
   );
 }
 
-function MapboxLayer({
-  layer,
-  onDone,
-}: {
-  layer?: z.infer<typeof zLayerConfig>;
-  onDone?: () => void;
-}) {
-  const setMode = useSetAtom(layerModeAtom);
-  const rep = usePersistence();
-  const transact = rep.useTransact();
-  const isEditing = !!layer;
-  const layerConfigs = useAtomValue(layerConfigAtom);
-  const items = [...layerConfigs.values()];
-
-  const initialValues =
-    layer ||
-    ({
-      ...SHARED_INTIAL_VALUES,
-      type: "MAPBOX",
-    } as const);
-
+function LegacyMapboxLayer() {
   return (
-    <Form
-      schema={zLayerConfig}
-      initialValues={initialValues}
-      submitText={isEditing ? "Update layer" : "Add layer"}
-      fullWidthSubmit
-      onSubmit={async (values) => {
-        if (values.type !== "MAPBOX") {
-          return { [FORM_ERROR]: "Expected a Mapbox style" };
-        }
-        const url = getMapboxLayerURL(values);
-        let name = "";
-        try {
-          const style = await get(url, StyleSkeleton);
-          name = style.name || "Mapbox style";
-        } catch (_e) {
-          return {
-            [FORM_ERROR]: "Could not load style",
-          };
-        }
-        const { deleteLayerConfigs, oldAt } = maybeDeleteOldBaseStyle(items);
-        if (deleteLayerConfigs.length) {
-          toast("Base style replaced");
-        }
-        await transact({
-          note: "Add layer",
-          deleteLayerConfigs,
-          putLayerConfigs: [
-            {
-              ...values,
-              name,
-              visibility: true,
-              labelVisibility: true,
-              tms: false,
-              opacity: 1,
-              at: oldAt || getNextAt(items),
-              id: newFeatureId(),
-            },
-          ],
-        });
-
-        setMode("initial");
-        if (onDone) {
-          onDone();
-        }
-      }}
-    >
-      <LayerFormHeader isEditing={isEditing}>Mapbox</LayerFormHeader>
+    <div className="p-3 space-y-3">
+      <LayerFormHeader isEditing>Legacy Mapbox style</LayerFormHeader>
       <TextWell variant="primary" size="xs">
-        See Mapbox documentation on{" "}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          className={E.styledInlineA}
-          href="https://docs.mapbox.com/help/glossary/style-url/"
-        >
-          style URLs
-        </a>{" "}
-        if you're not sure what to input here.
+        Mapbox-hosted styles are not loaded by the MapLibre renderer. Close this
+        dialog, add an OpenFreeMap or custom MapLibre style, and it will replace
+        this legacy basemap configuration.
       </TextWell>
-      <LabeledTextField
-        name="url"
-        label="Style URL"
-        required
-        autoComplete="off"
-        placeholder="mapbox://"
-      />
-      <LabeledTextField
-        name="token"
-        required
-        label="Access token"
-        autoComplete="off"
-        placeholder="pk.…"
-      />
-    </Form>
+    </div>
   );
 }
 
@@ -547,7 +459,7 @@ function AnyLayer({
     .with({ type: "STYLE" }, (layer) => (
       <MapLibreStyleLayer layer={layer} {...rest} />
     ))
-    .with({ type: "MAPBOX" }, () => <MapboxLayer layer={layer} {...rest} />)
+    .with({ type: "MAPBOX" }, () => <LegacyMapboxLayer />)
     .exhaustive();
 }
 
@@ -566,7 +478,7 @@ function AddLayer() {
       {Object.entries(LAYERS).map(([id, baseLayer]) => (
         <DefaultLayerItem
           key={id}
-          mapboxLayer={baseLayer}
+          layer={baseLayer}
           onSelect={async (layer) => {
             const { deleteLayerConfigs, oldAt } =
               maybeDeleteOldBaseStyle(items);
@@ -644,10 +556,6 @@ function AddLayer() {
                       MapLibre style
                       <CaretRightIcon />
                     </E.Button>
-                    <E.Button onClick={() => setMode("custom-mapbox")}>
-                      Mapbox
-                      <CaretRightIcon />
-                    </E.Button>
                     <E.Button onClick={() => setMode("custom-tilejson")}>
                       TileJSON
                       <CaretRightIcon />
@@ -663,11 +571,6 @@ function AddLayer() {
               .with("custom-style", () => (
                 <div className="p-3">
                   <MapLibreStyleLayer onDone={() => setOpen(false)} />
-                </div>
-              ))
-              .with("custom-mapbox", () => (
-                <div className="p-3">
-                  <MapboxLayer onDone={() => setOpen(false)} />
                 </div>
               ))
               .with("custom-tilejson", () => (

@@ -32,7 +32,7 @@ function CopySymbolization({
         >
           MapLibre Style Expression
         </a>
-        , in a raw JSON style for MapLibre or Mapbox GL.
+        , in a raw JSON style for MapLibre.
       </TextWell>
     </div>
   );

@@ -26,8 +26,6 @@ export const LINE_COLORS_SELECTED = "#D6409F";
 /**
  * Utilities ------------------------------------------------------------------
  */
-export const targetSize = [80, 40] as const;
-
 export const SUPPORT_EMAIL = "support@placemark.io";
 
 export const emptySelection = new Set<RawId>();

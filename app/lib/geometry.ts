@@ -166,9 +166,8 @@ export function extendExtent(a: Maybe<BBox>, b: Maybe<BBox>) {
 
 /**
  * Check for zero-size bboxes. These can be generated
- * if you run getExtent for a point. Zero-extent bboxes
- * will cause failures in Mapbox when we use the static
- * maps API.
+ * if you run getExtent for a point. They also need special
+ * zoom handling when fitting the map to their bounds.
  */
 export function isBBoxEmpty(box: BBox): boolean {
   return box[0] === box[2] && box[1] === box[3];

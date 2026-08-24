@@ -69,6 +69,7 @@ export const zLayerConfig = z.discriminatedUnion("type", [
     url,
   }),
   zLayerConfigCommon.extend({
+    // Retained only so existing documents can identify and replace this layer.
     type: z.literal("MAPBOX"),
     token: z.string().startsWith("pk."),
     url: z.string().startsWith("mapbox://"),

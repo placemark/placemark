@@ -3,7 +3,7 @@ import type {
   RasterLayerSpecification,
   StyleSpecification,
 } from "@maplibre/maplibre-gl-style-spec";
-import { getMapboxLayerURL, getTileJSON } from "app/lib/utils";
+import { getTileJSON } from "app/lib/utils";
 import once from "lodash/once";
 import { toast } from "react-hot-toast";
 import type { ILayerConfig } from "types";
@@ -34,83 +34,19 @@ async function fetchStyle(url: string): Promise<StyleSpecification> {
     });
 }
 
-export async function addMapboxStyle(
-  _base: StyleSpecification,
-  layer: Extract<ILayerConfig, { type: "MAPBOX" }>,
-): Promise<StyleSpecification> {
-  const url = getMapboxLayerURL(layer);
-  const style = await fetchStyle(url);
-
-  const updatedStyle = updateMapboxStyle(
-    makeMapboxStyleMapLibreCompatible(style, layer.token),
-    {
-      labelVisibility: layer.labelVisibility,
-      rasterOpacity: layer.opacity,
-      visibility: layer.visibility,
-    },
-  );
-  return updatedStyle;
-}
-
 export async function addMapLibreStyle(
   _base: StyleSpecification,
   layer: Extract<ILayerConfig, { type: "STYLE" }>,
 ): Promise<StyleSpecification> {
   const style = await fetchStyle(layer.url);
-  return updateMapboxStyle(style, {
+  return updateBaseStyle(style, {
     labelVisibility: layer.labelVisibility,
     rasterOpacity: layer.opacity,
     visibility: layer.visibility,
   });
 }
 
-function mapboxResourceURL(url: string, token: string): string {
-  const accessToken = `access_token=${encodeURIComponent(token)}`;
-
-  if (url.startsWith("mapbox://sprites/")) {
-    const path = url.slice("mapbox://sprites/".length);
-    return `https://api.mapbox.com/styles/v1/${path}/sprite?${accessToken}`;
-  }
-
-  if (url.startsWith("mapbox://fonts/")) {
-    const path = url.slice("mapbox://fonts/".length);
-    return `https://api.mapbox.com/fonts/v1/${path}?${accessToken}`;
-  }
-
-  if (url.startsWith("mapbox://")) {
-    const path = url.slice("mapbox://".length);
-    return `https://api.mapbox.com/v4/${path}.json?secure&${accessToken}`;
-  }
-
-  return url;
-}
-
-export function makeMapboxStyleMapLibreCompatible(
-  style: StyleSpecification,
-  token: string,
-): StyleSpecification {
-  return {
-    ...style,
-    sprite:
-      typeof style.sprite === "string"
-        ? mapboxResourceURL(style.sprite, token)
-        : style.sprite,
-    glyphs:
-      typeof style.glyphs === "string"
-        ? mapboxResourceURL(style.glyphs, token)
-        : style.glyphs,
-    sources: Object.fromEntries(
-      Object.entries(style.sources).map(([id, source]) => [
-        id,
-        "url" in source && typeof source.url === "string"
-          ? { ...source, url: mapboxResourceURL(source.url, token) }
-          : source,
-      ]),
-    ) as StyleSpecification["sources"],
-  };
-}
-
-function updateMapboxStyle(
+function updateBaseStyle(
   style: StyleSpecification,
   options: {
     labelVisibility?: boolean;
@@ -123,10 +59,6 @@ function updateMapboxStyle(
   if (!style.layers) {
     return style;
   }
-
-  const isSatelliteStyle =
-    style.name === "Mapbox Satellite Streets" ||
-    style.name === "Mapbox Satellite";
 
   const updatedLayers = style.layers
     .map((layer) => {
@@ -148,26 +80,12 @@ function updateMapboxStyle(
         } as LayerSpecification;
       }
 
-      if (
-        isSatelliteStyle &&
-        layer.type === "raster" &&
-        rasterOpacity !== undefined
-      ) {
+      if (layer.type === "raster" && rasterOpacity !== undefined) {
         return {
           ...layer,
           paint: {
             ...(layer.paint || {}),
             "raster-opacity": rasterOpacity,
-          },
-        };
-      }
-
-      if (isSatelliteStyle && layer.type === "background" && layer.paint) {
-        return {
-          ...layer,
-          paint: {
-            ...layer.paint,
-            "background-color": "#ffffff",
           },
         };
       }

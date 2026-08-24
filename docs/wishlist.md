@@ -22,7 +22,7 @@
 - GitHub connector. Basically what geojson.io had - the ability to edit files in a GitHub repo. Probably with LFS support.
 - get placemark.com and @placemark on twitter
 - Extension library
-- Preview mapbox gl styles with data
+- Preview MapLibre styles with data
 - Property column formulas in the table editor. Could be javascript functions. Could even permit async! With turf functions!
 - Connect to databases
 - Ability to sort feature list

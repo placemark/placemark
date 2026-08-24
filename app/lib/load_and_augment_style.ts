@@ -14,11 +14,12 @@ import {
   LINE_COLORS_SELECTED,
 } from "app/lib/constants";
 import {
-  addMapboxStyle,
   addMapLibreStyle,
   addTileJSONStyle,
   addXYZStyle,
 } from "app/lib/layer_config_adapters";
+import once from "lodash/once";
+import { toast } from "react-hot-toast";
 import type { PreviewProperty } from "state/jotai";
 import type { ISymbolization, LayerConfigMap } from "types";
 
@@ -52,6 +53,12 @@ const FEATURES_LINE_LAYER_NAME = "features-line";
 const FEATURES_FILL_LAYER_NAME = "features-fill";
 const LASSO_LAYER_NAME = "lasso-layer";
 export const SYNTHETIC_POINT_LAYER_NAME = "synthetic-points";
+
+const warnLegacyMapboxStyle = once(() => {
+  toast.error(
+    "This document uses a legacy Mapbox basemap. Choose a MapLibre style to replace it.",
+  );
+});
 
 const emptyGeoJSONSource = {
   type: "geojson",
@@ -101,7 +108,7 @@ export default async function loadAndAugmentStyle({
     id++;
     switch (layer.type) {
       case "MAPBOX": {
-        style = await addMapboxStyle(style, layer);
+        warnLegacyMapboxStyle();
         break;
       }
       case "STYLE": {

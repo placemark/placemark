@@ -1,6 +1,6 @@
 # Placemark
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fplacemark%2Fplacemark&env=VITE_PUBLIC_MAPBOX_TOKEN)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fplacemark%2Fplacemark)
 
 Placemark is an open source and free application for creating, viewing,
 editing, and analyzing map data. Most people who want to use this application
@@ -23,15 +23,15 @@ git clone
 pnpm install
 ```
 
-2. Optionally obtain a [Mapbox public access token](https://account.mapbox.com/)
-   ([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) and a
-   [Geocode Earth token](https://app.geocode.earth/keys)
-   ([docs](https://geocode.earth/docs/intro/authentication/)).
+2. Optionally obtain a [Geocode Earth token](https://app.geocode.earth/keys)
+   ([docs](https://geocode.earth/docs/intro/authentication/)) for search and a
+   [Mapbox public access token](https://account.mapbox.com/)
+   ([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) for
+   directions.
 
    Placemark renders maps with the open-source [MapLibre GL JS](https://maplibre.org/).
-   Its default Positron basemap is hosted by [OpenFreeMap](https://openfreemap.org/)
-   and requires no token. The Mapbox token is only needed for Mapbox-hosted
-   styles and the directions API; the Geocode Earth token enables search.
+   Its default basemaps are hosted by [OpenFreeMap](https://openfreemap.org/)
+   and require no token. Mapbox-hosted basemap styles are not loaded.
 
 3. If needed, configure the package with the optional tokens:
 
@@ -55,8 +55,8 @@ pnpm build
 pnpm dlx serve@latest dist
 ```
 
-If you're planning to run this often or publicly, take care to secure your
-tokens better by adding [URL restrictions to the Mapbox token](https://docs.mapbox.com/help/getting-started/access-tokens/#url-restrictions) and setting allowed Referrer Hostnames to the Geocode Earth one.
+If you're planning to run this often or publicly, secure optional tokens by
+adding [URL restrictions to the Mapbox token](https://docs.mapbox.com/help/getting-started/access-tokens/#url-restrictions) and setting allowed Referrer Hostnames on the Geocode Earth token.
 
 For local development, copy `.env.example` to `.env.local` and add your tokens there:
 ```sh
