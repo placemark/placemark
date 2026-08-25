@@ -28,29 +28,30 @@ export type RoutingProvider = {
   route: (profile: ROUTE_TYPE, points: Position[]) => Promise<RoutingResult>;
 };
 
-const OSM_ATTRIBUTION =
-  'Map data <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>';
+const OSM_COPYRIGHT = "https://www.openstreetmap.org/copyright";
+
+/**
+ * Historical form of attribution, but fine
+ * https://osmfoundation.org/wiki/Licence/Attribution_Guidelines
+ */
+const OSM_ATTRIBUTION = `<a href="${OSM_COPYRIGHT}" target="_blank">© OpenStreetMap</a>`;
 
 const PROVIDERS = {
   openrouteservice: {
-    attribution:
-      "© openrouteservice.org by HeiGIT (CC BY 4.0) | Map data © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)",
+    attribution: `© openrouteservice.org by HeiGIT (CC BY 4.0) | Map data © OpenStreetMap contributors (${OSM_COPYRIGHT})`,
     attributionHtml: `© <a href="https://openrouteservice.org/terms-of-service/" target="_blank">openrouteservice.org</a> by HeiGIT | ${OSM_ATTRIBUTION}`,
     homepage: "https://openrouteservice.org/",
     name: "openrouteservice",
   },
   geoapify: {
-    attribution:
-      "Powered by Geoapify (https://www.geoapify.com/) | © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)",
+    attribution: `Powered by Geoapify (https://www.geoapify.com/) | © OpenStreetMap contributors (${OSM_COPYRIGHT})`,
     attributionHtml: `Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | ${OSM_ATTRIBUTION}`,
     homepage: "https://www.geoapify.com/",
     name: "Geoapify",
   },
   osrm: {
-    attribution:
-      "Routing data © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)",
-    attributionHtml:
-      'Routing data <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
+    attribution: `Routing data © OpenStreetMap contributors (${OSM_COPYRIGHT})`,
+    attributionHtml: `Routing data <a href="${OSM_COPYRIGHT}" target="_blank">© OpenStreetMap contributors</a>`,
     homepage: "https://project-osrm.org/",
     name: "OSRM",
   },

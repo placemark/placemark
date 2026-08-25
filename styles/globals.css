@@ -132,7 +132,7 @@
 }
 
 .maplibregl-ctrl-attrib.maplibregl-compact {
-  min-height: 24px !important;
+  min-height: 20px !important;
 }
 
 .maplibregl-canvas {
