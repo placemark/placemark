@@ -1,36 +1,37 @@
+import { env } from "app/lib/env_client";
 import type { ILayerConfig } from "types";
 
+const defaults = {
+  type: "MAPBOX",
+  token: env.MAPBOX_TOKEN,
+} as const;
+
 export type LayerConfigTemplate = Pick<
-  Extract<ILayerConfig, { type: "STYLE" }>,
-  "name" | "url" | "type"
+  ILayerConfig,
+  "name" | "url" | "type" | "token"
 >;
 
-const LAYERS = {
-  POSITRON: {
-    name: "Positron (OpenFreeMap)",
-    url: "https://tiles.openfreemap.org/styles/positron",
-    type: "STYLE",
-  },
-  BRIGHT: {
-    name: "Bright (OpenFreeMap)",
-    url: "https://tiles.openfreemap.org/styles/bright",
-    type: "STYLE",
-  },
-  LIBERTY: {
-    name: "Liberty (OpenFreeMap)",
-    url: "https://tiles.openfreemap.org/styles/liberty",
-    type: "STYLE",
+const LAYERS: Record<string, LayerConfigTemplate> = {
+  MONOCHROME: {
+    name: "Monochrome",
+    url: "mapbox://styles/mapbox/light-v10",
+    ...defaults,
   },
   DARK: {
-    name: "Dark (OpenFreeMap)",
-    url: "https://tiles.openfreemap.org/styles/dark",
-    type: "STYLE",
+    name: "Dark",
+    url: "mapbox://styles/mapbox/dark-v10",
+    ...defaults,
   },
-  FIORD: {
-    name: "Fiord (OpenFreeMap)",
-    url: "https://tiles.openfreemap.org/styles/fiord",
-    type: "STYLE",
+  SATELLITE: {
+    name: "Satellite",
+    url: "mapbox://styles/mapbox/satellite-streets-v11",
+    ...defaults,
   },
-} satisfies Record<string, LayerConfigTemplate>;
+  STREETS: {
+    name: "Streets",
+    url: "mapbox://styles/mapbox/navigation-guidance-day-v4",
+    ...defaults,
+  },
+};
 
 export default LAYERS;

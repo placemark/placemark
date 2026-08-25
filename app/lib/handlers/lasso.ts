@@ -15,6 +15,7 @@ export function useLassoHandlers({
   idMap,
   folderMap,
   selection,
+  pmap,
 }: HandlerContext): Handlers {
   return {
     click: useAtomCallback(
@@ -82,6 +83,7 @@ export function useLassoHandlers({
         idMap,
         featureMap,
         folderMap,
+        pmap,
       });
       if (!fuzzyResult) {
         set(selectionAtom, USelection.none());

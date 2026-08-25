@@ -1,13 +1,9 @@
+import { DECK_SYNTHETIC_ID } from "app/lib/constants";
 import { bufferPoint } from "app/lib/geometry";
 import { decodeId } from "app/lib/id";
 import { CLICKABLE_LAYERS } from "app/lib/load_and_augment_style";
+import type PMap from "app/lib/pmap";
 import sortBy from "lodash/sortBy";
-import type {
-  MapGeoJSONFeature,
-  MapLibreMap,
-  MapMouseEvent,
-  MapTouchEvent,
-} from "maplibre-gl";
 import type { EphemeralEditingStateLasso } from "state/jotai";
 import type {
   FeatureMap,
@@ -21,10 +17,10 @@ import { isFeatureLocked } from "./folder";
 import { getMapCoord } from "./handlers/utils";
 import { type IDMap, UIDMap } from "./id_mapper";
 
-type MouseOrTouchEvent = MapMouseEvent | MapTouchEvent;
+type MouseOrTouchEvent = mapboxgl.MapMouseEvent | mapboxgl.MapTouchEvent;
 
 export function wrappedFeaturesFromMapFeatures(
-  clickedFeatures: MapGeoJSONFeature[],
+  clickedFeatures: mapboxgl.MapboxGeoJSONFeature[],
   featureMap: FeatureMap,
   idMap: IDMap,
 ) {
@@ -84,7 +80,7 @@ export function newPolygonFromClickEvent(e: MouseOrTouchEvent): Polygon {
 
 export function isLassoTiny(
   ephemeralState: EphemeralEditingStateLasso,
-  map: MapLibreMap,
+  map: mapboxgl.Map,
 ) {
   const tl = map.project(ephemeralState.box[0]);
   const br = map.project(ephemeralState.box[1]);
@@ -102,15 +98,38 @@ export function fuzzyClick(
     idMap,
     featureMap,
     folderMap,
+    pmap,
   }: {
     idMap: IDMap;
     featureMap: FeatureMap;
     folderMap: FolderMap;
+    pmap: PMap;
   },
 ) {
   const map = e.target;
 
   const ids: RawId[] = [];
+
+  const pickInfo = pmap.overlay.pickObject({
+    ...e.point,
+    layerIds: [DECK_SYNTHETIC_ID],
+  });
+
+  if (pickInfo) {
+    ids.push(pickInfo.object.id as RawId);
+  } else {
+    const multiPickInfo = pmap.overlay.pickMultipleObjects({
+      ...e.point,
+      radius: 10,
+      layerIds: [DECK_SYNTHETIC_ID],
+    });
+
+    if (multiPickInfo) {
+      for (const info of multiPickInfo) {
+        ids.push(info.object.id as RawId);
+      }
+    }
+  }
 
   let mapFeatures = map.queryRenderedFeatures(e.point, {
     layers: CLICKABLE_LAYERS,

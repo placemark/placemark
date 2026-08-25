@@ -1,4 +1,3 @@
-import type { Point as MapLibrePoint } from "maplibre-gl";
 import { Just, Nothing } from "purify-ts/Maybe";
 import {
   fcGeometryCollection,
@@ -37,7 +36,7 @@ import {
 } from "./geometry";
 
 test("bufferPoint", () => {
-  expect(bufferPoint({ x: 0, y: 0 } as unknown as MapLibrePoint)).toEqual([
+  expect(bufferPoint({ x: 0, y: 0 } as unknown as mapboxgl.Point)).toEqual([
     [-10, -10],
     [10, 10],
   ]);

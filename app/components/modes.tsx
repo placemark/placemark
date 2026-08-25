@@ -20,7 +20,6 @@ import Line from "app/components/icons/line";
 import Polygon from "app/components/icons/polygon";
 import MenuAction from "app/components/menu_action";
 import { useLineMode } from "app/hooks/use_line_mode";
-import { routingProvider } from "app/lib/routing";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DropdownMenu as DD } from "radix-ui";
 import { memo } from "react";
@@ -35,15 +34,12 @@ import {
   modeAtom,
   routeTypeAtom,
 } from "state/jotai";
-import { CIRCLE_TYPE } from "state/mode";
+import { CIRCLE_TYPE, ROUTE_TYPE } from "state/mode";
 import type { IWrappedFeature } from "types";
 
 function RouteMenu() {
   const [routeType, setRouteType] = useAtom(routeTypeAtom);
   const setDialogState = useSetAtom(dialogAtom);
-  const activeRouteType = routingProvider?.profiles.includes(routeType)
-    ? routeType
-    : routingProvider?.profiles[0];
 
   return (
     <div className="z-50">
@@ -55,19 +51,19 @@ function RouteMenu() {
         </DD.Trigger>
         <DDContent>
           <DDLabel>Route type</DDLabel>
-          {routingProvider?.profiles.map((type) => (
-            <StyledItem
-              key={type}
-              onSelect={() => {
-                setRouteType(type);
-              }}
-            >
-              <CheckIcon
-                className={activeRouteType === type ? "" : "opacity-0"}
-              />
-              {type}
-            </StyledItem>
-          ))}
+          {[ROUTE_TYPE.DRIVING, ROUTE_TYPE.WALKING, ROUTE_TYPE.CYCLING].map(
+            (type) => (
+              <StyledItem
+                key={type}
+                onSelect={() => {
+                  setRouteType(type);
+                }}
+              >
+                <CheckIcon className={routeType === type ? "" : "opacity-0"} />
+                {type}
+              </StyledItem>
+            ),
+          )}
           <DDSeparator />
           <StyledItem
             onSelect={() => {
@@ -204,7 +200,6 @@ export default memo(function Modes({
   return (
     <div className="flex items-center justify-start gap-x-1" role="radiogroup">
       {MODE_OPTIONS.filter((mode) => {
-        if (mode.mode === Mode.DRAW_ROUTE && !routingProvider) return false;
         if (!replaceGeometryForId) return true;
         return mode.mode !== Mode.NONE;
       }).map(({ mode, hotkey, Icon, Menu }, i) => {

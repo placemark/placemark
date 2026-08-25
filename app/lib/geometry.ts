@@ -6,10 +6,6 @@ import isEqual from "lodash/isEqual";
 import last from "lodash/last";
 import remove from "lodash/remove";
 import uniq from "lodash/uniq";
-import type {
-  Point as MapLibrePoint,
-  PointLike as MapLibrePointLike,
-} from "maplibre-gl";
 import type { Either } from "purify-ts/Either";
 import { Left, Right } from "purify-ts/Either";
 import { Just, Maybe, Nothing } from "purify-ts/Maybe";
@@ -164,6 +160,12 @@ export function extendExtent(a: Maybe<BBox>, b: Maybe<BBox>) {
   }
 }
 
+/**
+ * Check for zero-size bboxes. These can be generated
+ * if you run getExtent for a point. Zero-extent bboxes
+ * will cause failures in Mapbox when we use the static
+ * maps API.
+ */
 export function isBBoxEmpty(box: BBox): boolean {
   return box[0] === box[2] && box[1] === box[3];
 }
@@ -298,8 +300,8 @@ export function bboxToPolygon(bbox: TBBox): Polygon {
  * without absolutely hitting them as features.
  */
 export function bufferPoint(
-  point: MapLibrePoint,
-): [MapLibrePointLike, MapLibrePointLike] {
+  point: mapboxgl.Point,
+): [mapboxgl.PointLike, mapboxgl.PointLike] {
   const ry = 10;
   const rx = ry;
   return [
