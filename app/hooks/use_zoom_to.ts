@@ -1,7 +1,7 @@
 import { MapContext } from "app/context/map_context";
 import { getExtent, isBBoxEmpty } from "app/lib/geometry";
 import { useAtomCallback } from "jotai/utils";
-import type { LngLatBoundsLike } from "mapbox-gl";
+import type { LngLatBoundsLike } from "maplibre-gl";
 import { Maybe } from "purify-ts/Maybe";
 import { useCallback, useContext } from "react";
 import { USelection } from "state";

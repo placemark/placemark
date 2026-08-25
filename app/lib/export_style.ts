@@ -15,19 +15,19 @@ export interface EOption {
 export function exportStyle(symbolization: ISymbolization): EOption[] {
   return [
     {
-      name: "Mapbox GL Style: Line",
+      name: "MapLibre Style: Line",
       value: JSON.stringify(LINE_PAINT(symbolization, true), null, 2),
     },
     {
-      name: "Mapbox GL Style: Fill",
+      name: "MapLibre Style: Fill",
       value: JSON.stringify(FILL_PAINT(symbolization, true), null, 2),
     },
     {
-      name: "Mapbox GL Style: Circle",
+      name: "MapLibre Style: Circle",
       value: JSON.stringify(CIRCLE_PAINT(symbolization, false), null, 2),
     },
     {
-      name: "Mapbox GL Expression",
+      name: "MapLibre Expression",
       value: JSON.stringify(
         asColorExpression({
           symbolization: {

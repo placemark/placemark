@@ -1,23 +1,20 @@
-import { ScatterplotLayer } from "@deck.gl/layers";
-import { MapboxOverlay } from "@deck.gl/mapbox";
 import { colorFromPresence } from "app/lib/color";
 import {
   CURSOR_DEFAULT,
-  DECK_SYNTHETIC_ID,
   DEFAULT_MAP_BOUNDS,
   emptySelection,
-  LINE_COLORS_SELECTED_RGB,
-  WHITE,
 } from "app/lib/constants";
 import type { IDMap } from "app/lib/id_mapper";
 import loadAndAugmentStyle, {
   EPHEMERAL_SOURCE_NAME,
   FEATURES_SOURCE_NAME,
   LASSO_SOURCE_NAME,
+  SYNTHETIC_SOURCE_NAME,
 } from "app/lib/load_and_augment_style";
 import { splitFeatureGroups } from "app/lib/pmap/split_feature_groups";
+import { routingProvider } from "app/lib/routing";
 import { shallowArrayEqual } from "app/lib/utils";
-import mapboxgl from "mapbox-gl";
+import * as maplibregl from "maplibre-gl";
 import type {
   Data,
   EphemeralEditingState,
@@ -26,16 +23,14 @@ import type {
 } from "state/jotai";
 import type {
   Feature,
-  IFeature,
   IFeatureCollection,
   IPresence,
   ISymbolization,
   LayerConfigMap,
-  Point,
 } from "types";
 import { bboxToPolygon } from "../geometry";
 
-const MAP_OPTIONS: Omit<mapboxgl.MapboxOptions, "container"> = {
+const MAP_OPTIONS: Omit<maplibregl.MapOptions, "container"> = {
   style: { version: 8, layers: [], sources: {} },
   maxZoom: 26,
   boxZoom: false,
@@ -54,31 +49,31 @@ const cursorSvg = (color: string) => {
   return div;
 };
 
-type ClickEvent = mapboxgl.MapMouseEvent;
-type MoveEvent = mapboxgl.MapboxEvent;
+type ClickEvent = maplibregl.MapMouseEvent;
+type MoveEvent = maplibregl.MapLibreEvent;
 
 export type PMapHandlers = {
   onClick: (e: ClickEvent) => void;
   onDoubleClick: (e: ClickEvent) => void;
-  onMapMouseUp: (e: mapboxgl.MapMouseEvent) => void;
-  onMapMouseMove: (e: mapboxgl.MapMouseEvent) => void;
-  onMapTouchMove: (e: mapboxgl.MapTouchEvent) => void;
-  onMapMouseDown: (e: mapboxgl.MapMouseEvent) => void;
-  onMapTouchStart: (e: mapboxgl.MapTouchEvent) => void;
-  onMoveEnd: (e: mapboxgl.MapboxEvent) => void;
-  onMapTouchEnd: (e: mapboxgl.MapTouchEvent) => void;
-  onMove: (e: mapboxgl.MapboxEvent) => void;
+  onMapMouseUp: (e: maplibregl.MapMouseEvent) => void;
+  onMapMouseMove: (e: maplibregl.MapMouseEvent) => void;
+  onMapTouchMove: (e: maplibregl.MapTouchEvent) => void;
+  onMapMouseDown: (e: maplibregl.MapMouseEvent) => void;
+  onMapTouchStart: (e: maplibregl.MapTouchEvent) => void;
+  onMoveEnd: (e: maplibregl.MapLibreEvent) => void;
+  onMapTouchEnd: (e: maplibregl.MapTouchEvent) => void;
+  onMove: (e: maplibregl.MapLibreEvent) => void;
 };
 
-const lastValues = new WeakMap<mapboxgl.GeoJSONSource, Feature[]>();
+const lastValues = new WeakMap<maplibregl.GeoJSONSource, Feature[]>();
 
 /**
- * Memoized set data for a mapboxgl.GeoJSONSource. If
+ * Memoized set data for a maplibregl.GeoJSONSource. If
  * the same source is called with the same data,
  * it won't set.
  */
 function mSetData(
-  source: mapboxgl.GeoJSONSource,
+  source: maplibregl.GeoJSONSource,
   newData: Feature[],
   _label: string,
   force?: boolean,
@@ -101,7 +96,7 @@ function mSetData(
 }
 
 export default class PMap {
-  map: mapboxgl.Map;
+  map: maplibregl.Map;
   handlers: React.MutableRefObject<PMapHandlers>;
   idMap: IDMap;
 
@@ -110,10 +105,9 @@ export default class PMap {
   lastData: Data | null;
   lastEphemeralState: EphemeralEditingState;
   lastSymbolization: ISymbolization | null;
-  presenceMarkers: Map<IPresence["userId"], mapboxgl.Marker>;
+  presenceMarkers: Map<IPresence["userId"], maplibregl.Marker>;
   lastLayer: LayerConfigMap | null;
   lastPreviewProperty: PreviewProperty;
-  overlay: MapboxOverlay;
 
   constructor({
     element,
@@ -130,28 +124,21 @@ export default class PMap {
     symbolization: ISymbolization;
     previewProperty: PreviewProperty;
     idMap: IDMap;
-    controlsCorner?: Parameters<mapboxgl.Map["addControl"]>[1];
+    controlsCorner?: Parameters<maplibregl.Map["addControl"]>[1];
   }) {
     this.idMap = idMap;
     const positionOptions = {
-      bounds: DEFAULT_MAP_BOUNDS as mapboxgl.LngLatBoundsLike,
+      bounds: DEFAULT_MAP_BOUNDS as maplibregl.LngLatBoundsLike,
     };
 
-    const map = new mapboxgl.Map({
+    const map = new maplibregl.Map({
       container: element,
       ...MAP_OPTIONS,
       ...positionOptions,
     });
 
-    this.overlay = new MapboxOverlay({
-      interleaved: true,
-      layers: [],
-    });
-
-    map.addControl(this.overlay as any);
-
     map.addControl(
-      new mapboxgl.GeolocateControl({
+      new maplibregl.GeolocateControl({
         showUserLocation: false,
         showAccuracyCircle: false,
         positionOptions: {
@@ -160,10 +147,14 @@ export default class PMap {
       }),
       controlsCorner,
     );
-    map.addControl(new mapboxgl.NavigationControl({}), controlsCorner);
+    map.addControl(new maplibregl.NavigationControl({}), controlsCorner);
     map.addControl(
-      new mapboxgl.AttributionControl({
+      new maplibregl.AttributionControl({
         compact: true,
+        customAttribution: [
+          '<a href="/map-style-licenses.html" target="_blank">Style licenses</a>',
+          ...(routingProvider ? [routingProvider.attributionHtml] : []),
+        ],
       }),
     );
     map.getCanvas().style.cursor = CURSOR_DEFAULT;
@@ -209,7 +200,7 @@ export default class PMap {
     this.handlers.current.onMapMouseDown(e);
   };
 
-  onMapTouchStart = (e: mapboxgl.MapTouchEvent) => {
+  onMapTouchStart = (e: maplibregl.MapTouchEvent) => {
     this.handlers.current.onMapTouchStart(e);
   };
 
@@ -221,7 +212,7 @@ export default class PMap {
     this.handlers.current.onMoveEnd(e);
   };
 
-  onMapTouchEnd = (e: mapboxgl.MapTouchEvent) => {
+  onMapTouchEnd = (e: maplibregl.MapTouchEvent) => {
     this.handlers.current.onMapTouchEnd(e);
   };
 
@@ -229,15 +220,15 @@ export default class PMap {
     this.handlers.current.onMove(e);
   };
 
-  onMapMouseMove = (e: mapboxgl.MapMouseEvent) => {
+  onMapMouseMove = (e: maplibregl.MapMouseEvent) => {
     this.handlers.current.onMapMouseMove(e);
   };
 
-  onMapTouchMove = (e: mapboxgl.MapTouchEvent) => {
+  onMapTouchMove = (e: maplibregl.MapTouchEvent) => {
     this.handlers.current.onMapTouchMove(e);
   };
 
-  onMapDoubleClick = (e: mapboxgl.MapMouseEvent) => {
+  onMapDoubleClick = (e: maplibregl.MapMouseEvent) => {
     this.handlers.current.onDoubleClick(e);
   };
 
@@ -246,7 +237,7 @@ export default class PMap {
     for (const presence of presences) {
       const marker =
         this.presenceMarkers.get(presence.userId) ??
-        new mapboxgl.Marker(cursorSvg(colorFromPresence(presence)));
+        new maplibregl.Marker(cursorSvg(colorFromPresence(presence)));
       marker
         .setLngLat([presence.cursorLongitude, presence.cursorLatitude])
         .addTo(this.map);
@@ -274,24 +265,23 @@ export default class PMap {
     ephemeralState: EphemeralEditingState;
     force?: boolean;
   }) {
-    if (!(this.map && (this.map as any).style)) {
-      this.lastData = data;
-      return;
-    }
-
     const featuresSource = this.map.getSource(
       FEATURES_SOURCE_NAME,
-    ) as mapboxgl.GeoJSONSource;
+    ) as maplibregl.GeoJSONSource;
 
     const lassoSource = this.map.getSource(
       LASSO_SOURCE_NAME,
-    ) as mapboxgl.GeoJSONSource;
+    ) as maplibregl.GeoJSONSource;
 
     const ephemeralSource = this.map.getSource(
       EPHEMERAL_SOURCE_NAME,
-    ) as mapboxgl.GeoJSONSource;
+    ) as maplibregl.GeoJSONSource;
 
-    if (!featuresSource || !ephemeralSource) {
+    const syntheticSource = this.map.getSource(
+      SYNTHETIC_SOURCE_NAME,
+    ) as maplibregl.GeoJSONSource;
+
+    if (!featuresSource || !ephemeralSource || !syntheticSource) {
       // Set the lastFeatureList here
       // so that the setStyle method will
       // add it again. This happens when the map
@@ -317,42 +307,16 @@ export default class PMap {
     // TODO: fix flash
     mSetData(ephemeralSource, groups.ephemeral, "ephem");
     mSetData(featuresSource, groups.features, "features", force);
-
-    this.overlay.setProps({
-      layers: [
-        new ScatterplotLayer<IFeature<Point>>({
-          id: DECK_SYNTHETIC_ID,
-
-          radiusUnits: "pixels",
-          lineWidthUnits: "pixels",
-
-          pickable: true,
-          stroked: true,
-          filled: true,
-
-          data: groups.synthetic,
-
-          getPosition: (d) => d.geometry.coordinates as [number, number],
-          getFillColor: (d) => {
-            return groups.selectionIds.has(d.id as RawId)
-              ? WHITE
-              : LINE_COLORS_SELECTED_RGB;
+    const syntheticFeatures = groups.synthetic.length
+      ? groups.synthetic.map((feature) => ({
+          ...feature,
+          properties: {
+            ...feature.properties,
+            selected: groups.selectionIds.has(feature.id as RawId),
           },
-          getLineColor: (d) => {
-            return groups.selectionIds.has(d.id as RawId)
-              ? LINE_COLORS_SELECTED_RGB
-              : WHITE;
-          },
-          getLineWidth: 1.5,
-          getRadius: (d) => {
-            const id = Number(d.id || 0);
-            const fp = d.properties?.fp;
-            if (fp) return 10;
-            return id % 2 === 0 ? 5 : 3.5;
-          },
-        }),
-      ],
-    });
+        }))
+      : groups.synthetic;
+    mSetData(syntheticSource, syntheticFeatures, "synthetic", force);
 
     if (ephemeralState.type === "lasso") {
       mSetData(
@@ -425,7 +389,6 @@ export default class PMap {
   }
 
   private updateSelections(newSet: Set<RawId>) {
-    if (!this.map || !(this.map as any).style) return;
     const oldSet = this.lastSelectionIds;
     const tmpSet = new Set(newSet);
     // let adds = 0;
