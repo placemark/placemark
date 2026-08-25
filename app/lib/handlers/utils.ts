@@ -9,7 +9,12 @@ import type {
   LineString as TurfLineString,
   MultiLineString as TurfMultiLineString,
 } from "geojson";
-import type { MapMouseEvent, MapTouchEvent, PointLike } from "mapbox-gl";
+import type {
+  MapMouseEvent,
+  MapTouchEvent,
+  Point,
+  PointLike,
+} from "maplibre-gl";
 import { toast } from "react-hot-toast";
 import { type ModeWithOptions, USelection } from "state";
 import type { Data, Sel } from "state/jotai";
@@ -23,17 +28,15 @@ import type {
   MultiPoint,
   Position,
 } from "types";
-import { env } from "../env_client";
 import { type IDMap, UIDMap } from "../id_mapper";
 import { CLICKABLE_LAYERS } from "../load_and_augment_style";
 import type { IPersistence } from "../persistence/ipersistence";
 import type PMap from "../pmap";
+import { routeProperties, routingProvider } from "../routing";
 
 type PutFeature = MomentInput["putFeatures"][0];
 
-export function getMapCoord(
-  e: mapboxgl.MapMouseEvent | mapboxgl.MapTouchEvent,
-) {
+export function getMapCoord(e: MapMouseEvent | MapTouchEvent) {
   return e6position(e.lngLat.toArray(), 7) as Pos2;
 }
 
@@ -79,7 +82,7 @@ export function createOrUpdateFeature({
 }
 
 const getNeighborCandidate = (
-  point: mapboxgl.Point,
+  point: Point,
   pmap: PMap,
   idMap: IDMap,
   excludeFeatureId?: string,
@@ -215,21 +218,20 @@ export async function transactRoute(
   });
 
   try {
-    const wp = points.map((p) => p.coordinates.join(",")).join(";");
-    const url = `https://api.mapbox.com/directions/v5/mapbox/${routeType}/${wp}?alternatives=false&geometries=geojson&language=en&overview=full&steps=false&access_token=${env.MAPBOX_TOKEN}`;
-    const resp = await fetch(url);
-    const j = await resp.json();
-
-    if (!j.routes?.length) {
-      if (j.message) {
-        toast.error(j.message);
-      } else {
-        toast.error("Could not get route for an unexpected reason");
-      }
+    if (!routingProvider) {
+      toast.error("Routing is not configured");
       return;
     }
 
-    const newLineString = j.routes[0].geometry;
+    if (!routingProvider.profiles.includes(routeType)) {
+      toast.error(`${routeType} routing is not configured`);
+      return;
+    }
+
+    const route = await routingProvider.route(
+      routeType,
+      points.map((point) => point.coordinates),
+    );
 
     transact({
       note: "Added to line",
@@ -238,9 +240,13 @@ export async function transactRoute(
           ...wrappedFeature,
           feature: {
             ...wrappedFeature.feature,
+            properties: routeProperties(
+              wrappedFeature.feature.properties,
+              route,
+            ),
             geometry: {
               type: "GeometryCollection",
-              geometries: [newLineString, ...points],
+              geometries: [route.geometry, ...points],
             },
           },
         },
