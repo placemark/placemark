@@ -92,9 +92,7 @@ function maybeDeleteOldBaseStyle(items: ILayerConfig[]): {
   oldAt: string | undefined;
 } {
   let oldAt: string | undefined;
-  const oldBaseStyle = items.find(
-    (layer) => layer.type === "MAPBOX" || layer.type === "STYLE",
-  );
+  const oldBaseStyle = items.find((layer) => layer.type === "STYLE");
 
   const deleteLayerConfigs: string[] = [];
 
@@ -147,18 +145,6 @@ function LayerFormHeader({
       ) : (
         <BackButton to="custom" />
       )}
-    </div>
-  );
-}
-
-function LegacyMapboxLayer() {
-  return (
-    <div className="p-3 space-y-3">
-      <LayerFormHeader isEditing>Legacy Mapbox style</LayerFormHeader>
-      <TextWell variant="primary" size="xs">
-        Mapbox basemaps are disabled. Add an OpenFreeMap or custom MapLibre
-        style to replace this layer.
-      </TextWell>
     </div>
   );
 }
@@ -445,7 +431,6 @@ function AnyLayer({
     .with({ type: "STYLE" }, (layer) => (
       <MapLibreStyleLayer layer={layer} {...rest} />
     ))
-    .with({ type: "MAPBOX" }, () => <LegacyMapboxLayer />)
     .exhaustive();
 }
 

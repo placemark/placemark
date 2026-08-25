@@ -6,7 +6,7 @@ import { purple900 } from "app/lib/constants";
 import { exportStyle } from "app/lib/export_style";
 import { NIL_PREVIEW } from "test/helpers";
 import type { ILayerConfig, ISymbolization } from "types";
-import { describe, expect, it, test, vi } from "vitest";
+import { describe, expect, it, test } from "vitest";
 import loadAndAugmentStyle, {
   addEditingLayers,
   makeLayers,
@@ -147,37 +147,4 @@ test("loadAndAugmentStyle", async () => {
       previewProperty: NIL_PREVIEW,
     }),
   ).resolves.toMatchSnapshot();
-});
-
-test("legacy Mapbox styles are not requested", async () => {
-  const fetchMock = vi.fn();
-  vi.stubGlobal("fetch", fetchMock);
-
-  try {
-    await loadAndAugmentStyle({
-      layerConfigs: new Map([
-        [
-          "legacy",
-          {
-            id: "legacy",
-            type: "MAPBOX",
-            at: "a0",
-            name: "Legacy Mapbox style",
-            visibility: true,
-            labelVisibility: true,
-            opacity: 1,
-            tms: false,
-            token: "pk.legacy",
-            url: "mapbox://styles/example/legacy",
-          },
-        ],
-      ]),
-      symbolization: NONE_NO_SIMPLESTYLE,
-      previewProperty: NIL_PREVIEW,
-    });
-
-    expect(fetchMock).not.toHaveBeenCalled();
-  } finally {
-    vi.unstubAllGlobals();
-  }
 });

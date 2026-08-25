@@ -1,9 +1,7 @@
 # Map licenses and services
 
 - Rendering uses `maplibre-gl` under BSD-3-Clause.
-- Style parsing uses `@maplibre/maplibre-gl-style-spec`. Its package metadata
-  identifies ISC, and its distributed BSD notices are preserved with the
-  renderer notices in [`public/maplibre-license.txt`](../public/maplibre-license.txt).
+- Style parsing uses `@maplibre/maplibre-gl-style-spec` under ISC.
 - OpenFreeMap is the default tile and style provider. Its TileJSON attribution
   remains visible through MapLibre's attribution control.
 - OpenFreeMap styles are MIT with upstream BSD and Creative Commons design

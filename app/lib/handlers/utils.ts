@@ -9,7 +9,12 @@ import type {
   LineString as TurfLineString,
   MultiLineString as TurfMultiLineString,
 } from "geojson";
-import type { MapMouseEvent, MapTouchEvent, PointLike } from "maplibre-gl";
+import type {
+  MapMouseEvent,
+  MapTouchEvent,
+  Point,
+  PointLike,
+} from "maplibre-gl";
 import { toast } from "react-hot-toast";
 import { type ModeWithOptions, USelection } from "state";
 import type { Data, Sel } from "state/jotai";
@@ -77,7 +82,7 @@ export function createOrUpdateFeature({
 }
 
 const getNeighborCandidate = (
-  point: import("maplibre-gl").Point,
+  point: Point,
   pmap: PMap,
   idMap: IDMap,
   excludeFeatureId?: string,

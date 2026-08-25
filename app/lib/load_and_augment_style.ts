@@ -18,8 +18,6 @@ import {
   addTileJSONStyle,
   addXYZStyle,
 } from "app/lib/layer_config_adapters";
-import once from "lodash/once";
-import { toast } from "react-hot-toast";
 import type { PreviewProperty } from "state/jotai";
 import type { ISymbolization, LayerConfigMap } from "types";
 
@@ -53,10 +51,6 @@ const FEATURES_LINE_LAYER_NAME = "features-line";
 const FEATURES_FILL_LAYER_NAME = "features-fill";
 const LASSO_LAYER_NAME = "lasso-layer";
 export const SYNTHETIC_POINT_LAYER_NAME = "synthetic-points";
-
-const warnLegacyMapboxStyle = once(() => {
-  toast.error("Legacy Mapbox basemap ignored. Choose a MapLibre style.");
-});
 
 const emptyGeoJSONSource = {
   type: "geojson",
@@ -105,10 +99,6 @@ export default async function loadAndAugmentStyle({
   for (const layer of layers) {
     id++;
     switch (layer.type) {
-      case "MAPBOX": {
-        warnLegacyMapboxStyle();
-        break;
-      }
       case "STYLE": {
         style = await addMapLibreStyle(style, layer);
         break;
