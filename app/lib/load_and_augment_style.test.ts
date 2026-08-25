@@ -1,16 +1,21 @@
-import {
-  type StyleSpecification,
-  validateStyleMin,
-} from "@maplibre/maplibre-gl-style-spec";
+import { validate } from "@mapbox/mapbox-gl-style-spec";
 import { purple900 } from "app/lib/constants";
 import { exportStyle } from "app/lib/export_style";
 import { NIL_PREVIEW } from "test/helpers";
 import type { ILayerConfig, ISymbolization } from "types";
-import { describe, expect, it, test } from "vitest";
+import { describe, expect, it, test, vi } from "vitest";
 import loadAndAugmentStyle, {
   addEditingLayers,
   makeLayers,
 } from "./load_and_augment_style";
+
+vi.mock("app/lib/env_client", () => {
+  return {
+    env: {
+      MAPBOX_TOKEN: "xxx",
+    },
+  };
+});
 
 const NONE_NO_SIMPLESTYLE: ISymbolization = {
   type: "none",
@@ -36,14 +41,14 @@ describe("makeLayers", () => {
 
     expect(makeLayers(inputs)).toMatchSnapshot();
 
-    const emptyStyle: StyleSpecification = {
+    const emptyStyle: mapboxgl.Style = {
       version: 8,
       glyphs: "https://foo.com/foo{fontstack}/{range}",
       sources: {},
       layers: [],
     };
     addEditingLayers({ style: emptyStyle, ...inputs });
-    expect(validateStyleMin(emptyStyle)).toEqual([]);
+    expect(validate(emptyStyle)).toEqual([]);
   });
   it("ramp", () => {
     const ramp = {
@@ -72,13 +77,13 @@ describe("makeLayers", () => {
     expect(makeLayers(inputs)).toMatchSnapshot();
     expect(exportStyle(ramp)).toMatchSnapshot();
 
-    const emptyStyle: StyleSpecification = {
+    const emptyStyle: mapboxgl.Style = {
       version: 8,
       sources: {},
       layers: [],
     };
     addEditingLayers({ style: emptyStyle, ...inputs });
-    expect(validateStyleMin(emptyStyle)).toEqual([]);
+    expect(validate(emptyStyle)).toEqual([]);
   });
   it("categorical", () => {
     const categorical = {
@@ -100,13 +105,13 @@ describe("makeLayers", () => {
     } as const;
     expect(exportStyle(categorical)).toMatchSnapshot();
     const layers = makeLayers(inputs);
-    const emptyStyle: StyleSpecification = {
+    const emptyStyle: mapboxgl.Style = {
       version: 8,
       sources: {},
       layers: [],
     };
     addEditingLayers({ style: emptyStyle, ...inputs });
-    expect(validateStyleMin(emptyStyle)).toEqual([]);
+    expect(validate(emptyStyle)).toEqual([]);
     expect(layers).toMatchSnapshot();
   });
   it("categorical with override", () => {

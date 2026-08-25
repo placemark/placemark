@@ -161,7 +161,7 @@ if (
 ) {
   (window as any).URL.createObjectURL = () => {
     // Do nothing
-    // Mock this function for maplibre-gl to work
+    // Mock this function for mapbox-gl to work
   };
 
   (window as any).TextEncoder = TextEncoder;

@@ -30,7 +30,7 @@ interface SplitGroups {
  *
  * This also generates selectionIds, which is a list
  * of RawId (integer) IDs which are the ones that go
- * directly to MapLibre GL.
+ * directly to Mapbox GL.
  *
  * This is somewhat slow. It could probably be
  * faster using memoization, or a micro-optimization of
