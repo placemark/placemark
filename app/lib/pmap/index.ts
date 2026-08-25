@@ -15,6 +15,7 @@ import { splitFeatureGroups } from "app/lib/pmap/split_feature_groups";
 import { routingProvider } from "app/lib/routing";
 import { shallowArrayEqual } from "app/lib/utils";
 import * as maplibregl from "maplibre-gl";
+import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import type {
   Data,
   EphemeralEditingState,
@@ -29,6 +30,8 @@ import type {
   LayerConfigMap,
 } from "types";
 import { bboxToPolygon } from "../geometry";
+
+maplibregl.setWorkerUrl(maplibreWorkerUrl);
 
 const MAP_OPTIONS: Omit<maplibregl.MapOptions, "container"> = {
   style: { version: 8, layers: [], sources: {} },
