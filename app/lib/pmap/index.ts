@@ -30,7 +30,6 @@ import type {
   LayerConfigMap,
 } from "types";
 import { bboxToPolygon } from "../geometry";
-import { NitpickyAttributionControl } from "./nitpickyAttributionControl";
 
 maplibregl.setWorkerUrl(maplibreWorkerUrl);
 
