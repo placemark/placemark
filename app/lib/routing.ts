@@ -20,7 +20,7 @@ export type RoutingResult = {
 };
 
 export type RoutingProvider = {
-  attributionsHtml: string[];
+  attributionsHtml: readonly string[];
   homepage: string;
   id: RoutingProviderId;
   name: string;
