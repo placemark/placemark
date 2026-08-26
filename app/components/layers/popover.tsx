@@ -45,9 +45,10 @@ import { generateKeyBetween } from "fractional-indexing";
 import { captureException } from "integrations/errors";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import clamp from "lodash/clamp";
+import groupBy from "lodash/groupBy";
 import { Maybe } from "purify-ts/Maybe";
 import { Popover as P, Tooltip as T } from "radix-ui";
-import { Suspense, useState } from "react";
+import { Fragment, Suspense, useState } from "react";
 import toast from "react-hot-toast";
 import { layerConfigAtom } from "state/jotai";
 import { match } from "ts-pattern";
@@ -445,34 +446,40 @@ function AddLayer() {
 
   const defaultLayerList = (
     <div className="py-2">
-      <E.DivLabel>Default layers</E.DivLabel>
-      {Object.entries(LAYERS).map(([id, baseLayer]) => (
-        <DefaultLayerItem
-          key={id}
-          layer={baseLayer}
-          onSelect={async (layer) => {
-            const { deleteLayerConfigs, oldAt } =
-              maybeDeleteOldBaseStyle(items);
-            if (deleteLayerConfigs.length) {
-              toast("Base style replaced");
-            }
-            await transact({
-              note: "Add layer",
-              deleteLayerConfigs,
-              putLayerConfigs: [
-                {
-                  ...layer,
-                  visibility: true,
-                  tms: false,
-                  opacity: 1,
-                  at: oldAt || nextAt,
-                  id: newFeatureId(),
-                  labelVisibility: true,
-                },
-              ],
-            });
-          }}
-        />
+      {Object.entries(
+        groupBy(Object.entries(LAYERS), ([_id, layer]) => layer.provider),
+      ).map(([provider, layers]) => (
+        <Fragment key={provider}>
+          <E.DivLabel>{provider}</E.DivLabel>
+          {layers.map(([id, baseLayer]) => (
+            <DefaultLayerItem
+              key={id}
+              layer={baseLayer}
+              onSelect={async (layer) => {
+                const { deleteLayerConfigs, oldAt } =
+                  maybeDeleteOldBaseStyle(items);
+                if (deleteLayerConfigs.length) {
+                  toast("Base style replaced");
+                }
+                await transact({
+                  note: "Add layer",
+                  deleteLayerConfigs,
+                  putLayerConfigs: [
+                    {
+                      ...layer,
+                      visibility: true,
+                      tms: false,
+                      opacity: 1,
+                      at: oldAt || nextAt,
+                      id: newFeatureId(),
+                      labelVisibility: true,
+                    },
+                  ],
+                });
+              }}
+            />
+          ))}
+        </Fragment>
       ))}
       <E.DivSeparator />
       <button

@@ -70,6 +70,7 @@ export const zLayerConfig = z.discriminatedUnion("type", [
   }),
   zLayerConfigCommon.extend({
     type: z.literal("STYLE"),
+    provider: z.string().optional(),
     url,
   }),
   zLayerConfigCommon.extend({
