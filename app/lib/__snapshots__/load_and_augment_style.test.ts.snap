@@ -2,7 +2,7 @@
 
 exports[`loadAndAugmentStyle 1`] = `
 {
-  "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+  "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "placemarkInternalLayer1",
@@ -224,53 +224,6 @@ exports[`loadAndAugmentStyle 1`] = `
       "source": "lasso",
       "type": "fill",
     },
-    {
-      "id": "synthetic-points",
-      "paint": {
-        "circle-color": [
-          "case",
-          [
-            "get",
-            "selected",
-          ],
-          "#ffffff",
-          "#D6409F",
-        ],
-        "circle-radius": [
-          "case",
-          [
-            "has",
-            "fp",
-          ],
-          10,
-          [
-            "==",
-            [
-              "%",
-              [
-                "id",
-              ],
-              2,
-            ],
-            0,
-          ],
-          5,
-          3.5,
-        ],
-        "circle-stroke-color": [
-          "case",
-          [
-            "get",
-            "selected",
-          ],
-          "#D6409F",
-          "#ffffff",
-        ],
-        "circle-stroke-width": 1.5,
-      },
-      "source": "synthetic",
-      "type": "circle",
-    },
   ],
   "name": "XYZ Layer",
   "sources": {
@@ -309,16 +262,8 @@ exports[`loadAndAugmentStyle 1`] = `
       ],
       "type": "raster",
     },
-    "synthetic": {
-      "buffer": 4,
-      "data": {
-        "features": [],
-        "type": "FeatureCollection",
-      },
-      "tolerance": 0,
-      "type": "geojson",
-    },
   },
+  "sprite": "mapbox://sprites/mapbox/streets-v8",
   "version": 8,
 }
 `;
@@ -326,7 +271,7 @@ exports[`loadAndAugmentStyle 1`] = `
 exports[`makeLayers > categorical 1`] = `
 [
   {
-    "name": "MapLibre Style: Line",
+    "name": "Mapbox GL Style: Line",
     "value": "{
   "line-opacity": 1,
   "line-width": 2,
@@ -343,7 +288,7 @@ exports[`makeLayers > categorical 1`] = `
 }",
   },
   {
-    "name": "MapLibre Style: Fill",
+    "name": "Mapbox GL Style: Fill",
     "value": "{
   "fill-opacity": 0.3,
   "fill-color": [
@@ -359,7 +304,7 @@ exports[`makeLayers > categorical 1`] = `
 }",
   },
   {
-    "name": "MapLibre Style: Circle",
+    "name": "Mapbox GL Style: Circle",
     "value": "{
   "circle-stroke-color": [
     "match",
@@ -405,7 +350,7 @@ exports[`makeLayers > categorical 1`] = `
 }",
   },
   {
-    "name": "MapLibre Expression",
+    "name": "Mapbox GL Expression",
     "value": "[
   "match",
   [
@@ -706,60 +651,13 @@ exports[`makeLayers > categorical 2`] = `
     "source": "lasso",
     "type": "fill",
   },
-  {
-    "id": "synthetic-points",
-    "paint": {
-      "circle-color": [
-        "case",
-        [
-          "get",
-          "selected",
-        ],
-        "#ffffff",
-        "#D6409F",
-      ],
-      "circle-radius": [
-        "case",
-        [
-          "has",
-          "fp",
-        ],
-        10,
-        [
-          "==",
-          [
-            "%",
-            [
-              "id",
-            ],
-            2,
-          ],
-          0,
-        ],
-        5,
-        3.5,
-      ],
-      "circle-stroke-color": [
-        "case",
-        [
-          "get",
-          "selected",
-        ],
-        "#D6409F",
-        "#ffffff",
-      ],
-      "circle-stroke-width": 1.5,
-    },
-    "source": "synthetic",
-    "type": "circle",
-  },
 ]
 `;
 
 exports[`makeLayers > categorical with override 1`] = `
 [
   {
-    "name": "MapLibre Style: Line",
+    "name": "Mapbox GL Style: Line",
     "value": "{
   "line-opacity": [
     "coalesce",
@@ -797,7 +695,7 @@ exports[`makeLayers > categorical with override 1`] = `
 }",
   },
   {
-    "name": "MapLibre Style: Fill",
+    "name": "Mapbox GL Style: Fill",
     "value": "{
   "fill-opacity": [
     "coalesce",
@@ -827,7 +725,7 @@ exports[`makeLayers > categorical with override 1`] = `
 }",
   },
   {
-    "name": "MapLibre Style: Circle",
+    "name": "Mapbox GL Style: Circle",
     "value": "{
   "circle-stroke-color": [
     "match",
@@ -880,7 +778,7 @@ exports[`makeLayers > categorical with override 1`] = `
 }",
   },
   {
-    "name": "MapLibre Expression",
+    "name": "Mapbox GL Expression",
     "value": "[
   "match",
   [
@@ -1126,53 +1024,6 @@ exports[`makeLayers > none 1`] = `
     },
     "source": "lasso",
     "type": "fill",
-  },
-  {
-    "id": "synthetic-points",
-    "paint": {
-      "circle-color": [
-        "case",
-        [
-          "get",
-          "selected",
-        ],
-        "#ffffff",
-        "#D6409F",
-      ],
-      "circle-radius": [
-        "case",
-        [
-          "has",
-          "fp",
-        ],
-        10,
-        [
-          "==",
-          [
-            "%",
-            [
-              "id",
-            ],
-            2,
-          ],
-          0,
-        ],
-        5,
-        3.5,
-      ],
-      "circle-stroke-color": [
-        "case",
-        [
-          "get",
-          "selected",
-        ],
-        "#D6409F",
-        "#ffffff",
-      ],
-      "circle-stroke-width": 1.5,
-    },
-    "source": "synthetic",
-    "type": "circle",
   },
 ]
 `;
@@ -1538,60 +1389,13 @@ exports[`makeLayers > ramp 1`] = `
     "source": "lasso",
     "type": "fill",
   },
-  {
-    "id": "synthetic-points",
-    "paint": {
-      "circle-color": [
-        "case",
-        [
-          "get",
-          "selected",
-        ],
-        "#ffffff",
-        "#D6409F",
-      ],
-      "circle-radius": [
-        "case",
-        [
-          "has",
-          "fp",
-        ],
-        10,
-        [
-          "==",
-          [
-            "%",
-            [
-              "id",
-            ],
-            2,
-          ],
-          0,
-        ],
-        5,
-        3.5,
-      ],
-      "circle-stroke-color": [
-        "case",
-        [
-          "get",
-          "selected",
-        ],
-        "#D6409F",
-        "#ffffff",
-      ],
-      "circle-stroke-width": 1.5,
-    },
-    "source": "synthetic",
-    "type": "circle",
-  },
 ]
 `;
 
 exports[`makeLayers > ramp 2`] = `
 [
   {
-    "name": "MapLibre Style: Line",
+    "name": "Mapbox GL Style: Line",
     "value": "{
   "line-opacity": 1,
   "line-width": 2,
@@ -1624,7 +1428,7 @@ exports[`makeLayers > ramp 2`] = `
 }",
   },
   {
-    "name": "MapLibre Style: Fill",
+    "name": "Mapbox GL Style: Fill",
     "value": "{
   "fill-opacity": 0.3,
   "fill-color": [
@@ -1656,7 +1460,7 @@ exports[`makeLayers > ramp 2`] = `
 }",
   },
   {
-    "name": "MapLibre Style: Circle",
+    "name": "Mapbox GL Style: Circle",
     "value": "{
   "circle-stroke-color": [
     "match",
@@ -1718,7 +1522,7 @@ exports[`makeLayers > ramp 2`] = `
 }",
   },
   {
-    "name": "MapLibre Expression",
+    "name": "Mapbox GL Expression",
     "value": "[
   "match",
   [
@@ -1990,53 +1794,6 @@ exports[`makeLayers > with preview property 1`] = `
     },
     "source": "lasso",
     "type": "fill",
-  },
-  {
-    "id": "synthetic-points",
-    "paint": {
-      "circle-color": [
-        "case",
-        [
-          "get",
-          "selected",
-        ],
-        "#ffffff",
-        "#D6409F",
-      ],
-      "circle-radius": [
-        "case",
-        [
-          "has",
-          "fp",
-        ],
-        10,
-        [
-          "==",
-          [
-            "%",
-            [
-              "id",
-            ],
-            2,
-          ],
-          0,
-        ],
-        5,
-        3.5,
-      ],
-      "circle-stroke-color": [
-        "case",
-        [
-          "get",
-          "selected",
-        ],
-        "#D6409F",
-        "#ffffff",
-      ],
-      "circle-stroke-width": 1.5,
-    },
-    "source": "synthetic",
-    "type": "circle",
   },
   {
     "filter": [

@@ -1,8 +1,8 @@
 # Placemark
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fplacemark%2Fplacemark)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fplacemark%2Fplacemark&env=VITE_PUBLIC_MAPBOX_TOKEN)
 
-Placemark is an open source and free application for creating, viewing,
+Placemark is an open source[^1] and free application for creating, viewing,
 editing, and analyzing map data. Most people who want to use this application
 should visit [Placemark.io](https://www.placemark.io/), the main instance.
 The rest of this README is for people who want to tinker with it as a developer,
@@ -23,22 +23,16 @@ git clone
 pnpm install
 ```
 
-2. Optionally obtain a [Geocode Earth token](https://app.geocode.earth/keys)
-   ([docs](https://geocode.earth/docs/intro/authentication/)) for search.
+2. Obtain a [Mapbox public access token](https://account.mapbox.com/)
+   ([docs](https://docs.mapbox.com/help/getting-started/access-tokens/)) and
+   [Geocode Earth token](https://app.geocode.earth/keys)
+   ([docs](https://geocode.earth/docs/intro/authentication/)).
 
-   Placemark renders maps with the open-source [MapLibre GL JS](https://maplibre.org/).
-   Its default basemaps are hosted by [OpenFreeMap](https://openfreemap.org/)
-   and require no token. Mapbox-hosted basemap styles are not loaded. See
-   [map licenses and services](docs/map-licenses.md) for details.
-
-   Routing is optional and supports openrouteservice, Geoapify, or OSRM. No
-   routing service is configured by default. See the
-   [routing provider configuration](docs/routing.md).
-
-3. If needed, configure the optional services:
+3. Configure the package with the tokens from the previous step:
 
 ```sh
-VITE_PUBLIC_GEOCODE_EARTH_TOKEN="<your Geocode Earth token>"
+VITE_PUBLIC_MAPBOX_TOKEN="<your Mapbox public access token>" \
+VITE_PUBLIC_GEOCODE_EARTH_TOKEN="<your Geocode Earth token>" \
 ```
 
 4. Start the server:
@@ -56,8 +50,8 @@ pnpm build
 pnpm dlx serve@latest dist
 ```
 
-If you're planning to run this often or publicly, set allowed Referrer
-Hostnames on the Geocode Earth token.
+If you're planning to run this often or publicly, take care to secure your
+tokens better by adding [URL restrictions to the Mapbox token](https://docs.mapbox.com/help/getting-started/access-tokens/#url-restrictions) and setting allowed Referrer Hostnames to the Geocode Earth one.
 
 For local development, copy `.env.example` to `.env.local` and add your tokens there:
 ```sh
@@ -68,3 +62,8 @@ cp .env.example .env.local
 
 - [epanetjs](https://epanetjs.com/) - focused on water modeling ([repo](https://github.com/epanet-js/epanet-js))
 - [geojson.io/next](https://geojson.io/next/) from Mapbox ([repo](https://github.com/mapbox/geojson.io))
+
+[^1]: With the narrow exception, right now, of [Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js/blob/main/LICENSE.txt), which
+  has a restrictive license. We have plans to migrate to [maplibre-gl](https://npmx.dev/package/maplibre-gl), an
+  open-source fork of Mapbox GL JS (unfortunately, [funded primarily](https://maplibre.org/news/2026-02-18-supporting-maplibre/) by
+  US tech oligopolies like Microsoft) when there's time.

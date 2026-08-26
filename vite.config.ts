@@ -13,9 +13,6 @@ export default defineConfig((env) => ({
       replacement: resolve(import.meta.dirname, dir),
     })),
   },
-  optimizeDeps: {
-    exclude: ["maplibre-gl"],
-  },
   plugins:
     env.mode === "test"
       ? [react()]

@@ -1,52 +1,37 @@
 import { env } from "app/lib/env_client";
 import type { ILayerConfig } from "types";
 
+const defaults = {
+  type: "MAPBOX",
+  token: env.MAPBOX_TOKEN,
+} as const;
+
 export type LayerConfigTemplate = Pick<
-  Extract<ILayerConfig, { type: "STYLE" }>,
-  "name" | "url" | "type" | "provider"
+  ILayerConfig,
+  "name" | "url" | "type" | "token"
 >;
 
-const LAYERS = {
-  POSITRON: {
-    name: "Positron",
-    url: "https://tiles.openfreemap.org/styles/positron",
-    provider: "OpenFreeMap",
-    type: "STYLE",
-  },
-  BRIGHT: {
-    name: "Bright",
-    url: "https://tiles.openfreemap.org/styles/bright",
-    provider: "OpenFreeMap",
-    type: "STYLE",
-  },
-  LIBERTY: {
-    name: "Liberty",
-    url: "https://tiles.openfreemap.org/styles/liberty",
-    provider: "OpenFreeMap",
-    type: "STYLE",
+const LAYERS: Record<string, LayerConfigTemplate> = {
+  MONOCHROME: {
+    name: "Monochrome",
+    url: "mapbox://styles/mapbox/light-v10",
+    ...defaults,
   },
   DARK: {
     name: "Dark",
-    url: "https://tiles.openfreemap.org/styles/dark",
-    provider: "OpenFreeMap",
-    type: "STYLE",
+    url: "mapbox://styles/mapbox/dark-v10",
+    ...defaults,
   },
-  FIORD: {
-    name: "Fiord",
-    url: "https://tiles.openfreemap.org/styles/fiord",
-    provider: "OpenFreeMap",
-    type: "STYLE",
+  SATELLITE: {
+    name: "Satellite",
+    url: "mapbox://styles/mapbox/satellite-streets-v11",
+    ...defaults,
   },
-  ...(env.VITE_PUBLIC_MAPTILER_TOKEN
-    ? {
-        SATELLITE: {
-          name: "Satellite",
-          url: `https://api.maptiler.com/maps/hybrid-v4/style.json?key=${env.VITE_PUBLIC_MAPTILER_TOKEN}`,
-          provider: "MapTiler",
-          type: "STYLE",
-        },
-      }
-    : {}),
-} satisfies Record<string, LayerConfigTemplate>;
+  STREETS: {
+    name: "Streets",
+    url: "mapbox://styles/mapbox/navigation-guidance-day-v4",
+    ...defaults,
+  },
+};
 
 export default LAYERS;

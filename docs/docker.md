@@ -13,10 +13,10 @@ for production.
 cp .env.example .env.local
 ```
 
-### Optional: configure routing in `.env.local`
+### Add your Mapbox access token  in 
+``` .env.local ```
 
-See [routing provider configuration](routing.md) for supported providers and
-environment variables.
+`VITE_PUBLIC_MAPBOX_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN`
 
 #### Build
 
