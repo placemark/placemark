@@ -25,14 +25,14 @@ function CopySymbolization({
       <TextWell>
         This code can be used as a{" "}
         <a
-          href="https://maplibre.org/maplibre-style-spec/expressions/"
+          href="https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/"
           target="_blank"
           className={styledInlineA}
           rel="nofollow noreferrer"
         >
-          MapLibre Style Expression
+          Mapbox GL Style Expression
         </a>
-        , in a raw JSON style for MapLibre.
+        , in a raw JSON style for Mapbox GL or Maplibre.
       </TextWell>
     </div>
   );

@@ -1,8 +1,7 @@
 import { lockDirection, useAltHeld, useShiftHeld } from "app/hooks/use_held";
-import { CURSOR_DEFAULT } from "app/lib/constants";
+import { CURSOR_DEFAULT, DECK_SYNTHETIC_ID } from "app/lib/constants";
 import { decodeId } from "app/lib/id";
 import { UIDMap } from "app/lib/id_mapper";
-import { SYNTHETIC_POINT_LAYER_NAME } from "app/lib/load_and_augment_style";
 import * as utils from "app/lib/map_component_utils";
 import { closePolygon } from "app/lib/map_operations";
 import { usePopMoment } from "app/lib/persistence/shared";
@@ -68,8 +67,9 @@ export function usePolygonHandlers({
         return;
       }
 
-      const clickedFeatures = pmap.map.queryRenderedFeatures(e.point, {
-        layers: [SYNTHETIC_POINT_LAYER_NAME],
+      const clickedFeatures = pmap.overlay.pickMultipleObjects({
+        ...e.point,
+        layerIds: [DECK_SYNTHETIC_ID],
       });
 
       const wrappedFeature = featureMap.get(selection.id);
@@ -84,8 +84,8 @@ export function usePolygonHandlers({
       // Ending a polygon
       if (
         clickedFeatures.some((feature) => {
-          if (feature.id === undefined) return false;
-          const id = decodeId(feature.id as RawId);
+          if (feature.object?.id === undefined) return false;
+          const id = decodeId(feature.object.id as RawId);
           return (
             id.type === "vertex" &&
             UIDMap.getUUID(idMap, id.featureId) === selection.id &&

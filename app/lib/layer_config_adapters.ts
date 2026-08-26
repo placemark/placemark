@@ -1,10 +1,6 @@
-import type {
-  LayerSpecification,
-  RasterLayerSpecification,
-  StyleSpecification,
-} from "@maplibre/maplibre-gl-style-spec";
-import { getTileJSON } from "app/lib/utils";
+import { getMapboxLayerURL, getTileJSON } from "app/lib/utils";
 import once from "lodash/once";
+import mapboxgl from "mapbox-gl";
 import { toast } from "react-hot-toast";
 import type { ILayerConfig } from "types";
 
@@ -12,53 +8,57 @@ const warnOffline = once(() => {
   toast.error("Offline: falling back to blank background");
 });
 
-const EMPTY_STYLE: StyleSpecification = {
-  version: 8,
-  name: "Empty",
-  glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
-  sources: {},
-  layers: [],
-};
+export async function addMapboxStyle(
+  _base: mapboxgl.Style,
+  layer: ILayerConfig,
+): Promise<mapboxgl.Style> {
+  const nextToken = layer.token;
+  mapboxgl.accessToken = nextToken;
 
-async function fetchStyle(url: string): Promise<StyleSpecification> {
-  return fetch(url)
+  const url = getMapboxLayerURL(layer);
+
+  const style: mapboxgl.Style = await fetch(url)
     .then((res) => {
-      if (!res.ok) {
+      if (!res?.ok) {
         throw new Error("Could not fetch layer");
       }
-      return res.json() as Promise<StyleSpecification>;
+      return res.json();
     })
     .catch(() => {
       warnOffline();
-      return EMPTY_STYLE;
+      return {
+        version: 8,
+        name: "Empty",
+        sprite: "mapbox://sprites/mapbox/streets-v8",
+        glyphs: "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+        sources: {},
+        layers: [],
+      };
     });
-}
 
-export async function addMapLibreStyle(
-  _base: StyleSpecification,
-  layer: Extract<ILayerConfig, { type: "STYLE" }>,
-): Promise<StyleSpecification> {
-  const style = await fetchStyle(layer.url);
-  return updateBaseStyle(style, {
+  const updatedStyle = updateMapboxStyle(style, {
     labelVisibility: layer.labelVisibility,
     rasterOpacity: layer.opacity,
-    visibility: layer.visibility,
   });
+  return updatedStyle;
 }
 
-function updateBaseStyle(
-  style: StyleSpecification,
+function updateMapboxStyle(
+  style: mapboxgl.Style,
   options: {
     labelVisibility?: boolean;
     rasterOpacity?: number;
-    visibility?: boolean;
   },
-): StyleSpecification {
-  const { labelVisibility = true, rasterOpacity, visibility = true } = options;
+): mapboxgl.Style {
+  const { labelVisibility = true, rasterOpacity } = options;
 
   if (!style.layers) {
     return style;
   }
+
+  const isSatelliteStyle =
+    style.name === "Mapbox Satellite Streets" ||
+    style.name === "Mapbox Satellite";
 
   const updatedLayers = style.layers
     .map((layer) => {
@@ -70,17 +70,11 @@ function updateBaseStyle(
         return null;
       }
 
-      if (!visibility) {
-        return {
-          ...layer,
-          layout: {
-            ...layer.layout,
-            visibility: "none",
-          },
-        } as LayerSpecification;
-      }
-
-      if (layer.type === "raster" && rasterOpacity !== undefined) {
+      if (
+        isSatelliteStyle &&
+        layer.type === "raster" &&
+        rasterOpacity !== undefined
+      ) {
         return {
           ...layer,
           paint: {
@@ -90,9 +84,19 @@ function updateBaseStyle(
         };
       }
 
+      if (isSatelliteStyle && layer.type === "background" && layer.paint) {
+        return {
+          ...layer,
+          paint: {
+            ...layer.paint,
+            "background-color": "#ffffff",
+          },
+        };
+      }
+
       return layer;
     })
-    .filter(Boolean) as LayerSpecification[];
+    .filter(Boolean) as mapboxgl.AnyLayer[];
 
   return {
     ...style,
@@ -101,7 +105,7 @@ function updateBaseStyle(
 }
 function paintLayoutFromRasterLayer(
   layer: ILayerConfig,
-): Pick<RasterLayerSpecification, "type" | "paint" | "layout"> {
+): Pick<mapboxgl.RasterLayer, "type" | "paint" | "layout"> {
   return {
     type: "raster",
     paint: {
@@ -114,10 +118,12 @@ function paintLayoutFromRasterLayer(
 }
 
 export async function addTileJSONStyle(
-  style: StyleSpecification,
+  style: mapboxgl.Style,
   layer: ILayerConfig,
   id: number,
 ) {
+  // mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_TOKEN;
+
   const sourceId = `placemarkInternalSource${id}`;
   const layerId = `placemarkInternalLayer${id}`;
 
@@ -137,7 +143,7 @@ export async function addTileJSONStyle(
       id: layerId,
       source: sourceId,
       ...paintLayoutFromRasterLayer(layer),
-    } as LayerSpecification;
+    } as mapboxgl.AnyLayer;
 
     style.layers.push(newLayer);
   } catch (_e) {
@@ -149,10 +155,12 @@ export async function addTileJSONStyle(
 }
 
 export function addXYZStyle(
-  style: StyleSpecification,
+  style: mapboxgl.Style,
   layer: ILayerConfig,
   id: number,
 ) {
+  // mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_TOKEN;
+
   const sourceId = `placemarkInternalSource${id}`;
   const layerId = `placemarkInternalLayer${id}`;
 
@@ -167,7 +175,7 @@ export function addXYZStyle(
     id: layerId,
     source: sourceId,
     ...paintLayoutFromRasterLayer(layer),
-  } as LayerSpecification;
+  } as mapboxgl.AnyLayer;
 
   style.layers.push(newLayer);
 

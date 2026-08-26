@@ -88,7 +88,7 @@ In the post-refactor world, these two Map objects for features and folders are a
 
 ### Map IDs
 
-So MapLibre GL requires the `feature.id` property to be an integer. No floats, no strings. This is probably good anyway because what's passed into GL should be minimal. However, we have UUIDs at the application level. Hence UIDMap and an ID system. Feature IDs are integers, vertex IDs are two numbers encoded as integers, midpoint IDs are like that. It's all "packed numbers" stuff and a little convoluted and could be improved in the future.
+So Mapbox GL requires the `feature.id` property to be an integer. No floats, no strings. This is probably good anyway because what's passed into GL should be minimal. However, we have UUIDs at the application level. Hence UIDMap and an ID system. Feature IDs are integers, vertex IDs are two numbers encoded as integers, midpoint IDs are like that. It's all "packed numbers" stuff and a little convoluted and could be improved in the future.
 
 ### Naming
 

@@ -23,8 +23,6 @@ minimumReleaseAgeExclude:
   - '@typescript/typescript-win32-arm64@7.0.2'
   - '@typescript/typescript-win32-x64@7.0.2'
   - typescript@7.0.2
-  - '@maplibre/maplibre-gl-style-spec@26.3.0'
-  - maplibre-gl@6.6.0
 onlyBuiltDependencies:
   - core-js
   - esbuild
