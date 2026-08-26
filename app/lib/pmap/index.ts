@@ -30,6 +30,7 @@ import type {
   LayerConfigMap,
 } from "types";
 import { bboxToPolygon } from "../geometry";
+import { NitpickyAttributionControl } from "./nitpickyAttributionControl";
 
 maplibregl.setWorkerUrl(maplibreWorkerUrl);
 
@@ -100,7 +101,7 @@ function mSetData(
 
 export default class PMap {
   map: maplibregl.Map;
-  handlers: React.MutableRefObject<PMapHandlers>;
+  handlers: React.RefObject<PMapHandlers>;
   idMap: IDMap;
 
   lastSelection: Sel;
@@ -123,7 +124,7 @@ export default class PMap {
   }: {
     element: HTMLDivElement;
     layerConfigs: LayerConfigMap;
-    handlers: React.MutableRefObject<PMapHandlers>;
+    handlers: React.RefObject<PMapHandlers>;
     symbolization: ISymbolization;
     previewProperty: PreviewProperty;
     idMap: IDMap;
@@ -156,7 +157,7 @@ export default class PMap {
         compact: true,
         customAttribution: [
           '<a href="/map-style-licenses.html" target="_blank">Style licenses</a>',
-          ...(routingProvider ? [routingProvider.attributionHtml] : []),
+          ...(routingProvider ? routingProvider.attributionsHtml : []),
         ],
       }),
     );

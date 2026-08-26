@@ -20,7 +20,7 @@ export type RoutingResult = {
 };
 
 export type RoutingProvider = {
-  attributionHtml: string;
+  attributionsHtml: string[];
   homepage: string;
   id: RoutingProviderId;
   name: string;
@@ -31,27 +31,36 @@ export type RoutingProvider = {
 const OSM_COPYRIGHT = "https://www.openstreetmap.org/copyright";
 
 /**
- * Historical form of attribution, but fine
- * https://osmfoundation.org/wiki/Licence/Attribution_Guidelines
+ * Longer form here, but intentionally 'Data from OpenStreetMap' so this can be consolidated
+ * with the OpenMapTiles / OpenFreeMap attribution. The AttributionControl eliminates
+ * full substrings.
  */
-const OSM_ATTRIBUTION = `<a href="${OSM_COPYRIGHT}" target="_blank">© OpenStreetMap</a>`;
+const OSM_ATTRIBUTION = `Data from <a href="${OSM_COPYRIGHT}" target="_blank">OpenStreetMap</a>`;
 
 const PROVIDERS = {
   openrouteservice: {
     attribution: `© openrouteservice.org by HeiGIT (CC BY 4.0) | Map data © OpenStreetMap contributors (${OSM_COPYRIGHT})`,
-    attributionHtml: `© <a href="https://openrouteservice.org/terms-of-service/" target="_blank">openrouteservice.org</a> by HeiGIT | ${OSM_ATTRIBUTION}`,
+    attributionsHtml: [
+      `© <a href="https://openrouteservice.org/terms-of-service/" target="_blank">openrouteservice.org</a> by HeiGIT`,
+      OSM_ATTRIBUTION,
+    ],
     homepage: "https://openrouteservice.org/",
     name: "openrouteservice",
   },
   geoapify: {
     attribution: `Powered by Geoapify (https://www.geoapify.com/) | © OpenStreetMap contributors (${OSM_COPYRIGHT})`,
-    attributionHtml: `Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | ${OSM_ATTRIBUTION}`,
+    attributionsHtml: [
+      `Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a>`,
+      OSM_ATTRIBUTION,
+    ],
     homepage: "https://www.geoapify.com/",
     name: "Geoapify",
   },
   osrm: {
     attribution: `Routing data © OpenStreetMap contributors (${OSM_COPYRIGHT})`,
-    attributionHtml: `Routing data <a href="${OSM_COPYRIGHT}" target="_blank">© OpenStreetMap contributors</a>`,
+    attributionsHtml: [
+      `Routing data <a href="${OSM_COPYRIGHT}" target="_blank">© OpenStreetMap contributors</a>`,
+    ],
     homepage: "https://project-osrm.org/",
     name: "OSRM",
   },
