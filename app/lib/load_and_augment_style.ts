@@ -1,35 +1,43 @@
+import type {
+  CircleLayerSpecification,
+  ExpressionSpecification,
+  FillLayerSpecification,
+  FilterSpecification,
+  LayerSpecification,
+  LegacyFilterSpecification,
+  LineLayerSpecification,
+  StyleSpecification,
+  SymbolLayerSpecification,
+} from "@maplibre/maplibre-gl-style-spec";
 import {
   emptyFeatureCollection,
   LINE_COLORS_SELECTED,
 } from "app/lib/constants";
 import {
-  addMapboxStyle,
+  addMapLibreStyle,
   addTileJSONStyle,
   addXYZStyle,
 } from "app/lib/layer_config_adapters";
-import type mapboxgl from "mapbox-gl";
-// TODO: this is a UI concern that should be separate.
-import type { Style } from "mapbox-gl";
 import type { PreviewProperty } from "state/jotai";
 import type { ISymbolization, LayerConfigMap } from "types";
 
 function getEmptyStyle() {
-  const style: mapboxgl.Style = {
+  const style: StyleSpecification = {
     version: 8,
     name: "XYZ Layer",
-    sprite: "mapbox://sprites/mapbox/streets-v8",
-    glyphs: "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+    glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
     sources: {},
     layers: [],
   };
   return style;
 }
 
-const CIRCLE_LAYOUT: mapboxgl.CircleLayout = {};
+const CIRCLE_LAYOUT: NonNullable<CircleLayerSpecification["layout"]> = {};
 
 export const FEATURES_SOURCE_NAME = "features";
 export const LASSO_SOURCE_NAME = "lasso";
 export const EPHEMERAL_SOURCE_NAME = "ephemeral";
+export const SYNTHETIC_SOURCE_NAME = "synthetic";
 
 const EPHEMERAL_LINE_LAYER_NAME = "ephemeral-line";
 const EPHEMERAL_FILL_LAYER_NAME = "ephemeral-fill";
@@ -42,6 +50,7 @@ const FEATURES_LINE_LABEL_LAYER_NAME = "features-line-label";
 const FEATURES_LINE_LAYER_NAME = "features-line";
 const FEATURES_FILL_LAYER_NAME = "features-fill";
 const LASSO_LAYER_NAME = "lasso-layer";
+export const SYNTHETIC_POINT_LAYER_NAME = "synthetic-points";
 
 const emptyGeoJSONSource = {
   type: "geojson",
@@ -56,7 +65,7 @@ const emptyGeoJSONSource = {
 } as const;
 
 const CONTENT_LAYER_FILTERS: {
-  [key: string]: mapboxgl.Layer["filter"];
+  [key: string]: LegacyFilterSpecification;
 } = {
   [FEATURES_LINE_LAYER_NAME]: [
     "any",
@@ -68,9 +77,9 @@ const CONTENT_LAYER_FILTERS: {
 };
 
 function addPreviewFilter(
-  filters: mapboxgl.Layer["filter"],
+  filters: LegacyFilterSpecification,
   previewProperty: PreviewProperty,
-): mapboxgl.Layer["filter"] {
+): FilterSpecification {
   if (!previewProperty) return filters;
   return ["all", filters, ["has", previewProperty]];
 }
@@ -83,15 +92,15 @@ export default async function loadAndAugmentStyle({
   layerConfigs: LayerConfigMap;
   symbolization: ISymbolization;
   previewProperty: PreviewProperty;
-}): Promise<Style> {
+}): Promise<StyleSpecification> {
   let style = getEmptyStyle();
   let id = 0;
   const layers = [...layerConfigs.values()].reverse();
   for (const layer of layers) {
     id++;
     switch (layer.type) {
-      case "MAPBOX": {
-        style = await addMapboxStyle(style, layer);
+      case "STYLE": {
+        style = await addMapLibreStyle(style, layer);
         break;
       }
       case "XYZ": {
@@ -114,13 +123,14 @@ export function addEditingLayers({
   symbolization,
   previewProperty,
 }: {
-  style: Style;
+  style: StyleSpecification;
   symbolization: ISymbolization;
   previewProperty: PreviewProperty;
 }) {
   style.sources[FEATURES_SOURCE_NAME] = emptyGeoJSONSource;
   style.sources[EPHEMERAL_SOURCE_NAME] = emptyGeoJSONSource;
   style.sources[LASSO_SOURCE_NAME] = emptyGeoJSONSource;
+  style.sources[SYNTHETIC_SOURCE_NAME] = emptyGeoJSONSource;
 
   if (!style.layers) {
     throw new Error("Style unexpectedly had no layers");
@@ -137,7 +147,7 @@ export function makeLayers({
 }: {
   symbolization: ISymbolization;
   previewProperty: PreviewProperty;
-}): mapboxgl.AnyLayer[] {
+}): LayerSpecification[] {
   return [
     // Real polygons, from the dataset.
     {
@@ -211,6 +221,35 @@ export function makeLayers({
       },
     },
 
+    {
+      id: SYNTHETIC_POINT_LAYER_NAME,
+      type: "circle",
+      source: SYNTHETIC_SOURCE_NAME,
+      paint: {
+        "circle-color": [
+          "case",
+          ["get", "selected"],
+          "#ffffff",
+          LINE_COLORS_SELECTED,
+        ],
+        "circle-stroke-color": [
+          "case",
+          ["get", "selected"],
+          LINE_COLORS_SELECTED,
+          "#ffffff",
+        ],
+        "circle-stroke-width": 1.5,
+        "circle-radius": [
+          "case",
+          ["has", "fp"],
+          10,
+          ["==", ["%", ["id"], 2], 0],
+          5,
+          3.5,
+        ],
+      },
+    },
+
     ...(typeof previewProperty === "string"
       ? [
           {
@@ -223,7 +262,7 @@ export function makeLayers({
               CONTENT_LAYER_FILTERS[FEATURES_POINT_LAYER_NAME],
               previewProperty,
             ),
-          } as mapboxgl.AnyLayer,
+          } as LayerSpecification,
           {
             id: FEATURES_LINE_LABEL_LAYER_NAME,
             type: "symbol",
@@ -234,7 +273,7 @@ export function makeLayers({
               CONTENT_LAYER_FILTERS[FEATURES_LINE_LAYER_NAME],
               previewProperty,
             ),
-          } as mapboxgl.AnyLayer,
+          } as LayerSpecification,
           {
             id: FEATURES_FILL_LABEL_LAYER_NAME,
             type: "symbol",
@@ -245,7 +284,7 @@ export function makeLayers({
               CONTENT_LAYER_FILTERS[FEATURES_FILL_LAYER_NAME],
               previewProperty,
             ),
-          } as mapboxgl.AnyLayer,
+          } as LayerSpecification,
         ]
       : []),
   ];
@@ -259,7 +298,7 @@ function asNumberExpression({
   symbolization: ISymbolization;
   defaultValue?: number;
   part: "stroke-width" | "fill-opacity" | "stroke-opacity";
-}): mapboxgl.Expression | number {
+}): ExpressionSpecification | number {
   if (symbolization.simplestyle) {
     return ["coalesce", ["get", part], defaultValue];
   }
@@ -272,7 +311,7 @@ export function asColorExpression({
 }: {
   symbolization: ISymbolization;
   part?: "fill" | "stroke";
-}): mapboxgl.Expression | string {
+}): ExpressionSpecification | string {
   const expression = asColorExpressionInner({ symbolization });
   if (symbolization.simplestyle) {
     return ["coalesce", ["get", part], expression];
@@ -284,7 +323,7 @@ function asColorExpressionInner({
   symbolization,
 }: {
   symbolization: ISymbolization;
-}): mapboxgl.Expression | string {
+}): ExpressionSpecification | string {
   const { defaultColor } = symbolization;
   switch (symbolization.type) {
     case "none": {
@@ -296,7 +335,7 @@ function asColorExpressionInner({
         ["get", symbolization.property],
         ...symbolization.stops.flatMap((stop) => [stop.input, stop.output]),
         defaultColor,
-      ];
+      ] as unknown as ExpressionSpecification;
     }
     case "ramp": {
       return [
@@ -328,9 +367,9 @@ function asColorExpressionInner({
 
 function LABEL_PAINT(
   _symbolization: ISymbolization,
-  _previewProperty: PreviewProperty,
-): mapboxgl.SymbolPaint {
-  const paint: mapboxgl.SymbolPaint = {
+  _previewProperty: string,
+): NonNullable<SymbolLayerSpecification["paint"]> {
+  const paint: NonNullable<SymbolLayerSpecification["paint"]> = {
     "text-halo-color": "#fff",
     "text-halo-width": 1,
     "text-halo-blur": 0.8,
@@ -339,10 +378,12 @@ function LABEL_PAINT(
 }
 
 function LABEL_LAYOUT(
-  previewProperty: PreviewProperty,
-  placement: NonNullable<mapboxgl.SymbolLayout>["symbol-placement"],
-): mapboxgl.SymbolLayout {
-  const paint: mapboxgl.SymbolLayout = {
+  previewProperty: string,
+  placement: NonNullable<
+    SymbolLayerSpecification["layout"]
+  >["symbol-placement"],
+): NonNullable<SymbolLayerSpecification["layout"]> {
+  const paint: NonNullable<SymbolLayerSpecification["layout"]> = {
     "text-field": ["get", previewProperty],
     "text-variable-anchor": ["top", "bottom", "left", "right"],
     "text-radial-offset": 0.5,
@@ -357,7 +398,7 @@ function LABEL_LAYOUT(
 export function CIRCLE_PAINT(
   symbolization: ISymbolization,
   halo = false,
-): mapboxgl.CirclePaint {
+): NonNullable<CircleLayerSpecification["paint"]> {
   const r = halo ? 2 : 0;
   if (halo) {
     return {
@@ -412,9 +453,9 @@ export function CIRCLE_PAINT(
  * expression.
  */
 function handleSelected(
-  expression: mapboxgl.Expression | string,
+  expression: ExpressionSpecification | string,
   exp = false,
-  selected: mapboxgl.Expression | string,
+  selected: ExpressionSpecification | string,
 ) {
   return exp
     ? expression
@@ -424,13 +465,13 @@ function handleSelected(
         "selected",
         selected,
         expression,
-      ] as mapboxgl.Expression);
+      ] as ExpressionSpecification);
 }
 
 export function FILL_PAINT(
   symbolization: ISymbolization,
   exp = false,
-): mapboxgl.FillPaint {
+): NonNullable<FillLayerSpecification["paint"]> {
   return {
     "fill-opacity": asNumberExpression({
       symbolization,
@@ -451,7 +492,7 @@ export function FILL_PAINT(
 export function LINE_PAINT(
   symbolization: ISymbolization,
   exp = false,
-): mapboxgl.LinePaint {
+): NonNullable<LineLayerSpecification["paint"]> {
   return {
     "line-opacity": asNumberExpression({
       symbolization,
@@ -479,4 +520,5 @@ const CONTENT_LAYERS = [
 
 export const CLICKABLE_LAYERS = CONTENT_LAYERS.concat([
   EPHEMERAL_FILL_LAYER_NAME,
+  SYNTHETIC_POINT_LAYER_NAME,
 ]);

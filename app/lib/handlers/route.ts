@@ -2,6 +2,7 @@ import { CURSOR_DEFAULT } from "app/lib/constants";
 import * as utils from "app/lib/map_component_utils";
 import { usePopMoment } from "app/lib/persistence/shared";
 import replaceCoordinates from "app/lib/replace_coordinates";
+import { routingProvider } from "app/lib/routing";
 import { captureException } from "integrations/errors";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useRef } from "react";
@@ -33,7 +34,10 @@ export function useRouteHandlers({
   const multi = mode.modeOptions?.multi;
   const setSelection = useSetAtom(selectionAtom);
   const setMode = useSetAtom(modeAtom);
-  const routeType = useAtomValue(routeTypeAtom);
+  const selectedRouteType = useAtomValue(routeTypeAtom);
+  const routeType = routingProvider?.profiles.includes(selectedRouteType)
+    ? selectedRouteType
+    : routingProvider?.profiles[0] || selectedRouteType;
   const setCursor = useSetAtom(cursorStyleAtom);
   const transact = rep.useTransact();
   const popMoment = usePopMoment();
