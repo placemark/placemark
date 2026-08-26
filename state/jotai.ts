@@ -12,7 +12,6 @@ import { atomWithStorage, selectAtom } from "jotai/utils";
 import { focusAtom } from "jotai-optics";
 import { atomWithMachine } from "jotai-xstate";
 import { CIRCLE_TYPE, MODE_INFO, Mode, ROUTE_TYPE, modeAtom } from "state/mode";
-import type { SetOptional } from "type-fest";
 import {
   type FeatureMap,
   type FolderMap,
@@ -25,9 +24,6 @@ import { createMachine } from "xstate";
 import { USelection } from "./uselection";
 
 export type Store = ReturnType<typeof createStore>;
-
-// TODO: make this specific
-type MapboxLayer = any;
 
 interface FileInfo {
   handle: FileSystemHandle | FileSystemFileHandle;
@@ -65,7 +61,7 @@ export const layerConfigAtom = atom<LayerConfigMap>(
     [
       layerId,
       {
-        ...LAYERS.MONOCHROME,
+        ...LAYERS.POSITRON,
         at: "a0",
         opacity: 1,
         tms: false,
@@ -175,12 +171,6 @@ export type {
  * Modal state
  */
 export { dialogAtom } from "state/dialog_state";
-
-/**
- * Current layer state
- * TODO: move to server
- */
-export type PartialLayer = SetOptional<MapboxLayer, "createdById">;
 
 /**
  * Moment log state. This is the client-side representation

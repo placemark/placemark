@@ -1,6 +1,6 @@
 ## Bottlenecks
 
-- Updating Mapbox GL JS with new data. Specifically: sending new values across the postMessage boundary, and generating new tiles in geojson-vt.
+- Updating MapLibre GL JS with new data. Specifically: sending new values across the postMessage boundary, and generating new tiles in geojson-vt.
 - Replicache. Specifically: its assertJSON step (fixed), scan performance (fixed), store performance when a map is loaded.
 - Generating folder structures and sorting features.
 

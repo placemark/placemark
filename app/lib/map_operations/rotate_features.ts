@@ -8,7 +8,7 @@ import {
   polygonRotate,
 } from "geometric";
 import cloneDeep from "lodash/cloneDeep";
-import type { LngLat } from "mapbox-gl";
+import type { LngLat } from "maplibre-gl";
 import type { Geometry, IWrappedFeature } from "types";
 
 type LL = Pick<LngLat, "lng" | "lat">;

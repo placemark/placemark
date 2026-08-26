@@ -5,7 +5,7 @@ import { MapContext } from "app/context/map_context";
 import type { ConvertResult } from "app/lib/convert/utils";
 import { extendExtent, getExtent } from "app/lib/geometry";
 import { truncate } from "app/lib/utils";
-import type { LngLatBoundsLike } from "mapbox-gl";
+import type { LngLatBoundsLike } from "maplibre-gl";
 import { type Maybe, Nothing } from "purify-ts/Maybe";
 import { useContext, useState } from "react";
 import type { ModalStateImport } from "state/jotai";
