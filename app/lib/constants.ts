@@ -1,4 +1,3 @@
-import { hexToArray } from "app/lib/color";
 import type { GeoJSON, Geometry, IFeatureCollection } from "types";
 import { z } from "zod";
 
@@ -14,15 +13,12 @@ export const LEFT_PANEL_ROW_HEIGHT = 24;
  * Layer names
  */
 
-export const DECK_SYNTHETIC_ID = "deckgl-synthetic";
-
 /**
  * Colors
  */
 export const purple900 = "#312E81";
 
 export const LINE_COLORS_SELECTED = "#D6409F";
-export const LINE_COLORS_SELECTED_RGB = hexToArray("#D6409F");
 
 // Note, this is also in the database schema.
 // If changing it here, it may need to be changed there too.
@@ -30,8 +26,6 @@ export const LINE_COLORS_SELECTED_RGB = hexToArray("#D6409F");
 /**
  * Utilities ------------------------------------------------------------------
  */
-export const targetSize = [80, 40] as const;
-
 export const SUPPORT_EMAIL = "support@placemark.io";
 
 export const emptySelection = new Set<RawId>();
@@ -233,5 +227,3 @@ export const FILE_LIMIT_BYTES = FILE_LIMIT_MB * MB_TO_BYTES;
 export const SCALE_UNITS = ["imperial", "metric", "nautical"] as const;
 export type ScaleUnit = (typeof SCALE_UNITS)[number];
 export const zScaleUnit = z.enum(SCALE_UNITS);
-
-export const WHITE: RGBA = [255, 255, 255, 255];

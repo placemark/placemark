@@ -8,7 +8,7 @@ import { usePersistence } from "app/lib/persistence/context";
 import { pluralize } from "app/lib/utils";
 import { captureException } from "integrations/errors";
 import cloneDeep from "lodash/cloneDeep";
-import type { LngLatBoundsLike } from "mapbox-gl";
+import type { LngLatBoundsLike } from "maplibre-gl";
 import { useContext } from "react";
 import type { GeometryCollection, IWrappedFeature } from "types";
 

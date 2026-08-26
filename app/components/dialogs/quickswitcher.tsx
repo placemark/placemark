@@ -20,7 +20,7 @@ import {
 import { getColumns, getFn } from "app/lib/search_utils";
 import Fuse from "fuse.js";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { LngLatBounds, type LngLatLike } from "mapbox-gl";
+import { LngLatBounds, type LngLatLike } from "maplibre-gl";
 import { useContext, useMemo, useState } from "react";
 import { USelection } from "state";
 import {

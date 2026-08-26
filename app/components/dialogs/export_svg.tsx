@@ -1,4 +1,4 @@
-import { expression } from "@mapbox/mapbox-gl-style-spec";
+import { createExpression } from "@maplibre/maplibre-gl-style-spec";
 import { rewindGeometry } from "@placemarkio/geojson-rewind";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import type { Root } from "@tmcw/togeojson";
@@ -39,10 +39,13 @@ const getExpr = memoizeOne((symbolization: ISymbolization) => {
     return () => expressionDefinition;
   }
 
-  const expr = expression.createExpression(expressionDefinition);
+  const expr = createExpression(expressionDefinition, "symbolization");
+  if (expr.result === "error") {
+    throw new Error("Could not parse symbolization expression");
+  }
 
   return (feature: IFeature) => {
-    return expr.value.evaluate({}, feature);
+    return expr.value.evaluate({ zoom: 0 }, feature as any);
   };
 });
 

@@ -1,5 +1,5 @@
 import { useAltHeld, useSpaceHeld } from "app/hooks/use_held";
-import { CURSOR_DEFAULT, DECK_SYNTHETIC_ID } from "app/lib/constants";
+import { CURSOR_DEFAULT } from "app/lib/constants";
 import { filterLockedFeatures } from "app/lib/folder";
 import {
   type FlatbushLike,
@@ -8,12 +8,14 @@ import {
 } from "app/lib/generate_flatbush_instance";
 import { decodeId, encodeVertex } from "app/lib/id";
 import { UIDMap } from "app/lib/id_mapper";
+import { SYNTHETIC_POINT_LAYER_NAME } from "app/lib/load_and_augment_style";
 import * as utils from "app/lib/map_component_utils";
 import * as ops from "app/lib/map_operations";
 import { useEndSnapshot, useStartSnapshot } from "app/lib/persistence/shared";
 import { captureException } from "integrations/errors";
 import { useSetAtom } from "jotai";
 import noop from "lodash/noop";
+import type { LngLat } from "maplibre-gl";
 import { useRef } from "react";
 import { USelection } from "state";
 import {
@@ -45,7 +47,7 @@ export function useNoneHandlers({
   const transact = rep.useTransact();
   const endSnapshot = useEndSnapshot();
   const startSnapshot = useStartSnapshot();
-  const lastPoint = useRef<mapboxgl.LngLat | null>(null);
+  const lastPoint = useRef<LngLat | null>(null);
   const spaceHeld = useSpaceHeld();
   const altHeld = useAltHeld();
 
@@ -138,17 +140,15 @@ export function useNoneHandlers({
       // Is this a potential drag or selection?
       // If there is a feature under the cursor, prevent this
       // from being a drag and set the current drag target.
-      const feature = pmap.overlay.pickObject({
-        ...e.point,
-        layerIds: [DECK_SYNTHETIC_ID],
-      });
+      const feature = pmap.map.queryRenderedFeatures(e.point, {
+        layers: [SYNTHETIC_POINT_LAYER_NAME],
+      })[0];
 
-      if (!feature?.object || selection.type !== "single") {
+      if (!feature || selection.type !== "single") {
         const fuzzyResult = utils.fuzzyClick(e, {
           idMap,
           featureMap,
           folderMap,
-          pmap,
         });
 
         if (fuzzyResult) {
@@ -168,7 +168,7 @@ export function useNoneHandlers({
       }
       e.preventDefault();
 
-      const rawId = feature.object.id as RawId;
+      const rawId = feature.id as RawId;
       const id = decodeId(rawId);
       const wrappedFeature = featureMap.get(selection.id);
 
@@ -326,13 +326,10 @@ export function useNoneHandlers({
       }
     },
     click: (e) => {
-      // Get the fuzzy feature. This is a mapboxgl feature
-      // with only an id.
       const fuzzyResult = utils.fuzzyClick(e, {
         idMap,
         featureMap,
         folderMap,
-        pmap,
       });
 
       // If there's a selection right now and someone clicked on
