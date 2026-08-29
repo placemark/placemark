@@ -249,7 +249,7 @@ export const styledCheckbox = ({
       "text-gray-500 border-gray-500 hover:border-gray-700 dark:hover:border-gray-300 focus:ring-gray-500":
         variant === "default",
     },
-    `bg-transparent rounded-sm dark:ring-offset-gray-700`,
+    `rounded-sm dark:ring-offset-gray-700`,
   ]);
 
 export const FieldCheckbox = classed(Field)(styledCheckbox);
