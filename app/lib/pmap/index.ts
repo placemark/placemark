@@ -1,3 +1,8 @@
+import {
+  type AllmapsLayerCache,
+  getCachedAllmapsLayer,
+  syncAllmapsLayers,
+} from "app/lib/allmaps_layer";
 import { colorFromPresence } from "app/lib/color";
 import {
   CURSOR_DEFAULT,
@@ -36,6 +41,8 @@ maplibregl.setWorkerUrl(maplibreWorkerUrl);
 const MAP_OPTIONS: Omit<maplibregl.MapOptions, "container"> = {
   style: { version: 8, layers: [], sources: {} },
   maxZoom: 26,
+  maxPitch: 0,
+  bearingSnap: 0,
   boxZoom: false,
   dragRotate: false,
   attributionControl: false,
@@ -51,6 +58,12 @@ const cursorSvg = (color: string) => {
 `;
   return div;
 };
+
+function mapLibreLayerConfigKey(layerConfigs: LayerConfigMap) {
+  return JSON.stringify(
+    [...layerConfigs.values()].filter((layer) => layer.type !== "ALLMAPS"),
+  );
+}
 
 type ClickEvent = maplibregl.MapMouseEvent;
 type MoveEvent = maplibregl.MapLibreEvent;
@@ -110,7 +123,10 @@ export default class PMap {
   lastSymbolization: ISymbolization | null;
   presenceMarkers: Map<IPresence["userId"], maplibregl.Marker>;
   lastLayer: LayerConfigMap | null;
+  lastMapLibreLayerConfigKey: string | null;
   lastPreviewProperty: PreviewProperty;
+  allmapsLayerCache: AllmapsLayerCache;
+  styleGeneration: number;
 
   constructor({
     element,
@@ -182,7 +198,10 @@ export default class PMap {
     this.lastData = null;
     this.lastEphemeralState = { type: "none" };
     this.lastLayer = null;
+    this.lastMapLibreLayerConfigKey = null;
     this.lastPreviewProperty = null;
+    this.allmapsLayerCache = new Map();
+    this.styleGeneration = 0;
     this.handlers = handlers;
     this.map = map;
     void this.setStyle({
@@ -350,9 +369,62 @@ export default class PMap {
     this.map.remove();
   }
 
-  // Use { diff: false } to force a style load: otherwise
-  // if we switch from a style to itself, we don't get
-  // a style.load event.
+  flyToBounds(bounds: maplibregl.LngLatBoundsLike) {
+    try {
+      const camera = this.map.cameraForBounds(bounds, {
+        padding: this.map.getCanvas().getBoundingClientRect().width / 10,
+      });
+      if (!camera?.center || camera.zoom === undefined) {
+        return false;
+      }
+
+      this.map.flyTo(camera);
+      return true;
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  zoomToAllmapsLayer(layerConfigId: string) {
+    const layer = getCachedAllmapsLayer(this.allmapsLayerCache, layerConfigId);
+    if (!layer) {
+      return false;
+    }
+
+    try {
+      const bounds = layer.getBounds();
+      if (!bounds) {
+        return false;
+      }
+
+      return this.flyToBounds(bounds);
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  zoomToAllmapsLayerWithBearing(layerConfigId: string) {
+    const layer = getCachedAllmapsLayer(this.allmapsLayerCache, layerConfigId);
+    if (!layer) {
+      return false;
+    }
+
+    try {
+      const padding = this.map.getCanvas().getBoundingClientRect().width / 10;
+      const centerZoomBearing = layer.getCenterZoomBearing({ padding });
+      if (!centerZoomBearing.center || centerZoomBearing.zoom === undefined) {
+        return false;
+      }
+
+      this.map.flyTo(centerZoomBearing);
+      return true;
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  // Allmaps layers are synced outside of the generated MapLibre style, so
+  // Allmaps-only changes can move custom layers without reloading the style.
   async setStyle({
     layerConfigs,
     symbolization,
@@ -369,19 +441,48 @@ export default class PMap {
     ) {
       return;
     }
+    const nextMapLibreLayerConfigKey = mapLibreLayerConfigKey(layerConfigs);
+    const shouldUpdateMapLibreStyle =
+      nextMapLibreLayerConfigKey !== this.lastMapLibreLayerConfigKey ||
+      symbolization !== this.lastSymbolization ||
+      previewProperty !== this.lastPreviewProperty;
+
     this.lastLayer = layerConfigs;
+    this.lastMapLibreLayerConfigKey = nextMapLibreLayerConfigKey;
     this.lastSymbolization = symbolization;
     this.lastPreviewProperty = previewProperty;
-    const style = await loadAndAugmentStyle({
+    const styleGeneration = ++this.styleGeneration;
+
+    if (shouldUpdateMapLibreStyle) {
+      const style = await loadAndAugmentStyle({
+        layerConfigs,
+        symbolization,
+        previewProperty,
+      });
+      if (styleGeneration !== this.styleGeneration) {
+        return;
+      }
+      this.map.setStyle(style);
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+
+    if (styleGeneration !== this.styleGeneration) {
+      return;
+    }
+
+    await syncAllmapsLayers({
+      map: this.map,
+      layerCache: this.allmapsLayerCache,
       layerConfigs,
-      symbolization,
-      previewProperty,
+      isStale: () => styleGeneration !== this.styleGeneration,
     });
-    this.map.setStyle(style);
 
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    if (styleGeneration !== this.styleGeneration) {
+      return;
+    }
 
-    if (this.lastData) {
+    if (shouldUpdateMapLibreStyle && this.lastData) {
       this.setData({
         data: this.lastData,
         ephemeralState: this.lastEphemeralState,

@@ -27,14 +27,15 @@ import {
   MagnifyingGlassIcon,
   Pencil1Icon,
   PlusIcon,
+  RotateCounterClockwiseIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
 import * as E from "app/components/elements";
 import { TextWell } from "app/components/elements";
+import { MapContext } from "app/context/map_context";
 import { FORM_ERROR, Form } from "app/core/components/Form";
 import { LabeledTextField } from "app/core/components/LabeledTextField";
-import { useZoomTo } from "app/hooks/use_zoom_to";
 import LAYERS from "app/lib/default_layers";
 import { newFeatureId } from "app/lib/id";
 import { usePersistence } from "app/lib/persistence/context";
@@ -46,9 +47,8 @@ import { captureException } from "integrations/errors";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import clamp from "lodash/clamp";
 import groupBy from "lodash/groupBy";
-import { Maybe } from "purify-ts/Maybe";
 import { Popover as P, Tooltip as T } from "radix-ui";
-import { Fragment, Suspense, useState } from "react";
+import { Fragment, Suspense, useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { layerConfigAtom } from "state/jotai";
 import { match } from "ts-pattern";
@@ -59,6 +59,7 @@ import { DefaultLayerItem } from "./default_layer_item";
 type Mode =
   | "initial"
   | "custom"
+  | "custom-allmaps"
   | "custom-xyz"
   | "custom-style"
   | "custom-tilejson";
@@ -111,6 +112,11 @@ const StyleSkeleton = z.object({
   version: z.literal(8),
   name: z.string().optional(),
 });
+
+const AllmapsAnnotationSkeleton = z.union([
+  z.object({ type: z.literal("Annotation") }),
+  z.object({ type: z.literal("AnnotationPage") }),
+]);
 
 function BackButton({ to }: { to: Mode }) {
   const setMode = useSetAtom(layerModeAtom);
@@ -322,6 +328,107 @@ function TileJSONLayer({
   );
 }
 
+function AllmapsLayer({
+  layer,
+  onDone,
+}: {
+  layer?: z.infer<typeof zLayerConfig>;
+  onDone?: () => void;
+}) {
+  const setMode = useSetAtom(layerModeAtom);
+  const rep = usePersistence();
+  const transact = rep.useTransact();
+  const isEditing = !!layer;
+  const layerConfigs = useAtomValue(layerConfigAtom);
+  const items = [...layerConfigs.values()];
+
+  const initialValues =
+    layer ||
+    ({
+      ...SHARED_INTIAL_VALUES,
+      saturation: 1,
+      type: "ALLMAPS",
+    } as const);
+
+  return (
+    <Form
+      schema={zLayerConfig}
+      initialValues={initialValues}
+      submitText={isEditing ? "Update layer" : "Add layer"}
+      fullWidthSubmit
+      onSubmit={async (values) => {
+        if (values.type !== "ALLMAPS") {
+          return { [FORM_ERROR]: "Expected an Allmaps layer" };
+        }
+        try {
+          await get(values.url, AllmapsAnnotationSkeleton);
+        } catch (e) {
+          if (e instanceof ZodError) {
+            return {
+              [FORM_ERROR]:
+                "Invalid response: this endpoint does not produce an Allmaps annotation.",
+            };
+          }
+          return {
+            [FORM_ERROR]:
+              "Invalid: this Allmaps annotation can’t be downloaded.",
+          };
+        }
+        await toast.promise(
+          transact({
+            note: isEditing ? "Update Allmaps layer" : "Add Allmaps layer",
+            putLayerConfigs: [
+              {
+                ...values,
+                at: layer?.at || getNextAt(items),
+                id: values.id || newFeatureId(),
+              },
+            ],
+          }),
+          {
+            loading: isEditing ? "Updating layer" : "Adding layer",
+            success: isEditing ? "Updated layer" : "Added layer",
+            error: "Error",
+          },
+        );
+
+        setMode("initial");
+        onDone?.();
+        return undefined;
+      }}
+    >
+      <LayerFormHeader isEditing={isEditing}>Allmaps</LayerFormHeader>
+      <TextWell variant="primary" size="xs">
+        Displays georeferenced IIIF maps from an{" "}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className={E.styledInlineA}
+          href="https://allmaps.org/"
+        >
+          Allmaps
+        </a>{" "}
+        annotation.
+      </TextWell>
+      <LabeledTextField
+        name="name"
+        label="Name"
+        required
+        autoComplete="off"
+        placeholder=""
+      />
+      <LabeledTextField
+        name="url"
+        label="Annotation URL"
+        required
+        type="url"
+        autoComplete="off"
+        placeholder="https://annotations.allmaps.org/images/d180902cb93d5bf2"
+      />
+    </Form>
+  );
+}
+
 function XYZLayer({
   layer,
   onDone,
@@ -425,6 +532,9 @@ function AnyLayer({
   onDone: () => void;
 }) {
   return match(layer)
+    .with({ type: "ALLMAPS" }, (layer) => (
+      <AllmapsLayer layer={layer} {...rest} />
+    ))
     .with({ type: "XYZ" }, (layer) => <XYZLayer layer={layer} {...rest} />)
     .with({ type: "TILEJSON" }, (layer) => (
       <TileJSONLayer layer={layer} {...rest} />
@@ -526,6 +636,10 @@ function AddLayer() {
                     <BackButton to="initial" />
                   </div>
                   <div className="space-y-2 grid grid-cols-1">
+                    <E.Button onClick={() => setMode("custom-allmaps")}>
+                      Allmaps
+                      <CaretRightIcon />
+                    </E.Button>
                     <E.Button onClick={() => setMode("custom-xyz")}>
                       XYZ
                       <CaretRightIcon />
@@ -544,6 +658,11 @@ function AddLayer() {
               .with("custom-xyz", () => (
                 <div className="p-3">
                   <XYZLayer onDone={() => setOpen(false)} />
+                </div>
+              ))
+              .with("custom-allmaps", () => (
+                <div className="p-3">
+                  <AllmapsLayer onDone={() => setOpen(false)} />
                 </div>
               ))
               .with("custom-style", () => (
@@ -567,15 +686,15 @@ function AddLayer() {
 function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: layerConfig.id });
-  const zoomTo = useZoomTo();
+  const pmap = useContext(MapContext);
   const rep = usePersistence();
   const transact = rep.useTransact();
   const [editing, setEditing] = useState<boolean>(false);
 
   const { data: tilejson, isError } = useQuery({
-    queryKey: [layerConfig.url],
-    queryFn: async () =>
-      layerConfig.type === "TILEJSON" && getTileJSON(layerConfig.url),
+    queryKey: ["tilejson", layerConfig.url],
+    queryFn: async () => getTileJSON(layerConfig.url),
+    enabled: layerConfig.type === "TILEJSON",
     retry: false,
   });
 
@@ -640,11 +759,41 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
               title="Zoom to layer"
               className={"opacity-30 hover:opacity-100 select-none"}
               onClick={() => {
-                zoomTo(Maybe.of(tilejson.bounds!));
+                if (!pmap?.flyToBounds(tilejson.bounds!)) {
+                  toast.error("TileJSON bounds are not ready");
+                }
               }}
             >
               <MagnifyingGlassIcon />
             </button>
+          ) : null}
+          {layerConfig.type === "ALLMAPS" ? (
+            <>
+              <button
+                type="button"
+                title="Zoom to layer"
+                className={"opacity-30 hover:opacity-100 select-none"}
+                onClick={() => {
+                  if (!pmap?.zoomToAllmapsLayer(layerConfig.id)) {
+                    toast.error("Allmaps layer bounds are not ready");
+                  }
+                }}
+              >
+                <MagnifyingGlassIcon />
+              </button>
+              <button
+                type="button"
+                title="Zoom and rotate to layer"
+                className={"opacity-30 hover:opacity-100 select-none"}
+                onClick={() => {
+                  if (!pmap?.zoomToAllmapsLayerWithBearing(layerConfig.id)) {
+                    toast.error("Allmaps layer bearing is not ready");
+                  }
+                }}
+              >
+                <RotateCounterClockwiseIcon />
+              </button>
+            </>
           ) : null}
           {editPopover}
           <div className="flex items-center gap-x-1">
@@ -699,8 +848,25 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
           </div>
           <div
             role="checkbox"
-            title="Toggle label visibility"
+            title={
+              layerConfig.type === "ALLMAPS"
+                ? "Toggle saturation"
+                : "Toggle label visibility"
+            }
             onClick={async () => {
+              if (layerConfig.type === "ALLMAPS") {
+                await transact({
+                  note: "Toggle layer saturation",
+                  putLayerConfigs: [
+                    {
+                      ...layerConfig,
+                      saturation: (layerConfig.saturation ?? 1) > 0 ? 0 : 1,
+                    },
+                  ],
+                });
+                return;
+              }
+
               await transact({
                 note: "Toggle label visibility",
                 putLayerConfigs: [
@@ -711,10 +877,20 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
                 ],
               });
             }}
-            aria-checked={layerConfig.labelVisibility}
+            aria-checked={
+              layerConfig.type === "ALLMAPS"
+                ? (layerConfig.saturation ?? 1) > 0
+                : layerConfig.labelVisibility
+            }
             className={"opacity-30 hover:opacity-100 select-none"}
           >
-            <E.LabelToggleIcon visibility={layerConfig.labelVisibility} />
+            {layerConfig.type === "ALLMAPS" ? (
+              <E.SaturationToggleIcon
+                saturation={layerConfig.saturation ?? 1}
+              />
+            ) : (
+              <E.LabelToggleIcon visibility={layerConfig.labelVisibility} />
+            )}
           </div>
 
           <button

@@ -78,6 +78,14 @@ export const zLayerConfig = z.discriminatedUnion("type", [
     token: z.string(),
     url,
   }),
+  zLayerConfigCommon.extend({
+    type: z.literal("ALLMAPS"),
+    saturation: z
+      .number()
+      .transform((num) => clamp(num, 0, 1))
+      .default(1),
+    url,
+  }),
 ]);
 
 export type ILayerConfig = z.infer<typeof zLayerConfig>;

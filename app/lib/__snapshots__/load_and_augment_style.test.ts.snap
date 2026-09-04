@@ -5,14 +5,14 @@ exports[`loadAndAugmentStyle 1`] = `
   "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   "layers": [
     {
-      "id": "placemarkInternalLayer1",
+      "id": "placemarkInternalLayer:00",
       "layout": {
         "visibility": "visible",
       },
       "paint": {
         "raster-opacity": 1,
       },
-      "source": "placemarkInternalSource1",
+      "source": "placemarkInternalSource:00",
       "type": "raster",
     },
     {
@@ -301,7 +301,7 @@ exports[`loadAndAugmentStyle 1`] = `
       "tolerance": 0,
       "type": "geojson",
     },
-    "placemarkInternalSource1": {
+    "placemarkInternalSource:00": {
       "scheme": "tms",
       "tileSize": 256,
       "tiles": [
