@@ -399,7 +399,25 @@ function AllmapsLayer({
     >
       <LayerFormHeader isEditing={isEditing}>Allmaps</LayerFormHeader>
       <TextWell variant="primary" size="xs">
-        Displays georeferenced IIIF maps from an{" "}
+        Displays georeferenced{" "}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className={E.styledInlineA}
+          href="https://iiif.io/"
+        >
+          IIIF
+        </a>{" "}
+        maps from a{" "}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className={E.styledInlineA}
+          href="https://iiif.io/api/extension/georef/"
+        >
+          Georeference Annotation
+        </a>{" "}
+        using{" "}
         <a
           target="_blank"
           rel="noreferrer"
@@ -407,8 +425,7 @@ function AllmapsLayer({
           href="https://allmaps.org/"
         >
           Allmaps
-        </a>{" "}
-        annotation.
+        </a>
       </TextWell>
       <LabeledTextField
         name="name"
