@@ -653,10 +653,6 @@ function AddLayer() {
                     <BackButton to="initial" />
                   </div>
                   <div className="space-y-2 grid grid-cols-1">
-                    <E.Button onClick={() => setMode("custom-allmaps")}>
-                      Allmaps
-                      <CaretRightIcon />
-                    </E.Button>
                     <E.Button onClick={() => setMode("custom-xyz")}>
                       XYZ
                       <CaretRightIcon />
@@ -667,6 +663,10 @@ function AddLayer() {
                     </E.Button>
                     <E.Button onClick={() => setMode("custom-tilejson")}>
                       TileJSON
+                      <CaretRightIcon />
+                    </E.Button>
+                    <E.Button onClick={() => setMode("custom-allmaps")}>
+                      Allmaps
                       <CaretRightIcon />
                     </E.Button>
                   </div>
