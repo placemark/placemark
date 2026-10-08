@@ -11,8 +11,7 @@ type AllmapsMapLibreModule = typeof import("@allmaps/maplibre");
 
 type CachedAllmapsLayer = {
   layer: WarpedMapLayer;
-  url?: string;
-  annotation?: AllmapsLayerConfig["annotation"];
+  url: string;
   loading?: Promise<unknown>;
 };
 
@@ -168,7 +167,6 @@ async function getCachedLayer({
   const nextCachedLayer = {
     layer,
     url: layerConfig.url,
-    annotation: layerConfig.annotation,
   };
   layerCache.set(layerId, nextCachedLayer);
   return nextCachedLayer;
@@ -224,19 +222,11 @@ async function addLayerIfMissing({
     throw e;
   }
 
-  cachedLayer.loading = layerConfig.annotation
-    ? Promise.resolve(
-        cachedLayer.layer.addGeoreferenceAnnotation(
-          layerConfig.annotation,
-          undefined,
-          { failureMode: "fail-fast" },
-        ),
-      )
-    : cachedLayer.layer.addGeoreferenceAnnotationByUrl(
-        layerConfig.url!,
-        undefined,
-        { failureMode: "fail-fast" },
-      );
+  cachedLayer.loading = cachedLayer.layer.addGeoreferenceAnnotationByUrl(
+    layerConfig.url,
+    undefined,
+    { failureMode: "fail-fast" },
+  );
   await cachedLayer.loading;
 }
 
@@ -286,11 +276,7 @@ export async function syncAllmapsLayers({
 
   for (const [layerId, cachedLayer] of [...layerCache]) {
     const layerConfig = desiredLayerConfigs.get(layerId);
-    if (
-      !layerConfig ||
-      layerConfig.url !== cachedLayer.url ||
-      layerConfig.annotation !== cachedLayer.annotation
-    ) {
+    if (!layerConfig || layerConfig.url !== cachedLayer.url) {
       removeLayerIfPresent(map, layerId);
       layerCache.delete(layerId);
     }

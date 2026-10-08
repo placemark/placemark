@@ -19,7 +19,6 @@ import { EXIF } from "./exif";
 import { FlatGeobuf } from "./flatgeobuf";
 import { GeoJSON } from "./geojson";
 import { GeoJSONL } from "./geojsonl";
-import { Georeference } from "./georeference";
 import { GeoTIFF } from "./geotiff";
 import { GPX } from "./gpx";
 import { GTFS } from "./gtfs";
@@ -67,7 +66,6 @@ export const CSV_KINDS = [
 ] as const;
 
 export const DEFAULT_IMPORT_OPTIONS: Omit<ImportOptions, "type"> = {
-  georeferenceOptions: { points: true, layer: false, mask: false },
   coordinateStringOptions: {
     order: "LONLAT",
   },
@@ -106,7 +104,6 @@ export const DEFAULT_IMPORT_OPTIONS: Omit<ImportOptions, "type"> = {
  */
 export interface ImportOptions {
   type: FileType["id"];
-  georeferenceOptions: { points: boolean; layer: boolean; mask: boolean };
   toast?: boolean;
   coordinateStringOptions: {
     order: "LONLAT" | "LATLON";
@@ -202,7 +199,6 @@ export type ProgressCb = RawProgressCb & ProxyMarked;
 export interface FileType {
   readonly id:
     | "geojson"
-    | "georeference"
     | "geojsonl"
     | "kml"
     | "kmz"
@@ -247,7 +243,6 @@ export interface FileType {
 
 export const FILE_TYPES = [
   GeoJSON,
-  Georeference,
   KML,
   KMZ,
   TCX,
@@ -272,19 +267,18 @@ function assertIsObject(obj: JsonValue): obj is JsonObject {
   return isPlainObject(obj);
 }
 
-export async function detectJson(text: string) {
+async function detectJson(file: File) {
   // performance here is rough:
   // we're parsing the full json object.
   const res = await EitherAsync<PlacemarkError, ImportOptions>(
     async function detectJsonInner({ liftEither, throwE }) {
+      const text = await file.text();
       const obj = await liftEither(parseOrError(text));
       if (!assertIsObject(obj)) {
         return throwE(new PlacemarkError("Could not determine JSON type"));
       }
       if (obj.type === "Topology") {
         return { ...DEFAULT_IMPORT_OPTIONS, type: TopoJSON.id };
-      } else if (obj.type === "Annotation" || obj.type === "AnnotationPage") {
-        return { ...DEFAULT_IMPORT_OPTIONS, type: Georeference.id };
       } else if (typeof obj.type === "string" && GEOJSON_TYPES.has(obj.type)) {
         return { ...DEFAULT_IMPORT_OPTIONS, type: GeoJSON.id };
       }
@@ -303,22 +297,12 @@ export function findType(typeStr: string) {
 
 export async function detectType(file: File) {
   return await EitherAsync<PlacemarkError, ImportOptions>(
-    async ({ throwE, liftEither }) => {
+    async ({ throwE, fromPromise }) => {
       const { name } = file;
       const ext = getExtension(name);
 
-      const mime = file.type.split(";")[0].trim().toLowerCase();
-      if (
-        ext === ".json" ||
-        ext === ".jsonld" ||
-        mime === "application/json" ||
-        mime === "application/ld+json" ||
-        !ext
-      ) {
-        const detected = await detectJson(await file.text());
-        if (detected.isRight() || ext === ".json" || ext === ".jsonld") {
-          return await liftEither(detected);
-        }
+      if (ext === ".json") {
+        return await fromPromise(detectJson(file));
       }
 
       for (const type of FILE_TYPES) {

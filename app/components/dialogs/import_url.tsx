@@ -27,7 +27,6 @@ export function ImportURLDialog({ onClose }: { onClose: () => void }) {
         onSubmit={async function onSubmit({ url }) {
           try {
             const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const buffer = await res.arrayBuffer();
             if (buffer.byteLength > MB_TO_BYTES * MB_LIMIT) {
               setFormError(
@@ -40,14 +39,9 @@ export function ImportURLDialog({ onClose }: { onClose: () => void }) {
               files: [
                 {
                   type: "file",
-                  sourceUrl: url,
-                  file: new File(
-                    [buffer],
-                    new URL(url).pathname.split("/").pop() || "Imported URL",
-                    {
-                      type: res.headers.get("Content-Type") || "",
-                    },
-                  ),
+                  file: new File([buffer], url.split("/").pop() || "", {
+                    type: res.headers.get("Content-Type") || "",
+                  }),
                 },
               ],
             });

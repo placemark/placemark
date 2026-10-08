@@ -78,23 +78,14 @@ export const zLayerConfig = z.discriminatedUnion("type", [
     token: z.string(),
     url,
   }),
-  zLayerConfigCommon
-    .extend({
-      type: z.literal("ALLMAPS"),
-      saturation: z
-        .number()
-        .transform((num) => clamp(num, 0, 1))
-        .default(1),
-      url: url.optional(),
-      annotation: z
-        .object({ type: z.enum(["Annotation", "AnnotationPage"]) })
-        .passthrough()
-        .optional(),
-    })
-    .refine((layer) => !!layer.annotation || !!layer.url, {
-      message: "An annotation or URL is required",
-      path: ["url"],
-    }),
+  zLayerConfigCommon.extend({
+    type: z.literal("ALLMAPS"),
+    saturation: z
+      .number()
+      .transform((num) => clamp(num, 0, 1))
+      .default(1),
+    url,
+  }),
 ]);
 
 export type ILayerConfig = z.infer<typeof zLayerConfig>;

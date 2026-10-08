@@ -5,7 +5,6 @@ import {
 } from "app/components/csv_options_form";
 import * as E from "app/components/elements";
 import { SelectFileType } from "app/components/fields";
-import { GeoreferenceOptionsForm } from "app/components/georeference_options_form";
 import { useImportFile } from "app/hooks/use_import";
 import {
   DEFAULT_IMPORT_OPTIONS,
@@ -13,7 +12,7 @@ import {
   type Progress,
 } from "app/lib/convert";
 import type { FileGroup } from "app/lib/group_files";
-import { Form, Formik, type FormikHelpers, useFormikContext } from "formik";
+import { Form, Formik, type FormikHelpers } from "formik";
 import { Collapsible as C } from "radix-ui";
 import { useState } from "react";
 import { AutoDetect } from "../autodetect";
@@ -27,8 +26,6 @@ type SecondaryAction = React.ComponentProps<
 >["secondary"];
 
 function GeoJSONOptionsForm() {
-  const { values } = useFormikContext<ImportOptions>();
-  if (values.type !== "geojson") return null;
   return (
     <C.Root>
       <C.Trigger asChild>
@@ -78,15 +75,10 @@ export function ImportFileGroup({
           // Don't show a toast if we're going to import
           // another feature.
           options = { ...options, toast: !hasNext };
-          const res = await doImport(
-            file,
-            options,
-            (newProgress) => {
-              setProgress(newProgress);
-            },
-            fileGroup.sourceUrl,
-          );
-          await res.caseOf({
+          const res = await doImport(file, options, (newProgress) => {
+            setProgress(newProgress);
+          });
+          res.caseOf({
             Left(err) {
               setProgress(null);
               helpers.setErrors({ type: err.message });
@@ -113,7 +105,6 @@ export function ImportFileGroup({
         <div>
           <div className="space-y-4">
             <SelectFileType />
-            <GeoreferenceOptionsForm />
             <CoordinateStringOptionsForm />
             <CsvOptionsForm file={file} geocoder />
             <GeoJSONOptionsForm />

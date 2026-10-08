@@ -8,18 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@allmaps/annotation':
-        specifier: 1.0.0-beta.38
-        version: 1.0.0-beta.38
       '@allmaps/maplibre':
         specifier: ^1.0.0-beta.44
         version: 1.0.0-beta.44
-      '@allmaps/project':
-        specifier: 1.0.0-beta.10
-        version: 1.0.0-beta.10
-      '@allmaps/stdlib':
-        specifier: 1.0.0-beta.42
-        version: 1.0.0-beta.42
       '@codemirror/commands':
         specifier: ^6.10.1
         version: 6.10.1

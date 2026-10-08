@@ -24,31 +24,23 @@ import { generateNKeysBetween } from "fractional-indexing";
 import { useSetAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { useCallback } from "react";
-import {
-  type Data,
-  dataAtom,
-  fileInfoAtom,
-  layerConfigAtom,
-} from "state/jotai";
+import { type Data, dataAtom, fileInfoAtom } from "state/jotai";
 import type {
   Feature,
   FeatureCollection,
   IFolder,
   IWrappedFeature,
-  LayerConfigMap,
 } from "types";
 
 /**
  * Creates the _input_ to a transact() operation,
  * given some imported result.
  */
-export function resultToTransact({
+function resultToTransact({
   result,
   file,
   track,
   existingFolderId,
-  layerConfigs = new Map(),
-  sourceUrl,
 }: {
   result: ConvertResult;
   file: Pick<File, "name">;
@@ -59,8 +51,6 @@ export function resultToTransact({
     },
   ];
   existingFolderId?: string | undefined;
-  layerConfigs?: LayerConfigMap;
-  sourceUrl?: string;
 }): Partial<MomentInput> {
   const folderId = newFeatureId();
 
@@ -83,63 +73,6 @@ export function resultToTransact({
       ];
 
   switch (result.type) {
-    case "georeference": {
-      const moment: MomentInput = fMoment(`Imported ${file.name}`);
-      const hasFeatures = result.maps.some(
-        (map) => map.geojson.features.length,
-      );
-      if (hasFeatures) moment.putFolders.push(...putFolders);
-      const layerAts = generateNKeysBetween(
-        null,
-        [...layerConfigs.values()].map((layer) => layer.at).sort()[0] ?? null,
-        result.maps.filter((map) => map.annotation).length,
-      );
-      let layerIndex = 0;
-      const folderAts = generateNKeysBetween(null, null, result.maps.length);
-      for (const [mapIndex, map] of result.maps.entries()) {
-        if (map.geojson.features.length) {
-          const mapFolderId = newFeatureId();
-          moment.putFolders.push({
-            id: mapFolderId,
-            at: folderAts[mapIndex],
-            name: map.name,
-            visibility: true,
-            expanded: true,
-            locked: false,
-            folderId: existingFolderId || folderId,
-          });
-          const ats = generateNKeysBetween(
-            null,
-            null,
-            map.geojson.features.length,
-          );
-          moment.putFeatures.push(
-            ...map.geojson.features.map((feature, i) => ({
-              id: newFeatureId(),
-              at: ats[i],
-              folderId: mapFolderId,
-              feature,
-            })),
-          );
-        }
-        if (map.annotation) {
-          moment.putLayerConfigs.push({
-            id: newFeatureId(),
-            at: layerAts[layerIndex++],
-            type: "ALLMAPS",
-            name: `${file.name} — ${map.name}`,
-            annotation: map.annotation,
-            url: sourceUrl,
-            visibility: true,
-            labelVisibility: true,
-            tms: false,
-            opacity: 1,
-            saturation: 1,
-          });
-        }
-      }
-      return { ...moment, track };
-    }
     case "geojson": {
       const { features } = result.geojson;
       const ats = generateNKeysBetween(null, null, features.length);
@@ -211,23 +144,9 @@ export function flattenRoot(
   };
 }
 
-function useImportResult() {
+export function useImportString() {
   const rep = usePersistence();
   const transact = rep.useTransact();
-  return useAtomCallback(
-    useCallback(
-      (get, _set, input: Parameters<typeof resultToTransact>[0]) => {
-        return transact(
-          resultToTransact({ ...input, layerConfigs: get(layerConfigAtom) }),
-        );
-      },
-      [transact],
-    ),
-  );
-}
-
-export function useImportString() {
-  const importResult = useImportResult();
 
   return useCallback(
     /**
@@ -243,17 +162,19 @@ export function useImportString() {
     ) => {
       return (await stringToGeoJSON(text, options, Comlink.proxy(progress)))
         .map(async (result) => {
-          await importResult({
-            result,
-            file: { name },
-            track: [
-              "import-string",
-              {
-                format: options.type,
-              },
-            ],
-            existingFolderId,
-          });
+          await transact(
+            resultToTransact({
+              result,
+              file: { name },
+              track: [
+                "import-string",
+                {
+                  format: "geojson",
+                },
+              ],
+              existingFolderId,
+            }),
+          );
           return result;
         })
         .mapLeft((e) => {
@@ -262,7 +183,7 @@ export function useImportString() {
           return e;
         });
     },
-    [importResult],
+    [transact],
   );
 }
 
@@ -382,7 +303,6 @@ export function useImportFile() {
   const setFileInfo = useSetAtom(fileInfoAtom);
   const transact = rep.useTransact();
   const joinFeatures = useJoinFeatures();
-  const importResult = useImportResult();
 
   return useCallback(
     /**
@@ -393,7 +313,6 @@ export function useImportFile() {
       file: FileWithHandle,
       options: ImportOptions,
       progress: RawProgressCb,
-      sourceUrl?: string,
     ) => {
       const arrayBuffer = await file.arrayBuffer();
 
@@ -426,10 +345,9 @@ export function useImportFile() {
             if (file.handle && exportOptions) {
               setFileInfo({ handle: file.handle, options: exportOptions });
             }
-            await importResult({
+            const moment = resultToTransact({
               result,
               file,
-              sourceUrl,
               track: [
                 "import",
                 {
@@ -437,6 +355,7 @@ export function useImportFile() {
                 },
               ],
             });
+            await transact(moment);
             return result;
           }
         },
@@ -444,7 +363,7 @@ export function useImportFile() {
 
       return either;
     },
-    [setFileInfo, transact, joinFeatures, importResult],
+    [setFileInfo, transact, joinFeatures],
   );
 }
 

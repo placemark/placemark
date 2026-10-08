@@ -9,7 +9,6 @@ export type { ShapefileGroup };
 export interface FileGroup {
   type: "file";
   file: File;
-  sourceUrl?: string;
 }
 
 function asFileGroup(file: File): FileGroup {

@@ -1,7 +1,5 @@
 import type { Folder, Root } from "@tmcw/togeojson";
 import type { ConvertResult } from "app/lib/convert/utils";
-import { getExtent } from "app/lib/geometry";
-import { Maybe } from "purify-ts/Maybe";
 import type { Feature, FeatureCollection } from "types";
 
 function flattenRoot(root: Root | Folder, features: Feature[] = []) {
@@ -23,11 +21,6 @@ function flattenRoot(root: Root | Folder, features: Feature[] = []) {
 
 export function flattenResult(result: ConvertResult): FeatureCollection {
   switch (result.type) {
-    case "georeference":
-      return {
-        type: "FeatureCollection",
-        features: result.maps.flatMap((map) => map.geojson.features),
-      };
     case "geojson":
       return result.geojson;
     case "root":
@@ -36,10 +29,4 @@ export function flattenResult(result: ConvertResult): FeatureCollection {
         features: flattenRoot(result.root),
       };
   }
-}
-
-export function getImportExtent(result: ConvertResult) {
-  return result.type === "georeference"
-    ? Maybe.fromNullable(result.extent)
-    : getExtent(flattenResult(result));
 }
