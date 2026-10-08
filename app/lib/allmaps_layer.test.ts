@@ -11,11 +11,12 @@ const allmapsMock = vi.hoisted(() => ({
   createdLayers: [] as any[],
   failSetOpacity: false,
   moduleLoads: 0,
+  loadAnnotation: vi.fn(async () => {}),
   WarpedMapLayer: vi.fn(function (this: any, options: any) {
     this.id = options.layerId;
     this.type = "custom";
     this.renderingMode = "2d";
-    this.addGeoreferenceAnnotationByUrl = vi.fn(async () => {});
+    this.addGeoreferenceAnnotationByUrl = allmapsMock.loadAnnotation;
     this.onAdd = vi.fn();
     this.render = vi.fn();
     this.setLayerOptions = vi.fn();
@@ -147,6 +148,7 @@ describe("syncAllmapsLayers", () => {
     allmapsMock.createdLayers.length = 0;
     allmapsMock.failSetOpacity = false;
     allmapsMock.WarpedMapLayer.mockClear();
+    allmapsMock.loadAnnotation.mockReset();
     toastMock.error.mockClear();
   });
 
@@ -201,7 +203,7 @@ describe("syncAllmapsLayers", () => {
     });
     expect(
       allmapsMock.createdLayers[0].addGeoreferenceAnnotationByUrl,
-    ).toHaveBeenCalledWith(layer.url);
+    ).toHaveBeenCalledWith(layer.url, undefined, { failureMode: "fail-fast" });
   });
 
   it("adds Allmaps custom layers underneath a MapLibre style", async () => {
@@ -285,5 +287,84 @@ describe("syncAllmapsLayers", () => {
       "features-fill",
     );
     expect(toastMock.error).not.toHaveBeenCalled();
+  });
+
+  it("does not create a layer when the sync becomes stale while loading the module", async () => {
+    const map = makeMap(["features-fill"]);
+    const layerCache = new Map();
+    let stale = false;
+    const sync = syncAllmapsLayers({
+      map: map as any,
+      layerCache,
+      layerConfigs: layerConfigMap([allmapsLayer()]),
+      isStale: () => stale,
+    });
+
+    stale = true;
+    await sync;
+
+    expect(allmapsMock.WarpedMapLayer).not.toHaveBeenCalled();
+    expect(map.addLayer).not.toHaveBeenCalled();
+    expect(layerCache.size).toBe(0);
+  });
+
+  it("keeps a loading layer when a newer sync updates its options", async () => {
+    const annotation = Promise.withResolvers<void>();
+    allmapsMock.loadAnnotation.mockReturnValueOnce(annotation.promise);
+    const map = makeMap(["features-fill"]);
+    const layerCache = new Map();
+    let stale = false;
+    const firstSync = syncAllmapsLayers({
+      map: map as any,
+      layerCache,
+      layerConfigs: layerConfigMap([allmapsLayer()]),
+      isStale: () => stale,
+    });
+    await vi.waitFor(() => expect(map.addLayer).toHaveBeenCalled());
+
+    stale = true;
+    const nextSync = syncAllmapsLayers({
+      map: map as any,
+      layerCache,
+      layerConfigs: layerConfigMap([allmapsLayer({ opacity: 0.25 })]),
+    });
+    await vi.waitFor(() => expect(map.moveLayer).toHaveBeenCalled());
+    annotation.resolve();
+    await Promise.all([firstSync, nextSync]);
+
+    expect(map.removeLayer).not.toHaveBeenCalled();
+    expect(allmapsMock.loadAnnotation).toHaveBeenCalledTimes(1);
+    expect(allmapsMock.createdLayers[0].setOpacity).toHaveBeenLastCalledWith(
+      0.25,
+    );
+    expect(layerCache.size).toBe(1);
+  });
+
+  it("cleans up failed annotations and allows a retry", async () => {
+    const map = makeMap(["features-fill"]);
+    const layerCache = new Map();
+    const layer = allmapsLayer();
+    allmapsMock.loadAnnotation.mockRejectedValueOnce(new Error("Invalid map"));
+
+    await syncAllmapsLayers({
+      map: map as any,
+      layerCache,
+      layerConfigs: layerConfigMap([layer]),
+    });
+
+    expect(map.removeLayer).toHaveBeenCalledWith(allmapsLayerId(layer.id));
+    expect(layerCache.size).toBe(0);
+    expect(toastMock.error).toHaveBeenCalledWith(
+      "An Allmaps layer failed to load",
+    );
+
+    await syncAllmapsLayers({
+      map: map as any,
+      layerCache,
+      layerConfigs: layerConfigMap([layer]),
+    });
+
+    expect(allmapsMock.loadAnnotation).toHaveBeenCalledTimes(2);
+    expect(layerCache.size).toBe(1);
   });
 });

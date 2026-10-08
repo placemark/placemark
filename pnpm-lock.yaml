@@ -4,16 +4,13 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@allmaps/annotation>zod': 4.3.5
-
 importers:
 
   .:
     dependencies:
       '@allmaps/maplibre':
-        specifier: ^1.0.0-beta.43
-        version: 1.0.0-beta.43
+        specifier: ^1.0.0-beta.44
+        version: 1.0.0-beta.44
       '@codemirror/commands':
         specifier: ^6.10.1
         version: 6.10.1
@@ -390,45 +387,45 @@ importers:
 
 packages:
 
-  '@allmaps/annotation@1.0.0-beta.37':
-    resolution: {integrity: sha512-KupGu59+pbwefd7x5Og3CzJiiMvot/DN7vkC7IXhOgCYMlMwMslq2mfRRyfQvFQ/FxZJqH152ZwPRz81M9XbGw==}
+  '@allmaps/annotation@1.0.0-beta.38':
+    resolution: {integrity: sha512-6VdPV1XQGFsIo4cvVaioEJOxyXHrkNRNfAZ7nN12cL96yr8nZzVh5Hp3Ma0fVhd0EocW2foy1M7MZhtPAK76cw==}
 
-  '@allmaps/bearing@1.0.0-beta.12':
-    resolution: {integrity: sha512-GQrpV3aiiz7lLt1SULUgoAHjcuwgY/EovbPFbr2YW/xykSJ6BJAWPALLmloNke8lHvdZbiy1Fy32TsrrbjDhbw==}
+  '@allmaps/bearing@1.0.0-beta.13':
+    resolution: {integrity: sha512-UYG6LTZQ5ZJr0EwOxQtX0k+VS26yKYgGdKWuCDndqUK3/XmvHaw7uJIGAuslwMyMRQEPG8wu42TgRtRLSDuozw==}
 
-  '@allmaps/id@1.0.0-beta.38':
-    resolution: {integrity: sha512-POedcGDJxqpxI9UicmQF5DxfzgsBFIT5ZyKyaJCJ6Kf9P6j6RX7iPhrUEpDG1HQGOQDbwIu7rwMWf8KjHhHh1g==}
+  '@allmaps/id@1.0.0-beta.39':
+    resolution: {integrity: sha512-WobbaIkuyzhKDVJn4Qqthf5CenIy8qbx6srFyqo7CaBfIe9ea7xiS/5f7mCd87BFiYRH1ddKA6rFTpRieRp13Q==}
     engines: {node: '>=v19.0.0'}
 
-  '@allmaps/iiif-parser@1.0.0-beta.48':
-    resolution: {integrity: sha512-4wjmhbmIqT8gjA9ukJWSzpIU0AhSN8pJHPcOpN2QjBUqJ6Qo262wlJML7iEwqWY4s7yR4TfqI6CASmscUHf4bg==}
+  '@allmaps/iiif-parser@1.0.0-beta.49':
+    resolution: {integrity: sha512-/JvlF6+I92/wUexWdpYX9djj/IonophmqwCkMj6XKTtoRPM5jyVK1BiqCvn202+19j1vS4BBj/5Z3L0SxA104A==}
 
-  '@allmaps/maplibre@1.0.0-beta.43':
-    resolution: {integrity: sha512-iT+VMiv9vi3kVuHwbNaf5MA5BVD7m8RphEXk3BKfw4wJqgmP+Li6syK+QEiAfEPLpNUH3XoaLpvPqUZJAv45Qg==}
+  '@allmaps/maplibre@1.0.0-beta.44':
+    resolution: {integrity: sha512-KiueM4OSATlPQkF2El8hiEG47zVvSEghlennDTYn+PtMczS9hBrA97lLcL2gAcIwiLcMj1mfGLYd9bJd38dstg==}
 
-  '@allmaps/project@1.0.0-beta.9':
-    resolution: {integrity: sha512-IVmlvLCMIOKsfGO10Ul1lXrssvJyKzOcAF/3+U2RZXVQMRIC4nfpOGrgWZGrY36YaJI+pih6rvgS77+S1+QYOw==}
+  '@allmaps/project@1.0.0-beta.10':
+    resolution: {integrity: sha512-yAx77CpYuww5kuJwshFbifV2DL69k4pSsz1Si0VpO9JMvMrT0DIS+xrbyVbmODnoC9TpPfzWKCvUNczxNou+Eg==}
 
-  '@allmaps/render@1.0.0-beta.83':
-    resolution: {integrity: sha512-psSkzbA3Lld5fJ1ei5BCIDnWdqkHWwmnyjiySOFE50UUdUEwRmjevwSOyLF5D2UjmNPss0/VF5UYHtmhHDdPkg==}
+  '@allmaps/render@1.0.0-beta.84':
+    resolution: {integrity: sha512-cw9JlS9t3bkr1/JcUgafsL8ZnAUXycmjiAWM37cM4Nwve6uacMyUrHiT6DilkjYhN5q0h+vl1sm1fb+N5wNSGg==}
 
-  '@allmaps/stdlib@1.0.0-beta.41':
-    resolution: {integrity: sha512-NCsH52fElzNB8Ui9A/+FZQrxzP+P1z8l/DMx8YtF/E10Z2WHHlgSD2vnbqas5FqH5MI/HX3XtJwfPslzD/aquA==}
+  '@allmaps/stdlib@1.0.0-beta.42':
+    resolution: {integrity: sha512-eXKRvq0be+kTHzWJ6nJ2zu3V5MyBLxU5fJ/KKrnqApd3el814bTA9oYkG8g7hK/PEiIaYNYtFex3/rQSmv9YDg==}
 
-  '@allmaps/tailwind@1.0.0-beta.21':
-    resolution: {integrity: sha512-rDqyoiCKCnDPS5mHmM8RqB0kxQiD6hFSlUpAQsvJgZ+GFh8Oj2PMgWRml8V4SGupzVZZoEmenYNDKIdPsKjx/w==}
+  '@allmaps/tailwind@1.0.0-beta.22':
+    resolution: {integrity: sha512-v4pNhVh7BSG+kNpJ3V72hBcOkS11RFT0UdSRvzjupclsKCZj5/Ci6xJz5bxDeVzfcXNms06YD3/iPrxyyc0wuw==}
 
-  '@allmaps/transform@1.0.0-beta.52':
-    resolution: {integrity: sha512-ZgIEWJcBk07S652v+DtsJCVMZJSz7Sf4+nW+WeZIrfXRzO2hmyro7D7ZKFsFeyx3g5uuKy5tP8aLEk+WOTISJw==}
+  '@allmaps/transform@1.0.0-beta.53':
+    resolution: {integrity: sha512-XMjfVua2MCzh76Vl0TU3DawJ6Ke7Luib6AK7wR8tLYJ6a2oJpQ8gbpUkmeGste/Xl4StlOaCPrXUH2WuY+jgEg==}
 
-  '@allmaps/triangulate@1.0.0-beta.33':
-    resolution: {integrity: sha512-J421DxpLLpRnilIJF7A4D63fr6VFNe1a9TBDUiHyNdOMkCJhrBHh8KsTXIe2JYTysVJwuHBox1fxPQZcGw8ovA==}
+  '@allmaps/triangulate@1.0.0-beta.34':
+    resolution: {integrity: sha512-coi/9boZXlLsuhovG5/5yoDk/wwbNt80G6cynamurkU0qyrr1iOZUJ2PMDPwOhYYNNkLLTUz5fiJI9F0L6BMjg==}
 
-  '@allmaps/types@1.0.0-beta.23':
-    resolution: {integrity: sha512-pRnkcXGBppzc190NY1NTVQ79qDdQquJFSiXdXOIfzY/UVvdfwDMH27g5Bf7Tnk/eTRrfa/UtoWguUv1vlKa/7A==}
+  '@allmaps/types@1.0.0-beta.24':
+    resolution: {integrity: sha512-ghjJTSs7I0rjfJ2O1oE6QVLdbZp78u8LskhboNT3pXZ4X2UGGzP/JO7oqGlsPRayF875BP/r0F+YL6Bn145U7A==}
 
-  '@allmaps/warpedmaplayer@1.0.0-beta.43':
-    resolution: {integrity: sha512-ebdkDKl4M4JtDevNQldjpUwZL3zHjLuqN0ToKT3YakHiTXHdEC1Htpx9bdqiFOgP5I7m3qqElKvLyCo1m6Fz6Q==}
+  '@allmaps/warpedmaplayer@1.0.0-beta.44':
+    resolution: {integrity: sha512-RTN71+bKEMgF9q/5n2EY1PkuXeQgoIFAIy8cM7dYVVwW2ko+19y31n1i/gzyMN93YsFgLd6GF7f583oFFd+amQ==}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -984,28 +981,14 @@ packages:
   '@mapbox/tiny-sdf@2.2.0':
     resolution: {integrity: sha512-LVL4wgI9YAum5V+LNVQO6QgFBPw7/MIIY4XJPNsPDMrjEwcE+JfKk1LuIl8GnF197ejVdC9QdPaxrx5gfgdGXg==}
 
-  '@mapbox/unitbezier@0.0.1':
-    resolution: {integrity: sha512-nMkuDXFv60aBr9soUG5q+GvZYL+2KZHVvsqFCzqnkGEf46U2fvmytHaEVc1/YZbiLn8X+eR3QzX1+dwDO1lxlw==}
-
   '@mapbox/unitbezier@1.0.0':
     resolution: {integrity: sha512-fqd515fjBmANKGGsQ286E2Wvj/XvDFpGzwJxq4CI6jMQue6Oy04uCKp+JWKF00xRTmk6cEu1jPJ9p3xqH8YWqQ==}
-
-  '@mapbox/vector-tile@2.0.5':
-    resolution: {integrity: sha512-pXj8m7KTsqZt+1jsE0xIpGvqTSbblfkuEJL/NJmNePMtEwxO8V3XMDo9WMSfDeqHvCtBI9Lmt4mGcGR10zecmw==}
 
   '@mapbox/vector-tile@3.0.0':
     resolution: {integrity: sha512-Qf10S1uIHMk20ri/IVBnpS+esUEkVaR5Hftmz88jTInrpmWgPGJfPe3LVjjlE77trLx8tH6qjTG7uWH9hIq/0Q==}
 
-  '@mapbox/whoots-js@3.1.0':
-    resolution: {integrity: sha512-Es6WcD0nO5l+2BOQS4uLfNPYQaNDfbot3X1XUoloz+x0mPDS3eeORZJl06HXjwBG1fOGwCRnzK88LMdxKRrd6Q==}
-    engines: {node: '>=6.0.0'}
-
   '@maplibre/geojson-vt@6.1.1':
     resolution: {integrity: sha512-FVMOcmSP/yqol45t7StApEyTL5/vmqBCuFhH9n+fFuINenhaX+YgHHIt1yJ86S8kln3uJLcMvmEU2cfn6E2eCQ==}
-
-  '@maplibre/maplibre-gl-style-spec@24.10.0':
-    resolution: {integrity: sha512-lichxSiagMEBBrqHF0trtMQH9RKh+9jUlIJl0qW0QHvt2H/tbvUWdE+ZzI2Jd0/pT7j/iavLonlPu7EQ/ixTOw==}
-    hasBin: true
 
   '@maplibre/maplibre-gl-style-spec@26.3.0':
     resolution: {integrity: sha512-i5qRxjNvktTZ7CR08u7JJpOrVAd0JbYjYlnHypoVpbaqi6INJ7JZ3ZFTKTxK4QFqRdYAozlu3KeOcZp0g9bvdQ==}
@@ -3822,10 +3805,6 @@ packages:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
     engines: {node: '>=10'}
 
-  maplibre-gl@5.24.0:
-    resolution: {integrity: sha512-ALyFxgtd5R+65UqZ/++lOqwWcC0SNho9c27fYSyLmG7AfnAul2o46F05aDJGPbFU57wos9dgcIySHs0Xe6ia3A==}
-    engines: {node: '>=16.14.0', npm: '>=8.1.0'}
-
   maplibre-gl@6.6.0:
     resolution: {integrity: sha512-EQql6eZYPhbHvJpqY4AwoiuLkUfXFRBHk67S8mDtzNo1F/jAo7xAxunIzO7gJ1vwTcPMgrK9b64dqKHvnkTlDQ==}
     engines: {node: '>=16.14.0', npm: '>=8.1.0'}
@@ -4051,10 +4030,6 @@ packages:
 
   pbf@4.0.1:
     resolution: {integrity: sha512-SuLdBvS42z33m8ejRbInMapQe8n0D3vN/Xd5fmWM3tufNgRQFBpaW2YVJxQZV4iPNqb0vEFvssMEo5w9c6BTIA==}
-    hasBin: true
-
-  pbf@4.0.2:
-    resolution: {integrity: sha512-J0ajxARhZfpUEebxYs1vhMGMuLSXtBe1e+fFPDrf2uA2hgo+UshKfNUWOz92HJNz6/NFEXseQPddnHkTreWRqg==}
     hasBin: true
 
   pbf@5.1.2:
@@ -4920,59 +4895,60 @@ packages:
 
 snapshots:
 
-  '@allmaps/annotation@1.0.0-beta.37':
-    dependencies:
-      zod: 4.3.5
-
-  '@allmaps/bearing@1.0.0-beta.12':
-    dependencies:
-      '@allmaps/annotation': 1.0.0-beta.37
-      '@allmaps/project': 1.0.0-beta.9
-      '@allmaps/stdlib': 1.0.0-beta.41
-      '@allmaps/transform': 1.0.0-beta.52
-
-  '@allmaps/id@1.0.0-beta.38': {}
-
-  '@allmaps/iiif-parser@1.0.0-beta.48':
+  '@allmaps/annotation@1.0.0-beta.38':
     dependencies:
       zod: 4.5.4
 
-  '@allmaps/maplibre@1.0.0-beta.43':
+  '@allmaps/bearing@1.0.0-beta.13':
     dependencies:
-      '@allmaps/bearing': 1.0.0-beta.12
-      '@allmaps/project': 1.0.0-beta.9
-      '@allmaps/render': 1.0.0-beta.83
-      '@allmaps/stdlib': 1.0.0-beta.41
-      '@allmaps/warpedmaplayer': 1.0.0-beta.43
-      maplibre-gl: 5.24.0
+      '@allmaps/annotation': 1.0.0-beta.38
+      '@allmaps/project': 1.0.0-beta.10
+      '@allmaps/stdlib': 1.0.0-beta.42
+      '@allmaps/transform': 1.0.0-beta.53
 
-  '@allmaps/project@1.0.0-beta.9':
+  '@allmaps/id@1.0.0-beta.39': {}
+
+  '@allmaps/iiif-parser@1.0.0-beta.49':
     dependencies:
-      '@allmaps/stdlib': 1.0.0-beta.41
-      '@allmaps/transform': 1.0.0-beta.52
+      zod: 4.5.4
+
+  '@allmaps/maplibre@1.0.0-beta.44':
+    dependencies:
+      '@allmaps/bearing': 1.0.0-beta.13
+      '@allmaps/project': 1.0.0-beta.10
+      '@allmaps/render': 1.0.0-beta.84
+      '@allmaps/stdlib': 1.0.0-beta.42
+      '@allmaps/warpedmaplayer': 1.0.0-beta.44
+      maplibre-gl: 6.6.0
+
+  '@allmaps/project@1.0.0-beta.10':
+    dependencies:
+      '@allmaps/stdlib': 1.0.0-beta.42
+      '@allmaps/transform': 1.0.0-beta.53
       proj4: 2.20.2
 
-  '@allmaps/render@1.0.0-beta.83':
+  '@allmaps/render@1.0.0-beta.84':
     dependencies:
-      '@allmaps/annotation': 1.0.0-beta.37
-      '@allmaps/id': 1.0.0-beta.38
-      '@allmaps/iiif-parser': 1.0.0-beta.48
-      '@allmaps/project': 1.0.0-beta.9
-      '@allmaps/stdlib': 1.0.0-beta.41
-      '@allmaps/tailwind': 1.0.0-beta.21
-      '@allmaps/transform': 1.0.0-beta.52
-      '@allmaps/triangulate': 1.0.0-beta.33
-      '@allmaps/types': 1.0.0-beta.23
+      '@allmaps/annotation': 1.0.0-beta.38
+      '@allmaps/id': 1.0.0-beta.39
+      '@allmaps/iiif-parser': 1.0.0-beta.49
+      '@allmaps/project': 1.0.0-beta.10
+      '@allmaps/stdlib': 1.0.0-beta.42
+      '@allmaps/tailwind': 1.0.0-beta.22
+      '@allmaps/transform': 1.0.0-beta.53
+      '@allmaps/triangulate': 1.0.0-beta.34
+      '@allmaps/types': 1.0.0-beta.24
       comlink: 4.4.2
       lodash-es: 4.18.1
       point-in-polygon-hao: 1.2.4
       proj4: 2.20.2
       rbush: 4.0.1
 
-  '@allmaps/stdlib@1.0.0-beta.41':
+  '@allmaps/stdlib@1.0.0-beta.42':
     dependencies:
-      '@allmaps/annotation': 1.0.0-beta.37
-      '@allmaps/iiif-parser': 1.0.0-beta.48
+      '@allmaps/annotation': 1.0.0-beta.38
+      '@allmaps/id': 1.0.0-beta.39
+      '@allmaps/iiif-parser': 1.0.0-beta.49
       '@turf/rewind': 7.4.0
       '@types/lodash-es': 4.17.12
       hex-rgb: 5.0.0
@@ -4981,29 +4957,29 @@ snapshots:
       rgb-hex: 4.1.0
       svg-parser: 2.1.0
 
-  '@allmaps/tailwind@1.0.0-beta.21': {}
+  '@allmaps/tailwind@1.0.0-beta.22': {}
 
-  '@allmaps/transform@1.0.0-beta.52':
+  '@allmaps/transform@1.0.0-beta.53':
     dependencies:
-      '@allmaps/stdlib': 1.0.0-beta.41
+      '@allmaps/stdlib': 1.0.0-beta.42
       ml-matrix: 6.15.0
 
-  '@allmaps/triangulate@1.0.0-beta.33':
+  '@allmaps/triangulate@1.0.0-beta.34':
     dependencies:
-      '@allmaps/stdlib': 1.0.0-beta.41
-      '@allmaps/types': 1.0.0-beta.23
+      '@allmaps/stdlib': 1.0.0-beta.42
+      '@allmaps/types': 1.0.0-beta.24
       '@kninnug/constrainautor': 4.1.0
       delaunator: 5.1.0
       kdbush: 4.1.0
       robust-predicates: 3.0.3
 
-  '@allmaps/types@1.0.0-beta.23': {}
+  '@allmaps/types@1.0.0-beta.24': {}
 
-  '@allmaps/warpedmaplayer@1.0.0-beta.43':
+  '@allmaps/warpedmaplayer@1.0.0-beta.44':
     dependencies:
-      '@allmaps/project': 1.0.0-beta.9
-      '@allmaps/render': 1.0.0-beta.83
-      '@allmaps/stdlib': 1.0.0-beta.41
+      '@allmaps/project': 1.0.0-beta.10
+      '@allmaps/render': 1.0.0-beta.84
+      '@allmaps/stdlib': 1.0.0-beta.42
 
   '@alloc/quick-lru@5.2.0': {}
 
@@ -5592,7 +5568,7 @@ snapshots:
 
   '@kninnug/constrainautor@4.1.0':
     dependencies:
-      robust-predicates: 3.0.2
+      robust-predicates: 3.0.3
 
   '@lezer/common@1.5.0': {}
 
@@ -5637,15 +5613,7 @@ snapshots:
 
   '@mapbox/tiny-sdf@2.2.0': {}
 
-  '@mapbox/unitbezier@0.0.1': {}
-
   '@mapbox/unitbezier@1.0.0': {}
-
-  '@mapbox/vector-tile@2.0.5':
-    dependencies:
-      '@mapbox/point-geometry': 1.1.0
-      '@types/geojson': 7946.0.16
-      pbf: 4.0.2
 
   '@mapbox/vector-tile@3.0.0':
     dependencies:
@@ -5653,20 +5621,9 @@ snapshots:
       '@types/geojson': 7946.0.16
       pbf: 5.1.2
 
-  '@mapbox/whoots-js@3.1.0': {}
-
   '@maplibre/geojson-vt@6.1.1':
     dependencies:
       kdbush: 4.1.0
-
-  '@maplibre/maplibre-gl-style-spec@24.10.0':
-    dependencies:
-      '@mapbox/jsonlint-lines-primitives': 2.0.3
-      '@mapbox/unitbezier': 1.0.0
-      json-stringify-pretty-compact: 4.0.0
-      minimist: 1.2.8
-      quickselect: 3.0.0
-      tinyqueue: 3.0.0
 
   '@maplibre/maplibre-gl-style-spec@26.3.0':
     dependencies:
@@ -7723,7 +7680,7 @@ snapshots:
 
   delaunator@5.1.0:
     dependencies:
-      robust-predicates: 3.0.2
+      robust-predicates: 3.0.3
 
   des.js@1.1.0:
     dependencies:
@@ -8386,28 +8343,6 @@ snapshots:
     dependencies:
       semver: 7.7.3
 
-  maplibre-gl@5.24.0:
-    dependencies:
-      '@mapbox/jsonlint-lines-primitives': 2.0.3
-      '@mapbox/point-geometry': 1.1.0
-      '@mapbox/tiny-sdf': 2.2.0
-      '@mapbox/unitbezier': 0.0.1
-      '@mapbox/vector-tile': 2.0.5
-      '@mapbox/whoots-js': 3.1.0
-      '@maplibre/geojson-vt': 6.1.1
-      '@maplibre/maplibre-gl-style-spec': 24.10.0
-      '@maplibre/mlt': 1.2.0
-      '@maplibre/vt-pbf': 4.3.2
-      '@types/geojson': 7946.0.16
-      earcut: 3.2.3
-      gl-matrix: 3.4.4
-      kdbush: 4.1.0
-      murmurhash-js: 1.0.0
-      pbf: 4.0.1
-      potpack: 2.1.0
-      quickselect: 3.0.0
-      tinyqueue: 3.0.0
-
   maplibre-gl@6.6.0:
     dependencies:
       '@mapbox/point-geometry': 1.1.0
@@ -8699,10 +8634,7 @@ snapshots:
   pbf@4.0.1:
     dependencies:
       resolve-protobuf-schema: 2.1.0
-
-  pbf@4.0.2:
-    dependencies:
-      resolve-protobuf-schema: 2.1.0
+    optional: true
 
   pbf@5.1.2:
     dependencies:
@@ -8731,7 +8663,7 @@ snapshots:
 
   point-in-polygon-hao@1.2.4:
     dependencies:
-      robust-predicates: 3.0.2
+      robust-predicates: 3.0.3
 
   polygon-clipping@0.15.7:
     dependencies:

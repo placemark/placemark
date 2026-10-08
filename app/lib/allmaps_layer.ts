@@ -1,3 +1,4 @@
+import type { WarpedMapLayer } from "@allmaps/maplibre";
 import { layerConfigLayerId } from "app/lib/layer_config_adapters";
 import { FIRST_EDITING_LAYER_NAME } from "app/lib/load_and_augment_style";
 import type * as maplibregl from "maplibre-gl";
@@ -6,31 +7,12 @@ import type { ILayerConfig, LayerConfigMap } from "types";
 
 export type AllmapsLayerConfig = Extract<ILayerConfig, { type: "ALLMAPS" }>;
 
-type WarpedMapLayerInstance = maplibregl.CustomLayerInterface & {
-  addGeoreferenceAnnotationByUrl: (url: string) => Promise<unknown> | unknown;
-  getBounds: () => maplibregl.LngLatBoundsLike | undefined;
-  getCenterZoomBearing: (
-    options?: maplibregl.CameraForBoundsOptions,
-  ) => maplibregl.CenterZoomBearing;
-  setLayerOptions: (options: {
-    saturation?: number;
-    visible?: boolean;
-  }) => void;
-  setOpacity: (opacity: number) => void;
-};
-
-type AllmapsMapLibreModule = {
-  WarpedMapLayer: new (options: {
-    layerId: string;
-    opacity: number;
-    saturation: number;
-    visible: boolean;
-  }) => WarpedMapLayerInstance;
-};
+type AllmapsMapLibreModule = typeof import("@allmaps/maplibre");
 
 type CachedAllmapsLayer = {
-  layer: WarpedMapLayerInstance;
+  layer: WarpedMapLayer;
   url: string;
+  loading?: Promise<unknown>;
 };
 
 export type AllmapsLayerCache = Map<string, CachedAllmapsLayer>;
@@ -39,9 +21,7 @@ let allmapsModulePromise: Promise<AllmapsMapLibreModule> | null = null;
 const ALLMAPS_LAYER_ID_PREFIX = "placemarkAllmapsLayer:";
 
 async function loadAllmapsMapLibre() {
-  allmapsModulePromise =
-    allmapsModulePromise ||
-    (import("@allmaps/maplibre") as unknown as Promise<AllmapsMapLibreModule>);
+  allmapsModulePromise ??= import("@allmaps/maplibre");
   try {
     return await allmapsModulePromise;
   } catch (e) {
@@ -147,7 +127,7 @@ function removeCachedLayer({
   map: maplibregl.Map;
   layerCache: AllmapsLayerCache;
   layerId: string;
-  layer: WarpedMapLayerInstance;
+  layer: WarpedMapLayer;
 }) {
   if (layerCache.get(layerId)?.layer === layer) {
     removeLayerIfPresent(map, layerId);
@@ -158,9 +138,11 @@ function removeCachedLayer({
 async function getCachedLayer({
   layerCache,
   layerConfig,
+  isStale,
 }: {
   layerCache: AllmapsLayerCache;
   layerConfig: AllmapsLayerConfig;
+  isStale?: () => boolean;
 }) {
   const layerId = allmapsLayerId(layerConfig.id);
   const cachedLayer = layerCache.get(layerId);
@@ -169,6 +151,13 @@ async function getCachedLayer({
   }
 
   const { WarpedMapLayer } = await loadAllmapsMapLibre();
+  if (isStale?.()) {
+    return;
+  }
+  const pendingLayer = layerCache.get(layerId);
+  if (pendingLayer) {
+    return pendingLayer;
+  }
   const layer = new WarpedMapLayer({
     layerId,
     opacity: layerConfig.opacity,
@@ -221,19 +210,24 @@ async function addLayerIfMissing({
   beforeId?: string;
 }) {
   if (moveLayerIfPresent({ map, layerId, beforeId })) {
-    return;
+    return cachedLayer.loading;
   }
 
   try {
     map.addLayer(cachedLayer.layer, beforeId);
   } catch (e) {
     if (moveLayerIfPresent({ map, layerId, beforeId })) {
-      return;
+      return cachedLayer.loading;
     }
     throw e;
   }
 
-  await cachedLayer.layer.addGeoreferenceAnnotationByUrl(layerConfig.url);
+  cachedLayer.loading = cachedLayer.layer.addGeoreferenceAnnotationByUrl(
+    layerConfig.url,
+    undefined,
+    { failureMode: "fail-fast" },
+  );
+  await cachedLayer.loading;
 }
 
 function syncLayerOptions({
@@ -302,11 +296,16 @@ export async function syncAllmapsLayers({
     }
 
     const layerId = allmapsLayerId(layerConfig.id);
-    let cachedLayer: CachedAllmapsLayer;
+    let cachedLayer: CachedAllmapsLayer | undefined;
     try {
-      cachedLayer = await getCachedLayer({ layerCache, layerConfig });
+      cachedLayer = await getCachedLayer({ layerCache, layerConfig, isStale });
     } catch (_e) {
-      toast.error("Allmaps failed to load");
+      if (!isStale?.()) {
+        toast.error("Allmaps failed to load");
+      }
+      return;
+    }
+    if (!cachedLayer || isStale?.()) {
       return;
     }
 
@@ -320,15 +319,12 @@ export async function syncAllmapsLayers({
         beforeId,
       });
       if (isStale?.()) {
-        removeCachedLayer({
-          map,
-          layerCache,
-          layerId,
-          layer: cachedLayer.layer,
-        });
         return;
       }
     } catch (_e) {
+      if (isStale?.()) {
+        return;
+      }
       removeCachedLayer({
         map,
         layerCache,

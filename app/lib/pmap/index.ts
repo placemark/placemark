@@ -448,9 +448,6 @@ export default class PMap {
       previewProperty !== this.lastPreviewProperty;
 
     this.lastLayer = layerConfigs;
-    this.lastMapLibreLayerConfigKey = nextMapLibreLayerConfigKey;
-    this.lastSymbolization = symbolization;
-    this.lastPreviewProperty = previewProperty;
     const styleGeneration = ++this.styleGeneration;
 
     if (shouldUpdateMapLibreStyle) {
@@ -471,16 +468,9 @@ export default class PMap {
       return;
     }
 
-    await syncAllmapsLayers({
-      map: this.map,
-      layerCache: this.allmapsLayerCache,
-      layerConfigs,
-      isStale: () => styleGeneration !== this.styleGeneration,
-    });
-
-    if (styleGeneration !== this.styleGeneration) {
-      return;
-    }
+    this.lastMapLibreLayerConfigKey = nextMapLibreLayerConfigKey;
+    this.lastSymbolization = symbolization;
+    this.lastPreviewProperty = previewProperty;
 
     if (shouldUpdateMapLibreStyle && this.lastData) {
       this.setData({
@@ -490,6 +480,13 @@ export default class PMap {
       });
       this.lastSelection = { type: "none" };
     }
+
+    await syncAllmapsLayers({
+      map: this.map,
+      layerCache: this.allmapsLayerCache,
+      layerConfigs,
+      isStale: () => styleGeneration !== this.styleGeneration,
+    });
   }
 
   private updateSelections(newSet: Set<RawId>) {
