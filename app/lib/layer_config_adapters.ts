@@ -100,7 +100,7 @@ function updateBaseStyle(
   };
 }
 function paintLayoutFromRasterLayer(
-  layer: ILayerConfig,
+  layer: Pick<ILayerConfig, "opacity" | "visibility">,
 ): Pick<RasterLayerSpecification, "type" | "paint" | "layout"> {
   return {
     type: "raster",
@@ -113,13 +113,20 @@ function paintLayoutFromRasterLayer(
   };
 }
 
+export function layerConfigSourceId(layer: Pick<ILayerConfig, "id">) {
+  return `placemarkInternalSource:${layer.id}`;
+}
+
+export function layerConfigLayerId(layer: Pick<ILayerConfig, "id">) {
+  return `placemarkInternalLayer:${layer.id}`;
+}
+
 export async function addTileJSONStyle(
   style: StyleSpecification,
-  layer: ILayerConfig,
-  id: number,
+  layer: Extract<ILayerConfig, { type: "TILEJSON" }>,
 ) {
-  const sourceId = `placemarkInternalSource${id}`;
-  const layerId = `placemarkInternalLayer${id}`;
+  const sourceId = layerConfigSourceId(layer);
+  const layerId = layerConfigLayerId(layer);
 
   try {
     const resp = await getTileJSON(layer.url);
@@ -150,11 +157,10 @@ export async function addTileJSONStyle(
 
 export function addXYZStyle(
   style: StyleSpecification,
-  layer: ILayerConfig,
-  id: number,
+  layer: Extract<ILayerConfig, { type: "XYZ" }>,
 ) {
-  const sourceId = `placemarkInternalSource${id}`;
-  const layerId = `placemarkInternalLayer${id}`;
+  const sourceId = layerConfigSourceId(layer);
+  const layerId = layerConfigLayerId(layer);
 
   style.sources[sourceId] = {
     type: "raster",

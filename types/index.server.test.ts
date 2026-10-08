@@ -5,6 +5,7 @@ import {
   Symbolization,
   SymbolizationBaseInternal,
   tryUpgrading,
+  zLayerConfig,
   zLayerConfigCommon,
 } from "./index";
 
@@ -57,6 +58,39 @@ test("zLayerConfigCommon", () => {
       "name": "Foo",
       "opacity": 1,
       "tms": false,
+      "visibility": true,
+    }
+  `,
+  );
+});
+
+test("zLayerConfig Allmaps", () => {
+  expect(
+    zLayerConfig.parse({
+      type: "ALLMAPS",
+      name: "Allmaps",
+      opacity: 10,
+      id: newFeatureId(),
+      labelVisibility: true,
+      at: "a0",
+      visibility: true,
+      url: "https://annotations.allmaps.org/images/d180902cb93d5bf2",
+    }),
+  ).toMatchInlineSnapshot(
+    {
+      id: expect.any(String),
+    },
+    `
+    {
+      "at": "a0",
+      "id": Any<String>,
+      "labelVisibility": true,
+      "name": "Allmaps",
+      "opacity": 1,
+      "saturation": 1,
+      "tms": false,
+      "type": "ALLMAPS",
+      "url": "https://annotations.allmaps.org/images/d180902cb93d5bf2",
       "visibility": true,
     }
   `,

@@ -135,10 +135,14 @@ test("loadAndAugmentStyle", async () => {
           "00",
           {
             type: "XYZ",
+            id: "00",
+            name: "Test XYZ",
             at: "a0",
             visibility: true,
+            labelVisibility: true,
             opacity: 1,
             tms: true,
+            token: "",
             url: "https://foo.com/{z}/{x}/{y}.png",
           } as ILayerConfig,
         ],
@@ -147,4 +151,32 @@ test("loadAndAugmentStyle", async () => {
       previewProperty: NIL_PREVIEW,
     }),
   ).resolves.toMatchSnapshot();
+});
+
+test("loadAndAugmentStyle skips Allmaps layers", async () => {
+  const style = await loadAndAugmentStyle({
+    layerConfigs: new Map([
+      [
+        "00",
+        {
+          type: "ALLMAPS",
+          id: "00",
+          name: "Allmaps",
+          at: "a0",
+          visibility: true,
+          labelVisibility: true,
+          opacity: 1,
+          tms: false,
+          url: "https://annotations.allmaps.org/images/d180902cb93d5bf2",
+        } as ILayerConfig,
+      ],
+    ]),
+    symbolization: NONE_NO_SIMPLESTYLE,
+    previewProperty: NIL_PREVIEW,
+  });
+
+  expect(style.layers.map((layer) => layer.id)).not.toContain(
+    "placemarkAllmapsLayer:00",
+  );
+  expect(validateStyleMin(style)).toEqual([]);
 });

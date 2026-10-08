@@ -50,6 +50,7 @@ const FEATURES_LINE_LABEL_LAYER_NAME = "features-line-label";
 const FEATURES_LINE_LAYER_NAME = "features-line";
 const FEATURES_FILL_LAYER_NAME = "features-fill";
 const LASSO_LAYER_NAME = "lasso-layer";
+export const FIRST_EDITING_LAYER_NAME = FEATURES_FILL_LAYER_NAME;
 export const SYNTHETIC_POINT_LAYER_NAME = "synthetic-points";
 
 const emptyGeoJSONSource = {
@@ -94,21 +95,22 @@ export default async function loadAndAugmentStyle({
   previewProperty: PreviewProperty;
 }): Promise<StyleSpecification> {
   let style = getEmptyStyle();
-  let id = 0;
   const layers = [...layerConfigs.values()].reverse();
   for (const layer of layers) {
-    id++;
     switch (layer.type) {
       case "STYLE": {
         style = await addMapLibreStyle(style, layer);
         break;
       }
       case "XYZ": {
-        style = addXYZStyle(style, layer, id);
+        style = addXYZStyle(style, layer);
         break;
       }
       case "TILEJSON": {
-        style = await addTileJSONStyle(style, layer, id);
+        style = await addTileJSONStyle(style, layer);
+        break;
+      }
+      case "ALLMAPS": {
         break;
       }
     }
