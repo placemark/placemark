@@ -12,11 +12,13 @@ const allmapsMock = vi.hoisted(() => ({
   failSetOpacity: false,
   moduleLoads: 0,
   loadAnnotation: vi.fn(async () => {}),
+  loadInlineAnnotation: vi.fn(() => []),
   WarpedMapLayer: vi.fn(function (this: any, options: any) {
     this.id = options.layerId;
     this.type = "custom";
     this.renderingMode = "2d";
     this.addGeoreferenceAnnotationByUrl = allmapsMock.loadAnnotation;
+    this.addGeoreferenceAnnotation = allmapsMock.loadInlineAnnotation;
     this.onAdd = vi.fn();
     this.render = vi.fn();
     this.setLayerOptions = vi.fn();
@@ -149,6 +151,7 @@ describe("syncAllmapsLayers", () => {
     allmapsMock.failSetOpacity = false;
     allmapsMock.WarpedMapLayer.mockClear();
     allmapsMock.loadAnnotation.mockReset();
+    allmapsMock.loadInlineAnnotation.mockReset();
     toastMock.error.mockClear();
   });
 
@@ -220,6 +223,52 @@ describe("syncAllmapsLayers", () => {
       allmapsMock.createdLayers[0],
       "style-background",
     );
+  });
+
+  it("loads imported annotations without fetching their source URL", async () => {
+    const layer = allmapsLayer({
+      annotation: { type: "AnnotationPage", items: [] },
+    });
+    const map = makeMap(["features-fill"]);
+    const layerCache = new Map();
+    await syncAllmapsLayers({
+      map: map as any,
+      layerCache,
+      layerConfigs: layerConfigMap([layer]),
+    });
+    expect(allmapsMock.loadInlineAnnotation).toHaveBeenCalledWith(
+      layer.annotation,
+      undefined,
+      { failureMode: "fail-fast" },
+    );
+    expect(allmapsMock.loadAnnotation).not.toHaveBeenCalled();
+    await syncAllmapsLayers({
+      map: map as any,
+      layerCache,
+      layerConfigs: layerConfigMap([{ ...layer, opacity: 0.8 }]),
+    });
+    expect(allmapsMock.loadInlineAnnotation).toHaveBeenCalledTimes(1);
+    expect(allmapsMock.createdLayers[0].setOpacity).toHaveBeenLastCalledWith(
+      0.8,
+    );
+  });
+
+  it("recreates an imported layer after removal and restoration", async () => {
+    const layer = allmapsLayer({
+      url: undefined,
+      annotation: { type: "AnnotationPage", items: [] },
+    });
+    const map = makeMap(["features-fill"]);
+    const layerCache = new Map();
+    for (const layers of [[layer], [], [layer]]) {
+      await syncAllmapsLayers({
+        map: map as any,
+        layerCache,
+        layerConfigs: layerConfigMap(layers),
+      });
+    }
+    expect(allmapsMock.loadInlineAnnotation).toHaveBeenCalledTimes(2);
+    expect(map.removeLayer).toHaveBeenCalledWith(allmapsLayerId(layer.id));
   });
 
   it("syncs Allmaps layer saturation", async () => {

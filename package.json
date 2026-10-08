@@ -33,7 +33,10 @@
     "not ie 11"
   ],
   "dependencies": {
+    "@allmaps/annotation": "1.0.0-beta.38",
     "@allmaps/maplibre": "^1.0.0-beta.44",
+    "@allmaps/project": "1.0.0-beta.10",
+    "@allmaps/stdlib": "1.0.0-beta.42",
     "@codemirror/commands": "^6.10.1",
     "@codemirror/lang-json": "^6.0.2",
     "@codemirror/language": "^6.12.1",

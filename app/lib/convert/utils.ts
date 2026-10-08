@@ -1,5 +1,5 @@
 import type { Root } from "@tmcw/togeojson";
-import type { FeatureCollection } from "types";
+import type { BBox, FeatureCollection, ILayerConfig } from "types";
 
 // https://github.com/browserify/path-browserify/blob/872fec31a8bac7b9b43be0e54ef3037e0202c5fb/index.js#L389
 /**
@@ -82,7 +82,18 @@ export interface RootResult {
   notes: string[];
 }
 
-export type ConvertResult = GeoJSONResult | RootResult;
+export interface GeoreferenceResult {
+  type: "georeference";
+  maps: {
+    name: string;
+    geojson: FeatureCollection;
+    annotation?: Extract<ILayerConfig, { type: "ALLMAPS" }>["annotation"];
+  }[];
+  extent?: BBox;
+  notes: string[];
+}
+
+export type ConvertResult = GeoJSONResult | RootResult | GeoreferenceResult;
 
 export function okResult(geojson: FeatureCollection): ConvertResult {
   return {

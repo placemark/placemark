@@ -268,7 +268,7 @@ function TileJSONLayer({
       fullWidthSubmit
       onSubmit={async (values) => {
         try {
-          await get(values.url, zTileJSON);
+          await get(values.url!, zTileJSON);
         } catch (e) {
           if (e instanceof ZodError) {
             return {
@@ -361,7 +361,8 @@ function AllmapsLayer({
           return { [FORM_ERROR]: "Expected an Allmaps layer" };
         }
         try {
-          await get(values.url, AllmapsAnnotationSkeleton);
+          if (!values.annotation)
+            await get(values.url!, AllmapsAnnotationSkeleton);
         } catch (e) {
           if (e instanceof ZodError) {
             return {
@@ -434,14 +435,21 @@ function AllmapsLayer({
         autoComplete="off"
         placeholder=""
       />
-      <LabeledTextField
-        name="url"
-        label="Annotation URL"
-        required
-        type="url"
-        autoComplete="off"
-        placeholder="https://annotations.allmaps.org/images/d180902cb93d5bf2"
-      />
+      {layer?.type === "ALLMAPS" && layer.annotation ? (
+        <TextWell>
+          This layer uses an imported annotation. Import another annotation to
+          change its source.
+        </TextWell>
+      ) : (
+        <LabeledTextField
+          name="url"
+          label="Annotation URL"
+          required
+          type="url"
+          autoComplete="off"
+          placeholder="https://annotations.allmaps.org/images/d180902cb93d5bf2"
+        />
+      )}
     </Form>
   );
 }
@@ -710,7 +718,7 @@ function SortableLayerConfig({ layerConfig }: { layerConfig: ILayerConfig }) {
 
   const { data: tilejson, isError } = useQuery({
     queryKey: ["tilejson", layerConfig.url],
-    queryFn: async () => getTileJSON(layerConfig.url),
+    queryFn: async () => getTileJSON(layerConfig.url!),
     enabled: layerConfig.type === "TILEJSON",
     retry: false,
   });

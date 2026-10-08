@@ -3,7 +3,7 @@ import addedFeaturesToast from "app/components/added_features_toast";
 import { DialogHeader } from "app/components/dialog";
 import { MapContext } from "app/context/map_context";
 import type { ConvertResult } from "app/lib/convert/utils";
-import { extendExtent, getExtent } from "app/lib/geometry";
+import { extendExtent } from "app/lib/geometry";
 import { truncate } from "app/lib/utils";
 import type { LngLatBoundsLike } from "maplibre-gl";
 import { type Maybe, Nothing } from "purify-ts/Maybe";
@@ -12,7 +12,7 @@ import type { ModalStateImport } from "state/jotai";
 import type { BBox } from "types";
 import { ImportFileGroup } from "./import/import_file_group";
 import { ImportShapefile } from "./import/import_shapefile";
-import { flattenResult } from "./import_utils";
+import { getImportExtent } from "./import_utils";
 
 export type OnNext = (arg0: ConvertResult | null) => void;
 
@@ -36,7 +36,7 @@ export function ImportDialog({
   const onNext: OnNext = (result) => {
     let nextExtent = extent;
     if (result) {
-      nextExtent = extendExtent(getExtent(flattenResult(result)), extent);
+      nextExtent = extendExtent(getImportExtent(result), extent);
     }
     if (hasNext) {
       setExtent(nextExtent);
@@ -77,7 +77,7 @@ export function ImportDialog({
         titleIcon={PlusCircledIcon}
       />
       {file.type === "file" ? (
-        <ImportFileGroup {...props} file={file} />
+        <ImportFileGroup key={index} {...props} file={file} />
       ) : (
         <ImportShapefile {...props} file={file} />
       )}

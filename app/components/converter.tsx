@@ -242,6 +242,25 @@ function convertResultToExportInput(
   const featureMap: Data["featureMap"] = new Map();
   const folderMap: Data["folderMap"] = new Map();
   switch (result.type) {
+    case "georeference": {
+      for (const map of result.maps) {
+        const folderId = newFeatureId();
+        folderMap.set(folderId, {
+          id: folderId,
+          at: "a0",
+          name: map.name,
+          folderId: null,
+          expanded: true,
+          visibility: true,
+          locked: false,
+        });
+        for (const feature of map.geojson.features) {
+          const id = newFeatureId();
+          featureMap.set(id, { id, at: "a0", folderId, feature });
+        }
+      }
+      break;
+    }
     case "geojson": {
       const { features } = result.geojson;
       for (const feature of features) {
