@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@placemarkio/tokml@0.3.7': ffb39dd5f69819b21a66dfd46f694f9975ab41b0e9f3414c47f77a2c70f3fd22
+
 importers:
 
   .:
@@ -61,7 +64,7 @@ importers:
         version: 2.0.3(@types/geojson@7946.0.16)
       '@placemarkio/tokml':
         specifier: 0.3.7
-        version: 0.3.7
+        version: 0.3.7(patch_hash=ffb39dd5f69819b21a66dfd46f694f9975ab41b0e9f3414c47f77a2c70f3fd22)
       '@placemarkio/turf-jsts':
         specifier: ^2.8.3
         version: 2.8.3
@@ -5628,7 +5631,7 @@ snapshots:
     dependencies:
       '@types/geojson': 7946.0.16
 
-  '@placemarkio/tokml@0.3.7': {}
+  '@placemarkio/tokml@0.3.7(patch_hash=ffb39dd5f69819b21a66dfd46f694f9975ab41b0e9f3414c47f77a2c70f3fd22)': {}
 
   '@placemarkio/turf-jsts@2.8.3': {}
 

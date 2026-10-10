@@ -48,3 +48,5 @@ minimumReleaseAgeExclude:
 onlyBuiltDependencies:
   - core-js
   - esbuild
+patchedDependencies:
+  '@placemarkio/tokml@0.3.7': patches/@placemarkio__tokml@0.3.7.patch
