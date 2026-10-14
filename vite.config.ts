@@ -1,7 +1,7 @@
 import { resolve } from "node:path";
 import react from "@vitejs/plugin-react";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 
 const localRoots = ["app", "types", "state", "integrations", "test", "vendor", "styles", "shared"];
 
@@ -29,6 +29,11 @@ export default defineConfig((env) => ({
   },
   test: {
     dir: "./",
+    // The atproto-persistence worker is a standalone package with its own
+    // lockfile and dependencies, so this suite's install doesn't cover
+    // its imports. Its tests run in their own CI step via
+    // `pnpm --dir workers/atproto-persistence test`.
+    exclude: [...configDefaults.exclude, "workers/**"],
     deps: {
       interopDefault: true,
     },

@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: test
-      VITE_PUBLIC_MAPBOX_TOKEN: pk.eyJ1IjoidG1jdyIsImEiOiJja2twd25qdWowMXBuMnVxdDZodXJzaDZoIn0.UL4e2OtC7xrGr9hohU1odg
       VITE_PUBLIC_GEOCODE_EARTH_TOKEN: xxx
       WFC_QUOTA: 10
       WFC_QUOTA_ENTERPRISE: 100
@@ -31,3 +30,10 @@ jobs:
       - name: Run tests with coverage
         run: |
           pnpm test
+      - name: Install atproto-persistence worker dependencies
+        run: |
+          pnpm --dir workers/atproto-persistence install --frozen-lockfile
+      - name: Typecheck and test atproto-persistence worker
+        run: |
+          pnpm --dir workers/atproto-persistence exec tsc --noEmit
+          pnpm --dir workers/atproto-persistence test
