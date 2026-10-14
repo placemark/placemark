@@ -1,0 +1,12 @@
+name = "atproto-persistence"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[kv_namespaces]]
+binding = "SESSION_KV"
+id = "87831c64cdc14404b8a9bc3574256728"
+
+[[kv_namespaces]]
+binding = "OAUTH_STATE_KV"
+id = "69cecdbfa08241428304292bfe9f29b8"

@@ -3,10 +3,13 @@ import react from "@vitejs/plugin-react";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import { defineConfig } from "vitest/config";
 
-const localRoots = ["app", "types", "state", "integrations", "test", "vendor", 'styles'];
+const localRoots = ["app", "types", "state", "integrations", "test", "vendor", "styles", "shared"];
 
 // https://vitejs.dev/config/
 export default defineConfig((env) => ({
+  server: {
+    allowedHosts: ['tunnel-web.placemark.io']
+  },
   resolve: {
     alias: localRoots.map((dir) => ({
       find: dir,

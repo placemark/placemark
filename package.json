@@ -92,6 +92,7 @@
     "d3-color": "^3.1.0",
     "d3-dsv": "^3.0.1",
     "d3-geo": "^3.1.1",
+    "effect": "4.0.1",
     "fast-json-patch": "^3.1.1",
     "fflate": "^0.8.3",
     "flatbush": "^4.5.0",

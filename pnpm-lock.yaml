@@ -185,6 +185,9 @@ importers:
       d3-geo:
         specifier: ^3.1.1
         version: 3.1.1
+      effect:
+        specifier: 4.0.1
+        version: 4.0.1
       fast-json-patch:
         specifier: ^3.1.1
         version: 3.1.1
@@ -3124,6 +3127,9 @@ packages:
 
   earcut@3.2.3:
     resolution: {integrity: sha512-vnS4AVwp1KHAF13i1vp1/2D5evWy3k5u/iW/B81QVsUZtV8cv2tU0b2VNFlqvh4kYwrFMDdjPCfAmfyJW9y14Q==}
+
+  effect@4.0.1:
+    resolution: {integrity: sha512-b1VlQG9g8fwxE5QnIZuPoOP/0MsqHJSRKxUijjoM80E5q95FXrX5yWtY5XI8G+GJsBQAVSDbLS458z9a++uVvw==}
 
   electron-to-chromium@1.5.422:
     resolution: {integrity: sha512-UvA/32XqrLDdZSn7Jllo1AYNcWji/G0d5M0GTViE7KoGBiMunw3a34Sb2KO4ZZyrSEhqsxFoVhWWJshdyfKqJA==}
@@ -7472,6 +7478,8 @@ snapshots:
     optional: true
 
   earcut@3.2.3: {}
+
+  effect@4.0.1: {}
 
   electron-to-chromium@1.5.422:
     optional: true
