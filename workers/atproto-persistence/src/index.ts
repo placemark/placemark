@@ -10,6 +10,7 @@ import { buildOAuthClient } from "./oauth";
 import { parseOrigin, popupResultResponse, resolveReturnToOrigin } from "./oauth_popup";
 import { makeSessionLayer } from "./auth_middleware";
 import { MapHandlersLive } from "./handlers";
+import { handlePublicMap } from "./public_map";
 import { MapRpcs } from "../../../shared/atproto_rpc";
 import { signDidCookie } from "./cookie";
 
@@ -175,6 +176,11 @@ export default {
     }
     if (request.method === "POST" && isRpcPath) {
       return handleRpc(request, env);
+    }
+    if (request.method === "GET" && url.pathname === "/public/map") {
+      // No session required: share links are readable by anyone, like the
+      // atproto records they point at. CORS so the app can fetch it.
+      return withCors(request, await handlePublicMap(request));
     }
 
     return new Response("not found", { status: 404, headers: corsHeaders(request) });

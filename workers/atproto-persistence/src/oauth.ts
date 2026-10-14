@@ -4,16 +4,8 @@ import {
   type ClientAssertionPrivateJwk,
   type OAuthClientStores,
 } from "@atcute/oauth-node-client";
-import {
-  CompositeDidDocumentResolver,
-  CompositeHandleResolver,
-  DohJsonHandleResolver,
-  LocalActorResolver,
-  PlcDidDocumentResolver,
-  WebDidDocumentResolver,
-  WellKnownHandleResolver,
-} from "@atcute/identity-resolver";
 import type { Env } from "./env";
+import { buildActorResolver } from "./identity";
 import { makeKVStore } from "./kv_store";
 
 // GC safety net matching the confidential-client refresh-token lifetime.
@@ -29,20 +21,7 @@ export function buildOAuthClient(env: Env, baseUrl: string): OAuthClient {
     states: makeKVStore(env.OAUTH_STATE_KV, { ttlSeconds: OAUTH_STATE_TTL_SECONDS }),
   };
 
-  const actorResolver = new LocalActorResolver({
-    handleResolver: new CompositeHandleResolver({
-      methods: {
-        dns: new DohJsonHandleResolver({ dohUrl: "https://mozilla.cloudflare-dns.com/dns-query" }),
-        http: new WellKnownHandleResolver(),
-      },
-    }),
-    didDocumentResolver: new CompositeDidDocumentResolver({
-      methods: {
-        plc: new PlcDidDocumentResolver(),
-        web: new WebDidDocumentResolver(),
-      },
-    }),
-  });
+  const actorResolver = buildActorResolver();
 
   return new OAuthClient({
     metadata: {

@@ -1,6 +1,23 @@
 # atproto-persistence
 
-Worker that lets a signed-in Bluesky/atproto user save Placemark maps (FlatGeobuf blob + an `io.placemark.map` record) to their own PDS repo. Effect RPC at `POST /rpc`; atproto OAuth (confidential client) at `/oauth/*`.
+Worker that lets a signed-in Bluesky/atproto user save Placemark maps (FlatGeobuf blob + an `io.placemark.map` record) to their own PDS repo. Effect RPC at `POST /rpc`; atproto OAuth (confidential client) at `/oauth/*`. Saved maps are shareable: see "Sharing" below.
+
+## Sharing
+
+`io.placemark.map` records are ordinary atproto records, and atproto repo reads (`com.atproto.repo.getRecord`, `com.atproto.sync.getBlob`) are public protocol operations — anyone can read any record from any PDS. So a share link is just a pointer to `(did, rkey)`: no new storage, no permission layer, and no capability that isn't already protocol-public.
+
+- The "My maps" dialog's link button copies `https://<app-origin>/?map=atproto/<did>/<rkey>`. The DID (not the handle) is used so links survive handle changes.
+- Opening that link loads the map into the editor without signing in, via the worker's unauthenticated endpoint:
+
+```
+GET /public/map?did=<did>&rkey=<rkey>
+  → 200 { name, doc: { dataBase64, symbolization, layer, folders, layerConfigs } }
+  → 400 invalid did/rkey, 404 no such record, 502 DID unresolvable / PDS unreachable
+```
+
+The endpoint resolves the DID to its PDS (PLC directory / well-knowns / DoH — same resolver stack as the OAuth flow) and reuses `AtprotoRepo.getMap`, so shared loads and signed-in loads parse and validate records identically. Responses carry `Cache-Control: public, max-age=60` and the usual reflected-origin CORS headers.
+
+Recipients who *are* signed in can keep a shared map via the ordinary "My maps → Save current map" flow, which writes a copy into their own repo.
 
 ## Deploy
 

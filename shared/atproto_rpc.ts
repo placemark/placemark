@@ -31,6 +31,17 @@ export class CloudMapDocument extends Schema.Class<CloudMapDocument>(
 
 const NotFoundOrAuth = Schema.Union([Unauthenticated, RecordNotFound]);
 
+/**
+ * Payload of the worker's public, unauthenticated `GET /public/map`
+ * endpoint: everything a share-link recipient needs to open a map
+ * without signing in. atproto repo reads are public protocol operations,
+ * so the endpoint is a thin pass-through to the owner's PDS.
+ */
+export class SharedMap extends Schema.Class<SharedMap>("SharedMap")({
+  name: Schema.String,
+  doc: CloudMapDocument,
+}) {}
+
 export class MapRpcs extends RpcGroup.make(
   Rpc.make("Me", {
     success: Schema.Struct({ did: Schema.String, handle: Schema.String }),

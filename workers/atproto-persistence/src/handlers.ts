@@ -1,6 +1,6 @@
 import { Effect, Result } from "effect";
 import { Base64 } from "effect/encoding";
-import { AtprotoRepo } from "./repo";
+import { AtprotoRepo, mapRecordToDocument } from "./repo";
 import { CurrentSession } from "./auth_middleware";
 import { CloudMapDocument, MapRpcs } from "../../../shared/atproto_rpc";
 
@@ -46,13 +46,7 @@ export const MapHandlersLive = MapRpcs.toLayer(
         Effect.gen(function* () {
           const session = yield* CurrentSession;
           const record = yield* repo.getMap(session.did, rkey);
-          return new CloudMapDocument({
-            dataBase64: Base64.encode(record.dataBytes),
-            symbolization: record.symbolization,
-            layer: record.layer,
-            folders: record.folders,
-            layerConfigs: record.layerConfigs,
-          });
+          return mapRecordToDocument(record);
         }),
 
       UpdateMap: ({ rkey, name, doc }) =>

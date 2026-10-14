@@ -24,6 +24,12 @@ export interface CloudMapDocument {
 export interface CloudAuthState {
   status: "signed-out" | "signed-in";
   handle?: string;
+  /**
+   * The signed-in user's stable atproto DID (not the mutable handle).
+   * Share links are addressed by it, since a DID is what a PDS record
+   * can be re-fetched by years later.
+   */
+  did?: string;
 }
 
 export interface CloudProvider {

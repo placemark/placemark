@@ -1,10 +1,12 @@
-import { ArchiveIcon } from "@radix-ui/react-icons";
+import { ArchiveIcon, Link2Icon } from "@radix-ui/react-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DialogHeader } from "app/components/dialog";
 import * as E from "app/components/elements";
 import { CLOUD_PROVIDERS } from "app/lib/cloud_providers";
 import { encodeFeaturesToFlatGeobuf } from "app/lib/cloud_providers/atproto/fgb_codec";
 import { useLoadCloudMapIntoEditor } from "app/lib/cloud_providers/atproto/load_into_editor";
+import { sharedMapUrl } from "app/lib/cloud_providers/atproto/share";
+import { writeToClipboard } from "app/lib/utils";
 import { captureException } from "integrations/errors";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
@@ -27,6 +29,8 @@ export function CloudMapsDialog({ onClose }: { onClose: () => void }) {
   const meta = useAtomValue(memoryMetaAtom);
   const loadIntoEditor = useLoadCloudMapIntoEditor();
   const queryClient = useQueryClient();
+  // Share links are addressed by the owner's DID, which only `Me` knows.
+  const authState = provider.useAuthState();
 
   const [saveName, setSaveName] = useState(meta.label ?? "");
 
@@ -84,6 +88,21 @@ export function CloudMapsDialog({ onClose }: { onClose: () => void }) {
     },
   });
 
+  const shareMutation = useMutation({
+    mutationFn: async (rkey: string) => {
+      const did = authState.did;
+      if (!did) throw new Error("Not signed in");
+      await writeToClipboard(sharedMapUrl(did, rkey));
+    },
+    onSuccess: () => {
+      toast.success("Link copied — anyone can use it to open this map");
+    },
+    onError: (error) => {
+      captureException(error);
+      toast.error("Could not copy the share link");
+    },
+  });
+
   const deleteMutation = useMutation({
     mutationFn: (rkey: string) => provider.deleteMap(rkey),
     onSuccess: () => {
@@ -138,13 +157,23 @@ export function CloudMapsDialog({ onClose }: { onClose: () => void }) {
                 >
                   {map.name}
                 </button>
-                <E.Button
-                  size="xs"
-                  variant="destructive"
-                  onClick={() => deleteMutation.mutate(map.rkey)}
-                >
-                  Delete
-                </E.Button>
+                <div className="flex items-center gap-x-1">
+                  <E.Button
+                    size="xs"
+                    aria-label="Copy share link"
+                    disabled={!authState.did || shareMutation.isPending}
+                    onClick={() => shareMutation.mutate(map.rkey)}
+                  >
+                    <Link2Icon />
+                  </E.Button>
+                  <E.Button
+                    size="xs"
+                    variant="destructive"
+                    onClick={() => deleteMutation.mutate(map.rkey)}
+                  >
+                    Delete
+                  </E.Button>
+                </div>
               </li>
             ))}
           </ul>

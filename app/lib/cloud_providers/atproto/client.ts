@@ -91,7 +91,7 @@ export function atprotoProvider(baseUrl: string): CloudProvider {
         queryFn: async (): Promise<CloudAuthState> => {
           try {
             const me = await runRpc(baseUrl, (client) => client.Me());
-            return { status: "signed-in", handle: me.handle };
+            return { status: "signed-in", handle: me.handle, did: me.did };
           } catch {
             return { status: "signed-out" };
           }
