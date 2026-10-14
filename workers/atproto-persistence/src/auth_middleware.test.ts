@@ -1,33 +1,33 @@
-import { describe, expect, it } from "vitest";
+import { assert, expect, it } from "vitest";
 import { Context, Effect, Layer, Result } from "effect";
 import { HttpServerRequest } from "effect/http";
 import type { OAuthClient, OAuthSession } from "@atcute/oauth-node-client";
 import type { Did } from "@atcute/lexicons/syntax";
 import { signDidCookie } from "./cookie";
 import { CurrentSession, makeSessionLayer } from "./auth_middleware";
+import type { AtprotoRepo } from "./repo";
 import { Unauthenticated } from "../../../shared/atproto_rpc";
 
 const COOKIE_SECRET = "test-secret";
 const DID = "did:plc:abc123";
 
 /**
- * `makeSessionLayer` only ever calls `oauth.restore(did)` on the `OAuthClient`
- * it's given -- stub just that, matching the precedent `oauth.test.ts` already
- * sets for narrow `as` casts when a real atcute class (with private fields)
- * can't be satisfied structurally by a plain test double.
+ * `makeSessionLayer` only ever calls `oauth.restore(did)`, and atcute's
+ * client classes can't be satisfied structurally (private fields), so
+ * stub just what's called.
  */
-function fakeOAuthClient(restore: (did: Did) => Promise<OAuthSession>): OAuthClient {
+function fakeOAuthClient(restore: (did: Did) => Promise<OAuthSession | undefined>): OAuthClient {
   return { restore } as unknown as OAuthClient;
 }
 
-/** A minimal stand-in for a restored `OAuthSession` -- enough to satisfy the
- * `FetchHandlerObject` shape `@atcute/client`'s `Client` constructor actually
- * needs (`handle(pathname, init): Promise<Response>`); nothing in
- * `makeSessionLayer` or `AtprotoRepoLive` calls any other `OAuthSession`
- * member at layer-build time. */
+/** Minimal `OAuthSession` stand-in: only `handle` is touched, when the
+ * `Client` wrapping it is constructed. */
 function fakeSession(): OAuthSession {
   return { handle: async () => new Response(null) } as unknown as OAuthSession;
 }
+
+const restoringOAuth = (session: OAuthSession | undefined = fakeSession()) =>
+  fakeOAuthClient(async () => session);
 
 function requestWithCookie(cookieHeader?: string): HttpServerRequest.HttpServerRequest {
   return HttpServerRequest.fromWeb(
@@ -38,15 +38,12 @@ function requestWithCookie(cookieHeader?: string): HttpServerRequest.HttpServerR
   );
 }
 
-/**
- * Builds and (scoped-ly) runs `makeSessionLayer`, returning a `Result` so
- * tests can assert on the `Unauthenticated` failure value directly instead
- * of unwrapping an `Effect` defect `Cause`.
- */
+/** Builds and (scoped-ly) runs `makeSessionLayer`, surfacing the
+ * `Unauthenticated` failure value directly. */
 function runSessionLayer(
   oauth: OAuthClient,
   request: HttpServerRequest.HttpServerRequest,
-): Promise<Result.Result<Context.Context<CurrentSession>, Unauthenticated>> {
+): Promise<Result.Result<Context.Context<CurrentSession | AtprotoRepo>, Unauthenticated>> {
   return Effect.runPromise(
     Layer.build(makeSessionLayer(oauth, COOKIE_SECRET)).pipe(
       Effect.provideService(HttpServerRequest.HttpServerRequest, request),
@@ -56,68 +53,41 @@ function runSessionLayer(
   );
 }
 
-describe("makeSessionLayer", () => {
-  it("fails with Unauthenticated when the pm_session cookie is missing", async () => {
-    const oauth = fakeOAuthClient(async () => fakeSession());
-    const result = await runSessionLayer(oauth, requestWithCookie(undefined));
+it.for(
+  [
+    [
+      "the pm_session cookie is missing",
+      () => restoringOAuth(),
+      undefined,
+    ],
+    [
+      "the cookie signature doesn't verify",
+      () => restoringOAuth(),
+      signDidCookie(DID, "a-different-secret"),
+    ],
+    [
+      "oauth.restore rejects",
+      () => fakeOAuthClient(async () => { throw new Error("no such session"); }),
+      signDidCookie(DID, COOKIE_SECRET),
+    ],
+    [
+      "oauth.restore resolves falsy",
+      () => restoringOAuth(undefined),
+      signDidCookie(DID, COOKIE_SECRET),
+    ],
+  ] as Array<[string, () => OAuthClient, Promise<string> | undefined]>,
+)("fails with Unauthenticated when %s", async ([, makeOauth, cookie]) => {
+  const result = await runSessionLayer(
+    makeOauth(),
+    requestWithCookie(cookie ? `pm_session=${cookie}` : undefined),
+  );
+  assert(Result.isFailure(result));
+  expect(result.failure).toStrictEqual(new Unauthenticated({}));
+});
 
-    expect(Result.isFailure(result)).toBe(true);
-    if (Result.isFailure(result)) {
-      expect(result.failure).toStrictEqual(new Unauthenticated({}));
-    }
-  });
-
-  it("fails with Unauthenticated when the cookie signature doesn't verify", async () => {
-    // Signed with a different secret than `makeSessionLayer` is given --
-    // `verifyDidCookie` rejects this the same way a tampered value would.
-    const cookie = await signDidCookie(DID, "a-different-secret");
-    const oauth = fakeOAuthClient(async () => fakeSession());
-    const result = await runSessionLayer(oauth, requestWithCookie(`pm_session=${cookie}`));
-
-    expect(Result.isFailure(result)).toBe(true);
-    if (Result.isFailure(result)) {
-      expect(result.failure).toStrictEqual(new Unauthenticated({}));
-    }
-  });
-
-  it("fails with Unauthenticated when oauth.restore rejects", async () => {
-    const cookie = await signDidCookie(DID, COOKIE_SECRET);
-    const oauth = fakeOAuthClient(async () => {
-      throw new Error("no such session");
-    });
-    const result = await runSessionLayer(oauth, requestWithCookie(`pm_session=${cookie}`));
-
-    expect(Result.isFailure(result)).toBe(true);
-    if (Result.isFailure(result)) {
-      expect(result.failure).toStrictEqual(new Unauthenticated({}));
-    }
-  });
-
-  it("fails with Unauthenticated when oauth.restore resolves falsy", async () => {
-    const cookie = await signDidCookie(DID, COOKIE_SECRET);
-    const oauth = {
-      // `restore`'s real return type never includes `undefined`, but
-      // `makeSessionLayer`'s `!session` check exists specifically to guard
-      // against a misbehaving/future implementation returning one anyway.
-      restore: async () => undefined,
-    } as unknown as OAuthClient;
-    const result = await runSessionLayer(oauth, requestWithCookie(`pm_session=${cookie}`));
-
-    expect(Result.isFailure(result)).toBe(true);
-    if (Result.isFailure(result)) {
-      expect(result.failure).toStrictEqual(new Unauthenticated({}));
-    }
-  });
-
-  it("succeeds and provides CurrentSession with the cookie's DID when the session restores", async () => {
-    const cookie = await signDidCookie(DID, COOKIE_SECRET);
-    const oauth = fakeOAuthClient(async () => fakeSession());
-    const result = await runSessionLayer(oauth, requestWithCookie(`pm_session=${cookie}`));
-
-    expect(Result.isSuccess(result)).toBe(true);
-    if (Result.isSuccess(result)) {
-      const session = Context.get(result.success, CurrentSession);
-      expect(session).toStrictEqual({ did: DID });
-    }
-  });
+it("provides CurrentSession with the cookie's DID once the session restores", async () => {
+  const cookie = await signDidCookie(DID, COOKIE_SECRET);
+  const result = await runSessionLayer(restoringOAuth(), requestWithCookie(`pm_session=${cookie}`));
+  assert(Result.isSuccess(result));
+  expect(Context.get(result.success, CurrentSession)).toStrictEqual({ did: DID });
 });

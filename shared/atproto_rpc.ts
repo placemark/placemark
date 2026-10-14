@@ -11,11 +11,6 @@ export class RecordNotFound extends Schema.TaggedError<RecordNotFound>()(
   { rkey: Schema.String },
 ) {}
 
-export class BlobTooLarge extends Schema.TaggedError<BlobTooLarge>()(
-  "BlobTooLarge",
-  { maxBytes: Schema.Number, actualBytes: Schema.Number },
-) {}
-
 export class CloudMapSummary extends Schema.Class<CloudMapSummary>(
   "CloudMapSummary",
 )({

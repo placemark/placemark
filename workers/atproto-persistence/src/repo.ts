@@ -159,12 +159,6 @@ function isStoredMapRecordValue(value: unknown): value is StoredMapRecordValue {
   );
 }
 
-// Reads the optional, JSON-encoded `layer` key back as `unknown`, where
-// "no base layer" is spelled `null` (see state/jotai.ts's default memory meta).
-function readLayer(value: StoredMapRecordValue): unknown {
-  return value.layer === undefined ? null : JSON.parse(value.layer);
-}
-
 export function AtprotoRepoLive(client: Client): Layer.Layer<AtprotoRepo> {
   return Layer.succeed(
     AtprotoRepo,
@@ -229,7 +223,10 @@ export function AtprotoRepoLive(client: Client): Layer.Layer<AtprotoRepo> {
             return {
               name: value.name,
               symbolization: JSON.parse(value.symbolization),
-              layer: readLayer(value),
+              // The optional, JSON-encoded `layer` key reads back as
+              // `null` for "no base layer" (see state/jotai.ts's default
+              // memory meta).
+              layer: value.layer === undefined ? null : JSON.parse(value.layer),
               folders: JSON.parse(value.folders),
               layerConfigs: JSON.parse(value.layerConfigs),
               dataBytes: blobResponse.data,

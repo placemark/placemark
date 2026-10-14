@@ -1,222 +1,87 @@
-import type { IWrappedFeature } from "types";
-import { describe, expect, it } from "vitest";
+import type { Feature, IWrappedFeature } from "types";
+import { expect, it } from "vitest";
 import {
   decodeFlatGeobufToFeatures,
   encodeFeaturesToFlatGeobuf,
 } from "./fgb_codec";
 
-describe("fgb_codec", () => {
-  it("round-trips wrapped features through FlatGeobuf", async () => {
-    const features: IWrappedFeature[] = [
-      {
-        id: "f1",
-        at: "a0",
-        folderId: null,
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [10, 20] },
-          properties: { name: "Cafe" },
-        },
-      },
-      {
-        id: "f2",
-        at: "a1",
-        folderId: "folder-1",
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [30, 40] },
-          properties: null,
-        },
-      },
-    ];
+let next = 0;
 
-    const bytes = await encodeFeaturesToFlatGeobuf(features);
-    const decoded = await decodeFlatGeobufToFeatures(bytes);
+/** A minimal wrapped point feature; override fields via the two arguments.
+ * Pass `geometry: null` explicitly for a geometry-less feature. */
+function feature(
+  opts: {
+    geometry?: Feature["geometry"];
+    properties?: Feature["properties"];
+  } = {},
+  wrapped: Partial<IWrappedFeature> = {},
+): IWrappedFeature {
+  // Destructuring defaults apply only to `undefined`, so an explicit
+  // `geometry: null` survives as a geometry-less feature.
+  const {
+    geometry = { type: "Point", coordinates: [0, 0] },
+    properties = null,
+  } = opts;
+  return {
+    id: `f${++next}`,
+    at: "a0",
+    folderId: null,
+    feature: {
+      type: "Feature",
+      geometry,
+      properties,
+    },
+    ...wrapped,
+  };
+}
 
-    expect(decoded).toHaveLength(2);
-    expect(decoded.find((f) => f.id === "f1")).toMatchObject({
-      id: "f1",
-      at: "a0",
-      folderId: null,
-      feature: {
-        geometry: { type: "Point", coordinates: [10, 20] },
-        properties: { name: "Cafe" },
-      },
-    });
-    expect(decoded.find((f) => f.id === "f2")).toMatchObject({
-      id: "f2",
-      at: "a1",
-      folderId: "folder-1",
-    });
-  });
+const roundTrip = async (features: IWrappedFeature[]) =>
+  decodeFlatGeobufToFeatures(await encodeFeaturesToFlatGeobuf(features));
 
-  it("drops ephemeral features when encoding", async () => {
-    const features: IWrappedFeature[] = [
-      {
-        id: "f1",
-        at: "a0",
-        folderId: null,
-        ephemeral: true,
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [0, 0] },
-          properties: null,
-        },
-      },
-    ];
+it("round-trips wrapped features through FlatGeobuf", async () => {
+  const features = [
+    feature({ properties: { name: "Cafe", tags: ["x", "y"], meta: { k: 1 } } }),
+    feature({}, { at: "a1", folderId: "folder-1" }),
+  ];
 
-    const bytes = await encodeFeaturesToFlatGeobuf(features);
-    const decoded = await decodeFlatGeobufToFeatures(bytes);
-    expect(decoded).toHaveLength(0);
-  });
+  expect(await roundTrip(features)).toStrictEqual(features);
+});
 
-  it("handles null geometries (adjustForFgb filters them)", async () => {
-    const features: IWrappedFeature[] = [
-      {
-        id: "f1",
-        at: "a0",
-        folderId: null,
-        feature: {
-          type: "Feature",
-          geometry: null,
-          properties: { name: "Feature with no geometry" },
-        },
-      },
-    ];
-
-    const bytes = await encodeFeaturesToFlatGeobuf(features);
-    const decoded = await decodeFlatGeobufToFeatures(bytes);
-    expect(decoded).toHaveLength(0);
-  });
-
-  it("encodes and decodes empty input", async () => {
-    const bytes = await encodeFeaturesToFlatGeobuf([]);
-    const decoded = await decodeFlatGeobufToFeatures(bytes);
-    expect(decoded).toHaveLength(0);
-  });
-
-  it("preserves later features' properties when the first feature has none", async () => {
+it.for([
+  [
+    "a property-less first feature",
     // Regression: `flatgeobuf.serialize` infers its column schema from
-    // `features[0].properties` only, so a first feature with no
-    // properties used to wipe every other feature's properties.
-    const features: IWrappedFeature[] = [
-      {
-        id: "f1",
-        at: "a0",
-        folderId: null,
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [0, 0] },
-          properties: null,
-        },
-      },
-      {
-        id: "f2",
-        at: "a1",
-        folderId: null,
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [1, 1] },
-          properties: { name: "Cafe" },
-        },
-      },
-    ];
+    // `features[0].properties` alone, so a first feature with no
+    // properties must not wipe the later features' properties.
+    [feature(), feature({ properties: { name: "Cafe" } })],
+    [null, { name: "Cafe" }],
+  ],
+  [
+    "distinct property key sets",
+    [
+      feature({ properties: { a: 1 } }),
+      feature({ properties: { b: 2, c: 3 } }),
+    ],
+    [{ a: 1 }, { b: 2, c: 3 }],
+  ],
+] as Array<
+  [string, IWrappedFeature[], Array<Feature["properties"]>]
+>)("preserves every feature's properties with %s", async ([
+  ,
+  features,
+  expected,
+]) => {
+  const decoded = await roundTrip(features);
+  expect(decoded.map((f) => f.feature.properties)).toStrictEqual(expected);
+});
 
-    const bytes = await encodeFeaturesToFlatGeobuf(features);
-    const decoded = await decodeFlatGeobufToFeatures(bytes);
-
-    expect(decoded).toHaveLength(2);
-    expect(decoded.find((f) => f.id === "f1")?.feature.properties).toBeNull();
-    expect(
-      decoded.find((f) => f.id === "f2")?.feature.properties,
-    ).toStrictEqual({ name: "Cafe" });
-  });
-
-  it("keeps distinct property key sets across features", async () => {
-    const features: IWrappedFeature[] = [
-      {
-        id: "f1",
-        at: "a0",
-        folderId: null,
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [0, 0] },
-          properties: { a: 1 },
-        },
-      },
-      {
-        id: "f2",
-        at: "a1",
-        folderId: null,
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [1, 1] },
-          properties: { b: 2, c: 3 },
-        },
-      },
-    ];
-
-    const bytes = await encodeFeaturesToFlatGeobuf(features);
-    const decoded = await decodeFlatGeobufToFeatures(bytes);
-
-    expect(
-      decoded.find((f) => f.id === "f1")?.feature.properties,
-    ).toStrictEqual({ a: 1 });
-    expect(
-      decoded.find((f) => f.id === "f2")?.feature.properties,
-    ).toStrictEqual({ b: 2, c: 3 });
-  });
-
-  it("round-trips nested object and array property values", async () => {
-    const features: IWrappedFeature[] = [
-      {
-        id: "f1",
-        at: "a0",
-        folderId: null,
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [0, 0] },
-          properties: { tags: ["x", "y"], meta: { k: 1 } },
-        },
-      },
-    ];
-
-    const bytes = await encodeFeaturesToFlatGeobuf(features);
-    const decoded = await decodeFlatGeobufToFeatures(bytes);
-
-    const properties = decoded[0].feature.properties;
-    expect(properties).toStrictEqual({ tags: ["x", "y"], meta: { k: 1 } });
-    expect(typeof properties?.tags).not.toBe("string");
-    expect(Array.isArray(properties?.tags)).toBe(true);
-    expect(typeof properties?.meta).toBe("object");
-  });
-
-  it("round-trips null properties correctly", async () => {
-    const features: IWrappedFeature[] = [
-      {
-        id: "f1",
-        at: "a0",
-        folderId: "folder-1",
-        feature: {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [0, 0] },
-          properties: null,
-        },
-      },
-    ];
-
-    const bytes = await encodeFeaturesToFlatGeobuf(features);
-    const decoded = await decodeFlatGeobufToFeatures(bytes);
-
-    expect(decoded).toHaveLength(1);
-    expect(decoded[0]).toMatchObject({
-      id: "f1",
-      at: "a0",
-      folderId: "folder-1",
-      feature: {
-        geometry: { type: "Point", coordinates: [0, 0] },
-        properties: null,
-      },
-    });
-  });
+it.for([
+  ["an empty collection", []],
+  ["only null-geometry features", [feature({ geometry: null })]],
+  ["only ephemeral features", [feature({}, { ephemeral: true })]],
+] as Array<[string, IWrappedFeature[]]>)("encodes %s to zero features", async ([
+  ,
+  features,
+]) => {
+  expect(await roundTrip(features)).toStrictEqual([]);
 });

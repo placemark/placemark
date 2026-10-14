@@ -1,10 +1,16 @@
-import { describe, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 import { Effect } from "effect";
 import type { Client } from "@atcute/client";
-import { AtprotoRepo, AtprotoRepoLive } from "./repo";
+import { AtprotoRepo, AtprotoRepoLive, type AtprotoRepoShape } from "./repo";
 import { CloudMapSummary, RecordNotFound } from "../../../shared/atproto_rpc";
 
 const COLLECTION = "io.placemark.map";
+const BLOB_CID = `bafyrei${"a".repeat(52)}`;
+
+const PUT_RESPONSES = {
+  "com.atproto.repo.uploadBlob": { blob: { $type: "blob", ref: "fake-ref" } },
+  "com.atproto.repo.putRecord": { uri: "at://did:plc:abc/io.placemark.map/3a", cid: "bafy2" },
+};
 
 function fakeClient(responses: Record<string, unknown>) {
   const calls: Array<{ method: string; nsid: string; args: unknown }> = [];
@@ -22,7 +28,7 @@ function fakeClient(responses: Record<string, unknown>) {
 }
 
 /** Digs the `input.record` object out of a recorded `putRecord` call. */
-function writtenRecord(args: unknown): object {
+function writtenRecord(args: unknown): Record<string, unknown> {
   if (
     typeof args !== "object" ||
     args === null ||
@@ -35,285 +41,168 @@ function writtenRecord(args: unknown): object {
   ) {
     throw new Error("expected putRecord to be called with an input.record object");
   }
-  return args.input.record;
+  return args.input.record as Record<string, unknown>;
 }
 
-describe("AtprotoRepo", () => {
-  it("lists maps for a DID", async () => {
-    const { client, calls } = fakeClient({
-      "com.atproto.repo.listRecords": {
-        records: [
-          {
-            uri: "at://did:plc:abc/io.placemark.map/3a",
-            cid: "bafy1",
-            value: { name: "Trip", updatedAt: "2026-10-07T00:00:00.000Z" },
-          },
-        ],
-      },
-    });
-
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.listMaps("did:plc:abc");
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
-
-    const result = await Effect.runPromise(program);
-    expect(result).toStrictEqual([
-      new CloudMapSummary({ rkey: "3a", name: "Trip", updatedAt: "2026-10-07T00:00:00.000Z" }),
-    ]);
-    expect(calls[0]).toMatchObject({
-      nsid: "com.atproto.repo.listRecords",
-      args: { params: { repo: "did:plc:abc", collection: COLLECTION } },
-    });
-  });
-
-  const FAKE_BLOB_CID = `bafyrei${"a".repeat(52)}`;
-
-  // The fixture below has no `layer` key: `layer` is optional in the
-  // lexicon and omitted by `putMap` when the map has no base layer, so
-  // reading it back must normalize the absent key to `null`.
-  it("gets a map record by rkey, normalizing an absent layer to null", async () => {
-    const fakeBytes = new Uint8Array([9, 9, 9]);
-    const { client, calls } = fakeClient({
-      "com.atproto.repo.getRecord": {
-        uri: "at://did:plc:abc/io.placemark.map/3a",
-        cid: "bafy1",
-        value: {
-          name: "Trip",
-          updatedAt: "2026-10-07T00:00:00.000Z",
-          data: {
-            $type: "blob",
-            ref: { $link: FAKE_BLOB_CID },
-            mimeType: "application/flatgeobuf",
-            size: 3,
-          },
-          symbolization: "{}",
-          folders: "[]",
-          layerConfigs: "[]",
-        },
-      },
-      "com.atproto.sync.getBlob": fakeBytes,
-    });
-
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.getMap("did:plc:abc", "3a");
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
-
-    const result = await Effect.runPromise(program);
-    expect(result).toStrictEqual({
+/** A well-formed `io.placemark.map` record as getRecord would return it. */
+function mapRecord(value: Record<string, unknown> = {}) {
+  return {
+    uri: "at://did:plc:abc/io.placemark.map/3a",
+    cid: "bafy1",
+    value: {
       name: "Trip",
-      symbolization: {},
-      layer: null,
-      folders: [],
-      layerConfigs: [],
-      dataBytes: fakeBytes,
-    });
+      updatedAt: "2026-10-07T00:00:00.000Z",
+      data: { $type: "blob", ref: { $link: BLOB_CID }, mimeType: "application/flatgeobuf", size: 3 },
+      symbolization: "{}",
+      folders: "[]",
+      layerConfigs: "[]",
+      ...value,
+    },
+  };
+}
 
-    const blobCall = calls.find((call) => call.nsid === "com.atproto.sync.getBlob");
-    expect(blobCall).toMatchObject({
-      method: "get",
-      args: { params: { did: "did:plc:abc", cid: FAKE_BLOB_CID }, as: "bytes" },
-    });
-  });
+function repoEffect<A>(client: Client, f: (repo: AtprotoRepoShape) => Effect.Effect<A, unknown>) {
+  return Effect.gen(function* () {
+    const repo = yield* AtprotoRepo;
+    return yield* f(repo);
+  }).pipe(Effect.provide(AtprotoRepoLive(client)));
+}
 
-  it("gets a map record by rkey, keeping a layer that is present", async () => {
-    const { client } = fakeClient({
-      "com.atproto.repo.getRecord": {
-        uri: "at://did:plc:abc/io.placemark.map/3a",
-        cid: "bafy1",
-        value: {
-          name: "Trip",
-          updatedAt: "2026-10-07T00:00:00.000Z",
-          data: {
-            $type: "blob",
-            ref: { $link: FAKE_BLOB_CID },
-            mimeType: "application/flatgeobuf",
-            size: 3,
-          },
-          symbolization: "{}",
-          layer: JSON.stringify({ name: "Monochrome" }),
-          folders: "[]",
-          layerConfigs: "[]",
+const withRepo = <A>(client: Client, f: (repo: AtprotoRepoShape) => Effect.Effect<A, unknown>) =>
+  Effect.runPromise(repoEffect(client, f));
+
+const withRepoError = <A>(client: Client, f: (repo: AtprotoRepoShape) => Effect.Effect<A, unknown>) =>
+  Effect.runPromise(Effect.flip(repoEffect(client, f)));
+
+it("lists maps for a DID", async () => {
+  const { client, calls } = fakeClient({
+    "com.atproto.repo.listRecords": {
+      records: [
+        {
+          uri: "at://did:plc:abc/io.placemark.map/3a",
+          cid: "bafy1",
+          value: { name: "Trip", updatedAt: "2026-10-07T00:00:00.000Z" },
         },
-      },
-      "com.atproto.sync.getBlob": new Uint8Array([9, 9, 9]),
-    });
-
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.getMap("did:plc:abc", "3a");
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
-
-    const result = await Effect.runPromise(program);
-    expect(result.layer).toStrictEqual({ name: "Monochrome" });
+      ],
+    },
   });
 
-  it("fails with RecordNotFound when getRecord returns an error response", async () => {
-    const calls: Array<{ method: string; nsid: string; args: unknown }> = [];
-    const client = {
-      post: vi.fn(),
-      get: vi.fn(async (nsid: string, args: unknown) => {
-        calls.push({ method: "get", nsid, args });
-        return { ok: false, data: { error: "RecordNotFound" } };
-      }),
-    } as unknown as Client;
+  const result = await withRepo(client, (repo) => repo.listMaps("did:plc:abc"));
 
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.getMap("did:plc:abc", "missing");
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
+  expect(result).toStrictEqual([
+    new CloudMapSummary({ rkey: "3a", name: "Trip", updatedAt: "2026-10-07T00:00:00.000Z" }),
+  ]);
+  expect(calls[0]).toMatchObject({
+    nsid: "com.atproto.repo.listRecords",
+    args: { params: { repo: "did:plc:abc", collection: COLLECTION } },
+  });
+});
 
-    const error = await Effect.runPromise(Effect.flip(program));
-    expect(error).toStrictEqual(new RecordNotFound({ rkey: "missing" }));
+it.for(
+  [
+    ["normalizes an absent layer to null", mapRecord(), null],
+    [
+      "keeps a layer that is present",
+      mapRecord({ layer: JSON.stringify({ name: "Monochrome" }) }),
+      { name: "Monochrome" },
+    ],
+  ] as Array<[string, unknown, unknown]>,
+)("getMap %s", async ([, record, expectedLayer]) => {
+  const { client, calls } = fakeClient({
+    "com.atproto.repo.getRecord": record,
+    "com.atproto.sync.getBlob": new Uint8Array([9, 9, 9]),
   });
 
-  it("gets a map record summary by rkey without fetching the blob", async () => {
-    const { client, calls } = fakeClient({
-      "com.atproto.repo.getRecord": {
-        uri: "at://did:plc:abc/io.placemark.map/3a",
-        cid: "bafy1",
-        value: {
-          name: "Trip",
-          updatedAt: "2026-10-07T00:00:00.000Z",
-          data: {
-            $type: "blob",
-            ref: { $link: FAKE_BLOB_CID },
-            mimeType: "application/flatgeobuf",
-            size: 3,
-          },
-          symbolization: {},
-          layer: null,
-          folders: [],
-          layerConfigs: [],
-        },
-      },
-    });
+  const result = await withRepo(client, (repo) => repo.getMap("did:plc:abc", "3a"));
 
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.getMapSummary("did:plc:abc", "3a");
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
-
-    const result = await Effect.runPromise(program);
-    expect(result).toStrictEqual({ name: "Trip" });
-
-    // The whole point of `getMapSummary` is to avoid the extra
-    // `com.atproto.sync.getBlob` round trip that `getMap` makes.
-    expect(calls.some((call) => call.nsid === "com.atproto.sync.getBlob")).toBe(false);
-    expect(calls).toHaveLength(1);
+  expect(result.layer).toStrictEqual(expectedLayer);
+  expect(result).toMatchObject({ name: "Trip", symbolization: {}, folders: [], layerConfigs: [] });
+  expect(result.dataBytes).toStrictEqual(new Uint8Array([9, 9, 9]));
+  // The bytes live on the PDS, behind the CID the record only points at.
+  expect(calls.find((call) => call.nsid === "com.atproto.sync.getBlob")).toMatchObject({
+    args: { params: { did: "did:plc:abc", cid: BLOB_CID }, as: "bytes" },
   });
+});
 
-  it("getMapSummary fails with RecordNotFound when getRecord returns an error response", async () => {
+it.for(["getMap", "getMapSummary"] as const)(
+  "%s fails with RecordNotFound on an XRPC error",
+  async (method) => {
     const client = {
       post: vi.fn(),
       get: vi.fn(async () => ({ ok: false, data: { error: "RecordNotFound" } })),
     } as unknown as Client;
 
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.getMapSummary("did:plc:abc", "missing");
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
+    const error = await withRepoError(client, (repo) => repo[method]("did:plc:abc", "missing"));
 
-    const error = await Effect.runPromise(Effect.flip(program));
     expect(error).toStrictEqual(new RecordNotFound({ rkey: "missing" }));
+  },
+);
+
+it("getMapSummary skips the blob round trip", async () => {
+  const { client, calls } = fakeClient({ "com.atproto.repo.getRecord": mapRecord() });
+
+  const result = await withRepo(client, (repo) => repo.getMapSummary("did:plc:abc", "3a"));
+
+  expect(result).toStrictEqual({ name: "Trip" });
+  expect(calls).toHaveLength(1);
+});
+
+it.for(
+  [
+    [
+      "omits the layer key when the map has no base layer",
+      null,
+      undefined,
+    ],
+    [
+      "writes a JSON-encoded layer key when the map has one",
+      { name: "Monochrome" },
+      JSON.stringify({ name: "Monochrome" }),
+    ],
+  ] as Array<[string, unknown, string | undefined]>,
+)("putMap %s", async ([, layer, expected]) => {
+  const { client, calls } = fakeClient(PUT_RESPONSES);
+
+  await withRepo(client, (repo) =>
+    repo.putMap(
+      "did:plc:abc",
+      "3a",
+      { name: "Trip", symbolization: {}, layer, folders: [], layerConfigs: [] },
+      new Uint8Array([1, 2, 3]),
+    ),
+  );
+
+  // A Blob with its type set: atcute infers the upload's content-type
+  // header from the Blob, not from the XRPC call itself.
+  const uploadInput = (
+    calls.find((call) => call.nsid === "com.atproto.repo.uploadBlob")?.args as { input: Blob }
+  ).input;
+  expect(uploadInput).toBeInstanceOf(Blob);
+  expect(uploadInput.type).toBe("application/flatgeobuf");
+
+  const record = writtenRecord(calls.find((call) => call.nsid === "com.atproto.repo.putRecord")?.args);
+  expect(record).toMatchObject({
+    name: "Trip",
+    data: { $type: "blob", ref: "fake-ref" },
+    symbolization: "{}",
+    folders: "[]",
+    layerConfigs: "[]",
   });
+  if (expected === undefined) {
+    // Lexicon has no null; absence IS "no base layer".
+    expect(record).not.toHaveProperty("layer");
+  } else {
+    expect(record.layer).toBe(expected);
+  }
+});
 
-  it("puts a map record with a blob ref", async () => {
-    const { client, calls } = fakeClient({
-      "com.atproto.repo.uploadBlob": { blob: { $type: "blob", ref: "fake-ref" } },
-      "com.atproto.repo.putRecord": { uri: "at://did:plc:abc/io.placemark.map/3a", cid: "bafy2" },
-    });
+it("deletes a map record", async () => {
+  const { client, calls } = fakeClient({ "com.atproto.repo.deleteRecord": {} });
 
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.putMap(
-        "did:plc:abc",
-        "3a",
-        { name: "Trip", symbolization: {}, layer: null, folders: [], layerConfigs: [] },
-        new Uint8Array([1, 2, 3]),
-      );
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
+  await withRepo(client, (repo) => repo.deleteMap("did:plc:abc", "3a"));
 
-    await Effect.runPromise(program);
-
-    const uploadCall = calls.find((call) => call.nsid === "com.atproto.repo.uploadBlob");
-    expect(uploadCall?.args).toMatchObject({ input: expect.any(Blob) });
-    const uploadArgs = uploadCall?.args;
-    const uploadInput =
-      uploadArgs && typeof uploadArgs === "object" && "input" in uploadArgs
-        ? uploadArgs.input
-        : undefined;
-    if (!(uploadInput instanceof Blob)) {
-      throw new Error("expected uploadBlob to be called with a Blob input");
-    }
-    expect(uploadInput.type).toBe("application/flatgeobuf");
-
-    const putCall = calls.find((call) => call.nsid === "com.atproto.repo.putRecord");
-    expect(putCall?.args).toMatchObject({
-      input: {
-        repo: "did:plc:abc",
-        collection: COLLECTION,
-        rkey: "3a",
-        record: {
-          name: "Trip",
-          data: { $type: "blob", ref: "fake-ref" },
-          symbolization: "{}",
-          folders: "[]",
-          layerConfigs: "[]",
-        },
-      },
-    });
-    // `layer: null` in, no `layer` key out: Lexicon has no null, and the
-    // lexicon's `unknown` validator rejects one.
-    expect(writtenRecord(putCall?.args)).not.toHaveProperty("layer");
-  });
-
-  it("writes a layer key when the map has one", async () => {
-    const { client, calls } = fakeClient({
-      "com.atproto.repo.uploadBlob": { blob: { $type: "blob", ref: "fake-ref" } },
-      "com.atproto.repo.putRecord": { uri: "at://did:plc:abc/io.placemark.map/3a", cid: "bafy2" },
-    });
-
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.putMap(
-        "did:plc:abc",
-        "3a",
-        {
-          name: "Trip",
-          symbolization: {},
-          layer: { name: "Monochrome" },
-          folders: [],
-          layerConfigs: [],
-        },
-        new Uint8Array([1, 2, 3]),
-      );
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
-
-    await Effect.runPromise(program);
-
-    const putCall = calls.find((call) => call.nsid === "com.atproto.repo.putRecord");
-    expect(writtenRecord(putCall?.args)).toMatchObject({
-      layer: JSON.stringify({ name: "Monochrome" }),
-    });
-  });
-
-  it("deletes a map record", async () => {
-    const { client, calls } = fakeClient({
-      "com.atproto.repo.deleteRecord": {},
-    });
-
-    const program = Effect.gen(function* () {
-      const repo = yield* AtprotoRepo;
-      return yield* repo.deleteMap("did:plc:abc", "3a");
-    }).pipe(Effect.provide(AtprotoRepoLive(client)));
-
-    await Effect.runPromise(program);
-
-    expect(calls[0]).toMatchObject({
-      nsid: "com.atproto.repo.deleteRecord",
-      args: { input: { repo: "did:plc:abc", collection: COLLECTION, rkey: "3a" } },
-    });
+  expect(calls[0]).toMatchObject({
+    nsid: "com.atproto.repo.deleteRecord",
+    args: { input: { repo: "did:plc:abc", collection: COLLECTION, rkey: "3a" } },
   });
 });

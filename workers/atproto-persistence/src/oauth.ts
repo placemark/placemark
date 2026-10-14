@@ -13,7 +13,6 @@ import {
   WebDidDocumentResolver,
   WellKnownHandleResolver,
 } from "@atcute/identity-resolver";
-import type { Did } from "@atcute/lexicons";
 import type { Env } from "./env";
 import { makeKVStore } from "./kv_store";
 
@@ -72,5 +71,3 @@ export function buildOAuthClient(env: Env, baseUrl: string): OAuthClient {
     actorResolver,
   });
 }
-
-export type { Did };

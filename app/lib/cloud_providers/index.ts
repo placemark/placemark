@@ -8,17 +8,11 @@ const modules = import.meta.glob<{
   atprotoProvider: (baseUrl: string) => CloudProvider;
 }>("./atproto/client.ts");
 
-async function loadProviders(): Promise<CloudProvider[]> {
-  const providers: CloudProvider[] = [];
-  if (import.meta.env.VITE_ATPROTO_PERSISTENCE_URL) {
-    const loadClientModule = modules["./atproto/client.ts"];
-    const { atprotoProvider } = await loadClientModule();
-    providers.push(
-      atprotoProvider(import.meta.env.VITE_ATPROTO_PERSISTENCE_URL),
-    );
-  }
-  return providers;
+const providers: CloudProvider[] = [];
+if (import.meta.env.VITE_ATPROTO_PERSISTENCE_URL) {
+  const { atprotoProvider } = await modules["./atproto/client.ts"]();
+  providers.push(atprotoProvider(import.meta.env.VITE_ATPROTO_PERSISTENCE_URL));
 }
 
 // Top-level await: consumers see a plain, already-resolved array.
-export const CLOUD_PROVIDERS: CloudProvider[] = await loadProviders();
+export const CLOUD_PROVIDERS: CloudProvider[] = providers;
