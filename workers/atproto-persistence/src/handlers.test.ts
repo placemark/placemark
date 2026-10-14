@@ -3,7 +3,7 @@ import { Effect, Layer } from "effect";
 import { AtprotoRepo, type AtprotoRepoShape } from "./repo";
 import { CurrentSession } from "./auth_middleware";
 import { MapRpcs, CloudMapSummary, RecordNotFound } from "../../../shared/atproto_rpc";
-import { MapHandlersLive, decodeBase64, encodeBase64 } from "./handlers";
+import { MapHandlersLive } from "./handlers";
 
 const fakeSession = Layer.succeed(CurrentSession, { did: "did:plc:abc" });
 
@@ -52,22 +52,5 @@ describe("MapHandlersLive", () => {
       () => null,
     );
     expect(built).not.toBeNull();
-  });
-
-  it("encodeBase64/decodeBase64 round-trip a payload larger than the chunk size", () => {
-    // Regression test: `encodeBase64` used to spread the whole byte array
-    // into `String.fromCharCode(...bytes)`, which throws `RangeError:
-    // Maximum call stack size exceeded` well below this size on V8. Use a
-    // payload bigger than any single call-argument limit to actually
-    // exercise the chunking.
-    const bytes = new Uint8Array(100_000);
-    for (let i = 0; i < bytes.length; i++) {
-      bytes[i] = i % 256;
-    }
-
-    const encoded = encodeBase64(bytes);
-    const decoded = decodeBase64(encoded);
-
-    expect(decoded).toStrictEqual(bytes);
   });
 });

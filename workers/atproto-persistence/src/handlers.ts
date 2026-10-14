@@ -4,14 +4,6 @@ import { AtprotoRepo } from "./repo";
 import { CurrentSession } from "./auth_middleware";
 import { CloudMapDocument, MapRpcs } from "../../../shared/atproto_rpc";
 
-export function decodeBase64(dataBase64: string): Uint8Array {
-  return Result.getOrThrow(Base64.decode(dataBase64));
-}
-
-export function encodeBase64(bytes: Uint8Array): string {
-  return Base64.encode(bytes);
-}
-
 export const MapHandlersLive = MapRpcs.toLayer(
   Effect.gen(function* () {
     const repo = yield* AtprotoRepo;
@@ -35,7 +27,7 @@ export const MapHandlersLive = MapRpcs.toLayer(
         Effect.gen(function* () {
           const session = yield* CurrentSession;
           const rkey = crypto.randomUUID().replace(/-/g, "").slice(0, 13);
-          const bytes = decodeBase64(doc.dataBase64);
+          const bytes = Result.getOrThrow(Base64.decode(doc.dataBase64));
           return yield* repo.putMap(
             session.did,
             rkey,
@@ -55,7 +47,7 @@ export const MapHandlersLive = MapRpcs.toLayer(
           const session = yield* CurrentSession;
           const record = yield* repo.getMap(session.did, rkey);
           return new CloudMapDocument({
-            dataBase64: encodeBase64(record.dataBytes),
+            dataBase64: Base64.encode(record.dataBytes),
             symbolization: record.symbolization,
             layer: record.layer,
             folders: record.folders,
@@ -67,7 +59,7 @@ export const MapHandlersLive = MapRpcs.toLayer(
         Effect.gen(function* () {
           const session = yield* CurrentSession;
           const existing = yield* repo.getMapSummary(session.did, rkey);
-          const bytes = decodeBase64(doc.dataBase64);
+          const bytes = Result.getOrThrow(Base64.decode(doc.dataBase64));
           return yield* repo.putMap(
             session.did,
             rkey,
