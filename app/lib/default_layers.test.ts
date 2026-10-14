@@ -1,4 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("app/lib/env_client", () => {
+  return {
+    env: {
+      VITE_PUBLIC_MAPTILER_TOKEN: undefined,
+    },
+  };
+});
+
 import LAYERS from "./default_layers";
 
 describe("default layers", () => {

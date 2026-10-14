@@ -26,6 +26,7 @@ export default defineConfig((env) => ({
   },
   test: {
     dir: "./",
+    exclude: ["**/node_modules/**", "**/dist/**", ".claude/worktrees/**"],
     deps: {
       interopDefault: true,
     },

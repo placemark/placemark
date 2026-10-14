@@ -57,7 +57,7 @@ class CFlatGeobuf implements FileType {
   forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
     return EitherAsync<ConvertError, ConvertResult>(
       async function forwardFlatGeobuf() {
-        const flatgeobuf = await import("flatgeobuf/lib/mjs/geojson");
+        const flatgeobuf = await import("flatgeobuf/geojson");
         // TODO: use Array.fromAsync in a year or two, when it's widely
         // available.
         const features = [];
@@ -75,7 +75,7 @@ class CFlatGeobuf implements FileType {
   back({ geojson }: { geojson: FeatureCollection }, _options: ExportOptions) {
     return EitherAsync<ConvertError, ExportResult>(
       async function backFlatGeobuf() {
-        const flatgeobuf = await import("flatgeobuf/lib/mjs/geojson");
+        const flatgeobuf = await import("flatgeobuf/geojson");
         const res = flatgeobuf.serialize(adjustForFgb(geojson));
         return {
           blob: new Blob([res as Uint8Array<ArrayBuffer>]),
