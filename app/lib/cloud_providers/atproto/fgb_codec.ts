@@ -15,7 +15,7 @@ const PROPS_KEY = "__pm_props";
 export async function encodeFeaturesToFlatGeobuf(
   features: IWrappedFeature[],
 ): Promise<Uint8Array> {
-  const flatgeobuf = await import("flatgeobuf/lib/mjs/geojson");
+  const flatgeobuf = await import("flatgeobuf/geojson");
 
   const persistable = features.filter((wrapped) => !wrapped.ephemeral);
 
@@ -76,7 +76,7 @@ export async function decodeFlatGeobufToFeatures(
     return [];
   }
 
-  const flatgeobuf = await import("flatgeobuf/lib/mjs/geojson");
+  const flatgeobuf = await import("flatgeobuf/geojson");
 
   const wrapped: IWrappedFeature[] = [];
   const iterator = flatgeobuf.deserialize(bytes);

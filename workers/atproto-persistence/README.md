@@ -45,6 +45,53 @@ node --input-type=module -e "import { generateClientAssertionKey } from '@atcute
 
 Point the frontend's `VITE_ATPROTO_PERSISTENCE_URL` at the deployed URL. The OAuth flow runs in a popup and reports back to whichever origin sent the `/oauth/login` request (via the `Origin` header, threaded through as OAuth state) — no separate return-URL configuration is needed.
 
+## Branch previews (CI)
+
+Every push to a non-`main` branch publishes a preview of this worker via
+`.github/workflows/atproto-preview.yml`: `wrangler versions upload
+--preview-alias <branch-slug>` creates a version with a stable URL that serves
+that branch's code without touching production:
+
+```
+https://<branch-slug>-atproto-persistence.<account-subdomain>.workers.dev
+```
+
+The slug is derived from the branch name by `scripts/atproto-branch-slug.mjs`
+(`feature/persist-v2` → `feature-persist-v2`, truncated to fit DNS label
+limits), and the URL is written to the workflow run summary and exposed as the
+job's `url` output.
+
+One-time setup:
+
+1. A production deployment must exist — `wrangler versions upload` fails on a
+   worker that has never been deployed. The manual deploy above covers this.
+2. Repo secrets: `CLOUDFLARE_API_TOKEN` (Workers Scripts: Edit, Workers KV
+   Storage: Edit) and `CLOUDFLARE_ACCOUNT_ID`.
+
+Pushes to `main` deploy production via `.github/workflows/atproto-deploy.yml`.
+
+Notes:
+
+- Version previews inherit the worker-level secrets (`OAUTH_SIGNING_KEY`,
+  `COOKIE_SECRET`), so there is no per-branch secret setup.
+- Preview versions bind the production KV namespaces. OAuth state and sessions
+  are per-client (each preview URL is its own atproto OAuth client — metadata
+  and redirect URIs are derived from the request host), so signing in on a
+  preview is a fresh consent flow, but using the same account on a preview can
+  displace that account's production session.
+- Preview versions accumulate; prune them occasionally with
+  `wrangler versions list` / `wrangler versions delete` or in the dashboard.
+
+### Pairing branch builds of the app
+
+Cloudflare Pages branch builds of the app point at the matching worker preview
+automatically: set `WORKERS_DEV_SUBDOMAIN` (e.g. `example.workers.dev`) as a
+**preview-only** environment variable on the Pages project. `vite.config.ts`
+then computes `VITE_ATPROTO_PERSISTENCE_URL` at build time from the Pages
+branch name using the same alias formula the workflow published. Production
+and local builds never see those variables, so the feature stays tree-shaken
+out of them.
+
 ## Local development with the real OAuth flow
 
 Plain `wrangler dev` serves `http://localhost`, and atproto confidential-client OAuth requires an https `client_id` that the PDS can fetch over the public internet. A Cloudflare tunnel provides that URL; the worker honors `X-Forwarded-Proto`, so no code changes are needed.

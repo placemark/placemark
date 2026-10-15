@@ -64,24 +64,21 @@ it.for([
     ],
     [{ a: 1 }, { b: 2, c: 3 }],
   ],
-] as Array<
-  [string, IWrappedFeature[], Array<Feature["properties"]>]
->)("preserves every feature's properties with %s", async ([
-  ,
-  features,
-  expected,
-]) => {
-  const decoded = await roundTrip(features);
-  expect(decoded.map((f) => f.feature.properties)).toStrictEqual(expected);
-});
+] as Array<[string, IWrappedFeature[], Array<Feature["properties"]>]>)(
+  "preserves every feature's properties with %s",
+  async ([, features, expected]) => {
+    const decoded = await roundTrip(features);
+    expect(decoded.map((f) => f.feature.properties)).toStrictEqual(expected);
+  },
+);
 
 it.for([
   ["an empty collection", []],
   ["only null-geometry features", [feature({ geometry: null })]],
   ["only ephemeral features", [feature({}, { ephemeral: true })]],
-] as Array<[string, IWrappedFeature[]]>)("encodes %s to zero features", async ([
-  ,
-  features,
-]) => {
-  expect(await roundTrip(features)).toStrictEqual([]);
-});
+] as Array<[string, IWrappedFeature[]]>)(
+  "encodes %s to zero features",
+  async ([, features]) => {
+    expect(await roundTrip(features)).toStrictEqual([]);
+  },
+);

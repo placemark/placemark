@@ -1,0 +1,70 @@
+# Publishes a preview of workers/atproto-persistence for every non-main
+# branch, at a stable alias URL:
+#
+#   https://<branch-slug>-atproto-persistence.<subdomain>.workers.dev
+#
+# The slug comes from scripts/atproto-branch-slug.mjs; vite.config.ts derives
+# the same URL for Cloudflare Pages branch builds of the app, so a branch's
+# app build always talks to its own worker preview. Production is untouched.
+#
+# Requires repo secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID, and a
+# one-time production deploy of the worker — `wrangler versions upload` fails
+# on a worker that has never been deployed. See
+# workers/atproto-persistence/README.md.
+name: atproto-persistence preview
+
+on:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atproto-preview-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    outputs:
+      url: ${{ steps.url.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v2
+
+      - name: Install worker dependencies
+        run: pnpm --dir workers/atproto-persistence install --frozen-lockfile
+
+      - name: Compute branch alias
+        id: alias
+        run: |
+          BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
+          echo "slug=$(node scripts/atproto-branch-slug.mjs "$BRANCH")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload branch preview version
+        working-directory: workers/atproto-persistence
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm exec wrangler versions upload --preview-alias "${{ steps.alias.outputs.slug }}"
+
+      - name: Resolve preview URL
+        id: url
+        env:
+          ALIAS: ${{ steps.alias.outputs.slug }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          SUBDOMAIN=$(curl -fsS \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/subdomain" \
+            | jq -er '.result.subdomain')
+          echo "url=https://${ALIAS}-atproto-persistence.${SUBDOMAIN}.workers.dev" >> "$GITHUB_OUTPUT"
+
+      - name: Write summary
+        run: |
+          echo "atproto-persistence preview: ${{ steps.url.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

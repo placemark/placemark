@@ -3,6 +3,11 @@ main = "src/index.ts"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
 
+# Branch previews (.github/workflows/atproto-preview.yml) serve aliased
+# version URLs on workers.dev; both flags must stay on for those to resolve.
+workers_dev = true
+preview_urls = true
+
 [[kv_namespaces]]
 binding = "SESSION_KV"
 id = "87831c64cdc14404b8a9bc3574256728"
