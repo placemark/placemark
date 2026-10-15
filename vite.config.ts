@@ -33,7 +33,7 @@ export default defineConfig((env) => ({
     // lockfile and dependencies, so this suite's install doesn't cover
     // its imports. Its tests run in their own CI step via
     // `pnpm --dir workers/atproto-persistence test`.
-    exclude: [...configDefaults.exclude, "workers/**"],
+    exclude: [...configDefaults.exclude, "workers/**", ".claude/worktrees/**"],
     deps: {
       interopDefault: true,
     },
