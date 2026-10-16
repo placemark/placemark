@@ -1,0 +1,65 @@
+import { PersonIcon } from "@radix-ui/react-icons";
+import { useQueryClient } from "@tanstack/react-query";
+import { DialogHeader } from "app/components/dialog";
+import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
+import { LabeledTextField } from "app/core/components/LabeledTextField";
+import { CLOUD_PROVIDERS } from "app/lib/cloud_providers";
+import { SIGN_IN_CANCELLED } from "app/lib/cloud_providers/types";
+import { Form, Formik } from "formik";
+import { captureException } from "integrations/errors";
+import toast from "react-hot-toast";
+
+interface HandleValue {
+  handle: string;
+}
+
+export function CloudSignInDialog({ onClose }: { onClose: () => void }) {
+  const provider = CLOUD_PROVIDERS[0];
+  const queryClient = useQueryClient();
+
+  return (
+    <>
+      <DialogHeader
+        title={`Sign in with ${provider.label}`}
+        titleIcon={PersonIcon}
+      />
+      <Formik<HandleValue>
+        initialValues={{ handle: "" }}
+        onSubmit={async ({ handle }) => {
+          try {
+            await provider.signIn(handle);
+            await queryClient.invalidateQueries({
+              queryKey: ["cloud-auth", provider.id],
+            });
+            toast.success(`Signed in with ${provider.label}`);
+            onClose();
+          } catch (error) {
+            const message =
+              error instanceof Error ? error.message : "Could not sign in";
+            // A user closing the popup is an expected outcome, not an
+            // error worth reporting.
+            if (message !== SIGN_IN_CANCELLED) {
+              captureException(error);
+            }
+            toast.error(message);
+            // Deliberately leaves the dialog open so the user can retry.
+          }
+        }}
+      >
+        <Form>
+          <LabeledTextField
+            name="handle"
+            label="Handle"
+            type="text"
+            placeholder="you.bsky.social"
+            autoComplete="username"
+            data-1p-ignore
+            data-lpignore="true"
+            data-bwignore
+          />
+          <SimpleDialogActions onClose={onClose} action="Sign in" />
+        </Form>
+      </Formik>
+    </>
+  );
+}

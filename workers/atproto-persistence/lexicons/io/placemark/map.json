@@ -1,0 +1,54 @@
+{
+  "lexicon": 1,
+  "id": "io.placemark.map",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A saved Placemark map, stored in the user's own PDS repo.",
+      "key": "any",
+      "record": {
+        "type": "object",
+        "required": [
+          "name",
+          "updatedAt",
+          "data",
+          "symbolization",
+          "folders",
+          "layerConfigs"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The map's display name."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this record was last written, as an ISO 8601 timestamp."
+          },
+          "data": {
+            "type": "blob",
+            "accept": ["application/flatgeobuf"],
+            "description": "The map's feature data, encoded as FlatGeobuf."
+          },
+          "symbolization": {
+            "type": "unknown",
+            "description": "Placemark's symbolization config. Validated by the app's own Zod schemas, not by this lexicon."
+          },
+          "layer": {
+            "type": "unknown",
+            "description": "The selected base layer, omitted when the map has none. Validated by the app's own Zod schemas, not by this lexicon."
+          },
+          "folders": {
+            "type": "unknown",
+            "description": "Folder tree for organizing features. Validated by the app's own Zod schemas, not by this lexicon."
+          },
+          "layerConfigs": {
+            "type": "unknown",
+            "description": "Configured map layers. Validated by the app's own Zod schemas, not by this lexicon."
+          }
+        }
+      }
+    }
+  }
+}
