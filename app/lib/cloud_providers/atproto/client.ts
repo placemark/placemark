@@ -125,7 +125,9 @@ export function atprotoProvider(baseUrl: string): CloudProvider {
         );
         if (!popup) {
           reject(
-            new Error("Popup blocked — please allow popups for this site."),
+            new Error(
+              "Popup blocked. Allow popups for this site and try again.",
+            ),
           );
           return;
         }

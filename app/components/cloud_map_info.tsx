@@ -62,7 +62,7 @@ function CloudMapInfoInner({ provider }: { provider: CloudProvider }) {
       await writeToClipboard(sharedMapUrl(cloudMap.ownerDid, cloudMap.rkey));
     },
     onSuccess: () => {
-      toast.success("Link copied — anyone can use it to open this map");
+      toast.success("Link copied. Anyone can use it to open this map.");
     },
     onError: (error) => {
       captureException(error);

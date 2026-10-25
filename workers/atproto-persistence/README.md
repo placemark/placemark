@@ -1,5 +1,7 @@
 # atproto-persistence
 
+_This document is LLM-authored, and I apologize for it sounding like a robot. See docs/sharing.md for a human-written synopsis._
+
 Worker that lets a signed-in Bluesky/atproto user save Placemark maps (FlatGeobuf blob + an `io.placemark.map` record) to their own PDS repo. Effect RPC at `POST /rpc`; atproto OAuth (confidential client) at `/oauth/*`. Saved maps are shareable: see "Sharing" below.
 
 ## Sharing
