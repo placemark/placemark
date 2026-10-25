@@ -64,6 +64,12 @@ For local development, copy `.env.example` to `.env.local` and add your tokens t
 cp .env.example .env.local
 ```
 
+## Sharing
+
+In production, Placemark supports saving and sharing maps using AT Protocol. You can read
+a high-level 100% organic overview article at [Sharing](./docs/sharing.md) and a low-level
+generated one at [atproto-persistence/readme](./workers/atproto-persistence/README.md)
+
 ## Interesting forks
 
 - [epanetjs](https://epanetjs.com/) - focused on water modeling ([repo](https://github.com/epanet-js/epanet-js))

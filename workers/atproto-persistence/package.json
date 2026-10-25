@@ -1,0 +1,32 @@
+{
+  "name": "atproto-persistence",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "lex:generate": "lex-cli generate"
+  },
+  "devDependencies": {
+    "@atcute/lex-cli": "^3.3.0",
+    "@cloudflare/workers-types": "^4.20250715.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.0.0",
+    "wrangler": "4.24.3"
+  },
+  "dependencies": {
+    "@atcute/atproto": "^4.0.4",
+    "@atcute/client": "^5.1.2",
+    "@atcute/identity-resolver": "^2.0.2",
+    "@atcute/lexicons": "^2.1.1",
+    "@atcute/oauth-crypto": "^1.0.1",
+    "@atcute/oauth-keyset": "^0.1.3",
+    "@atcute/oauth-node-client": "^2.0.1",
+    "@atcute/oauth-types": "^1.0.1",
+    "effect": "4.0.1",
+    "nanoid": "^6.0.2",
+    "valibot": "^1.5.0"
+  }
+}

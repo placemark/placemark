@@ -1,0 +1,37 @@
+# Deploys workers/atproto-persistence to production on pushes to main.
+# Branch previews live in atproto-preview.yml.
+name: atproto-persistence deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "workers/atproto-persistence/**"
+      - ".github/workflows/atproto-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atproto-deploy-main
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: jdx/mise-action@v5
+
+      - name: Install worker dependencies
+        run: pnpm --dir workers/atproto-persistence install --frozen-lockfile
+
+      - name: Deploy worker
+        working-directory: workers/atproto-persistence
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm exec wrangler deploy

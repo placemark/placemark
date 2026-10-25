@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "dev:atproto": "node scripts/dev-atproto-tunnel.mjs",
     "build": "vite build",
     "lint": "biome check",
     "test": "vitest run",
@@ -33,6 +34,7 @@
     "not ie 11"
   ],
   "dependencies": {
+    "@base-ui/react": "^1.9.0",
     "@codemirror/commands": "^6.11.1",
     "@codemirror/lang-json": "^6.0.2",
     "@codemirror/language": "^6.13.1",
@@ -92,6 +94,7 @@
     "d3-color": "^3.1.0",
     "d3-dsv": "^3.0.1",
     "d3-geo": "^3.1.1",
+    "effect": "4.0.1",
     "fast-json-patch": "^3.1.1",
     "fflate": "^0.8.3",
     "flatbush": "^4.6.2",

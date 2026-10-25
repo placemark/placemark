@@ -114,7 +114,7 @@ const Presence = z.object({
 
 export type IPresence = z.infer<typeof Presence>;
 
-const Folder = z.object({
+export const Folder = z.object({
   id: z.string(),
   at: z.string(),
   name: z.string(),

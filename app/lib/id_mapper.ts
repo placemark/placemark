@@ -32,15 +32,17 @@ export const UIDMap = {
     };
   },
   /**
-   * Used for public maps. We have a lot of features,
-   * all at once, and want to load all their IDs into the map.
+   * Used for public/cloud maps: a whole document's worth of features
+   * arrives at once, replacing whatever was loaded before. Resets an
+   * existing map in place (rather than returning a new one) since
+   * callers hold onto this IDMap's identity for the life of the app.
    */
-  loadIdsFromPersistence(wrappedFeatures: IWrappedFeature[]): IDMap {
-    const map = UIDMap.empty();
+  loadIdsFromPersistence(map: IDMap, wrappedFeatures: IWrappedFeature[]): void {
+    map.uuids.length = 0;
+    map.intids.clear();
     for (const { id } of wrappedFeatures) {
       UIDMap.pushUUID(map, id);
     }
-    return map;
   },
   /**
    * Record the presence of a new UUID

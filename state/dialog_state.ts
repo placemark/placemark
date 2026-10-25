@@ -86,6 +86,15 @@ type DialogState =
   | {
       type: "from_url";
     }
+  | {
+      type: "cloud_sign_in";
+    }
+  | {
+      type: "cloud_maps";
+    }
+  | {
+      type: "cloud_save_map";
+    }
   | null;
 
 export const dialogAtom = atomWithReset<DialogState>(null);

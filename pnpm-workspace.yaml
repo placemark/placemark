@@ -1,5 +1,9 @@
+packages:
+  - workers/atproto-persistence
 allowBuilds:
   esbuild: true
+  workerd: true
+  sharp: true
 minimumReleaseAgeExclude:
   - '@placemarkio/turf-jsts@2.8.3'
   - '@typescript/typescript-aix-ppc64@7.0.2'

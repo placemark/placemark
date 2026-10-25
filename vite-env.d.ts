@@ -13,6 +13,7 @@ interface ImportMetaEnv {
   readonly VITE_PUBLIC_OSRM_WALKING_URL?: string;
   readonly VITE_PUBLIC_OSRM_CYCLING_URL?: string;
   readonly VITE_PUBLIC_MAPTILER_TOKEN?: string;
+  readonly VITE_ATPROTO_PERSISTENCE_URL?: string;
 }
 
 interface ImportMeta {

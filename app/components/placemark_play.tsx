@@ -35,6 +35,11 @@ import {
 } from "app/components/resizer";
 import { MapContext } from "app/context/map_context";
 import { useImportFile, useImportString } from "app/hooks/use_import";
+import { useLoadCloudMapIntoEditor } from "app/lib/cloud_providers/atproto/load_into_editor";
+import {
+  fetchSharedMap,
+  parseSharedMapParam,
+} from "app/lib/cloud_providers/atproto/share";
 import { DEFAULT_IMPORT_OPTIONS, detectType } from "app/lib/convert";
 import clsx from "clsx";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -148,6 +153,46 @@ function UrlAPI() {
       })();
     }
   }, [load, doImportString, doImportFile, setDialogState]);
+
+  return null;
+}
+
+/**
+ * Opens `?map=atproto/<did>/<rkey>` share links at boot: fetches the map
+ * from the owner's PDS, via the persistence worker's public endpoint, and
+ * loads it into the editor. No sign-in involved on the receiving side.
+ */
+function SharedMapLoader() {
+  const loadIntoEditor = useLoadCloudMapIntoEditor();
+  const [searchParams] = useSearchParams();
+  const mapParam = searchParams?.get("map");
+  const done = useRef<boolean>(false);
+
+  useEffect(() => {
+    const ref = parseSharedMapParam(mapParam);
+    // Absent from builds without VITE_ATPROTO_PERSISTENCE_URL, per the
+    // tree-shaking contract documented in share.ts.
+    if (!ref || !import.meta.env.VITE_ATPROTO_PERSISTENCE_URL) return;
+    if (done.current) return;
+    done.current = true;
+    void (async () => {
+      try {
+        const shared = await fetchSharedMap(ref);
+        await loadIntoEditor(shared.doc, shared.name, {
+          providerId: ref.providerId,
+          rkey: ref.rkey,
+          ownerDid: ref.did,
+        });
+        toast.success(`Opened shared map: ${shared.name}`);
+      } catch (error) {
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "Could not open the shared map",
+        );
+      }
+    })();
+  }, [mapParam, loadIntoEditor]);
 
   return null;
 }
@@ -268,6 +313,7 @@ export function PlacemarkPlay() {
           </div>
           <Drop />
           <UrlAPI />
+          <SharedMapLoader />
           <Dialogs />
           <Suspense fallback={null}>
             <Keybindings />
