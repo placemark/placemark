@@ -47,7 +47,6 @@ export class MapRpcs extends RpcGroup.make(
     success: Schema.Struct({ did: Schema.String, handle: Schema.String }),
     error: Unauthenticated,
   }),
-  Rpc.make("Logout", {}),
   Rpc.make("ListMaps", {
     success: Schema.Array(CloudMapSummary),
     error: Unauthenticated,

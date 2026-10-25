@@ -1,8 +1,9 @@
 import { PersonIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { DialogHeader } from "app/components/dialog";
+import { HandleCombobox } from "app/components/dialogs/handle_combobox";
 import SimpleDialogActions from "app/components/dialogs/simple_dialog_actions";
-import { LabeledTextField } from "app/core/components/LabeledTextField";
+import { styledInlineA } from "app/components/elements";
 import { CLOUD_PROVIDERS } from "app/lib/cloud_providers";
 import { SIGN_IN_CANCELLED } from "app/lib/cloud_providers/types";
 import { Form, Formik } from "formik";
@@ -23,6 +24,18 @@ export function CloudSignInDialog({ onClose }: { onClose: () => void }) {
         title={`Sign in with ${provider.label}`}
         titleIcon={PersonIcon}
       />
+      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+        The {provider.label} is an ecosystem of apps including{" "}
+        <a
+          href="https://bsky.app"
+          target="_blank"
+          rel="noreferrer"
+          className={styledInlineA}
+        >
+          Bluesky
+        </a>
+        . If you have a login for any of them, it'll work here.
+      </p>
       <Formik<HandleValue>
         initialValues={{ handle: "" }}
         onSubmit={async ({ handle }) => {
@@ -34,6 +47,7 @@ export function CloudSignInDialog({ onClose }: { onClose: () => void }) {
             toast.success(`Signed in with ${provider.label}`);
             onClose();
           } catch (error) {
+            console.error(error);
             const message =
               error instanceof Error ? error.message : "Could not sign in";
             // A user closing the popup is an expected outcome, not an
@@ -47,16 +61,7 @@ export function CloudSignInDialog({ onClose }: { onClose: () => void }) {
         }}
       >
         <Form>
-          <LabeledTextField
-            name="handle"
-            label="Handle"
-            type="text"
-            placeholder="you.bsky.social"
-            autoComplete="username"
-            data-1p-ignore
-            data-lpignore="true"
-            data-bwignore
-          />
+          <HandleCombobox />
           <SimpleDialogActions onClose={onClose} action="Sign in" />
         </Form>
       </Formik>

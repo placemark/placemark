@@ -9,12 +9,10 @@ import {
   styledButton,
 } from "app/components/elements";
 import { useOpenFiles } from "app/hooks/use_open_files";
-import { CLOUD_PROVIDERS } from "app/lib/cloud_providers";
-import type { CloudProvider } from "app/lib/cloud_providers/types";
 import { usePersistence } from "app/lib/persistence/context";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { DropdownMenu as DD } from "radix-ui";
-import { dialogAtom, momentLogAtom, themeAtom } from "state/jotai";
+import { dialogAtom, momentLogAtom } from "state/jotai";
 
 function UndoList() {
   const rep = usePersistence();
@@ -62,55 +60,6 @@ function UndoList() {
       })}
     </DDSubContent>
   );
-}
-
-function ThemeSwitcher() {
-  const [theme, setTheme] = useAtom(themeAtom);
-
-  return (
-    <StyledItem
-      onSelect={() => {
-        setTheme((theme) => (theme === "light" ? "dark" : "light"));
-      }}
-    >
-      Switch to {theme === "light" ? "dark" : "light"} theme
-    </StyledItem>
-  );
-}
-
-function CloudMenuItems({ provider }: { provider: CloudProvider }) {
-  const setDialogState = useSetAtom(dialogAtom);
-  const authState = provider.useAuthState();
-
-  return (
-    <>
-      <DDSeparator />
-      <DDLabel>{provider.label}</DDLabel>
-      {authState.status === "signed-out" ? (
-        <StyledItem
-          onSelect={() => {
-            setDialogState({ type: "cloud_sign_in" });
-          }}
-        >
-          Sign in with {provider.label}
-        </StyledItem>
-      ) : (
-        <StyledItem
-          onSelect={() => {
-            setDialogState({ type: "cloud_maps" });
-          }}
-        >
-          My maps…
-        </StyledItem>
-      )}
-    </>
-  );
-}
-
-function CloudMenu() {
-  const provider = CLOUD_PROVIDERS[0];
-  if (!provider) return null;
-  return <CloudMenuItems provider={provider} />;
 }
 
 export function MenuBarDropdown() {
@@ -182,9 +131,6 @@ export function MenuBarDropdown() {
             >
               Export SVG
             </StyledItem>
-
-            <ThemeSwitcher />
-
             <DDSeparator />
             <DD.Sub>
               <DDSubTriggerItem>
@@ -194,7 +140,6 @@ export function MenuBarDropdown() {
               </DDSubTriggerItem>
               <UndoList />
             </DD.Sub>
-            <CloudMenu />
           </DDContent>
         </DD.Portal>
       </DD.Root>

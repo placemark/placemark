@@ -2,7 +2,7 @@ import "./patch_fetch";
 import { Effect, Layer } from "effect";
 import { HttpServerRequest, HttpServerResponse } from "effect/http";
 import { RpcServer, RpcSerialization } from "effect/rpc";
-import { isActorIdentifier } from "@atcute/lexicons/syntax";
+import { isActorIdentifier, isDid } from "@atcute/lexicons/syntax";
 import type { StoredState } from "@atcute/oauth-node-client";
 import type { Env } from "./env";
 import { makeKVStore } from "./kv_store";
@@ -12,7 +12,13 @@ import { makeSessionLayer } from "./auth_middleware";
 import { MapHandlersLive } from "./handlers";
 import { handlePublicMap } from "./public_map";
 import { MapRpcs } from "../../../shared/atproto_rpc";
-import { signDidCookie } from "./cookie";
+import {
+  readSessionCookie,
+  sessionClearCookie,
+  sessionSetCookie,
+  signDidCookie,
+  verifyDidCookie,
+} from "./cookie";
 
 // Behind the cloudflared tunnel used for local dev, the worker sees plain
 // http://; forward the original scheme so the OAuth client_id is https.
@@ -103,7 +109,7 @@ async function handleCallback(request: Request, env: Env): Promise<Response> {
 
     const cookieValue = await signDidCookie(session.did, env.COOKIE_SECRET);
     return popupResultResponse({ type: "placemark-oauth-complete" }, frontendOrigin, {
-      "Set-Cookie": `pm_session=${cookieValue}; HttpOnly; Secure; SameSite=Lax; Path=/`,
+      "Set-Cookie": sessionSetCookie(cookieValue),
     });
   } catch (e) {
     console.error(e);
@@ -116,6 +122,30 @@ async function handleCallback(request: Request, env: Env): Promise<Response> {
         : "Sign-in failed. Please try again.";
     return popupResultResponse({ type: "placemark-oauth-error", message }, pendingOrigin);
   }
+}
+
+// A plain route rather than an RPC method: logout needs to clear a
+// Set-Cookie header, which the RPC response pipeline has no path for.
+async function handleLogout(request: Request, env: Env): Promise<Response> {
+  const cookieValue = readSessionCookie(request);
+  const did = cookieValue ? await verifyDidCookie(cookieValue, env.COOKIE_SECRET) : null;
+
+  if (did && isDid(did)) {
+    const oauth = buildOAuthClient(env, baseUrlFor(request));
+    try {
+      await oauth.revoke(did);
+    } catch (e) {
+      // Still clear the cookie below even if revocation fails (e.g. the
+      // stored session was already gone) -- the user should end up
+      // signed out either way.
+      console.error(e);
+    }
+  }
+
+  return new Response(null, {
+    status: 204,
+    headers: { "Set-Cookie": sessionClearCookie() },
+  });
 }
 
 async function handleRpc(request: Request, env: Env): Promise<Response> {
@@ -160,6 +190,9 @@ export default {
     }
     if (request.method === "GET" && url.pathname === "/oauth/callback") {
       return handleCallback(request, env);
+    }
+    if (request.method === "POST" && url.pathname === "/oauth/logout") {
+      return withCors(request, await handleLogout(request, env));
     }
     if (request.method === "OPTIONS" && isRpcPath) {
       // Echo the requested headers rather than a fixed allow-list.

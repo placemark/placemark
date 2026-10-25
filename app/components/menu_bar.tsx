@@ -3,6 +3,8 @@ import {
   KeyboardIcon,
   ReaderIcon,
 } from "@radix-ui/react-icons";
+import { AtmosphereIdentity } from "app/components/atmosphere_identity";
+import { CloudMapInfo } from "app/components/cloud_map_info";
 import { FileInfo } from "app/components/file_info";
 import { useSetAtom } from "jotai";
 import { DropdownMenu as DD } from "radix-ui";
@@ -13,30 +15,28 @@ import { MenuBarDropdown } from "./menu_bar/menu_bar_dropdown";
 
 export const MenuBarPlay = memo(function MenuBar() {
   return (
-    <div className="flex justify-between h-12 pr-2 text-black dark:text-white">
-      <div className="flex items-center">
+    <div className="flex justify-between h-12 pl-2 pr-2 text-black dark:text-white">
+      <div className="flex items-center gap-x-2">
         <span
-          className="py-1 pl-1 pr-2
-          text-gray-500
-          inline-flex gap-x-2 items-center"
-          title="Home"
+          title="Placemark Play"
+          className="inline-flex items-center pr-1 text-gray-500"
         >
           <PlacemarkIcon className="w-8 h-8" />
-          Placemark Play
-          <a
-            href="https://github.com/placemark/placemark"
-            className="text-purple-600 hover:text-purple-700 flex items-center gap-1 text-sm bg-purple-100 px-2 py-1 rounded-sm"
-          >
-            <GitHubLogoIcon />
-            Open Source
-          </a>
         </span>
-        <FileInfo />
-      </div>
-      <div className="flex items-center gap-x-2">
         <MenuBarDropdown />
-
         <HelpDot />
+        <AtmosphereIdentity />
+        <FileInfo />
+        <CloudMapInfo />
+      </div>
+      <div className="flex items-center">
+        <a
+          href="https://github.com/placemark/placemark"
+          className="text-purple-600 hover:text-purple-700 flex items-center gap-1 text-sm bg-purple-100 px-2 py-1 rounded-sm"
+        >
+          <GitHubLogoIcon />
+          Open Source
+        </a>
       </div>
     </div>
   );

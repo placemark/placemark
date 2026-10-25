@@ -21,6 +21,17 @@ function atprotoPreviewUrl(): string | undefined {
 
 const atprotoPreview = atprotoPreviewUrl();
 
+// Without this, the atproto OAuth popup's browsing context gets severed
+// from ours (window.opener/popup.closed stop reporting anything useful)
+// the moment it navigates to the identity provider's own page, since
+// those typically set their own strict Cross-Origin-Opener-Policy. This
+// is the opt-in the spec provides for a page that opens cross-origin
+// popups and still wants to keep talking to them. See also public/_headers,
+// which applies the same header to the production (Cloudflare Pages) build.
+const COOP_HEADERS = {
+  "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+};
+
 // https://vitejs.dev/config/
 export default defineConfig((env) => ({
   ...(atprotoPreview
@@ -31,7 +42,11 @@ export default defineConfig((env) => ({
       }
     : {}),
   server: {
-    allowedHosts: ['tunnel-web.placemark.io']
+    allowedHosts: ['tunnel-web.placemark.io'],
+    headers: COOP_HEADERS,
+  },
+  preview: {
+    headers: COOP_HEADERS,
   },
   resolve: {
     alias: localRoots.map((dir) => ({

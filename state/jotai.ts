@@ -279,6 +279,21 @@ const fileInfoMachine = createMachine({
 
 export const fileInfoMachineAtom = atomWithMachine(() => fileInfoMachine);
 
+/**
+ * The cloud map currently loaded into the editor, if any — set when a map
+ * is opened from a cloud provider (e.g. Bluesky), so the UI can show where
+ * the current document came from and, if the signed-in user owns it, offer
+ * to save a new version back to the same record.
+ */
+export interface CloudMapInfo {
+  providerId: string;
+  rkey: string;
+  ownerDid: string;
+  name: string;
+}
+
+export const cloudMapAtom = atom<CloudMapInfo | null>(null);
+
 export enum TabOption {
   Feature = "Feature",
   Table = "Table",

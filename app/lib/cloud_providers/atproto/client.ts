@@ -13,7 +13,6 @@ import {
   type CloudMapDocument,
   type CloudMapSummary,
   type CloudProvider,
-  SIGN_IN_CANCELLED,
 } from "../types";
 
 type MapRpcClient = RpcClient.RpcClient<
@@ -53,6 +52,15 @@ function runRpc<A, E>(
   );
 }
 
+async function isSignedIn(baseUrl: string): Promise<boolean> {
+  try {
+    await runRpc(baseUrl, (client) => client.Me());
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // The name shared by `window.open` and the login form's `target`, which
 // is what routes the login POST into the popup instead of this tab.
 const POPUP_NAME = "placemark-oauth";
@@ -81,7 +89,7 @@ export function atprotoProvider(baseUrl: string): CloudProvider {
 
   return {
     id: PROVIDER_ID,
-    label: "Bluesky",
+    label: "Atmosphere",
 
     useAuthState(): CloudAuthState {
       // ["cloud-auth", id] is a convention, not a shared symbol -- any
@@ -122,9 +130,35 @@ export function atprotoProvider(baseUrl: string): CloudProvider {
           return;
         }
 
+        // The popup's callback page posts its result then closes itself,
+        // but that channel isn't reliable: once the popup navigates to
+        // the identity provider's authorization page, a
+        // Cross-Origin-Opener-Policy header there (common on auth
+        // providers) severs this window's relationship to the opener.
+        // That breaks things in both directions -- `popup.closed` reads
+        // `true` on our side from then on even while the popup is still
+        // open (so it can't be used to detect cancellation), and
+        // `window.opener` can go null on the popup's side, silently
+        // dropping its postMessage even on a successful sign-in.
+        //
+        // So postMessage is only a fast path here. The authoritative
+        // signal is polling our own session status, which only depends
+        // on the cookie the callback response sets -- unaffected by any
+        // of the above, since it isn't delivered via a window reference.
+        let settled = false;
+
         function cleanup() {
           window.removeEventListener("message", onMessage);
-          clearInterval(closedCheck);
+          clearInterval(pollTimer);
+          clearTimeout(timeoutTimer);
+        }
+
+        function finish(fn: () => void) {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          popup?.close();
+          fn();
         }
 
         // `popup?.` rather than `popup.`: TypeScript doesn't carry the
@@ -136,23 +170,27 @@ export function atprotoProvider(baseUrl: string): CloudProvider {
           const message = readPopupMessage(event.data);
           if (!message) return;
           if (message.type === "placemark-oauth-complete") {
-            cleanup();
-            popup?.close();
-            resolve();
+            finish(resolve);
           } else if (message.type === "placemark-oauth-error") {
-            cleanup();
-            popup?.close();
-            reject(new Error(message.message ?? "Sign-in failed"));
+            finish(() => reject(new Error(message.message ?? "Sign-in failed")));
           }
         }
         window.addEventListener("message", onMessage);
 
-        const closedCheck = setInterval(() => {
-          if (popup.closed) {
-            cleanup();
-            reject(new Error(SIGN_IN_CANCELLED));
-          }
-        }, 500);
+        const pollTimer = setInterval(() => {
+          void isSignedIn(baseUrl).then((signedIn) => {
+            if (signedIn) finish(resolve);
+          });
+        }, 1500);
+
+        // A decline or failure can be just as silent as a success if
+        // postMessage is blocked, so this is what keeps that case from
+        // spinning forever instead of surfacing an error.
+        const timeoutTimer = setTimeout(() => {
+          finish(() =>
+            reject(new Error("Sign-in timed out. Please try again.")),
+          );
+        }, 120_000);
 
         const form = document.createElement("form");
         form.method = "POST";
@@ -173,7 +211,15 @@ export function atprotoProvider(baseUrl: string): CloudProvider {
     },
 
     async signOut() {
-      await runRpc(baseUrl, (client) => client.Logout());
+      // A plain fetch, not an RPC call: logout needs to clear a
+      // Set-Cookie response header, which the RPC client has no path for.
+      const response = await fetch(`${baseUrl}/oauth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error("Could not sign out");
+      }
     },
 
     async listMaps(): Promise<CloudMapSummary[]> {

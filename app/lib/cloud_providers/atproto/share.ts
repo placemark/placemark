@@ -27,7 +27,20 @@ export function sharedMapUrl(did: string, rkey: string): string {
   return `${window.location.origin}/?map=${PROVIDER}/${encodeURIComponent(did)}/${encodeURIComponent(rkey)}`;
 }
 
+/**
+ * Points the address bar at a cloud-saved map, as if the user had
+ * navigated to its share link. Uses `replaceState` (not `pushState`) so
+ * repeated saves don't pile up back-button entries, and doesn't touch
+ * any other query parameters already present.
+ */
+export function setSharedMapUrlParam(did: string, rkey: string): void {
+  const url = new URL(window.location.href);
+  url.searchParams.set("map", `${PROVIDER}/${did}/${rkey}`);
+  window.history.replaceState(null, "", url);
+}
+
 export interface SharedMapRef {
+  providerId: string;
   did: string;
   rkey: string;
 }
@@ -37,7 +50,7 @@ export function parseSharedMapParam(param: string | null): SharedMapRef | null {
   if (!param) return null;
   const [provider, did, rkey] = param.split("/");
   if (provider !== PROVIDER || !did || !rkey) return null;
-  return { did, rkey };
+  return { providerId: PROVIDER, did, rkey };
 }
 
 export interface SharedMapResponse {

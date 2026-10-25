@@ -4,6 +4,7 @@ import { CheatsheetDialog } from "app/components/dialogs/cheatsheet";
 import { CircleDialog } from "app/components/dialogs/circle";
 import { CircleTypesDialog } from "app/components/dialogs/circle_types";
 import { CloudMapsDialog } from "app/components/dialogs/cloud_maps";
+import { CloudSaveMapDialog } from "app/components/dialogs/cloud_save_map";
 import { CloudSignInDialog } from "app/components/dialogs/cloud_sign_in";
 import { ExportDialog } from "app/components/dialogs/export";
 import { ExportCodeDialog } from "app/components/dialogs/export_code";
@@ -79,6 +80,9 @@ export const Dialogs = memo(function Dialogs() {
       <CloudSignInDialog onClose={onClose} />
     ))
     .with({ type: "cloud_maps" }, () => <CloudMapsDialog onClose={onClose} />)
+    .with({ type: "cloud_save_map" }, () => (
+      <CloudSaveMapDialog onClose={onClose} />
+    ))
     .exhaustive();
 
   return (

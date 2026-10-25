@@ -24,7 +24,7 @@ import { generateNKeysBetween } from "fractional-indexing";
 import { useSetAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { useCallback } from "react";
-import { type Data, dataAtom, fileInfoAtom } from "state/jotai";
+import { cloudMapAtom, type Data, dataAtom, fileInfoAtom } from "state/jotai";
 import type {
   Feature,
   FeatureCollection,
@@ -301,6 +301,7 @@ function useJoinFeatures() {
 export function useImportFile() {
   const rep = usePersistence();
   const setFileInfo = useSetAtom(fileInfoAtom);
+  const setCloudMap = useSetAtom(cloudMapAtom);
   const transact = rep.useTransact();
   const joinFeatures = useJoinFeatures();
 
@@ -344,6 +345,7 @@ export function useImportFile() {
             const exportOptions = importToExportOptions(options);
             if (file.handle && exportOptions) {
               setFileInfo({ handle: file.handle, options: exportOptions });
+              setCloudMap(null);
             }
             const moment = resultToTransact({
               result,
@@ -363,7 +365,7 @@ export function useImportFile() {
 
       return either;
     },
-    [setFileInfo, transact, joinFeatures],
+    [setFileInfo, setCloudMap, transact, joinFeatures],
   );
 }
 

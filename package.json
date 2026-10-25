@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "dev:atproto": "node scripts/dev-atproto-tunnel.mjs",
     "build": "vite build",
     "lint": "biome check",
     "test": "vitest run",
@@ -33,6 +34,7 @@
     "not ie 11"
   ],
   "dependencies": {
+    "@base-ui/react": "^1.9.0",
     "@codemirror/commands": "^6.11.1",
     "@codemirror/lang-json": "^6.0.2",
     "@codemirror/language": "^6.13.1",

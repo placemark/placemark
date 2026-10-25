@@ -34,10 +34,9 @@ it("tags errors with their names", () => {
   expect(new RecordNotFound({ rkey: "3abc123" })._tag).toBe("RecordNotFound");
 });
 
-it("exposes all seven RPC methods on MapRpcs", () => {
+it("exposes all six RPC methods on MapRpcs", () => {
   expect(Array.from(MapRpcs.requests.keys())).toStrictEqual([
     "Me",
-    "Logout",
     "ListMaps",
     "SaveMap",
     "LoadMap",

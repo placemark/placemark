@@ -1,16 +1,14 @@
 import { Context, Effect, Layer } from "effect";
 import { HttpServerRequest } from "effect/http";
-import { isDid } from "@atcute/lexicons/syntax";
+import { isDid, type Did } from "@atcute/lexicons/syntax";
 import { OAuthClient } from "@atcute/oauth-node-client";
 import { Client } from "@atcute/client";
 import { Unauthenticated } from "../../../shared/atproto_rpc";
-import { verifyDidCookie } from "./cookie";
+import { SESSION_COOKIE_NAME, verifyDidCookie } from "./cookie";
 import { AtprotoRepo, AtprotoRepoLive } from "./repo";
 
-const SESSION_COOKIE_NAME = "pm_session";
-
 export interface CurrentSessionShape {
-  readonly did: string;
+  readonly did: Did;
 }
 
 export class CurrentSession extends Context.Service<

@@ -178,7 +178,11 @@ function SharedMapLoader() {
     void (async () => {
       try {
         const shared = await fetchSharedMap(ref);
-        await loadIntoEditor(shared.doc, shared.name);
+        await loadIntoEditor(shared.doc, shared.name, {
+          providerId: ref.providerId,
+          rkey: ref.rkey,
+          ownerDid: ref.did,
+        });
         toast.success(`Opened shared map: ${shared.name}`);
       } catch (error) {
         toast.error(

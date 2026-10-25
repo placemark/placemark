@@ -86,7 +86,7 @@ Notes:
 
 Cloudflare Pages branch builds of the app point at the matching worker preview
 automatically: set `WORKERS_DEV_SUBDOMAIN` (e.g. `example.workers.dev`) as a
-**preview-only** environment variable on the Pages project. `vite.config.ts`
+**preview-only** environment variable on the Pages project. `vite.config.mts`
 then computes `VITE_ATPROTO_PERSISTENCE_URL` at build time from the Pages
 branch name using the same alias formula the workflow published. Production
 and local builds never see those variables, so the feature stays tree-shaken
@@ -121,13 +121,19 @@ ingress:
   - service: http_status:404
 ```
 
-Each dev session:
+Each dev session, these three run together:
 
 ```
 pnpm exec wrangler dev --port 8799
 cloudflared tunnel run placemark-dev
 VITE_ATPROTO_PERSISTENCE_URL=https://dev-worker.yourdomain.com pnpm dev
 ```
+
+`pnpm dev:atproto` (root `package.json`) runs all three via
+`scripts/dev-atproto-tunnel.mjs`, prefixing each process's output and
+shutting all of them down together on Ctrl-C. It hardcodes this project's
+tunnel hostnames, so it only works once the one-time tunnel setup above has
+been done with this repo's real domain.
 
 Open `https://dev-app.yourdomain.com`, not `localhost:5173`.
 

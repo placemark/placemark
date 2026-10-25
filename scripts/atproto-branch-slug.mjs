@@ -3,7 +3,7 @@
 //
 //   - .github/workflows/atproto-preview.yml, which uploads each branch via
 //     `wrangler versions upload --preview-alias <slug>` (run with `node`)
-//   - vite.config.ts, which points Cloudflare Pages branch builds of the app
+//   - vite.config.mts, which points Cloudflare Pages branch builds of the app
 //     at the matching `https://<slug>-atproto-persistence.<subdomain>.workers.dev`
 //
 // Both sides import this one implementation so the app build's URL always

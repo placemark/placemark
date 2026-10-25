@@ -2,7 +2,13 @@ import { Effect, Result } from "effect";
 import { Base64 } from "effect/encoding";
 import { AtprotoRepo, mapRecordToDocument } from "./repo";
 import { CurrentSession } from "./auth_middleware";
+import { buildActorResolver } from "./identity";
 import { CloudMapDocument, MapRpcs } from "../../../shared/atproto_rpc";
+
+// Built once per worker isolate, not per request -- the resolver caches
+// DID-document/handle lookups internally, same instance shape already
+// used for the OAuth flow's identifier resolution (see oauth.ts).
+const actorResolver = buildActorResolver();
 
 export const MapHandlersLive = MapRpcs.toLayer(
   Effect.gen(function* () {
@@ -12,10 +18,15 @@ export const MapHandlersLive = MapRpcs.toLayer(
       Me: () =>
         Effect.gen(function* () {
           const session = yield* CurrentSession;
-          return { did: session.did, handle: session.did };
+          // The session only carries the DID (see CurrentSessionShape);
+          // resolve it to the handle the user actually recognizes.
+          // Falls back to the DID if resolution fails so a flaky
+          // handle/DID-doc lookup never breaks sign-in status.
+          const handle = yield* Effect.tryPromise(() =>
+            actorResolver.resolve(session.did).then((actor) => actor.handle),
+          ).pipe(Effect.orElseSucceed(() => session.did));
+          return { did: session.did, handle };
         }),
-
-      Logout: () => Effect.succeed(undefined),
 
       ListMaps: () =>
         Effect.gen(function* () {

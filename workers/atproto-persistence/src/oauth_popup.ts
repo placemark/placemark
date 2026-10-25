@@ -48,7 +48,10 @@ export function popupResultResponse(
   if (window.opener) {
     window.opener.postMessage(${jsLiteral(payload)}, ${jsLiteral(targetOrigin)});
   }
-  window.close();
+  // A brief delay, not an immediate close: postMessage delivery is
+  // queued asynchronously, and closing too eagerly can let the opener's
+  // "did the user just close the popup?" check race ahead of it.
+  setTimeout(function () { window.close(); }, 100);
 })();
 </script>
 `;
