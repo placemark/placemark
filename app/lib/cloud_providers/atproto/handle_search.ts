@@ -5,7 +5,8 @@ import { z } from "zod";
  * any atproto handle regardless of which PDS it's hosted on.
  * Docs: https://typeahead.waow.tech/docs
  */
-const TYPEAHEAD_URL = "https://typeahead.waow.tech/xrpc/tech.waow.typeahead.searchActors";
+const TYPEAHEAD_URL =
+  "https://typeahead.waow.tech/xrpc/tech.waow.typeahead.searchActors";
 
 const ActorTypeahead = z.object({
   actors: z.array(
