@@ -8,11 +8,11 @@ import {
   RpcSerialization,
 } from "effect/rpc";
 import { MapRpcs } from "shared/atproto_rpc";
-import {
-  type CloudAuthState,
-  type CloudMapDocument,
-  type CloudMapSummary,
-  type CloudProvider,
+import type {
+  CloudAuthState,
+  CloudMapDocument,
+  CloudMapSummary,
+  CloudProvider,
 } from "../types";
 
 type MapRpcClient = RpcClient.RpcClient<
@@ -174,7 +174,9 @@ export function atprotoProvider(baseUrl: string): CloudProvider {
           if (message.type === "placemark-oauth-complete") {
             finish(resolve);
           } else if (message.type === "placemark-oauth-error") {
-            finish(() => reject(new Error(message.message ?? "Sign-in failed")));
+            finish(() =>
+              reject(new Error(message.message ?? "Sign-in failed")),
+            );
           }
         }
         window.addEventListener("message", onMessage);
