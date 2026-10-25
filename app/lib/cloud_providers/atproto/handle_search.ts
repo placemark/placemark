@@ -1,13 +1,12 @@
 import { z } from "zod";
 
 /**
- * Bluesky's public AppView — unauthenticated, CORS-enabled, and the same
- * endpoint bsky.app's own handle search uses. Any atproto handle can be
- * resolved this way regardless of which app or PDS it's actually hosted
- * on, since the AppView indexes the whole network.
+ * Public, unauthenticated, CORS-enabled atproto actor search. Resolves
+ * any atproto handle regardless of which PDS it's hosted on.
+ * Docs: https://typeahead.waow.tech/docs
  */
 const TYPEAHEAD_URL =
-  "https://public.api.bsky.app/xrpc/app.bsky.actor.searchActorsTypeahead";
+  "https://typeahead.waow.tech/xrpc/tech.waow.typeahead.searchActors";
 
 const ActorTypeahead = z.object({
   actors: z.array(
@@ -30,7 +29,10 @@ export async function searchHandles(
   if (!q) return [];
 
   const params = new URLSearchParams({ q, limit: "8" });
-  const response = await fetch(`${TYPEAHEAD_URL}?${params}`, { signal });
+  const response = await fetch(`${TYPEAHEAD_URL}?${params}`, {
+    signal,
+    headers: { "X-Client": "placemark.io" },
+  });
   if (!response.ok) return [];
 
   return ActorTypeahead.parse(await response.json()).actors;
