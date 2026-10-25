@@ -139,7 +139,7 @@ export function useClipboard() {
               );
               return Promise.resolve();
             },
-            Right: async (result) => {
+            async Right(result) {
               toast.success("Pasted features onto map");
               const extent = getExtent(flattenResult(await result));
               return zoomTo(extent);

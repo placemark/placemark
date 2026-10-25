@@ -42,7 +42,7 @@ export function ImportShapefile({
             Left(err) {
               helpers.setErrors({ type: err.message });
             },
-            Right: async (r) => {
+            async Right(r) {
               return onNext(await r);
             },
           });

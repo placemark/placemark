@@ -83,7 +83,7 @@ export function ImportFileGroup({
               setProgress(null);
               helpers.setErrors({ type: err.message });
             },
-            Right: async (r) => {
+            async Right(r) {
               return onNext(await r);
             },
           });
