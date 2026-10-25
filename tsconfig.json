@@ -24,7 +24,8 @@
     "isolatedModules": true,
     "incremental": true,
     "jsx": "preserve",
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "types": ["node"]
   },
   "include": [
     "types/*.d.ts",
