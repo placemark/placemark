@@ -4,6 +4,7 @@ import {
   difference,
   type GeoJSONMultiPolygon,
   type GeoJSONPolygon,
+  heal,
   intersectAll,
   type KernelResult,
   toGeoJSON,
@@ -27,12 +28,14 @@ function featureFromAccumulatorAndProperties(
 
 export type BooleanOp = "union" | "intersection" | "difference";
 
-function applyOp(op: BooleanOp, features: Geom[]) {
-  return op === "union"
-    ? unionAll(features)
-    : op === "intersection"
-      ? intersectAll(features)
-      : difference(features[0], features[1]);
+function applyOp(op: BooleanOp, features: Geom[]): KernelResult {
+  if (op === "union") return unionAll(features);
+  if (op === "intersection") return intersectAll(features);
+  const [first, ...rest] = features;
+  return rest.reduce<KernelResult>(
+    (acc, feature) => difference(toGeoJSON(acc), feature),
+    heal(first),
+  );
 }
 
 export function booleanFeatures(
@@ -62,10 +65,7 @@ export function booleanFeatures(
 
   try {
     const result = applyOp(op, geometriesToClip);
-    const polygons = result;
-    if (polygons) {
-      newFeatures.push(featureFromAccumulatorAndProperties(result, properties));
-    }
+    newFeatures.push(featureFromAccumulatorAndProperties(result, properties));
     return Right(newFeatures);
   } catch (e) {
     captureException(e);
