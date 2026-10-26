@@ -116,6 +116,7 @@
     "optics-ts": "^2.4.1",
     "polygon-clipping": "^0.15.7",
     "polylabel": "^2.1.0",
+    "polystrata": "^0.1.0",
     "postcss": "^8.5.31",
     "proj4": "^2.22.0",
     "purify-ts": "^2.1.4",

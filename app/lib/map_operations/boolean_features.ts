@@ -1,28 +1,27 @@
 import { GeometryError } from "app/lib/errors";
 import { captureException } from "integrations/errors";
-import clipping, { type Geom } from "polygon-clipping";
+import {
+  difference,
+  type GeoJSONMultiPolygon,
+  type GeoJSONPolygon,
+  intersectAll,
+  type KernelResult,
+  toGeoJSON,
+  unionAll,
+} from "polystrata";
 import { type Either, Left, Right } from "purify-ts/Either";
-import type { Feature, GeoJsonProperties, Position } from "types";
+import type { Feature, GeoJsonProperties, Geometry } from "types";
 
-const { union, intersection, difference } = clipping;
+type Geom = GeoJSONMultiPolygon | GeoJSONPolygon;
 
 function featureFromAccumulatorAndProperties(
-  accumulator: Geom,
+  accumulator: KernelResult,
   properties: GeoJsonProperties,
 ): Feature {
   return {
     type: "Feature",
     properties: properties,
-    geometry:
-      accumulator.length === 1
-        ? {
-            type: "Polygon",
-            coordinates: accumulator[0] as Position[][],
-          }
-        : {
-            type: "MultiPolygon",
-            coordinates: accumulator as Position[][][],
-          },
+    geometry: toGeoJSON(accumulator) as Geometry,
   };
 }
 
@@ -30,10 +29,10 @@ export type BooleanOp = "union" | "intersection" | "difference";
 
 function applyOp(op: BooleanOp, features: Geom[]) {
   return op === "union"
-    ? union(features[0], ...features.slice(1))
+    ? unionAll(features)
     : op === "intersection"
-      ? intersection(features[0], ...features.slice(1))
-      : difference(features[0], ...features.slice(1));
+      ? intersectAll(features)
+      : difference(features[0], features[1]);
 }
 
 export function booleanFeatures(
@@ -55,7 +54,7 @@ export function booleanFeatures(
       if (feature.properties) {
         Object.assign(properties, feature.properties);
       }
-      geometriesToClip.push(feature.geometry.coordinates as Geom);
+      geometriesToClip.push(feature.geometry as Geom);
     } else {
       newFeatures.push(feature);
     }
@@ -63,11 +62,10 @@ export function booleanFeatures(
 
   try {
     const result = applyOp(op, geometriesToClip);
-
-    if (result.length) {
+    const polygons = result;
+    if (polygons) {
       newFeatures.push(featureFromAccumulatorAndProperties(result, properties));
     }
-
     return Right(newFeatures);
   } catch (e) {
     captureException(e);

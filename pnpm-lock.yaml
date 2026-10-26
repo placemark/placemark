@@ -254,6 +254,9 @@ importers:
       polylabel:
         specifier: ^2.1.0
         version: 2.1.0
+      polystrata:
+        specifier: ^0.1.0
+        version: 0.1.0
       postcss:
         specifier: ^8.5.31
         version: 8.5.31
@@ -4737,6 +4740,10 @@ packages:
 
   polylabel@2.1.0:
     resolution: {integrity: sha512-ZCL9pc/BpnyBB1Es5Eh6baziBhZFS0fTlEXGarLMqbMYbAyawqGAjyo2+MfignMggSubmllMgRGcR0L0liOugg==}
+
+  polystrata@0.1.0:
+    resolution: {integrity: sha512-Q0coXsCLojunfGg2q7SbuOzK5deYQWRJxDqcZMQjIRc5H9Nw7HnfAv8XlJOPaPr0Tja0p66s077jCe6mTv8a4g==}
+    engines: {node: '>=18.0.0'}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -9982,6 +9989,8 @@ snapshots:
   polylabel@2.1.0:
     dependencies:
       tinyqueue: 3.0.0
+
+  polystrata@0.1.0: {}
 
   possible-typed-array-names@1.1.0: {}
 
