@@ -248,12 +248,12 @@ importers:
       optics-ts:
         specifier: ^2.4.1
         version: 2.4.1
-      polygon-clipping:
-        specifier: ^0.15.7
-        version: 0.15.7
       polylabel:
         specifier: ^2.1.0
         version: 2.1.0
+      polystrata:
+        specifier: ^0.1.0
+        version: 0.1.0
       postcss:
         specifier: ^8.5.31
         version: 8.5.31
@@ -4732,11 +4732,12 @@ packages:
     resolution: {integrity: sha512-NPE8TDbzl/3YQYY7CSS228s3g2ollTFnc+Qi3tqmqJp9Vg2ovUpixcJEo2HJScN2Ez+kEaal6y70c0ehqJBJeA==}
     engines: {node: '>=10'}
 
-  polygon-clipping@0.15.7:
-    resolution: {integrity: sha512-nhfdr83ECBg6xtqOAJab1tbksbBAOMUltN60bU+llHVOL0e5Onm1WpAXXWXVB39L8AJFssoIhEVuy/S90MmotA==}
-
   polylabel@2.1.0:
     resolution: {integrity: sha512-ZCL9pc/BpnyBB1Es5Eh6baziBhZFS0fTlEXGarLMqbMYbAyawqGAjyo2+MfignMggSubmllMgRGcR0L0liOugg==}
+
+  polystrata@0.1.0:
+    resolution: {integrity: sha512-Q0coXsCLojunfGg2q7SbuOzK5deYQWRJxDqcZMQjIRc5H9Nw7HnfAv8XlJOPaPr0Tja0p66s077jCe6mTv8a4g==}
+    engines: {node: '>=18.0.0'}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -5049,9 +5050,6 @@ packages:
     resolution: {integrity: sha512-5Di9UC0+8h1L6ZD2d7awM7E/T4uA1fJRlx6zk/NvdCCVEoAnFqvHmCuNeIKoCeIixBX/q8uM+6ycDvF8woqosA==}
     engines: {node: '>= 0.8'}
 
-  robust-predicates@3.0.3:
-    resolution: {integrity: sha512-NS3levdsRIUOmiJ8FZWCP7LG3QpJyrs/TE0Zpf1yvZu8cAJJ6QMW92H1c7kWpdIHo8RvmLxN/o2JXTKHp74lUA==}
-
   rolldown@1.2.15:
     resolution: {integrity: sha512-6odND+fel5zVw3I4Yc2e69gvguDnX0CAAGiNDZSq4ik5WUcaLrkD2GLuog0XcODbor31hZ5ayEMgVDno+KPV5g==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -5173,10 +5171,6 @@ packages:
 
   spawndamnit@3.0.1:
     resolution: {integrity: sha512-MmnduQUuHCoFckZoWnXsTg7JaiLBJrKFj9UI2MbRPGaJeVpsLcVBu6P/IGZovziM/YBsellCmsprgNA+w0CzVg==}
-
-  splaytree@3.2.3:
-    resolution: {integrity: sha512-7OXrNWzy6CK+r7Ch9OLPBDTKfB6XlWHjX4P0RU5B3IgFuWPeYN0XtRtlexGRjgbQxpfaUve6jTAwBGWuGntz/w==}
-    engines: {node: '>=18.20 || >=20'}
 
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
@@ -9974,14 +9968,11 @@ snapshots:
     dependencies:
       find-up: 5.0.0
 
-  polygon-clipping@0.15.7:
-    dependencies:
-      robust-predicates: 3.0.3
-      splaytree: 3.2.3
-
   polylabel@2.1.0:
     dependencies:
       tinyqueue: 3.0.0
+
+  polystrata@0.1.0: {}
 
   possible-typed-array-names@1.1.0: {}
 
@@ -10392,8 +10383,6 @@ snapshots:
       hash-base: 3.1.2
       inherits: 2.0.4
 
-  robust-predicates@3.0.3: {}
-
   rolldown@1.2.15:
     dependencies:
       '@oxc-project/types': 0.155.0
@@ -10578,8 +10567,6 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
-
-  splaytree@3.2.3: {}
 
   sprintf-js@1.0.3: {}
 
