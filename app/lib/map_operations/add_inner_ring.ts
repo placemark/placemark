@@ -1,21 +1,20 @@
 import { GeometryError } from "app/lib/errors";
 import replaceCoordinates from "app/lib/replace_coordinates";
-import * as clipping from "polygon-clipping";
+import { difference, type GeoJSONPolygon } from "polystrata";
 import type { Either } from "purify-ts/Either";
 import { Left, Right } from "purify-ts/Either";
 import type { Feature, IFeature, Polygon } from "types";
-
-const { difference } = clipping;
 
 function featureContainsFeature(
   a: IFeature<Polygon>,
   b: IFeature<Polygon>,
 ): boolean {
   const res = difference(
-    a.geometry.coordinates as clipping.Geom,
-    b.geometry.coordinates as clipping.Geom,
+    // Dodgy but these are in fact equivalent
+    a.geometry as unknown as GeoJSONPolygon,
+    b.geometry as unknown as GeoJSONPolygon,
   );
-  return res.length === 0;
+  return res.polygons.length === 0;
 }
 
 export enum CanInnerRingResult {
