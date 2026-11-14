@@ -158,7 +158,12 @@ export function detectColumns(columns: string[]): ImportOptions["csvOptions"] {
 
 function scoreColumn(column: string, regex: RegExp) {
   const match = regex.exec(column);
-  return match ? match[0].length : 0;
+  if (!match || match[0].length === 0) return 0;
+  // Prefer a match that starts the header, and more one that is the whole
+  // header, so "lat" wins over "population" and "lon" over "salon".
+  const start = match.index === 0 ? 1 : 0;
+  const whole = match[0].length === column.length ? 1 : 0;
+  return match[0].length + start + whole;
 }
 
 export async function csvToGeoJSON(
