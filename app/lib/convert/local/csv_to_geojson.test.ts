@@ -201,6 +201,16 @@ describe("detect columns", () => {
       geocodingType: "search",
     });
   });
+  it("lat lon after a column that contains them", () => {
+    expect(detectColumns(["city", "population", "lat", "lon"])).toMatchObject({
+      latitudeHeader: "lat",
+      longitudeHeader: "lon",
+    });
+    expect(detectColumns(["name", "salon", "lat", "lng"])).toMatchObject({
+      latitudeHeader: "lat",
+      longitudeHeader: "lng",
+    });
+  });
   it("distinct types", () => {
     expect(detectColumns(["name", "wkt"])).toHaveProperty(["kind"], "wkt");
     expect(detectColumns(["name", "wkt"])).toHaveProperty(
