@@ -5,6 +5,19 @@ import { Maybe } from "purify-ts/Maybe";
 import type { FeatureCollection } from "types";
 import type { ExportOptions } from "..";
 
+// Object values, such as HTML descriptions imported from KML, are written as JSON
+// like the FlatGeobuf exporter does, instead of "[object Object]".
+function csvProperties(properties: Record<string, unknown> | null) {
+  if (!properties) return {};
+  return Object.fromEntries(
+    Object.entries(properties).map(([key, value]) =>
+      typeof value === "object" && value !== null
+        ? [key, JSON.stringify(value)]
+        : [key, value],
+    ),
+  );
+}
+
 // TODO: what if the feature has latitude & longitude properties?
 export function geojsonToCSV(
   geojson: FeatureCollection,
@@ -22,12 +35,20 @@ export function geojsonToCSV(
       for (const feature of geojson.features) {
         if (feature.geometry?.type === "Point") {
           const [longitude, latitude] = feature.geometry.coordinates;
-          const row = { ...feature.properties, latitude, longitude };
+          const row = {
+            ...csvProperties(feature.properties),
+            latitude,
+            longitude,
+          };
           rows.push(row);
         } else if (feature.geometry?.type === "MultiPoint") {
           for (const point of feature.geometry.coordinates) {
             const [longitude, latitude] = point;
-            const row = { ...feature.properties, latitude, longitude };
+            const row = {
+              ...csvProperties(feature.properties),
+              latitude,
+              longitude,
+            };
             rows.push(row);
           }
         }
@@ -39,7 +60,7 @@ export function geojsonToCSV(
         const wkt: string = feature.geometry
           ? Maybe.fromNullable(geoJSONToWkt(feature.geometry)).orDefault("")
           : "";
-        const row = { ...feature.properties, wkt };
+        const row = { ...csvProperties(feature.properties), wkt };
         rows.push(row);
       }
       break;
@@ -49,7 +70,7 @@ export function geojsonToCSV(
         const geojson = feature.geometry
           ? JSON.stringify(feature.geometry)
           : "";
-        const row = { ...feature.properties, geojson };
+        const row = { ...csvProperties(feature.properties), geojson };
         rows.push(row);
       }
       break;
@@ -60,7 +81,7 @@ export function geojsonToCSV(
           feature.geometry?.type === "LineString"
             ? geoJSONToPolyline(feature.geometry)
             : "";
-        const row = { ...feature.properties, polyline };
+        const row = { ...csvProperties(feature.properties), polyline };
         rows.push(row);
       }
       break;
