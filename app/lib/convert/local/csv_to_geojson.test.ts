@@ -108,6 +108,28 @@ Null island;0;0`,
     ).resolves.toEqual(output);
   });
 
+  it("reads decimal-comma coordinates", async () => {
+    const result = await csvToGeoJSON(
+      `name;latitude;longitude
+Berlin;52,52;13,405`,
+      {
+        ...DEFAULT_IMPORT_OPTIONS.csvOptions,
+        delimiter: ";",
+        latitudeHeader: "latitude",
+        longitudeHeader: "longitude",
+        autoType: true,
+        zipHeader: "",
+        sheet: "",
+        kind: "lonlat",
+      },
+      noop,
+    );
+    expect(result.features[0].geometry).toEqual({
+      type: "Point",
+      coordinates: [13.405, 52.52],
+    });
+  });
+
   it("handles h3 values", async () => {
     await expect(
       csvToGeoJSON(

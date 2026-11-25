@@ -181,6 +181,9 @@ export async function castRowH3(
 function safeParse(value: JsonValue | undefined) {
   if (typeof value === "number") return value;
   if (typeof value !== "string") return NaN;
+  // A decimal comma, as in CSVs from Excel in many European locales: 52,52
+  if (/^\s*-?\d+,\d+\s*$/.test(value))
+    return parseFloat(value.replace(",", "."));
   return parseFloat(value);
 }
 
