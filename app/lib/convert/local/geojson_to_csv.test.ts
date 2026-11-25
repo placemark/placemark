@@ -83,3 +83,28 @@ Null island,0,0`);
 Null island,
 Two,??_seK_ibE_seK_seK`);
 });
+
+test("geojsonToCSV writes object properties as JSON", () => {
+  expect(
+    geojsonToCSV(
+      {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {
+              name: "Louvre",
+              description: { "@type": "html", value: "Closed <b>Tuesdays</b>" },
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [2.3376, 48.8606],
+            },
+          },
+        ],
+      },
+      DEFAULT_EXPORT_OPTIONS,
+    ),
+  ).toEqual(`name,description,latitude,longitude
+Louvre,"{""@type"":""html"",""value"":""Closed <b>Tuesdays</b>""}",48.8606,2.3376`);
+});
