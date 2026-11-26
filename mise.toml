@@ -13,3 +13,4 @@ postinstall = 'npx corepack enable'
 [settings]
 # This must be enabled to make the hooks work
 experimental = true
+idiomatic_version_file_enable_tools = ["node"]

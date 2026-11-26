@@ -11,7 +11,7 @@ class CPolyline implements FileType {
   extensions = [] as string[];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options: ImportOptions) {
     return readAsText(file).chain((text) => {
       return Polyline.forwardString(text);
     });

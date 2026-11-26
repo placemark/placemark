@@ -12,7 +12,7 @@ class CKML implements FileType {
   extensions = [".kml"];
   filenames = [] as string[];
   mimes = ["application/vnd.google-earth.kml+xml"];
-  forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options: ImportOptions) {
     return readAsText(file).chain((text) => {
       return KML.forwardString(text);
     });

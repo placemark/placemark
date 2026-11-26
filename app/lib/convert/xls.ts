@@ -9,7 +9,7 @@ class CXLS implements FileType {
   extensions = [".xls", ".xlsx"];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer, options: ImportOptions) {
+  forwardBinary(file: Uint8Array, options: ImportOptions) {
     return EitherAsync<ConvertError, ConvertResult>(
       async function forwardXls() {
         const { xlsxToGeoJSON } = await import(

@@ -15,7 +15,7 @@ class CGeoJSON implements FileType {
   extensions = [".geojson", ".json"];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer, options?: ImportOptions) {
+  forwardBinary(file: Uint8Array, options?: ImportOptions) {
     return readAsText(file).chain((text) => {
       return this.forwardString(text, options);
     });

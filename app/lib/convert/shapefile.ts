@@ -200,7 +200,7 @@ class CShapefile implements FileType {
       },
     );
   }
-  forwardBinary(file: ArrayBuffer, _options?: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options?: ImportOptions) {
     return EitherAsync<PlacemarkError, ConvertResult>(
       async function forwardShapefile({ fromPromise }) {
         const unzipped = await unzip(file);

@@ -315,11 +315,11 @@ export function useImportFile() {
       options: ImportOptions,
       progress: RawProgressCb,
     ) => {
-      const arrayBuffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(await file.arrayBuffer());
 
       const either = (
         await lib.fileToGeoJSON(
-          transfer(arrayBuffer, [arrayBuffer]),
+          transfer(bytes, [bytes.buffer]),
           options,
           Comlink.proxy(progress),
         )

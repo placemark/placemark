@@ -17,7 +17,7 @@ import {
 } from "./shared";
 
 export async function xlsxToGeoJSON(
-  file: ArrayBuffer,
+  file: Uint8Array,
   options: ImportOptions["csvOptions"],
 ): Promise<FeatureCollection> {
   if (!options) throw new Error("Options should not be undefined");

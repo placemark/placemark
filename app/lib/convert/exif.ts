@@ -11,7 +11,7 @@ class CEXIF implements FileType {
   extensions = [".jpg", ".jpeg"];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options: ImportOptions) {
     return EitherAsync<ConvertError, ConvertResult>(async function eitherExif({
       fromPromise,
     }) {

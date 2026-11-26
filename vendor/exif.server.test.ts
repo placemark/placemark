@@ -1,8 +1,12 @@
 import { expect, describe, it } from "vitest";
 
-import Fs from "fs";
-import Path from "path";
+import Fs from "node:fs";
+import Path from "node:path";
 import { getImageData, toGeoJSON } from "./exif";
+
+function readFixture(name: string) {
+  return Fs.readFileSync(Path.join(__dirname, "..", "test", name));
+}
 
 const iphoneExif = {
   "31": 19.988142131979696,
@@ -71,12 +75,11 @@ const iphoneExif = {
 describe("EXIF", () => {
   it("toGeoJSON (bad data)", async () => {
     await expect(
-      toGeoJSON(Buffer.from([0xff, 0xd8]).buffer as ArrayBuffer)
+      toGeoJSON(new Uint8Array([0xff, 0xd8]))
     ).resolves.toBeLeft();
   });
   it("toGeoJSON", async () => {
-    const input = Fs.readFileSync(Path.join("test", "exifimage.jpg")).buffer as ArrayBuffer;
-    const gj = (await toGeoJSON(input)).unsafeCoerce();
+    const gj = (await toGeoJSON(readFixture("exifimage.jpg"))).unsafeCoerce();
     expect(gj).toEqual({
       type: "FeatureCollection",
       features: [
@@ -92,10 +95,8 @@ describe("EXIF", () => {
     });
   });
   it("getImageData", function () {
-    const input = Fs.readFileSync(Path.join("test", "exifimage.jpg"));
-    expect(getImageData(input.buffer)).toEqualRight(iphoneExif);
-    const input2 = Fs.readFileSync(Path.join("test", "exifimage2.jpg"));
-    expect(getImageData(input2.buffer)).toEqualRight({
+    expect(getImageData(readFixture("exifimage.jpg"))).toEqualRight(iphoneExif);
+    expect(getImageData(readFixture("exifimage2.jpg"))).toEqualRight({
       ColorSpace: 65535,
       ExifIFDPointer: 114,
       Orientation: 1,
@@ -115,8 +116,8 @@ describe("EXIF", () => {
     });
   });
   it("getImageData (invalid data)", function () {
-    expect(getImageData(Buffer.from("").buffer)).toBeLeft();
-    expect(getImageData(Buffer.from("hihi").buffer)).toBeLeft();
-    expect(getImageData(Buffer.from([0xff, 0xd8]).buffer)).toBeLeft();
+    expect(getImageData(Buffer.from(""))).toBeLeft();
+    expect(getImageData(Buffer.from("hihi"))).toBeLeft();
+    expect(getImageData(Buffer.from([0xff, 0xd8]))).toBeLeft();
   });
 });

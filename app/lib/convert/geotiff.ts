@@ -10,7 +10,7 @@ class CGeoTIFF implements FileType {
   extensions = [".tif", ".tiff"];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer, _options?: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options?: ImportOptions) {
     return EitherAsync<ConvertError, ConvertResult>(
       async function forwardGeoTIFF() {
         const { getGeotiffExtent } = await import("vendor/geotiff");

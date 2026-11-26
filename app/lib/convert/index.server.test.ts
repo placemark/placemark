@@ -238,8 +238,7 @@ describe("convert", () => {
 
   describe("EXIF", () => {
     it(".forward", async () => {
-      const input = Fs.readFileSync(Path.join("test", "exifimage.jpg"))
-        .buffer as ArrayBuffer;
+      const input = Fs.readFileSync(Path.join("test", "exifimage.jpg"));
       expect(
         (
           await EXIF.forwardBinary(input, {

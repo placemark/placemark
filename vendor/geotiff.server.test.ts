@@ -1,17 +1,16 @@
 import { expect, describe, it } from "vitest";
 
-import Fs from "fs";
+import Fs from "node:fs";
+import Path from "node:path";
 import { TextDecoder } from "fastestsmallesttextencoderdecoder";
-import Path from "path";
 import { getGeotiffExtent } from "./geotiff";
 global.TextDecoder = TextDecoder;
 
 describe("getGeotiffExtent", () => {
   it("can get an extent", async () => {
-    const arrayBuffer = Fs.readFileSync(
-      Path.join(__dirname, "../test/red.tif")
-    ).buffer as ArrayBuffer;
-    const output = await getGeotiffExtent(arrayBuffer);
+    const output = await getGeotiffExtent(
+      Fs.readFileSync(Path.join(__dirname, "../test/red.tif")),
+    );
     expect(output).toEqual({
       features: [
         {
