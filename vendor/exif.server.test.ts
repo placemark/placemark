@@ -1,7 +1,6 @@
 import { expect, describe, it } from "vitest";
 
-import Fs from "fs";
-import Path from "path";
+import { loadBinaryFixture } from "test/helpers";
 import { getImageData, toGeoJSON } from "./exif";
 
 const iphoneExif = {
@@ -71,11 +70,11 @@ const iphoneExif = {
 describe("EXIF", () => {
   it("toGeoJSON (bad data)", async () => {
     await expect(
-      toGeoJSON(Buffer.from([0xff, 0xd8]).buffer as ArrayBuffer)
+      toGeoJSON(new Uint8Array([0xff, 0xd8]).buffer)
     ).resolves.toBeLeft();
   });
   it("toGeoJSON", async () => {
-    const input = Fs.readFileSync(Path.join("test", "exifimage.jpg")).buffer as ArrayBuffer;
+    const input = loadBinaryFixture("exifimage.jpg");
     const gj = (await toGeoJSON(input)).unsafeCoerce();
     expect(gj).toEqual({
       type: "FeatureCollection",
@@ -92,10 +91,10 @@ describe("EXIF", () => {
     });
   });
   it("getImageData", function () {
-    const input = Fs.readFileSync(Path.join("test", "exifimage.jpg"));
-    expect(getImageData(input.buffer)).toEqualRight(iphoneExif);
-    const input2 = Fs.readFileSync(Path.join("test", "exifimage2.jpg"));
-    expect(getImageData(input2.buffer)).toEqualRight({
+    expect(getImageData(loadBinaryFixture("exifimage.jpg"))).toEqualRight(
+      iphoneExif,
+    );
+    expect(getImageData(loadBinaryFixture("exifimage2.jpg"))).toEqualRight({
       ColorSpace: 65535,
       ExifIFDPointer: 114,
       Orientation: 1,
