@@ -17,10 +17,10 @@ export const EnforcedZipOptions = z.object({
   zipHeader: z.string(),
 });
 
-export async function unzip(file: ArrayBuffer) {
+export async function unzip(file: Uint8Array) {
   const fflate = await import("fflate");
   return await new Promise<Unzipped>((resolve, reject) => {
-    fflate.unzip(new Uint8Array(file), (err, res) => {
+    fflate.unzip(file, (err, res) => {
       if (err) return reject(err);
       resolve(res);
     });

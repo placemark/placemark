@@ -54,14 +54,14 @@ class CFlatGeobuf implements FileType {
   extensions = [".fgb"];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options: ImportOptions) {
     return EitherAsync<ConvertError, ConvertResult>(
       async function forwardFlatGeobuf() {
         const flatgeobuf = await import("flatgeobuf/geojson");
         // TODO: use Array.fromAsync in a year or two, when it's widely
         // available.
         const features = [];
-        const iterator = flatgeobuf.deserialize(new Uint8Array(file));
+        const iterator = flatgeobuf.deserialize(file);
         for await (const feature of iterator) {
           features.push(feature);
         }

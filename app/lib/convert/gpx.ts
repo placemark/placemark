@@ -11,7 +11,7 @@ class CGPX implements FileType {
   extensions = [".gpx"];
   mimes = [] as string[];
   filenames = [] as string[];
-  forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options: ImportOptions) {
     return readAsText(file).chain((text) => {
       return GPX.forwardString(text);
     });

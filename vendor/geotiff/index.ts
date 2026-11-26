@@ -1,15 +1,15 @@
 import GeoTIFF from "./geotiff";
 
 /**
- * Construct a GeoTIFF from an HTML
- * [Blob]{@link https://developer.mozilla.org/en-US/docs/Web/API/Blob} or
- * [File]{@link https://developer.mozilla.org/en-US/docs/Web/API/File}
- * object.
+ * Construct a GeoTIFF from the bytes of a TIFF file.
  */
-export function fromArrayBuffer(blob: ArrayBuffer) {
+export function fromBytes(bytes: Uint8Array) {
   return GeoTIFF.fromSource({
     fetch(start: number, length: number) {
-      return Promise.resolve(blob.slice(start, start + length));
+      const range = bytes.subarray(start, start + length);
+      const buffer = new ArrayBuffer(range.byteLength);
+      new Uint8Array(buffer).set(range);
+      return Promise.resolve(buffer);
     },
   });
 }

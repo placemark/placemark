@@ -10,7 +10,7 @@ class CGTFS implements FileType {
   filenames = ["shapes.txt"];
   extensions = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer) {
+  forwardBinary(file: Uint8Array) {
     return readAsText(file).chain((text) => {
       return this.forwardString(text);
     });

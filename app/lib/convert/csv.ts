@@ -18,7 +18,7 @@ class CCSV implements FileType {
   filenames = [] as string[];
   mimes = [] as string[];
   forwardBinary(
-    file: ArrayBuffer,
+    file: Uint8Array,
     options: ImportOptions,
     progress: ProgressCb,
   ) {

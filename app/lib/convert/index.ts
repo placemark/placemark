@@ -222,7 +222,7 @@ export interface FileType {
   readonly mimes: string[];
   readonly filenames: string[];
   forwardBinary?: (
-    file: ArrayBuffer,
+    file: Uint8Array,
     options: ImportOptions,
     callback: ProgressCb,
   ) => EitherAsync<Error | PlacemarkError, ConvertResult>;

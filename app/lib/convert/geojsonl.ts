@@ -22,7 +22,7 @@ class CGeoJSONL implements FileType {
       },
     );
   }
-  forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options: ImportOptions) {
     return readAsText(file).chain((text) => {
       return this.forwardString(text);
     });

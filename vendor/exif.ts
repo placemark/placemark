@@ -22,9 +22,9 @@ type TagObject = {
  * Determine the starting point in the file for reading EXIF data.
  */
 export function getImageData(
-  file: ArrayBufferLike
+  file: Uint8Array
 ): Either<PlacemarkError, TagObject> {
-  const dataView = new DataView(file);
+  const dataView = new DataView(file.buffer, file.byteOffset, file.byteLength);
 
   if (
     dataView.byteLength < 2 ||
@@ -62,10 +62,10 @@ export function getImageData(
   return Left(new PlacemarkError("Could not find EXIF data"));
 }
 
-export function toGeoJSON(arrayBuffer: ArrayBuffer) {
+export function toGeoJSON(file: Uint8Array) {
   return EitherAsync<PlacemarkError, FeatureCollection>(
     async ({ liftEither, throwE }) => {
-      const exif = await liftEither(getImageData(arrayBuffer));
+      const exif = await liftEither(getImageData(file));
 
       if (exif.GPSLongitude && exif.GPSLatitude) {
         const lat = exif.GPSLatitude as number[];

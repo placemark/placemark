@@ -37,7 +37,7 @@ class CBBOX implements FileType {
       return Promise.resolve(bbox.mapOrDefault(e6bbox, ""));
     });
   }
-  forwardBinary(file: ArrayBuffer, options: ImportOptions) {
+  forwardBinary(file: Uint8Array, options: ImportOptions) {
     return readAsText(file).chain((text) => {
       return this.forwardString(text, options);
     });

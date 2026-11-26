@@ -14,7 +14,7 @@ class CKMZ implements FileType {
   extensions = [".kmz"];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options: ImportOptions) {
     return EitherAsync<PlacemarkError, ConvertResult>(
       async function forwardKmz({ throwE, liftEither }) {
         const unzipped = await unzip(file);
@@ -24,9 +24,7 @@ class CKMZ implements FileType {
         if (!kmlFile) {
           return throwE(new PlacemarkError("No KML file found within KMZ"));
         }
-        const text = await liftEither(
-          await readAsText(kmlFile[1] as unknown as ArrayBuffer),
-        );
+        const text = await liftEither(await readAsText(kmlFile[1]));
         return liftEither(await KML.forwardString(text));
       },
     );

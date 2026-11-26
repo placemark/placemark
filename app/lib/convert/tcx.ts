@@ -11,7 +11,7 @@ class CTCX implements FileType {
   extensions = [".tcx"];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer) {
+  forwardBinary(file: Uint8Array) {
     return readAsText(file).chain((text) => TCX.forwardString(text));
   }
   forwardString(text: string) {

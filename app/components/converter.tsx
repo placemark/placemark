@@ -293,10 +293,10 @@ function convert({
 
     switch (inputData.type) {
       case "file": {
-        const arrayBuffer = await inputData.data.arrayBuffer();
+        const bytes = new Uint8Array(await inputData.data.arrayBuffer());
         res = await liftEither(
           await lib.fileToGeoJSON(
-            transfer(arrayBuffer, [arrayBuffer]),
+            transfer(bytes, [bytes.buffer]),
             values,
             Comlink.proxy(() => {}),
           ),

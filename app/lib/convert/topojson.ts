@@ -13,7 +13,7 @@ class CTopoJSON implements FileType {
   extensions = [".topojson", ".json"];
   filenames = [] as string[];
   mimes = [] as string[];
-  forwardBinary(file: ArrayBuffer, _options: ImportOptions) {
+  forwardBinary(file: Uint8Array, _options: ImportOptions) {
     return readAsText(file).chain((text) => {
       return TopoJSON.forwardString(text);
     });

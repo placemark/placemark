@@ -1,13 +1,16 @@
 import { expect, describe, it } from "vitest";
 
+import Fs from "node:fs";
+import Path from "node:path";
 import { TextDecoder } from "fastestsmallesttextencoderdecoder";
-import { loadBinaryFixture } from "test/helpers";
 import { getGeotiffExtent } from "./geotiff";
 global.TextDecoder = TextDecoder;
 
 describe("getGeotiffExtent", () => {
   it("can get an extent", async () => {
-    const output = await getGeotiffExtent(loadBinaryFixture("red.tif"));
+    const output = await getGeotiffExtent(
+      Fs.readFileSync(Path.join(__dirname, "../test/red.tif")),
+    );
     expect(output).toEqual({
       features: [
         {

@@ -27,13 +27,6 @@ function loadFixture(path: string): FeatureCollection {
   ) as FeatureCollection;
 }
 
-export function loadBinaryFixture(path: string): ArrayBuffer {
-  const buffer = Fs.readFileSync(Path.join(__dirname, path));
-  const arrayBuffer = new ArrayBuffer(buffer.byteLength);
-  new Uint8Array(arrayBuffer).set(buffer);
-  return arrayBuffer;
-}
-
 export const exampleFolder: IFolder = deepFreeze({
   name: "Example",
   id: "00",

@@ -2,11 +2,11 @@ import type { FeatureCollection } from "types";
 import { polygonFromPositions } from "app/lib/geometry";
 
 export async function getGeotiffExtent(
-  file: ArrayBuffer
+  file: Uint8Array
 ): Promise<FeatureCollection> {
-  const { fromArrayBuffer } = await import("vendor/geotiff/index");
+  const { fromBytes } = await import("vendor/geotiff/index");
   const { default: proj4 } = await import("proj4");
-  const tiff = await fromArrayBuffer(file);
+  const tiff = await fromBytes(file);
   const image = await tiff.getImage();
   const geoKeys = image.geoKeys;
   const code: string =
